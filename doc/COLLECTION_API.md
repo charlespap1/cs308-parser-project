@@ -4,7 +4,7 @@ The collection which we all have the most experience with is List. This is throu
 
 LinkedList implements 4 different interfaces (List, Deque, Cloneable, Serializable). The List interface is the foundation for different data structures that can hold indexable information. The Deque interface enables the ability to insert and remove elements at both ends of a data structure. The Cloneable interface enables a data structure to be cloned or copied. The Serializable interface enables a data structure to be serialized and deserialized.
 
-There are about 9 different classes that implement the Set collection class. I feel that this number definitely justifies there being an interface for this type of collection. If all of these types of specific implementations all require implementations of the same methods and should follow a certain format, and fit into a certain type, it makes sense that they would all implement the same collection class.
+There are about nine different classes that implement the Set collection class. I feel that this number definitely justifies there being an interface for this type of collection. If all of these types of specific implementations all require implementations of the same methods and should follow a certain format, and fit into a certain type, it makes sense that they would all implement the same collection class.
 
 There are roughly 3 levels of superclasses for a specific concrete collection, like ArrayList. Each inheritance level gets increasingly specific, starting from the most general Object to the more specific AbstractList. Each level provides a specific collection with more functionality that is more and more relevant for that specific collection type. 
 
