@@ -103,6 +103,41 @@ State
 
 ##API as Code
 
+###Instruction API
+```
+public interface Instruction {
+
+    List<State> execute(State currentState, List<Variable> vars);
+    List<String> getNeededVarNames();
+}
+```
+
+###Model API
+```
+public interface Model {
+
+    List<State> executeCode(String rawCode);
+}
+```
+
+###View API
+```
+public interface View {
+
+    String getInstruction() throws NullPointerException;
+    void updateDisplay(State nextState);
+    void showError(String errorMessage);
+}
+```
+
+###Button API
+```
+public interface Button {
+
+    void execute();
+}
+```
+
 ##Design Considerations
 
 The first issue we encountered when designing this project was how we were going to update the DrawingCanvas on the Visual screen from the Controller class. Ideally, we want the Controller class to do all of the stepping and updating. However, due to the nature of javafx, we have to have our step() method in the frontend Visual class. To address this, we envision that the step() method of the Visual class simply calls the go() method within the Controller class which is the real looping method which uses instructions to update the turtle state. The downside to this design is that we would need an instance of the Controller in the frontend, but we could address this by making the go() method the only public method in the Controller. As an alternate design, we heard from a little bird that an ActionListener object could be useful in this scenario. The ActionListener would wait for the “go” button to be pressed and this would activate the Controller go() method. In this way, we would not have infinite stepping and we would know the exact time when to begin reading and moving. 
