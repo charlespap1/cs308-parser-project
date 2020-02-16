@@ -4,7 +4,7 @@ import slogo.State;
 
 public interface View {
 
-    String getInstruction();
+    String getInstruction() throws NullPointerException;
     void updateDisplay(State nextState);
     void showError(String errorMessage);
 }

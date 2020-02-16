@@ -1,8 +1,10 @@
 package slogo.model;
 
+import slogo.State;
+
 import java.util.List;
 
 public interface Model {
 
-    List<Instruction> executeCode(String rawCode);
+    List<State> executeCode(String rawCode);
 }
