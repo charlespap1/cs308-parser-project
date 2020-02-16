@@ -14,7 +14,7 @@ public class DrawingCanvas {
 
   public static final double CANVAS_TOP_PADDING = 50;
   public static final double CANVAS_BOTTOM_PADDING = 75;
-  public static final double CANVAS_LEFT_PADDING = 20;
+  public static final double CANVAS_SIDE_PADDING = 20;
   public static final double ARC_RADIUS = 10;
   public static final Color BACKGROUND_COLOR = Color.WHITE;
   public static final Color BORDER_COLOR = Color.LIGHTBLUE;
@@ -25,7 +25,7 @@ public class DrawingCanvas {
 
   public DrawingCanvas(double screenWidth, double screenHeight)
   {
-    canvasWidth = screenWidth/2 - 2*CANVAS_LEFT_PADDING;
+    canvasWidth = screenWidth/2 - 2*CANVAS_SIDE_PADDING;
     canvasHeight = screenHeight - CANVAS_TOP_PADDING - CANVAS_BOTTOM_PADDING;
 
     setBody();
@@ -36,7 +36,7 @@ public class DrawingCanvas {
   {
     myView = new Rectangle();
 
-    myView.setX(CANVAS_LEFT_PADDING);
+    myView.setX(CANVAS_SIDE_PADDING);
     myView.setY(CANVAS_TOP_PADDING);
     myView.setWidth(canvasWidth);
     myView.setHeight(canvasHeight);
@@ -54,16 +54,13 @@ public class DrawingCanvas {
     return myView;
   }
 
-  public double getWidth()
-  {
-    return canvasWidth;
-  }
-  public double getHeight()
-  {
-    return canvasHeight;
-  }
+  /**
+   * These methods allow us to get size of the canvas so
+   * we can place the turtle in the middle of it
+   * @return
+   */
+  public double getWidth() { return canvasWidth; }
 
-
-
+  public double getHeight() { return canvasHeight; }
 
 }

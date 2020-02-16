@@ -25,7 +25,7 @@ public class Turtle {
 
   public Turtle(Image image, double canvasWidth, double canvasHeight)
   {
-    canvasLeftPadding = DrawingCanvas.CANVAS_LEFT_PADDING;
+    canvasLeftPadding = DrawingCanvas.CANVAS_SIDE_PADDING;
     canvasTopPadding = DrawingCanvas.CANVAS_TOP_PADDING;
 
     myView = new ImageView(image);
@@ -60,7 +60,5 @@ public class Turtle {
   public Node getView () {
     return myView;
   }
-
-
 
 }

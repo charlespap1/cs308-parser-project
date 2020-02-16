@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import slogo.view.DrawingCanvas;
 import slogo.view.Turtle;
+import slogo.view.UserCommandField;
 
 /**
  * Feel free to completely change this code or delete it entirely. 
@@ -54,7 +55,8 @@ public class Main extends Application {
 
         DrawingCanvas dc = new DrawingCanvas(WIDTH, HEIGHT);
         Turtle t = new Turtle(image, dc.getWidth(), dc.getHeight());
-        root.getChildren().addAll(dc.getView(), t.getView());
+        UserCommandField c = new UserCommandField(WIDTH, HEIGHT);
+        root.getChildren().addAll(dc.getView(), t.getView(), c.getView());
 
         Scene scene = new Scene(root, width, height, background);
         // respond to input
