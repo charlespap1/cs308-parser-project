@@ -66,7 +66,9 @@ We intend for the user to be given feedback if they input code that is not recog
 ##Design Details
 This section describes each API introduced in the Overview in detail (as well as any other sub-components that may be needed but are not significant to include in a high-level description of the program). Describe how each API supports specific features given in the assignment specification, what resources it might use, how it is intended to be used, and how it could be extended to include additional requirements (from the assignment specification or discussed by your team). Finally, justify the decision to create each class introduced with respect to the design's key goals, principles, and abstractions. This section should go into as much detail as necessary to cover all your team wants to say.
 Our overall design is used a Display that is in charge of showing the user the result of their commands and taking their inputs, a Model which parses the string and decides how the turtle will move based on the instructions, and a Controller which facilitates communication between them. More details are given on this design below:
-	
+
+![Design](Design.png)	
+
 Controller
 
 * The controller will have a listener that activates whenever the go button is activated
