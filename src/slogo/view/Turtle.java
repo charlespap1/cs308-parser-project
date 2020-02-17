@@ -18,7 +18,6 @@ public class Turtle {
   public static final double DEFAULT_ANGLE = 0;
   public static final double TURTLE_FACTOR = TURTLE_IMAGE_SIZE/2;
 
-
   private double canvasWidth;
   private double canvasHeight;
   private double canvasTopPadding;
@@ -55,6 +54,7 @@ public class Turtle {
 
     myView.setX(myState.getX() - 2*TURTLE_FACTOR);
     myView.setY(myState.getY() - 2*TURTLE_FACTOR);
+    myView.setRotate(DEFAULT_ANGLE);
 
     this.penColor = DEFAULT_PEN_COLOR;
   }
@@ -71,11 +71,13 @@ public class Turtle {
    * Updates the location or attributes of the turtle
    * @param nextState
    */
-  public Group update(State nextState, Group root)
+  public Line update(State nextState, Group root)
   {
+    Line newLine = null;
     if(needToDrawLine(nextState))
     {
-      root.getChildren().add(drawLine(nextState));
+      newLine = drawLine(nextState);
+      root.getChildren().add(newLine);
     }
     myState = nextState;
     myView.setX(myState.getX() - TURTLE_FACTOR);
@@ -85,8 +87,7 @@ public class Turtle {
     root.getChildren().remove(myView);
     root.getChildren().add(myView);
 
-    return root;
-
+    return newLine;
   }
 
   private boolean needToDrawLine(State nextState)
@@ -100,6 +101,13 @@ public class Turtle {
     return line;
   }
 
-
+  /**
+   * Allows Main class to be put turtle back in center
+   * with default values
+   */
+  public void returnTurtleToDefault()
+  {
+    setDefaultValues();
+  }
 
 }
