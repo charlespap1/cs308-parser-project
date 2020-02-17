@@ -49,6 +49,11 @@ public class DrawingCanvas {
     myView.setStroke(BORDER_COLOR);
   }
 
+  /**
+   * Allows the canvas to be added to the root of the main class
+   * @return
+   */
+
   public Node getView()
   {
     return myView;

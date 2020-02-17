@@ -1,6 +1,6 @@
 package slogo.view;
 
-public interface Button {
+public interface ViewButton {
 
     void execute();
 }

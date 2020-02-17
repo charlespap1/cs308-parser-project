@@ -1,9 +1,12 @@
 package slogo.view;
 
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
+import slogo.State;
 
 /**
  * This class holds all of the attributes of our GUI turtle
@@ -11,6 +14,10 @@ import javafx.scene.paint.Color;
 
 public class Turtle {
   public static final int TURTLE_IMAGE_SIZE = 30;
+  public static final Color DEFAULT_PEN_COLOR = Color.BLACK;
+  public static final double DEFAULT_ANGLE = 0;
+  public static final double TURTLE_FACTOR = TURTLE_IMAGE_SIZE/2;
+
 
   private double canvasWidth;
   private double canvasHeight;
@@ -18,9 +25,7 @@ public class Turtle {
   private double canvasLeftPadding;
 
   private ImageView myView;
-  private double myX;
-  private double myY;
-  private boolean penUp;
+  private State myState;
   private Color penColor;
 
   public Turtle(Image image, double canvasWidth, double canvasHeight)
@@ -43,14 +48,15 @@ public class Turtle {
 
   private void setDefaultValues()
   {
-    this.myX = canvasLeftPadding + canvasWidth/2 - TURTLE_IMAGE_SIZE/2;
-    this.myY = canvasTopPadding + canvasHeight/2 - TURTLE_IMAGE_SIZE/2;
+    double x = canvasLeftPadding + canvasWidth/2;
+    double y = canvasTopPadding + canvasHeight/2;
 
-    myView.setX(myX);
-    myView.setY(myY);
+    myState = new State (x, y, false, DEFAULT_ANGLE);
 
-    this.penUp = false;
-    this.penColor = Color.BLACK;
+    myView.setX(myState.getX() - 2*TURTLE_FACTOR);
+    myView.setY(myState.getY() - 2*TURTLE_FACTOR);
+
+    this.penColor = DEFAULT_PEN_COLOR;
   }
 
   /**
@@ -60,5 +66,40 @@ public class Turtle {
   public Node getView () {
     return myView;
   }
+
+  /**
+   * Updates the location or attributes of the turtle
+   * @param nextState
+   */
+  public Group update(State nextState, Group root)
+  {
+    if(needToDrawLine(nextState))
+    {
+      root.getChildren().add(drawLine(nextState));
+    }
+    myState = nextState;
+    myView.setX(myState.getX() - TURTLE_FACTOR);
+    myView.setY(myState.getY() - TURTLE_FACTOR);
+    myView.setRotate(nextState.getAngleFacing());
+
+    root.getChildren().remove(myView);
+    root.getChildren().add(myView);
+
+    return root;
+
+  }
+
+  private boolean needToDrawLine(State nextState)
+  {
+    return ((myState.getX() != nextState.getX()) || (myState.getY() != nextState.getY())) && !nextState.isPenUp();
+  }
+
+  private Line drawLine(State nextState)
+  {
+    Line line = new Line (myState.getX(), myState.getY(), nextState.getX(), nextState.getY());
+    return line;
+  }
+
+
 
 }

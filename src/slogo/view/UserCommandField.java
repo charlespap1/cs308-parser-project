@@ -44,5 +44,20 @@ public class UserCommandField {
     return myTextField;
   }
 
+  /**
+   * Allow us to place the go button below them
+   * @return
+   */
+  public double getWidth()
+  {
+    return myTextField.getMaxWidth();
+  }
+
+  public double getHeight()
+  {
+    return myTextField.getMinHeight();
+  }
+
+
 
 }
