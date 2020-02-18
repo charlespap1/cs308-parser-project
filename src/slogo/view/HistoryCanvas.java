@@ -3,6 +3,7 @@ package slogo.view;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 public class HistoryCanvas {
@@ -44,9 +45,10 @@ public class HistoryCanvas {
     myHolder.getChildren().add(myView);
   }
 
-  public void addHistory(String command)
+  public void addHistory(String command, Color color)
   {
     Text newCommand = new Text(command);
+    newCommand.setFill(color);
     myHistory.getChildren().add(newCommand);
   }
 
