@@ -34,7 +34,7 @@ public class Main extends Application implements View {
      */
     public static final double BOX_SPACING = 10;
     public static final String TITLE = "SLogo";
-    public static final int WIDTH = 800;
+    public static final int WIDTH = 1000;
     public static final int HEIGHT = 600;
     public static final int FRAMES_PER_SECOND = 60;
     public static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
