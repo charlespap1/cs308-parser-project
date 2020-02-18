@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import slogo.view.DrawingCanvas;
 import slogo.view.GoButton;
+import slogo.view.HistoryCanvas;
 import slogo.view.Turtle;
 import slogo.view.UserCommandField;
 import slogo.view.View;
@@ -54,8 +55,10 @@ public class Main extends Application implements View {
     private Button myGo;
     private Button myClear;
     private Button myStop;
+    private HistoryCanvas myHistory;
 
     private List<Line> myLines;
+    private Text myCurrentErrorMessage;
 
     private VBox belowInputFieldItems;
     private HBox belowCanvasButtons;
@@ -68,7 +71,7 @@ public class Main extends Application implements View {
     @Override
     public void start(Stage primaryStage) throws Exception {
         myScene = setupGame(WIDTH, HEIGHT, BACKGROUND);
-        //System.out.println(getClass().getResource(DEFAULT_RESOURCE_FOLDER + MAIN_STYLESHEET).toExternalForm());
+        //System.out.println(getClass().getResource(DEFAULT_RESOURCE_FOLDER + "main.css").toExternalForm());
         //myScene.getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + MAIN_STYLESHEET).toExternalForm());
 
         primaryStage.setScene(myScene);
@@ -88,15 +91,18 @@ public class Main extends Application implements View {
         Image image = new Image(this.getClass().getClassLoader().getResourceAsStream(TURTLE_IMAGE));
 
         myLines = new ArrayList<>();
+        myCurrentErrorMessage = new Text("");
         myCanvas = new DrawingCanvas(WIDTH, HEIGHT);
         myTurtle = new Turtle(image, myCanvas.getWidth(), myCanvas.getHeight());
         myUserInput = new UserCommandField(WIDTH, HEIGHT);
+        myHistory = new HistoryCanvas(WIDTH, HEIGHT);
+
 
         setVBoxLayout();
         setHBoxLayout();
         setButtons();
 
-        root.getChildren().addAll(myCanvas.getView(), myTurtle.getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons);
+        root.getChildren().addAll(myCanvas.getView(), myTurtle.getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons, myHistory.getView());
 
         Scene scene = new Scene(root, width, height, background);
         return scene;
@@ -131,7 +137,7 @@ public class Main extends Application implements View {
         myGo.setMinWidth(myUserInput.getWidth());
         myGo.setOnAction(e -> getInstruction());
         belowInputFieldItems.getChildren().add(myGo);
-
+        belowInputFieldItems.getChildren().add(myCurrentErrorMessage);
 
         myClear = new Button("Clear Canvas");
         myClear.setMinWidth(myCanvas.getWidth()/2 - BOX_SPACING);
@@ -157,14 +163,22 @@ public class Main extends Application implements View {
         String input = myUserInput.getUserInput();
         if(input.equals("hi"))
         {
-            State newState = new State(50, 50, false, 0);
+            State newState = new State(50, 50, false, 0, Color.RED);
             updateDisplay(newState);
-            newState = new State(50, 200, false, 0);
+            newState = new State(50, 200, false, 0, Color.BLUE);
             updateDisplay(newState);
-            newState = new State(200, 200, false, 0);
+            newState = new State(200, 200, false, 0, Color.GREEN);
             updateDisplay(newState);
-            newState = new State(200, 400, false, -90);
+            newState = new State(200, 400, false, -90, Color.PURPLE);
             updateDisplay(newState);
+        }
+        else if(input.equals("bye"))
+        {
+            showError("you typed bye");
+        }
+        else if(input.equals("nope"))
+        {
+            showError("that's wrong");
         }
         return myUserInput.getUserInput();
     }
@@ -175,8 +189,17 @@ public class Main extends Application implements View {
      */
     @Override
     public void updateDisplay(State nextState) {
-        Line newLine = myTurtle.update(nextState, root);
+        Line newLine = myTurtle.update(nextState);
+        root.getChildren().add(newLine);
+        root.getChildren().remove(myTurtle.getView());
+        root.getChildren().add(myTurtle.getView());
         myLines.add(newLine);
+
+        for(int i = 0; i < 5; i++)
+        {
+            String command = nextState.toString();
+            myHistory.addHistory(command);
+        }
     }
 
     /**
@@ -186,9 +209,14 @@ public class Main extends Application implements View {
      */
     @Override
     public void showError(String errorMessage) {
-        Text error = new Text(errorMessage);
-        belowInputFieldItems.getChildren().add(error);
+        myCurrentErrorMessage.setText(errorMessage);
     }
+
+    @Override
+    public void changeCanvasColor(Color color) {
+        myCanvas.changeBackground(color);
+    }
+
     private void clearCanvas()
     {
         root.getChildren().removeAll(myLines);

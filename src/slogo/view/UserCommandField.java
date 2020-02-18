@@ -16,11 +16,10 @@ public class UserCommandField {
 
   public UserCommandField(double screenWidth, double screenHeight)
   {
-
     myTextField = new TextArea();
-    myTextField.setMaxWidth(screenWidth/2 - 2*FIELD_SIDE_PADDING);
+    myTextField.setMaxWidth(screenWidth/3 - 2*FIELD_SIDE_PADDING);
     myTextField.setMinHeight(screenHeight - FIELD_TOP_PADDING - FIELD_BOTTOM_PADDING);
-    myTextField.setLayoutX(screenWidth/2 + FIELD_SIDE_PADDING);
+    myTextField.setLayoutX(screenWidth/3 + FIELD_SIDE_PADDING);
     myTextField.setLayoutY(FIELD_TOP_PADDING);
 
   }

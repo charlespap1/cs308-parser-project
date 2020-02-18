@@ -14,7 +14,7 @@ public class DrawingCanvas {
 
   public static final double CANVAS_TOP_PADDING = 50;
   public static final double CANVAS_BOTTOM_PADDING = 75;
-  public static final double CANVAS_SIDE_PADDING = 20;
+  public static final double CANVAS_SIDE_PADDING = 10;
   public static final double ARC_RADIUS = 10;
   public static final Color BACKGROUND_COLOR = Color.WHITE;
   public static final Color BORDER_COLOR = Color.LIGHTBLUE;
@@ -25,11 +25,9 @@ public class DrawingCanvas {
 
   public DrawingCanvas(double screenWidth, double screenHeight)
   {
-    canvasWidth = screenWidth/2 - 2*CANVAS_SIDE_PADDING;
+    canvasWidth = screenWidth/3 - 2*CANVAS_SIDE_PADDING;
     canvasHeight = screenHeight - CANVAS_TOP_PADDING - CANVAS_BOTTOM_PADDING;
-
     setBody();
-
   }
 
   private void setBody()
@@ -67,5 +65,11 @@ public class DrawingCanvas {
   public double getWidth() { return canvasWidth; }
 
   public double getHeight() { return canvasHeight; }
+
+  public void changeBackground(Color color)
+  {
+    myView.setFill(color);
+  }
+
 
 }

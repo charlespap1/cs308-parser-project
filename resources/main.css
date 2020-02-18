@@ -1,7 +1,6 @@
 .button {
-  -fx-background-color: green;
-}
-
-.button:selected {
-  -fx-background-color: yellow;
+  -fx-text-fill: #002f2f;
+  -fx-background-color: #f7f9ee;
+  -fx-border-color: #e4e0bb;
+  -fx-border-width: 2 2 2 2;
 }

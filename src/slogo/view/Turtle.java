@@ -1,6 +1,5 @@
 package slogo.view;
 
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -23,9 +22,11 @@ public class Turtle {
   private double canvasTopPadding;
   private double canvasLeftPadding;
 
+  private double centerX;
+  private double centerY;
+
   private ImageView myView;
   private State myState;
-  private Color penColor;
 
   public Turtle(Image image, double canvasWidth, double canvasHeight)
   {
@@ -50,13 +51,16 @@ public class Turtle {
     double x = canvasLeftPadding + canvasWidth/2;
     double y = canvasTopPadding + canvasHeight/2;
 
-    myState = new State (x, y, false, DEFAULT_ANGLE);
+    myState = new State (x, y, false, DEFAULT_ANGLE, DEFAULT_PEN_COLOR);
 
-    myView.setX(myState.getX() - 2*TURTLE_FACTOR);
-    myView.setY(myState.getY() - 2*TURTLE_FACTOR);
+    myView.setX(myState.getX() - TURTLE_FACTOR);
+    myView.setY(myState.getY() - TURTLE_FACTOR);
     myView.setRotate(DEFAULT_ANGLE);
+  }
 
-    this.penColor = DEFAULT_PEN_COLOR;
+  public void changeImage(Image image)
+  {
+    myView.setImage(image);
   }
 
   /**
@@ -71,21 +75,18 @@ public class Turtle {
    * Updates the location or attributes of the turtle
    * @param nextState
    */
-  public Line update(State nextState, Group root)
+  public Line update(State nextState)
   {
     Line newLine = null;
     if(needToDrawLine(nextState))
     {
       newLine = drawLine(nextState);
-      root.getChildren().add(newLine);
     }
+
     myState = nextState;
     myView.setX(myState.getX() - TURTLE_FACTOR);
     myView.setY(myState.getY() - TURTLE_FACTOR);
     myView.setRotate(nextState.getAngleFacing());
-
-    root.getChildren().remove(myView);
-    root.getChildren().add(myView);
 
     return newLine;
   }
@@ -98,6 +99,7 @@ public class Turtle {
   private Line drawLine(State nextState)
   {
     Line line = new Line (myState.getX(), myState.getY(), nextState.getX(), nextState.getY());
+    line.setStroke(nextState.getPenColor());
     return line;
   }
 

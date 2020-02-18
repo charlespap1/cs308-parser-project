@@ -1,5 +1,6 @@
 package slogo;
 
+import javafx.scene.paint.Color;
 import slogo.view.Turtle;
 
 public class State {
@@ -9,13 +10,15 @@ public class State {
     private double x;
     private double y;
     boolean isPenUp;
+    Color penColor;
     double angleFacing;
 
-    public State(double x, double y, boolean isPenUp, double angleFacing) {
-        this.x = x + TURTLE_FACTOR;
-        this.y = y + TURTLE_FACTOR;
+    public State(double x, double y, boolean isPenUp, double angleFacing, Color penColor) {
+        this.x = x;
+        this.y = y;
         this.isPenUp = isPenUp;
         this.angleFacing = angleFacing;
+        this.penColor = penColor;
     }
 
     /**
@@ -42,5 +45,17 @@ public class State {
     {
         return angleFacing;
     }
+
+    public Color getPenColor()
+    {
+        return penColor;
+    }
+
+    public String toString()
+    {
+        return String .format("     State %f, %f, Pen is up: %b, Facing angle %f", x, y, isPenUp, angleFacing);
+    }
+
+
 
 }
