@@ -106,39 +106,16 @@ State
 ##API as Code
 
 ###Instruction API
-```
-public interface Instruction {
-
-    List<State> execute(State currentState, List<Variable> vars);
-    List<String> getNeededVarNames();
-}
-```
+![image](https://drive.google.com/uc?export=view&id=15xJJWUM08VcOnZJHekay-8eG299RipPo)
 
 ###Model API
-```
-public interface Model {
-
-    List<State> executeCode(String rawCode);
-}
-```
+![image](https://drive.google.com/uc?export=view&id=1DUCuQWZvDKT2uoFgONIf7fMyiw7eMk0U)
 
 ###View API
-```
-public interface View {
-
-    String getInstruction() throws NullPointerException;
-    void updateDisplay(State nextState);
-    void showError(String errorMessage);
-}
-```
+![image](https://drive.google.com/uc?export=view&id=1sdCon0fTU0EA1xUyIjMX5aPQ4Al_WX8z)
 
 ###Button API
-```
-public interface Button {
-
-    void execute();
-}
-```
+![image](https://drive.google.com/uc?export=view&id=13tqKwyWOsAEDxofPx2DW_g78l0Ikii9t)
 
 ##Design Considerations
 
