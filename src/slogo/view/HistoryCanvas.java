@@ -45,10 +45,9 @@ public class HistoryCanvas {
     myHolder.getChildren().add(myView);
   }
 
-  public void addHistory(String command, Color color)
+  public void addHistory(String command)
   {
     Text newCommand = new Text(command);
-    newCommand.setFill(color);
     myHistory.getChildren().add(newCommand);
   }
 

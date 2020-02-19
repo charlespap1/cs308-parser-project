@@ -51,7 +51,7 @@ public class Turtle {
     double x = canvasLeftPadding + canvasWidth/2;
     double y = canvasTopPadding + canvasHeight/2;
 
-    myState = new State (x, y, false, DEFAULT_ANGLE, DEFAULT_PEN_COLOR);
+    myState = new State (x, y, false, DEFAULT_ANGLE);
 
     myView.setX(myState.getX() - TURTLE_FACTOR);
     myView.setY(myState.getY() - TURTLE_FACTOR);
@@ -99,7 +99,7 @@ public class Turtle {
   private Line drawLine(State nextState)
   {
     Line line = new Line (myState.getX(), myState.getY(), nextState.getX(), nextState.getY());
-    line.setStroke(nextState.getPenColor());
+    //line.setStroke(nextState.getPenColor());
     return line;
   }
 
