@@ -1,8 +1,8 @@
-##Introduction
+## Introduction
 
 The problem we are trying to solve by writing this project is to help beginner programmers learn about the workflow command structure of programming. We will do this by creating a program which can take in written text commands and functions that the user inputs. Our program will parse these commands to move a GUI turtle to draw a picture according to what the user inputted. The primary design of our program with be according to an MVC design with the goal of being the most flexible in terms of the Model and View ends. The View should be expandable in terms of being able to added different things the user can input beyond just text (Perhaps buttons/new developer states). The Model will be designed to be able to account for additional commands, states and types of functions the user can input. We envision that the Controller which connects the Model to the View will be the least flexible part of the program in that we want it to, for the most part, always adhere to the same flows of execution. It will however be flexible in terms of types of instructions and the things it will connect to in the View. In terms of primary architecture, we plan to use two external API’s to specify how the View and Model (ViewAPI and ModelAPI) interact with the Controller. In terms of our code being open for extension but closed for modification, we plan to have many subclasses for both our View and Model classes which can be expanded upon as we continue to add more features. Our code will be closed to modification of the basic necessities of the program: frontend will always have a textfield, turtle and drawing canvas while the backend will always have instructions which implement the instruction interface. Our code will be open for modification in that it will be easy to add new frontend features by creating new objects and it will be easy to add new backend instructions or functions by creating new classes that extend the InstructionAPI. At a high level, the user will input code into a textfield in the frontend. Once they press a go button, the controller will be activated and will grab the input text then ask the backend to parse the String input. The controller will then ask the backend to create a list of states based on the instruction parsed. The controller will then use those states to update the display of the front end and the user will see the effect their inputted code had on the drawing canvas on the front end. 
 
-##Overview 
+## Overview 
 
 External backend API: Model
 
@@ -55,7 +55,7 @@ Two different implementations of this API
 2. The Go button’s execute function would communicate to the Controller that the Model should start parsing instructions
 
 
-##User Interface
+## User Interface
 
 We plan to have a simple interface. The interface will include a large text input field for the user to write commands, a “go” button for the user to press when they have inputted their command and a large screen which displays the outcome of the user input. The canvas, which we will call the DrawingCanvas, will have a GUI turtle which holds the drawing pen. This turtle will move about the screen according to the commands the user inputs. Below the screen, we will include a “clear screen” button which will clear all of the drawings currently on the screen. Foreshadowing that the user will write an infinite loop, we also hope to include a “stop turtle” button which will stop the movement of the turtle and perhaps clear our the previous instruction. We envision that the complete will include having more means of input than just the text field, so we are making out frontend design flexible for extension. We will make all of the buttons, Turtle, textfield and DrawingCanvas exist as separate objects that the Visual can access. Thus, to create new features in the future, we will just have to create new objects to represent those. 
 
@@ -63,7 +63,7 @@ We plan to have a simple interface. The interface will include a large text inpu
 
 We intend for the user to be given feedback if they input code that is not recognized by the parser. When the user inputs incorrect commands, there will be a text message that appears and indicates their code was not correct. We are unsure, as of now, how in depth we will be able to go with the error messages. It would be great to be able to give more personal feedback to the instruction typed, for example, if they just missed a brace or had incorrect capitalization. 
 
-##Design Details
+## Design Details
 This section describes each API introduced in the Overview in detail (as well as any other sub-components that may be needed but are not significant to include in a high-level description of the program). Describe how each API supports specific features given in the assignment specification, what resources it might use, how it is intended to be used, and how it could be extended to include additional requirements (from the assignment specification or discussed by your team). Finally, justify the decision to create each class introduced with respect to the design's key goals, principles, and abstractions. This section should go into as much detail as necessary to cover all your team wants to say.
 Our overall design is used a Display that is in charge of showing the user the result of their commands and taking their inputs, a Model which parses the string and decides how the turtle will move based on the instructions, and a Controller which facilitates communication between them. More details are given on this design below:
 
@@ -103,21 +103,21 @@ State
 * It would hold the current position and rotation of the turtle, a boolean holding whether the pen is up, and the current RGB hex code of the pen color
 
 
-##API as Code
+## API as Code
 
-###Instruction API
+### Instruction API
 ![image](https://drive.google.com/uc?export=view&id=15xJJWUM08VcOnZJHekay-8eG299RipPo)
 
-###Model API
+### Model API
 ![image](https://drive.google.com/uc?export=view&id=1DUCuQWZvDKT2uoFgONIf7fMyiw7eMk0U)
 
-###View API
+### View API
 ![image](https://drive.google.com/uc?export=view&id=1sdCon0fTU0EA1xUyIjMX5aPQ4Al_WX8z)
 
-###Button API
+### Button API
 ![image](https://drive.google.com/uc?export=view&id=13tqKwyWOsAEDxofPx2DW_g78l0Ikii9t)
 
-##Design Considerations
+## Design Considerations
 
 The first issue we encountered when designing this project was how we were going to update the DrawingCanvas on the Visual screen from the Controller class. Ideally, we want the Controller class to do all of the stepping and updating. However, due to the nature of javafx, we have to have our step() method in the frontend Visual class. To address this, we envision that the step() method of the Visual class simply calls the go() method within the Controller class which is the real looping method which uses instructions to update the turtle state. The downside to this design is that we would need an instance of the Controller in the frontend, but we could address this by making the go() method the only public method in the Controller. As an alternate design, we heard from a little bird that an ActionListener object could be useful in this scenario. The ActionListener would wait for the “go” button to be pressed and this would activate the Controller go() method. In this way, we would not have infinite stepping and we would know the exact time when to begin reading and moving. 
 
@@ -127,11 +127,11 @@ We also have not fully fleshed out how the Visual will be updated from the contr
 
 Right now, our Controller seems to be the least complex part of the project. The job fo the Controller is to just communicate the work between the front and backends. We forsee that having so much work being done by the backend could create problems in the future. If we are handling all conditionals, instructions, functions, parsing and math in the backend, will we run into problems with our design becoming too complex? Should we find a way to give the Controller more work? Right now, our design intuitively makes sense to completely separate all logic from the Controller, but we could run into problems that the backend is doing too much and must be broken up. 
 
-##Team Responsibilities
+## Team Responsibilities
 
 The program is broken up according to the MVC model and thus our particular team responsibilities are also broken up in this way. Juliet and Braeden will be focusing on the front end. They will be in charge of creating a Turtle, Textfield, DrawingCanvas and buttons which give input to the backend and can be updated by the controller. Charles and Michael will focus on constructing a backend which is able to parse, create instructions and develop a list of changing states for those instructions. Natalie will focus on the Controller and connecting the backend information to updates on the front end. We all agree, however, that our domains of coding are not strictly limited to these roles. If someone needs help, or if someone has finished early, it will be expected that people can move around to apply themselves to the different parts. Thus, everyone is expected to understand the high-level work flow and how data moves through the entire project. To complete the project, we plan to meet as a team early in the week for the beginning programming steps and fleshing out which requires everyone to be in close proximity to each other. Once we have the workflow fleshed out, then we can start to work on our own to define and code the details to the parts we are assigned. We hope to finish before the weekend so we can spend the weekend incorporating all of the final aspects and confirming that we have hit all the requirements of the Basic. 
 
-#Use Cases
+# Use Cases
 The user types 'fd 50' in the command window, and sees the turtle move in the display window leaving a trail, and the command is added to the environment's history.
 1. User types fd50
 2. Go button clicked
