@@ -65,7 +65,7 @@ public class Main extends Application implements View {
         mySetup = new SetupScreen(WIDTH, HEIGHT, BACKGROUND, root);
         myScene = mySetup.setupGame();
         setButtons();
-        //System.out.println(getClass().getResource(DEFAULT_RESOURCE_FOLDER + "main.css").toExternalForm());
+        //System.out.println(getClass().getResource(DEFAULT_RESOURCE_FOLDER + MAIN_STYLESHEET).toExternalForm());
         //myScene.getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + MAIN_STYLESHEET).toExternalForm());
 
         primaryStage.setScene(myScene);
@@ -113,13 +113,13 @@ public class Main extends Application implements View {
         String input = myUserInput.getUserInput();
         if(input.equals("hi"))
         {
-            State newState = new State(50, 50, false, 0, Color.RED);
+            State newState = new State(50, 50, false, 0);
             updateDisplay(newState);
-            newState = new State(50, 200, false, 0, Color.BLUE);
+            newState = new State(50, 200, false, 0);
             updateDisplay(newState);
-            newState = new State(200, 200, false, 0, Color.GREEN);
+            newState = new State(200, 200, false, 0);
             updateDisplay(newState);
-            newState = new State(200, 400, false, -90, Color.PURPLE);
+            newState = new State(200, 400, false, -90);
             updateDisplay(newState);
         }
         else if(input.equals("bye"))
@@ -148,7 +148,7 @@ public class Main extends Application implements View {
         for(int i = 0; i < 5; i++)
         {
             String command = nextState.toString();
-            myHistory.addHistory(command, nextState.getPenColor());
+            myHistory.addHistory(command);
         }
     }
 
