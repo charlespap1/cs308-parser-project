@@ -65,7 +65,7 @@ public class Main extends Application implements View {
         root = new Group();
         mySetup = new SetupScreen(WIDTH, HEIGHT, BACKGROUND, root);
         myScene = mySetup.setupGame();
-        setButtons();
+        setNeededVars();
         //System.out.println(getClass().getResource(DEFAULT_RESOURCE_FOLDER + MAIN_STYLESHEET).toExternalForm());
         //myScene.getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + MAIN_STYLESHEET).toExternalForm());
 
@@ -85,7 +85,7 @@ public class Main extends Application implements View {
 
     }
 
-    private void setButtons()
+    private void setNeededVars()
     {
         myGo = mySetup.getGoButton();
         myGo.setOnAction(e -> getInstruction());

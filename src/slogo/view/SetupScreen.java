@@ -68,8 +68,8 @@ public class SetupScreen {
     myDrawingCanvas = new DrawingCanvas(width, height);
     myTurtle = new Turtle(image, myDrawingCanvas.getWidth(), myDrawingCanvas.getHeight());
     myUserInput = new UserCommandField(width, height);
-    myHistory = new HistoryCanvas(width, height);
-    myCommonCommands = new CommonCommands(width, height);
+    myHistory = new HistoryCanvas(2, DrawingCanvas.CANVAS_TOP_PADDING);
+    myCommonCommands = new CommonCommands(1, DrawingCanvas.CANVAS_TOP_PADDING);
 
     setVBoxLayout();
     setHBoxLayout();
