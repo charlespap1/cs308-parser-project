@@ -53,12 +53,16 @@ public class Turtle {
     myView.setFitWidth(TURTLE_IMAGE_SIZE);
     myView.setFitHeight(TURTLE_IMAGE_SIZE);
 
-
     this.canvasWidth = canvasWidth;
     this.canvasHeight = canvasHeight;
 
     setDefaultValues();
 
+
+    //this binding should take care of all changes in x and y and angle later on
+    myView.xProperty().bind(x.add(-TURTLE_FACTOR));
+    myView.yProperty().bind(y.add(-TURTLE_FACTOR));
+    myView.rotateProperty().bind(angle);
   }
 
   public void setProperties(slogo.model.Turtle turtle){
@@ -73,14 +77,18 @@ public class Turtle {
     currX = x.getValue();
     currY = y.getValue();
 
-    turtle.turtleYProperty().addListener(new ChangeListener(){
-      @Override public void changed(ObservableValue o, Object oldVal, Object newVal){
-        System.out.println("turtle has changed!");
-        drawLine();
-      }
+    y.addListener((o, oldVal, newVal) -> {
+      System.out.println("turtle has changed!");
+      // x, y, angle, and penUp will update automatically w binding. also if we change them here, it should
+      // also change the values in model.turtle since the binding is bidirectional
+      // so once y changes, you know all 3 others are changed and you can draw a line (or not) and update currx and
+      // curry, which exist specifically for line drawing purposes
+      // DELETE THIS COMMENT LATER
+      drawLine();
     });
   }
 
+  //new drawline method simpler, replace old one with this once we're done transitioning to props
   private void drawLine(){
     if (!penUp.getValue()) {
       Line line = new Line(currX, currY, x.getValue(), y.getValue());
@@ -96,6 +104,12 @@ public class Turtle {
 
     xPos = centerX;
     yPos = centerY;
+
+    // this should be all we need to change to reset turtle in front and back end
+    x.setValue(centerX);
+    y.setValue(centerY);
+    angle.setValue(DEFAULT_ANGLE);
+
 
     myView.setX(xPos - TURTLE_FACTOR);
     myView.setY(yPos - TURTLE_FACTOR);

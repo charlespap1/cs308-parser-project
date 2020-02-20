@@ -34,6 +34,8 @@ public class Turtle {
     public DoubleProperty turtleAngleProperty(){ return turtleAngle; }
     public BooleanProperty penUpProperty(){ return penUp; }
 
+    // update all at once so that we know y is set last, drawline in view/turtle will work
+    // would also probably work to update all individually if that's easier, as long as y is set last
     public void setProperties(double x, double y, double angle, boolean isPenUp){
         turtleAngle.setValue(angle);
         penUp.setValue(isPenUp);
