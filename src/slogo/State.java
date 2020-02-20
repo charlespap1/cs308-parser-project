@@ -46,7 +46,7 @@ public class State {
 
     public String toString()
     {
-        return String .format("     State %f, %f, Pen is up: %b, Facing angle %f", x, y, isPenUp, angleFacing);
+        return String .format("     State %.2f, %.2f, Pen is up: %b, Facing angle %f", x, y, isPenUp, angleFacing);
     }
 
 
