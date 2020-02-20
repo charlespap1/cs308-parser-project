@@ -3,8 +3,12 @@ package slogo.view;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+
+/**
+ * This class allows us to show the history of commands
+ * which the user has executed
+ */
 
 public class HistoryCanvas {
 
@@ -26,7 +30,7 @@ public class HistoryCanvas {
     historyCanvasWidth = screenWidth/3 - 2*HISTORY_SIDE_PADDING;
     historyCanvasHeight = screenHeight/2 - HISTORY_MIDDLE_PADDING - HISTORY_TOP_PADDING;
     myHolder.setLayoutX(2*screenWidth/3 + DrawingCanvas.CANVAS_SIDE_PADDING);
-    myHolder.setLayoutY(DrawingCanvas.CANVAS_TOP_PADDING);
+    myHolder.setLayoutY(HISTORY_TOP_PADDING);
 
 
     myHistory = new VBox(5);

@@ -14,6 +14,11 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import slogo.Main;
 
+/**
+ * This class allows us to make our main class less fat
+ * and sets up all the visuals
+ */
+
 public class SetupScreen {
 
   public static final String TURTLE_IMAGE = "turtle.png";
@@ -31,6 +36,7 @@ public class SetupScreen {
   private Button myClear;
   private Button myStop;
   private HistoryCanvas myHistory;
+  private CommonCommands myCommonCommands;
 
   private List<Line> myLines;
   private Text myCurrentErrorMessage;
@@ -58,12 +64,13 @@ public class SetupScreen {
     myTurtle = new Turtle(image, myDrawingCanvas.getWidth(), myDrawingCanvas.getHeight());
     myUserInput = new UserCommandField(width, height);
     myHistory = new HistoryCanvas(width, height);
+    myCommonCommands = new CommonCommands(width, height);
 
     setVBoxLayout();
     setHBoxLayout();
     setButtons();
 
-    root.getChildren().addAll(myDrawingCanvas.getView(), myTurtle.getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons, myHistory.getView());
+    root.getChildren().addAll(myDrawingCanvas.getView(), myTurtle.getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myCommonCommands.getView());
 
     Scene scene = new Scene(root, width, height, background);
     return scene;
@@ -83,7 +90,7 @@ public class SetupScreen {
   private void setVBoxLayout()
   {
     belowInputFieldItems = new VBox(BOX_SPACING);
-    belowInputFieldItems.setLayoutY(UserCommandField.FIELD_TOP_PADDING + myUserInput.getHeight() + BOX_SPACING);
+    belowInputFieldItems.setLayoutY(DrawingCanvas.CANVAS_TOP_PADDING + myDrawingCanvas.getHeight() + BOX_SPACING);
     belowInputFieldItems.setLayoutX(UserCommandField.FIELD_SIDE_PADDING*3 + myUserInput.getWidth());
     belowInputFieldItems.setMinWidth(myUserInput.getWidth());
     belowInputFieldItems.setAlignment(Pos.CENTER);
@@ -110,18 +117,22 @@ public class SetupScreen {
 
   public Button getGoButton()
   {
+
     return myGo;
   }
   public Button getStopButton()
   {
+
     return myStop;
   }
   public Button getClearButton()
   {
+
     return myClear;
   }
   public Turtle getTurtle()
   {
+
     return myTurtle;
   }
 
@@ -131,16 +142,19 @@ public class SetupScreen {
   }
   public DrawingCanvas getDrawingCanvas()
   {
+
     return myDrawingCanvas;
   }
 
   public HistoryCanvas getHistoryCanvas()
   {
+
     return myHistory;
   }
 
   public Text getCurrentErrorMessage()
   {
+
     return myCurrentErrorMessage;
   }
 

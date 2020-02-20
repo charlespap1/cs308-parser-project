@@ -11,6 +11,7 @@ public class UserCommandField {
   public static final double FIELD_SIDE_PADDING = DrawingCanvas.CANVAS_SIDE_PADDING;
   public static final double FIELD_TOP_PADDING = DrawingCanvas.CANVAS_TOP_PADDING;
   public static final double FIELD_BOTTOM_PADDING = DrawingCanvas.CANVAS_BOTTOM_PADDING;
+
   private TextArea myTextField;
 
 
@@ -18,9 +19,9 @@ public class UserCommandField {
   {
     myTextField = new TextArea();
     myTextField.setMaxWidth(screenWidth/3 - 2*FIELD_SIDE_PADDING);
-    myTextField.setMinHeight(screenHeight - FIELD_TOP_PADDING - FIELD_BOTTOM_PADDING);
+    myTextField.setMinHeight(screenHeight/2 - FIELD_BOTTOM_PADDING);
     myTextField.setLayoutX(screenWidth/3 + FIELD_SIDE_PADDING);
-    myTextField.setLayoutY(FIELD_TOP_PADDING);
+    myTextField.setLayoutY(screenHeight/2);
 
   }
 
