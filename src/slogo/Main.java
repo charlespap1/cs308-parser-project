@@ -20,7 +20,8 @@ import slogo.view.UserCommandField;
 import slogo.view.View;
 
 /**
- * Feel free to completely change this code or delete it entirely. 
+ * Main method where the GUI comes together
+ * @author Juliet
  */
 public class Main extends Application implements View {
     /**

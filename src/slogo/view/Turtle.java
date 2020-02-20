@@ -9,6 +9,7 @@ import slogo.State;
 
 /**
  * This class holds all of the attributes of our GUI turtle
+ * @author Juliet
  */
 
 public class Turtle {
@@ -59,6 +60,11 @@ public class Turtle {
     myView.setY(yPos - TURTLE_FACTOR);
     myView.setRotate(DEFAULT_ANGLE);
   }
+
+  /**
+   * Will be needed when we change turtle images
+   * @param image
+   */
 
   public void changeImage(Image image)
   {

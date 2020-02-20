@@ -6,6 +6,11 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+/**
+ * This class creates a spot on the
+ * GUI which displayes common commands
+ * @author Juliet
+ */
 public class CommonCommands {
 
   public static final double COMM_COMM_SIDE_PADDING = DrawingCanvas.CANVAS_SIDE_PADDING;
@@ -54,7 +59,7 @@ public class CommonCommands {
 
   }
 
-  public void setCommands()
+  private void setCommands()
   {
     myResources = ResourceBundle.getBundle(COMMAND_RESOURCE_PACKAGE);
     for(int i = 0; i < COMMON_COMMANDS.length; i++)
@@ -66,12 +71,12 @@ public class CommonCommands {
 
   }
 
-  public double getHeight()
-  {
-    return myHolder.getHeight();
-  }
 
-
+  /**
+   * Allows common commands to be displayed
+   * in the setup game
+   * @return
+   */
   public Node getView()
   {
     return myHolder;

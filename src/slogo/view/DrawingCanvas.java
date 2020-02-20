@@ -12,6 +12,7 @@ import javafx.util.Pair;
  * This class specifies the attributes of the
  * drawing screen where the turtle lives and
  * new lines are drawn according to the user input
+ * @author Juliet
  */
 public class DrawingCanvas {
 
@@ -72,16 +73,29 @@ public class DrawingCanvas {
 
   public double getHeight() { return canvasHeight; }
 
+  /**
+   * This will be needed when we add color changing option to the background
+   * @param color
+   */
   public void changeBackground(Color color)
   {
     myView.setFill(color);
   }
 
+  /**
+   * Adds lines to the canvas as the turtle is moved,
+   * Need to keep track of lines here to be able to clear them
+   * @param newLine
+   */
   public void addLine(Line newLine)
   {
     myLines.add(newLine);
   }
 
+  /**
+   * Needed to be able to clear all the lines from the root
+   * @return
+   */
   public List<Line> getLines()
   {
     return myLines;

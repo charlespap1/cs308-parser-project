@@ -8,6 +8,7 @@ import javafx.scene.text.Text;
 /**
  * This class allows us to show the history of commands
  * which the user has executed
+ * @author Juliet
  */
 
 public class HistoryCanvas {
@@ -49,12 +50,20 @@ public class HistoryCanvas {
     myHolder.getChildren().add(myView);
   }
 
+  /**
+   * Ability to add newly executed commands to the history
+   * @param command
+   */
   public void addHistory(String command)
   {
     Text newCommand = new Text(command);
     myHistory.getChildren().add(newCommand);
   }
 
+  /**
+   * Allows us to add the canvas to the root
+   * @return
+   */
   public Node getView()
   {
     return myHolder;

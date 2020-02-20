@@ -17,6 +17,7 @@ import slogo.Main;
 /**
  * This class allows us to make our main class less fat
  * and sets up all the visuals
+ * @author Juliet
  */
 
 public class SetupScreen {
@@ -53,7 +54,11 @@ public class SetupScreen {
     this.root = root;
   }
 
-
+  /**
+   * Sets up all of the visual elements so that
+   * the Main class doesn't have to do as much work
+   * @return
+   */
   public Scene setupGame()
   {
     Image image = new Image(this.getClass().getClassLoader().getResourceAsStream(TURTLE_IMAGE));
@@ -115,6 +120,10 @@ public class SetupScreen {
     belowCanvasButtons.getChildren().add(myStop);
   }
 
+  /**
+   * Getter methods necessary to access these elements in the Main class
+   * @return
+   */
   public Button getGoButton()
   {
 
@@ -157,6 +166,5 @@ public class SetupScreen {
 
     return myCurrentErrorMessage;
   }
-
 
 }

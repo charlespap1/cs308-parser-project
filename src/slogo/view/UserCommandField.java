@@ -5,6 +5,7 @@ import javafx.scene.control.TextArea;
 
 /**
  * This class allows us to specify the attributes of the user input box
+ * @author Juliet
  */
 public class UserCommandField {
 
