@@ -1,5 +1,11 @@
 package slogo.view;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -30,6 +36,13 @@ public class Turtle {
   private double xPos;
   private double yPos;
 
+  private DoubleProperty x;
+  private DoubleProperty y;
+  private DoubleProperty angle;
+  private BooleanProperty penUp;
+  private double currX;
+  private double currY;
+
   public Turtle(Image image, double canvasWidth, double canvasHeight)
   {
     canvasLeftPadding = DrawingCanvas.CANVAS_SIDE_PADDING;
@@ -46,6 +59,34 @@ public class Turtle {
 
     setDefaultValues();
 
+  }
+
+  public void setProperties(slogo.model.Turtle turtle){
+    x = new SimpleDoubleProperty();
+    y = new SimpleDoubleProperty();
+    angle = new SimpleDoubleProperty();
+    penUp = new SimpleBooleanProperty();
+    x.bindBidirectional(turtle.turtleXProperty());
+    y.bindBidirectional(turtle.turtleYProperty());
+    angle.bindBidirectional(turtle.turtleAngleProperty());
+    penUp.bindBidirectional(turtle.penUpProperty());
+    currX = x.getValue();
+    currY = y.getValue();
+
+    turtle.turtleYProperty().addListener(new ChangeListener(){
+      @Override public void changed(ObservableValue o, Object oldVal, Object newVal){
+        System.out.println("turtle has changed!");
+        drawLine();
+      }
+    });
+  }
+
+  private void drawLine(){
+    if (!penUp.getValue()) {
+      Line line = new Line(currX, currY, x.getValue(), y.getValue());
+    }
+    currX = x.getValue();
+    currY = y.getValue();
   }
 
   private void setDefaultValues()
