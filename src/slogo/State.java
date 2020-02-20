@@ -1,11 +1,7 @@
 package slogo;
 
-import javafx.scene.paint.Color;
-import slogo.view.Turtle;
 
 public class State {
-
-    public static final double TURTLE_FACTOR = Turtle.TURTLE_FACTOR;
 
     private double x;
     private double y;
@@ -48,7 +44,5 @@ public class State {
     {
         return String .format("     State %.2f, %.2f, Pen is up: %b, Facing angle %f", x, y, isPenUp, angleFacing);
     }
-
-
 
 }

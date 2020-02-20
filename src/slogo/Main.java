@@ -115,11 +115,11 @@ public class Main extends Application implements View {
         {
             State newState = new State(50, 50, false, 0);
             updateDisplay(newState);
-            newState = new State(50, 200, false, 0);
+            newState = new State(50, 30, false, 0);
             updateDisplay(newState);
-            newState = new State(200, 200, false, 0);
+            newState = new State(0, -100, false, 0);
             updateDisplay(newState);
-            newState = new State(200, 400, false, -90);
+            newState = new State(-200, -200, false, -90);
             updateDisplay(newState);
         }
         else if(input.equals("bye"))

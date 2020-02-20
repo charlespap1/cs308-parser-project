@@ -26,7 +26,8 @@ public class Turtle {
   private double centerY;
 
   private ImageView myView;
-  private State myState;
+  private double xPos;
+  private double yPos;
 
   public Turtle(Image image, double canvasWidth, double canvasHeight)
   {
@@ -48,13 +49,14 @@ public class Turtle {
 
   private void setDefaultValues()
   {
-    double x = canvasLeftPadding + canvasWidth/2;
-    double y = canvasTopPadding + canvasHeight/2;
+    centerX = canvasLeftPadding + canvasWidth/2;
+    centerY = canvasTopPadding + canvasHeight/2;
 
-    myState = new State (x, y, false, DEFAULT_ANGLE);
+    xPos = centerX;
+    yPos = centerY;
 
-    myView.setX(myState.getX() - TURTLE_FACTOR);
-    myView.setY(myState.getY() - TURTLE_FACTOR);
+    myView.setX(xPos - TURTLE_FACTOR);
+    myView.setY(yPos - TURTLE_FACTOR);
     myView.setRotate(DEFAULT_ANGLE);
   }
 
@@ -78,27 +80,24 @@ public class Turtle {
   public Line update(State nextState)
   {
     Line newLine = null;
-    if(needToDrawLine(nextState))
+    if(!nextState.isPenUp())
     {
       newLine = drawLine(nextState);
     }
+    xPos = xPos + nextState.getX();
+    yPos = yPos + nextState.getY();
 
-    myState = nextState;
-    myView.setX(myState.getX() - TURTLE_FACTOR);
-    myView.setY(myState.getY() - TURTLE_FACTOR);
+    myView.setX(xPos - TURTLE_FACTOR);
+    myView.setY(yPos - TURTLE_FACTOR);
     myView.setRotate(nextState.getAngleFacing());
 
     return newLine;
   }
 
-  private boolean needToDrawLine(State nextState)
-  {
-    return ((myState.getX() != nextState.getX()) || (myState.getY() != nextState.getY())) && !nextState.isPenUp();
-  }
 
   private Line drawLine(State nextState)
   {
-    Line line = new Line (myState.getX(), myState.getY(), nextState.getX(), nextState.getY());
+    Line line = new Line (xPos, yPos, nextState.getX() + xPos, nextState.getY() + yPos);
     //line.setStroke(nextState.getPenColor());
     return line;
   }
@@ -111,5 +110,7 @@ public class Turtle {
   {
     setDefaultValues();
   }
+
+
 
 }
