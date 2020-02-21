@@ -10,6 +10,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import slogo.Main;
+import slogo.view.scrollers.CommonCommands;
+import slogo.view.scrollers.HistoryCanvas;
+import slogo.view.scrollers.VariableViewer;
 
 /**
  * This class allows us to make our main class less fat

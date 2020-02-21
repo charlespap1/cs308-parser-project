@@ -1,8 +1,9 @@
-package slogo.view;
+package slogo.view.scrollers;
 
 import javafx.scene.text.Text;
+import slogo.view.scrollers.ScrollingWindow;
 
-public class VariableViewer extends ScrollingWindow{
+public class VariableViewer extends ScrollingWindow {
   public static final String VARIABLE_VIEWER_TITLE = "Your Variables: ";
 
   public VariableViewer(double elementWidthFactor, double topPadding) {

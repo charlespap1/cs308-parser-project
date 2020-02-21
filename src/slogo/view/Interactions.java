@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import slogo.State;
+import slogo.view.scrollers.HistoryCanvas;
 
 /**
  * This class holds all of the interactions between the UI objects

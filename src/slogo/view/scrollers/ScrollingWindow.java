@@ -1,10 +1,11 @@
-package slogo.view;
+package slogo.view.scrollers;
 
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import slogo.Main;
+import slogo.view.DrawingCanvas;
 
 public class ScrollingWindow extends Object{
 
