@@ -1,7 +1,5 @@
 package slogo.view;
 
-import java.util.ArrayList;
-import java.util.List;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -10,9 +8,11 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import slogo.Main;
+import slogo.view.scrollers.CommonCommands;
+import slogo.view.scrollers.HistoryCanvas;
+import slogo.view.scrollers.VariableViewer;
 
 /**
  * This class allows us to make our main class less fat
@@ -38,8 +38,8 @@ public class SetupScreen {
   private Button myStop;
   private HistoryCanvas myHistory;
   private CommonCommands myCommonCommands;
+  private VariableViewer myVariableView;
 
-  private List<Line> myLines;
   private Text myCurrentErrorMessage;
 
   private VBox belowInputFieldItems;
@@ -63,19 +63,20 @@ public class SetupScreen {
   {
     Image image = new Image(this.getClass().getClassLoader().getResourceAsStream(TURTLE_IMAGE));
 
-    myLines = new ArrayList<>();
     myCurrentErrorMessage = new Text("");
     myDrawingCanvas = new DrawingCanvas(width, height);
     myTurtle = new Turtle(image, myDrawingCanvas.getWidth(), myDrawingCanvas.getHeight());
     myUserInput = new UserCommandField(width, height);
+
     myHistory = new HistoryCanvas(2, DrawingCanvas.CANVAS_TOP_PADDING);
+    myVariableView = new VariableViewer(2, height/2);
     myCommonCommands = new CommonCommands(1, DrawingCanvas.CANVAS_TOP_PADDING);
 
     setVBoxLayout();
     setHBoxLayout();
     setButtons();
 
-    root.getChildren().addAll(myDrawingCanvas.getView(), myTurtle.getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myCommonCommands.getView());
+    root.getChildren().addAll(myDrawingCanvas.getView(), myTurtle.getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myCommonCommands.getView(), myVariableView.getView());
 
     Scene scene = new Scene(root, width, height, background);
     return scene;
@@ -166,5 +167,11 @@ public class SetupScreen {
 
     return myCurrentErrorMessage;
   }
+
+  public Group getRoot()
+  {
+    return root;
+  }
+
 
 }

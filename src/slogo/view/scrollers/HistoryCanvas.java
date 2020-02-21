@@ -1,9 +1,7 @@
-package slogo.view;
+package slogo.view.scrollers;
 
-import javafx.scene.Node;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import slogo.view.scrollers.ScrollingWindow;
 
 /**
  * This class allows us to show the history of commands
@@ -11,7 +9,7 @@ import javafx.scene.text.Text;
  * @author Juliet
  */
 
-public class HistoryCanvas extends ScrollingWindow{
+public class HistoryCanvas extends ScrollingWindow {
 
   public static final String DEFAULT_HISTORY = "Your history: ";
 
@@ -28,15 +26,6 @@ public class HistoryCanvas extends ScrollingWindow{
   {
     Text newCommand = new Text(command);
     myTextHolder.getChildren().add(newCommand);
-  }
-
-  /**
-   * Allows us to add the canvas to the root
-   * @return
-   */
-  public Node getView()
-  {
-    return myHolder;
   }
 
 }

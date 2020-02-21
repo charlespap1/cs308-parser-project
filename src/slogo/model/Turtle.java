@@ -7,10 +7,10 @@ import javafx.beans.property.SimpleDoubleProperty;
 
 public class Turtle {
 
-    private int xPos;
-    private int yPos;
+    private double xPos;
+    private double yPos;
     private boolean isPenUp;
-    private int angle;
+    private double angle;
 
     private DoubleProperty turtleX;
     private DoubleProperty turtleY;
@@ -43,19 +43,19 @@ public class Turtle {
         turtleY.setValue(y);
     }
 
-    public int getxPos() {
+    public double getxPos() {
         return this.xPos;
     }
 
-    public void setxPos(int xPos) {
+    public void setxPos(double xPos) {
         this.xPos = xPos;
     }
 
-    public int getyPos() {
+    public double getyPos() {
         return this.yPos;
     }
 
-    public void setyPos(int yPos) {
+    public void setyPos(double yPos) {
         this.yPos = yPos;
     }
 
@@ -67,11 +67,11 @@ public class Turtle {
         this.isPenUp = isPenUp;
     }
 
-    public int getAngle() {
+    public double getAngle() {
         return this.angle;
     }
 
-    public void setAngle(int angle) {
+    public void setAngle(double angle) {
         this.angle = angle;
     }
 }
