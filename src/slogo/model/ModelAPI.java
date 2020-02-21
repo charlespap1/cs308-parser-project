@@ -20,4 +20,6 @@ public class ModelAPI {
             i.execute(turtle, vars);
         }
     }
+
+    public Turtle getTurtle(){ return turtle; }
 }

@@ -26,6 +26,8 @@ public class Controller extends Application {
     public static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
     public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 
+    ButtonAction goButtonAction = () -> getInstruction();
+
     private ModelAPI myModel;
     private ViewAPI myView;
     /**
@@ -38,6 +40,9 @@ public class Controller extends Application {
         myView = new ViewAPI();
         Turtle myTurtle = myModel.getTurtle();
         myView.setProperties(myTurtle);
+        // this allows us to set the onclick action for the go button to be the getInstruction method in Controller,
+        // prevents us from having to give the View access to the Controller
+        myView.setGoButton(goButtonAction);
 
         KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step(SECOND_DELAY));
         Timeline animation = new Timeline();
