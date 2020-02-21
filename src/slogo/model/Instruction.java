@@ -7,8 +7,8 @@ import java.util.Map;
 
 public abstract class Instruction {
 
-    private int valueForExec;
-    private Instruction possibleInner;
+    protected int valueForExec;
+    protected Instruction possibleInner;
 
     public Instruction(int val){
         valueForExec = val;
