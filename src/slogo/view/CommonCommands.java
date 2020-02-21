@@ -42,15 +42,4 @@ public class CommonCommands extends ScrollingWindow{
 
   }
 
-
-  /**
-   * Allows common commands to be displayed
-   * in the setup game
-   * @return
-   */
-  public Node getView()
-  {
-    return myHolder;
-  }
-
 }

@@ -1,5 +1,6 @@
 package slogo.view;
 
+import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -45,5 +46,16 @@ public class ScrollingWindow extends Object{
 
     myHolder.getChildren().add(myView);
   }
+
+  /**
+   * Allows common commands to be displayed
+   * in the setup game
+   * @return
+   */
+  public Node getView()
+  {
+    return myHolder;
+  }
+
 
 }

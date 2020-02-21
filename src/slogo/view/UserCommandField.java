@@ -10,7 +10,6 @@ import javafx.scene.control.TextArea;
 public class UserCommandField {
 
   public static final double FIELD_SIDE_PADDING = DrawingCanvas.CANVAS_SIDE_PADDING;
-  public static final double FIELD_TOP_PADDING = DrawingCanvas.CANVAS_TOP_PADDING;
   public static final double FIELD_BOTTOM_PADDING = DrawingCanvas.CANVAS_BOTTOM_PADDING;
 
   private TextArea myTextField;

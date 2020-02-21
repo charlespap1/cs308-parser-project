@@ -30,13 +30,4 @@ public class HistoryCanvas extends ScrollingWindow{
     myTextHolder.getChildren().add(newCommand);
   }
 
-  /**
-   * Allows us to add the canvas to the root
-   * @return
-   */
-  public Node getView()
-  {
-    return myHolder;
-  }
-
 }
