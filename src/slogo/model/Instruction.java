@@ -7,10 +7,10 @@ import java.util.Map;
 
 public abstract class Instruction {
 
-    private int valueForExec;
-    private Instruction possibleInner;
+    protected double valueForExec;
+    protected Instruction possibleInner;
 
-    public Instruction(int val){
+    public Instruction(double val){
         valueForExec = val;
         possibleInner = null;
     }
@@ -20,7 +20,7 @@ public abstract class Instruction {
         possibleInner = i;
     }
 
-    public abstract int execute(Turtle turtle, List<Variable> vars);
+    public abstract double execute(Turtle turtle, List<Variable> vars);
     public abstract List<String> getNeededVarNames();
 
     protected boolean hasInnerInstruction(){
