@@ -1,20 +1,11 @@
 package slogo.controller;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.beans.InvalidationListener;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.scene.shape.Line;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import slogo.model.ModelAPI;
 import slogo.model.Turtle;
+import slogo.view.Interactions;
+import slogo.view.SetupScreen;
 
 /**
  * Main method where the GUI comes together
@@ -29,7 +20,7 @@ public class Controller extends Application {
     ButtonAction goButtonAction = () -> getInstruction();
 
     private ModelAPI myModel;
-    private ViewAPI myView;
+    private Interactions myView;
     /**
      * Allows us to set up the initial stage and animation
      * @param primaryStage
@@ -37,22 +28,18 @@ public class Controller extends Application {
     @Override
     public void start(Stage primaryStage) {
         myModel = new ModelAPI();
-        myView = new ViewAPI();
+        myView = new Interactions(new SetupScreen());
         Turtle myTurtle = myModel.getTurtle();
         myView.setProperties(myTurtle);
         // this allows us to set the onclick action for the go button to be the getInstruction method in Controller,
         // prevents us from having to give the View access to the Controller
         myView.setGoButton(goButtonAction);
 
-        KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step(SECOND_DELAY));
-        Timeline animation = new Timeline();
-        animation.setCycleCount(Timeline.INDEFINITE);
-        animation.getKeyFrames().add(frame);
-        animation.play();
-    }
-
-    private void step (double elapsedTime){
-        //do we need all of the timing things for animations? is anything timed?
+//        KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step(SECOND_DELAY));
+//        Timeline animation = new Timeline();
+//        animation.setCycleCount(Timeline.INDEFINITE);
+//        animation.getKeyFrames().add(frame);
+//        animation.play();
     }
 
 
@@ -64,7 +51,7 @@ public class Controller extends Application {
      */
     public void getInstruction() throws NullPointerException {
         //make this get called when button is pressed in front end -- set some kind of event listener? ask TA
-        String input = myView.getUserInput();
+        String input = myView.getInstruction();
         myModel.executeCode(input);
     }
 

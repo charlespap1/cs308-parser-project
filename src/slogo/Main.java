@@ -48,7 +48,7 @@ public class Main extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception {
         root = new Group();
-        mySetup = new SetupScreen(WIDTH, HEIGHT, BACKGROUND, root);
+        mySetup = new SetupScreen();
         myScene = mySetup.setupGame();
         myInteractions = new Interactions(mySetup);
         //setNeededVars();

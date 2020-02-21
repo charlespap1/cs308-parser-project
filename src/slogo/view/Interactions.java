@@ -6,12 +6,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import slogo.State;
+import slogo.controller.ButtonAction;
 import slogo.view.scrollers.HistoryCanvas;
 
 /**
  * This class holds all of the interactions between the UI objects
  */
-public class Interactions implements View{
+public class Interactions implements View {
 
   private UserCommandField myUserInput;
   private Group root;
@@ -26,7 +27,7 @@ public class Interactions implements View{
   public Interactions(SetupScreen setup)
   {
     myGo = setup.getGoButton();
-    myGo.setOnAction(e -> getInstruction());
+
 
     myClear = setup.getClearButton();
     myClear.setOnAction(e -> clearCanvas());
@@ -73,11 +74,15 @@ public class Interactions implements View{
     return myUserInput.getUserInput();
   }
 
+  public void setGoButton(ButtonAction goAction){
+    myGo.setOnAction(e -> goAction.onClickAction());
+  }
+
   /**
    * Updates the movement of the turtle according to new states
    * @param nextState
    */
-  @Override
+                          @Override
   public void updateDisplay(State nextState) {
     Line newLine = myTurtle.update(nextState);
     root.getChildren().add(newLine);
@@ -113,5 +118,9 @@ public class Interactions implements View{
   {
     myTurtle.returnTurtleToDefault();
     clearCanvas();
+  }
+
+  public void setProperties(slogo.model.Turtle turtle){
+    myTurtle.setProperties(turtle);
   }
 }
