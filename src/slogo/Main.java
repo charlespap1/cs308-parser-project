@@ -70,7 +70,7 @@ public class Main extends Application{
     private void step (double elapsedTime){
 
     }
-    
+
     public static void main (String[] args) {
         launch(args);
     }
