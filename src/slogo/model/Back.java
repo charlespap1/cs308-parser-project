@@ -6,10 +6,6 @@ public class Back extends Instruction {
 
     private static final int numArgs = 1;
 
-    public Back () {
-        super();
-    }
-
     @Override
     public int execute (Turtle t) {
 //        if (this.hasInnerInstruction()) {

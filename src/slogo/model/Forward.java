@@ -6,10 +6,6 @@ public class Forward extends Instruction {
 
     private static final int numArgs = 1;
 
-    public Forward () {
-        super();
-    }
-
     @Override
     public int execute (Turtle t) {
         //TODO: check if parameter is instruction, if so execute
