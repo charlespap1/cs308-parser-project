@@ -4,25 +4,31 @@ import java.util.List;
 
 public class Left extends Instruction {
 
-    public Left (double val) {
-        super(val);
-    }
+    private static final int numArgs = 1;
 
-    public Left (Instruction possibleInner) {
-        super(possibleInner);
-    }
-
-    @Override
-    public double execute (Turtle t, List<Variable> vars) {
-        if (this.hasInnerInstruction()) {
-            this.valueForExec = this.possibleInner.execute(t, vars);
-        }
-        t.setAngle(t.getAngle() + this.valueForExec);
-        return valueForExec;
+    public Left () {
+        super();
     }
 
     @Override
-    public List<String> getNeededVarNames() {
-        return null;
+    public int execute (Turtle t) {
+//        if (this.hasInnerInstruction()) {
+//            this.valueForExec = this.possibleInner.execute(t, vars);
+//        }
+//        t.setAngle(t.getAngle() + this.valueForExec);
+//        return valueForExec;
+        return -1;
+    }
+
+    public int numRequiredArgs(){
+        return numArgs;
+    }
+
+    public int generateValue(){
+        return this.parameters.get(0).generateValue();
+    }
+
+    public String toString(){
+        return "";
     }
 }
