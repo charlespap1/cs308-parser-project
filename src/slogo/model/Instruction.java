@@ -7,15 +7,15 @@ import java.util.Map;
 
 public abstract class Instruction implements Code{
 
-    private List<Code> parameters;
+    protected List<Code> parameters;
 
-    public Instruction(int val){
+    public Instruction(){
         parameters = null;
     }
 
     public abstract int execute(Turtle turtle);
     public abstract int numRequiredArgs();
-    
+
     public void setParameters(List<Code> params){
         parameters = params;
     }
