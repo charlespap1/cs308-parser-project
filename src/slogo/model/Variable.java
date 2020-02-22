@@ -3,8 +3,10 @@ package slogo.model;
 public class Variable implements Code {
 
     private int value;
+    private String name;
 
-    public Variable(){
+    public Variable(String name){
+        this.name = name;
         value = 0;
     }
 
@@ -17,6 +19,6 @@ public class Variable implements Code {
     }
 
     public String toString(){
-        return "";
+        return name + ": " + value;
     }
 }
