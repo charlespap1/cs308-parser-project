@@ -1,6 +1,6 @@
 package slogo.model.parse;
 
-import slogo.model.code.Code;
+import slogo.model.code.Token;
 import slogo.model.code.instructions.Instruction;
 
 import java.util.*;
@@ -17,7 +17,7 @@ public class Parser {
     public static final String SYNTAX = "Syntax";
 
     private Stack<Instruction> commands;
-    private Stack<Code> arguments;
+    private Stack<Token> arguments;
     private CodeFactory createFromString;
     private RegexHandler typeCheck;
 
@@ -65,15 +65,15 @@ public class Parser {
 
     private Instruction createCompleteInstruction() {
         Instruction currCommand = commands.pop();
-        List<Code> params = grabParameters(currCommand.numRequiredArgs());
+        List<Token> params = grabParameters(currCommand.numRequiredArgs());
         currCommand.setParameters(params);
         return currCommand;
     }
 
-    private List<Code> grabParameters(int numArgsNeeded) {
-        List<Code> params = new ArrayList<>();
+    private List<Token> grabParameters(int numArgsNeeded) {
+        List<Token> params = new ArrayList<>();
         while(params.size() < numArgsNeeded){
-            Code currArg = arguments.pop();
+            Token currArg = arguments.pop();
             params.add(currArg);
         }
         return params;

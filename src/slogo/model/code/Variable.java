@@ -1,8 +1,6 @@
 package slogo.model.code;
 
-import slogo.model.code.Code;
-
-public class Variable implements Code {
+public class Variable implements Token {
 
     private int value;
     private String name;

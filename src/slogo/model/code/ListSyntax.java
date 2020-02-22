@@ -1,13 +1,11 @@
 package slogo.model.code;
 
-import slogo.model.code.Code;
-
 import java.util.List;
 
-public class ListSyntax implements Code {
-    private List<Code> contents;
+public class ListSyntax implements Token {
+    private List<Token> contents;
 
-    public ListSyntax(List<Code> stuff){
+    public ListSyntax(List<Token> stuff){
         contents = stuff;
     }
 

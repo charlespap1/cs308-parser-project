@@ -1,6 +1,6 @@
 package slogo.model.parse;
 
-import slogo.model.code.Code;
+import slogo.model.code.Token;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
@@ -26,15 +26,15 @@ public class CodeFactory {
         //TODO: add code to create mappings between Strings returned from parsing and class types
     }
 
-    public Code getSymbolAsObj(String piece) {
+    public Token getSymbolAsObj(String piece) {
         String objectType = keyGrabber.getSymbol(piece);
-        Code ret = null;
+        Token ret = null;
         try{
             Class c = mappings.get(objectType);
             RegexHandler r = new RegexHandler();
             Constructor objConstruct = c.getDeclaredConstructor();
             objConstruct.setAccessible(true);
-            ret = (Code)objConstruct.newInstance();
+            ret = (Token)objConstruct.newInstance();
         }
         catch(Exception e){
             e.printStackTrace();

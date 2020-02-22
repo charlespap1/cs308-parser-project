@@ -1,8 +1,6 @@
 package slogo.model.code;
 
-import slogo.model.code.Code;
-
-public class Constant implements Code {
+public class Constant implements Token {
 
     private final int val;
 
