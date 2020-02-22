@@ -1,5 +1,7 @@
 package slogo.model;
 
+import slogo.model.parse.Parser;
+
 import java.util.List;
 import java.util.Map;
 
@@ -11,13 +13,10 @@ public class ModelAPI {
     public ModelAPI() {
         p = new Parser();
         turtle = new Turtle(0, 0, true, 0);
+        //TODO: just pass turtle into parser to allow execution inside?
     }
 
     public void executeCode(String rawString) {
-        Map<String, Variable> vars = p.parseVars(rawString);
-        List<Instruction> instructions = p.parseInstructions(rawString);
-        for (Instruction i : instructions) {
-            i.execute(turtle, vars);
-        }
+        p.parseInstructions(rawString);
     }
 }
