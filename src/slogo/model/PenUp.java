@@ -4,7 +4,7 @@ import java.util.List;
 
 public class PenUp extends Instruction {
 
-    private static final int numArgs = 1;
+    private static final int numArgs = 0;
 
     @Override
     public int execute (Turtle t) {
