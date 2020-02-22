@@ -21,7 +21,7 @@ public class Forward extends Instruction {
         return 0;
     }
 
-    public int getNumArgs(){
+    public int numRequiredArgs(){
         return numArgs;
     }
 
