@@ -50,7 +50,7 @@ public class Main extends Application{
         root = new Group();
         mySetup = new SetupScreen();
         myScene = mySetup.setupGame();
-        myInteractions = new Interactions(mySetup);
+        //myInteractions = new Interactions(mySetup);
         //setNeededVars();
         //System.out.println(getClass().getResource(DEFAULT_RESOURCE_FOLDER + MAIN_STYLESHEET).toExternalForm());
         //myScene.getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + MAIN_STYLESHEET).toExternalForm());

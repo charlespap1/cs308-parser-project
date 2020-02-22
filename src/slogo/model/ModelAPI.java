@@ -17,7 +17,7 @@ public class ModelAPI {
         Map<String, Variable> vars = p.parseVars(rawString);
         List<Instruction> instructions = p.parseInstructions(rawString);
         for (Instruction i : instructions) {
-            i.execute(turtle, vars);
+            i.execute(turtle, vars.values());
         }
     }
 

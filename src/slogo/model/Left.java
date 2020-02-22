@@ -1,5 +1,6 @@
 package slogo.model;
 
+import java.util.Collection;
 import java.util.List;
 
 public class Left extends Instruction {
@@ -13,11 +14,12 @@ public class Left extends Instruction {
     }
 
     @Override
-    public double execute (Turtle t, List<Variable> vars) {
+    public double execute (Turtle t, Collection<Variable> vars) {
         if (this.hasInnerInstruction()) {
-            this.valueForExec = this.possibleInner.execute(t, vars);
+            valueForExec = possibleInner.execute(t, vars);
         }
-        t.setAngle(t.getAngle() + this.valueForExec);
+        double angle = t.getAngle() + valueForExec;
+        t.setProperties(t.getXPos(), t.getYPos(), angle, t.getIsPenUp());
         return valueForExec;
     }
 

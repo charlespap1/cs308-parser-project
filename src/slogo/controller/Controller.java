@@ -9,7 +9,7 @@ import slogo.view.SetupScreen;
 
 /**
  * Main method where the GUI comes together
- * @author Juliet
+ * @author natalie
  */
 public class Controller extends Application {
 
@@ -28,7 +28,7 @@ public class Controller extends Application {
     @Override
     public void start(Stage primaryStage) {
         myModel = new ModelAPI();
-        myView = new Interactions(new SetupScreen());
+        myView = new Interactions(primaryStage);
         Turtle myTurtle = myModel.getTurtle();
         myView.setProperties(myTurtle);
         // this allows us to set the onclick action for the go button to be the getInstruction method in Controller,

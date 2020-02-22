@@ -1,5 +1,6 @@
 package slogo.model;
 
+import java.util.Collection;
 import java.util.List;
 
 public class SetHeading extends Instruction {
@@ -13,12 +14,12 @@ public class SetHeading extends Instruction {
     }
 
     @Override
-    public double execute (Turtle t, List<Variable> vars) {
+    public double execute (Turtle t, Collection<Variable> vars) {
         if (this.hasInnerInstruction()) {
-            this.valueForExec = this.possibleInner.execute(t, vars);
+            valueForExec = possibleInner.execute(t, vars);
         }
         double prevAngle = t.getAngle();
-        t.setAngle(this.valueForExec);
+        t.setProperties(t.getXPos(), t.getYPos(), valueForExec, t.getIsPenUp());
         return Math.abs(t.getAngle() - prevAngle);
     }
 

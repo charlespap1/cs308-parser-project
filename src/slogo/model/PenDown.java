@@ -1,5 +1,6 @@
 package slogo.model;
 
+import java.util.Collection;
 import java.util.List;
 
 public class PenDown extends Instruction {
@@ -13,11 +14,11 @@ public class PenDown extends Instruction {
     }
 
     @Override
-    public double execute (Turtle t, List<Variable> vars) {
+    public double execute (Turtle t, Collection<Variable> vars) {
         if (this.hasInnerInstruction()) {
-            this.valueForExec = this.possibleInner.execute(t, vars);
+            valueForExec = possibleInner.execute(t, vars);
         }
-        t.setPenUp(false);
+        t.setProperties(t.getXPos(), t.getYPos(), t.getAngle(), false);
         return 1;
     }
 

@@ -56,8 +56,14 @@ public class Turtle {
     this.canvasWidth = canvasWidth;
     this.canvasHeight = canvasHeight;
 
-    setDefaultValues();
 
+
+
+    x = new SimpleDoubleProperty();
+    y = new SimpleDoubleProperty();
+    angle = new SimpleDoubleProperty();
+    penUp = new SimpleBooleanProperty();
+    setDefaultValues();
 
     //this binding should take care of all changes in x and y and angle later on
     myView.xProperty().bind(x.add(-TURTLE_FACTOR));
@@ -66,10 +72,6 @@ public class Turtle {
   }
 
   public void setProperties(slogo.model.Turtle turtle){
-    x = new SimpleDoubleProperty();
-    y = new SimpleDoubleProperty();
-    angle = new SimpleDoubleProperty();
-    penUp = new SimpleBooleanProperty();
     x.bindBidirectional(turtle.turtleXProperty());
     y.bindBidirectional(turtle.turtleYProperty());
     angle.bindBidirectional(turtle.turtleAngleProperty());
@@ -86,15 +88,22 @@ public class Turtle {
       // DELETE THIS COMMENT LATER
       drawLine();
     });
+    setDefaultValues();
+  }
+
+  public String getCommand(){
+    return "x pos: " + x.getValue() + ", y pos: " + y.getValue() + ", angle: " + angle.getValue() + ", pen up: " + penUp.getValue();
   }
 
   //new drawline method simpler, replace old one with this once we're done transitioning to props
-  private void drawLine(){
+  public Line drawLine(){
+    Line line = null;
     if (!penUp.getValue()) {
-      Line line = new Line(currX, currY, x.getValue(), y.getValue());
+      line = new Line (currX, currY, x.getValue(), y.getValue());
     }
     currX = x.getValue();
     currY = y.getValue();
+    return line;
   }
 
   private void setDefaultValues()
@@ -102,18 +111,10 @@ public class Turtle {
     centerX = canvasLeftPadding + canvasWidth/2;
     centerY = canvasTopPadding + canvasHeight/2;
 
-    xPos = centerX;
-    yPos = centerY;
-
     // this should be all we need to change to reset turtle in front and back end
     x.setValue(centerX);
     y.setValue(centerY);
     angle.setValue(DEFAULT_ANGLE);
-
-
-    myView.setX(xPos - TURTLE_FACTOR);
-    myView.setY(yPos - TURTLE_FACTOR);
-    myView.setRotate(DEFAULT_ANGLE);
   }
 
   /**
@@ -134,29 +135,7 @@ public class Turtle {
     return myView;
   }
 
-  /**
-   * Updates the location or attributes of the turtle
-   * @param nextState
-   */
-  public Line update(State nextState)
-  {
-    Line newLine = null;
-    if(!nextState.isPenUp())
-    {
-      newLine = drawLine(nextState);
-    }
-    xPos = xPos + nextState.getX();
-    yPos = yPos + nextState.getY();
-
-    myView.setX(xPos - TURTLE_FACTOR);
-    myView.setY(yPos - TURTLE_FACTOR);
-    myView.setRotate(nextState.getAngleFacing());
-
-    return newLine;
-  }
-
-
-  private Line drawLine(State nextState)
+  public Line drawLine(State nextState)
   {
     Line line = new Line (xPos, yPos, nextState.getX() + xPos, nextState.getY() + yPos);
     //line.setStroke(nextState.getPenColor());

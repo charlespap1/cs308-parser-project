@@ -128,22 +128,18 @@ public class SetupScreen {
    */
   public Button getGoButton()
   {
-
     return myGo;
   }
   public Button getStopButton()
   {
-
     return myStop;
   }
   public Button getClearButton()
   {
-
     return myClear;
   }
   public Turtle getTurtle()
   {
-
     return myTurtle;
   }
 
@@ -153,19 +149,16 @@ public class SetupScreen {
   }
   public DrawingCanvas getDrawingCanvas()
   {
-
     return myDrawingCanvas;
   }
 
   public HistoryCanvas getHistoryCanvas()
   {
-
     return myHistory;
   }
 
   public Text getCurrentErrorMessage()
   {
-
     return myCurrentErrorMessage;
   }
 

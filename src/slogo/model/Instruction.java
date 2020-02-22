@@ -2,6 +2,7 @@ package slogo.model;
 
 import slogo.State;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +21,7 @@ public abstract class Instruction {
         possibleInner = i;
     }
 
-    public abstract double execute(Turtle turtle, List<Variable> vars);
+    public abstract double execute(Turtle turtle, Collection<Variable> vars);
     public abstract List<String> getNeededVarNames();
 
     protected boolean hasInnerInstruction(){
