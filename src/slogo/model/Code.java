@@ -1,6 +1,6 @@
 package slogo.model;
 
 public interface Code {
-    public String toString();
-    public int generateValue();
+    public abstract String toString();
+    public abstract int generateValue();
 }
