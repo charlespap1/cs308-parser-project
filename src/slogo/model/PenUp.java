@@ -4,25 +4,26 @@ import java.util.List;
 
 public class PenUp extends Instruction {
 
-    public PenUp (int val) {
-        super(val);
-    }
-
-    public PenUp (Instruction possibleInner) {
-        super(possibleInner);
-    }
+    private static final int numArgs = 0;
 
     @Override
-    public double execute (Turtle t, List<Variable> vars) {
-        if (this.hasInnerInstruction()) {
-            this.valueForExec = this.possibleInner.execute(t, vars);
-        }
-        t.setPenUp(true);
+    public int execute (Turtle t) {
+//        if (this.hasInnerInstruction()) {
+//            this.valueForExec = this.possibleInner.execute(t, vars);
+//        }
+//        t.setPenUp(true);
         return 0;
     }
 
-    @Override
-    public List<String> getNeededVarNames() {
-        return null;
+    public int numRequiredArgs(){
+        return numArgs;
+    }
+
+    public int generateValue(){
+        return 0;
+    }
+
+    public String toString(){
+        return "Pen Up";
     }
 }
