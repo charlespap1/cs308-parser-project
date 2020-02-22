@@ -39,13 +39,17 @@ public class Parser {
         for (String piece: inputPieces) {
             if (piece.trim().length() > 0) {
                 SyntaxType currType = SyntaxType.valueOf(typeCheck.getSymbol(piece).toUpperCase());
-                if(currType == SyntaxType.COMMAND)
-                    commands.add(createFromString.getSymbolAsObj(piece));
-                else{
-                    arguments.add(createFromString.getSymbolAsObj(piece));
-                    attemptToCreateFullInstruction();
-                }
+                addToAppropriateStack(currType,piece);
             }
+        }
+    }
+
+    private void addToAppropriateStack(SyntaxType currType, String piece) {
+        if(currType == SyntaxType.COMMAND)
+            commands.add(createFromString.getSymbolAsObj(piece));
+        else{
+            arguments.add(createFromString.getSymbolAsObj(piece));
+            attemptToCreateFullInstruction();
         }
     }
 
@@ -56,7 +60,7 @@ public class Parser {
             List<Integer> params = grabParameters();
             currCommand.setParameters(params);
             currCommand.execute();
-            //TODO: should only need turtlestate passed now.
+            //TODO: should only need turtle state passed now.
         }
     }
 
