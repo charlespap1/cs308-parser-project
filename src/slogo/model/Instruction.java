@@ -15,7 +15,7 @@ public abstract class Instruction implements Code{
 
     public abstract int execute(Turtle turtle);
     public abstract int numRequiredArgs();
-
+    
     public void setParameters(List<Code> params){
         parameters = params;
     }
