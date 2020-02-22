@@ -8,7 +8,7 @@ import slogo.model.parse.RegexHandler;
 import java.io.File;
 import java.util.*;
 
-public class Model {
+public class Model implements ModelAPI{
 
     enum SyntaxType{
         COMMENT,CONSTANT,VARIABLE,COMMAND,LISTSTART,LISTEND,GROUPSTART,GROUPEND,WHITESPACE,NEWLINE
