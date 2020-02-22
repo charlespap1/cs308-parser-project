@@ -1,31 +1,55 @@
-package slogo.model;
+package slogo.model.parse;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
+import slogo.model.Instruction;
+import slogo.model.Variable;
+
+import java.util.*;
 
 public class Parser {
 
-    public static final String NEW_LINE = "\n";
-    Stack commands;
-    Stack arguments;
+    enum SyntaxType{
+        COMMENT,CONSTANT,VARIABLE,COMMAND,LISTSTART,LISTEND,GROUPSTART,GROUPEND,WHITESPACE,NEWLINE
+    }
+
+    // regular expression representing any whitespace characters (space, tab, or newline)
+    public static final String WHITESPACE = "\\s+";
+    public static final String LANG = "English";
+
+    private Stack<Object> commands;
+    private Stack<Object> arguments;
+
+    private InstructionFactory createFromString;
+
+    private RegexHandler typeCheck;
 
     public Parser() {
-        commands = new Stack();
-        arguments = new Stack();
+        commands = new Stack<>();
+        arguments = new Stack<>();
+        createFromString = new InstructionFactory(LANG);
+        typeCheck = new RegexHandler();
+        typeCheck.addPatterns("Syntax");
     }
 
     public Map<String, Variable> parseVars(String rawString) {
         return null;
     }
 
-    public List<Instruction> parseInstructions(String rawString) {
-        List<String> lines = Arrays.asList(rawString.split(NEW_LINE));
-        while(!lines.isEmpty()){
-            String currLine = lines.remove(0);
-            List<String> pieces = Arrays.asList(currLine.split(" "));
+    public void parseInstructions(String rawString) {
+        List<String> inputPieces = Arrays.asList(rawString.split(WHITESPACE));
+        for (String piece: inputPieces) {
+            if (piece.trim().length() > 0) {
+                SyntaxType currType = SyntaxType.valueOf(typeCheck.getSymbol(piece).toUpperCase());
+                if(currType == SyntaxType.COMMAND)
+                    commands.add(createFromString.getSymbolAsObj(piece));
+                else{
+                    arguments.add(createFromString.getSymbolAsObj(piece));
+                    attemptToCreateFullInstruction();
+                }
+            }
         }
-        return null;
+    }
+
+    private void attemptToCreateFullInstruction() {
+
     }
 }
