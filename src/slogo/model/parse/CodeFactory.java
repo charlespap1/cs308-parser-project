@@ -19,6 +19,12 @@ public class CodeFactory {
 
         // general checks, added last
         keyGrabber.addPatterns("Syntax");
+
+        generateMappings();
+    }
+
+    private void generateMappings() {
+        //TODO: add code to create mappings between Strings returned from parsing and class types
     }
 
     public Code getSymbolAsObj(String piece) {
