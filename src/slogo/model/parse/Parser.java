@@ -50,6 +50,21 @@ public class Parser {
     }
 
     private void attemptToCreateFullInstruction() {
+        Instruction currCommand = (Instruction)commands.peek();
+        int numRequiredArgs = currCommand.numRequiredArgs();
+        if(enoughArgs(numRequiredArgs)){
+            List<Integer> params = grabParameters();
+            currCommand.setParameters(params);
+            currCommand.execute();
+            //TODO: should only need turtlestate passed now.
+        }
+    }
 
+    private List<Integer> grabParameters() {
+        return null;
+    }
+
+    private boolean enoughArgs(int numNeeded){
+        return arguments.size() >= numNeeded;
     }
 }
