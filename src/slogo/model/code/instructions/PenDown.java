@@ -1,8 +1,9 @@
-package slogo.model;
+package slogo.model.code.instructions;
 
-import java.util.List;
+import slogo.model.Turtle;
+import slogo.model.code.instructions.Instruction;
 
-public class PenUp extends Instruction {
+public class PenDown extends Instruction {
 
     private static final int numArgs = 0;
 
@@ -11,8 +12,8 @@ public class PenUp extends Instruction {
 //        if (this.hasInnerInstruction()) {
 //            this.valueForExec = this.possibleInner.execute(t, vars);
 //        }
-//        t.setPenUp(true);
-        return 0;
+//        t.setPenUp(false);
+        return 1;
     }
 
     public int numRequiredArgs(){
@@ -20,10 +21,10 @@ public class PenUp extends Instruction {
     }
 
     public int generateValue(){
-        return 0;
+        return 1;
     }
 
     public String toString(){
-        return "Pen Up";
+        return "Pen Down";
     }
 }

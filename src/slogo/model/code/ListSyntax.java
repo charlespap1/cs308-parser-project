@@ -1,4 +1,6 @@
-package slogo.model;
+package slogo.model.code;
+
+import slogo.model.code.Code;
 
 import java.util.List;
 

@@ -1,8 +1,7 @@
 package slogo.model.parse;
 
-import slogo.model.Code;
-import slogo.model.Instruction;
-import slogo.model.Variable;
+import slogo.model.code.Code;
+import slogo.model.code.instructions.Instruction;
 
 import java.util.*;
 

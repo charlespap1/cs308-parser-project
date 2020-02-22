@@ -1,4 +1,4 @@
-package slogo.model;
+package slogo.model.code;
 
 public interface Code {
     public abstract String toString();

@@ -1,6 +1,8 @@
-package slogo.model;
+package slogo.model.code;
 
-public class Constant implements Code{
+import slogo.model.code.Code;
+
+public class Constant implements Code {
 
     private final int val;
 
