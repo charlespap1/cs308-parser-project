@@ -12,6 +12,7 @@ public class Forward extends Instruction {
 
     @Override
     public int execute (Turtle t) {
+        //TODO: check if parameter is instruction, if so execute
 //        if (this.hasInnerInstruction()) {
 //            this.valueForExec = this.possibleInner.execute(t, vars);
 //        }
