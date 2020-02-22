@@ -1,17 +1,15 @@
-package slogo.view;
+package slogo.view.scrollers;
 
 import java.util.ResourceBundle;
-import javafx.scene.Node;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import slogo.view.scrollers.ScrollingWindow;
 
 /**
  * This class creates a spot on the
  * GUI which displays common commands
  * @author Juliet
  */
-public class CommonCommands extends ScrollingWindow{
+public class CommonCommands extends ScrollingWindow {
 
   public static final String TITLE = "Helpful Commands: ";
   private static final String RESOURCES = "resources";
@@ -40,17 +38,6 @@ public class CommonCommands extends ScrollingWindow{
       myTextHolder.getChildren().add(textCommand);
     }
 
-  }
-
-
-  /**
-   * Allows common commands to be displayed
-   * in the setup game
-   * @return
-   */
-  public Node getView()
-  {
-    return myHolder;
   }
 
 }
