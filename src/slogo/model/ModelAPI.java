@@ -1,22 +1,14 @@
 package slogo.model;
 
-import slogo.model.parse.Parser;
+import slogo.State;
 
+import java.io.File;
 import java.util.List;
-import java.util.Map;
 
-public class ModelAPI {
+public interface ModelAPI {
 
-    private Parser p;
-    private Turtle turtle;
+    public abstract void executeCode(String rawCode);
 
-    public ModelAPI() {
-        p = new Parser();
-        turtle = new Turtle(0, 0, true, 0);
-        //TODO: just pass turtle into parser to allow execution inside?
-    }
+    public abstract void executeCode(File f);
 
-    public void executeCode(String rawString) {
-        p.parseInstructions(rawString);
-    }
 }

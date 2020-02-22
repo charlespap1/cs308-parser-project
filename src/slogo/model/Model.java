@@ -1,10 +1,98 @@
 package slogo.model;
 
-import slogo.State;
+import slogo.model.code.Token;
+import slogo.model.code.instructions.Instruction;
+import slogo.model.parse.CodeFactory;
+import slogo.model.parse.RegexHandler;
 
-import java.util.List;
+import java.io.File;
+import java.util.*;
 
-public interface Model {
+public class Model implements ModelAPI{
 
-    List<State> executeCode(String rawCode);
+    enum SyntaxType{
+        COMMENT,CONSTANT,VARIABLE,COMMAND,LISTSTART,LISTEND,GROUPSTART,GROUPEND,WHITESPACE,NEWLINE
+    }
+
+    // regular expression representing any whitespace characters (space, tab, or newline)
+    public static final String WHITESPACE = "\\s+";
+    public static final String LANG = "English";
+    public static final String SYNTAX = "Syntax";
+
+    private Stack<Instruction> commands;
+    private Stack<Token> arguments;
+    private CodeFactory createFromString;
+    private RegexHandler typeCheck;
+    private Turtle turtle;
+
+    public Model() {
+        commands = new Stack<>();
+        arguments = new Stack<>();
+        createFromString = new CodeFactory(LANG);
+        typeCheck = new RegexHandler();
+        typeCheck.addPatterns(SYNTAX);
+        turtle = new Turtle(0, 0, true, 0);
+    }
+
+    public void executeCode(String rawString) {
+        parseInstructions(rawString);
+    }
+
+    public void executeCode(File f){
+        //TODO: convert file f into rawString, then call parseInstructions with rawString
+    }
+
+    private void parseInstructions(String rawString) {
+        List<String> inputPieces = Arrays.asList(rawString.split(WHITESPACE));
+        for (String piece: inputPieces) {
+            if (piece.trim().length() > 0) {
+                SyntaxType currType = SyntaxType.valueOf(typeCheck.getSymbol(piece).toUpperCase());
+                addToAppropriateStack(currType,piece);
+            }
+        }
+    }
+
+    private void addToAppropriateStack(SyntaxType currType, String piece) {
+        if(currType == SyntaxType.COMMAND)
+            commands.add((Instruction)createFromString.getSymbolAsObj(piece));
+        else{
+            arguments.add(createFromString.getSymbolAsObj(piece));
+            attemptToCreateFullInstruction();
+        }
+    }
+
+    private void attemptToCreateFullInstruction() {
+        Instruction currCommand = commands.peek();
+        int numRequiredArgs = currCommand.numRequiredArgs();
+        if(enoughArgs(numRequiredArgs)){
+            Instruction currInstr = createCompleteInstruction();
+            if(commands.isEmpty()){
+                //TODO: execute currInstr
+            }
+            else{
+                arguments.push(currInstr);
+                attemptToCreateFullInstruction();
+            }
+        }
+    }
+
+    private Instruction createCompleteInstruction() {
+        Instruction currCommand = commands.pop();
+        List<Token> params = grabParameters(currCommand.numRequiredArgs());
+        currCommand.setParameters(params);
+        return currCommand;
+    }
+
+    private List<Token> grabParameters(int numArgsNeeded) {
+        List<Token> params = new ArrayList<>();
+        while(params.size() < numArgsNeeded){
+            Token currArg = arguments.pop();
+            params.add(currArg);
+        }
+        return params;
+    }
+
+    private boolean enoughArgs(int numNeeded){
+        return arguments.size() >= numNeeded;
+    }
 }
