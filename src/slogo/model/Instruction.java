@@ -22,6 +22,7 @@ public abstract class Instruction {
 
     public abstract int execute(Turtle turtle, List<Variable> vars);
     public abstract List<String> getNeededVarNames();
+    public abstract int numRequiredArgs();
 
     protected boolean hasInnerInstruction(){
         return possibleInner != null;
