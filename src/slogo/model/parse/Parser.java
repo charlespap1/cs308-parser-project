@@ -1,5 +1,6 @@
 package slogo.model.parse;
 
+import slogo.model.Code;
 import slogo.model.Instruction;
 import slogo.model.Variable;
 
@@ -14,24 +15,19 @@ public class Parser {
     // regular expression representing any whitespace characters (space, tab, or newline)
     public static final String WHITESPACE = "\\s+";
     public static final String LANG = "English";
+    public static final String SYNTAX = "Syntax";
 
-    private Stack<Object> commands;
-    private Stack<Object> arguments;
-
-    private InstructionFactory createFromString;
-
+    private Stack<Instruction> commands;
+    private Stack<Code> arguments;
+    private CodeFactory createFromString;
     private RegexHandler typeCheck;
 
     public Parser() {
         commands = new Stack<>();
         arguments = new Stack<>();
-        createFromString = new InstructionFactory(LANG);
+        createFromString = new CodeFactory(LANG);
         typeCheck = new RegexHandler();
-        typeCheck.addPatterns("Syntax");
-    }
-
-    public Map<String, Variable> parseVars(String rawString) {
-        return null;
+        typeCheck.addPatterns(SYNTAX);
     }
 
     public void parseInstructions(String rawString) {
@@ -46,7 +42,7 @@ public class Parser {
 
     private void addToAppropriateStack(SyntaxType currType, String piece) {
         if(currType == SyntaxType.COMMAND)
-            commands.add(createFromString.getSymbolAsObj(piece));
+            commands.add((Instruction)createFromString.getSymbolAsObj(piece));
         else{
             arguments.add(createFromString.getSymbolAsObj(piece));
             attemptToCreateFullInstruction();
@@ -54,18 +50,34 @@ public class Parser {
     }
 
     private void attemptToCreateFullInstruction() {
-        Instruction currCommand = (Instruction)commands.peek();
+        Instruction currCommand = commands.peek();
         int numRequiredArgs = currCommand.numRequiredArgs();
         if(enoughArgs(numRequiredArgs)){
-            List<Integer> params = grabParameters();
-            currCommand.setParameters(params);
-            currCommand.execute();
-            //TODO: should only need turtle state passed now.
+            Instruction currInstr = createCompleteInstruction();
+            if(commands.isEmpty()){
+                //TODO: execute currInstr
+            }
+            else{
+                arguments.push(currInstr);
+                attemptToCreateFullInstruction();
+            }
         }
     }
 
-    private List<Integer> grabParameters() {
-        return null;
+    private Instruction createCompleteInstruction() {
+        Instruction currCommand = commands.pop();
+        List<Code> params = grabParameters(currCommand.numRequiredArgs());
+        currCommand.setParameters(params);
+        return currCommand;
+    }
+
+    private List<Code> grabParameters(int numArgsNeeded) {
+        List<Code> params = new ArrayList<>();
+        while(params.size() < numArgsNeeded){
+            Code currArg = arguments.pop();
+            params.add(currArg);
+        }
+        return params;
     }
 
     private boolean enoughArgs(int numNeeded){
