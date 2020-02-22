@@ -1,11 +1,11 @@
-package slogo.model;
+package slogo.model.code.instructions;
 
-import slogo.State;
+import slogo.model.Turtle;
+import slogo.model.code.Code;
 
 import java.util.List;
-import java.util.Map;
 
-public abstract class Instruction implements Code{
+public abstract class Instruction implements Code {
 
     protected List<Code> parameters;
 

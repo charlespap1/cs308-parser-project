@@ -1,6 +1,7 @@
-package slogo.model;
+package slogo.model.code.instructions;
 
-import java.util.List;
+import slogo.model.Turtle;
+import slogo.model.code.instructions.Instruction;
 
 public class Forward extends Instruction {
 

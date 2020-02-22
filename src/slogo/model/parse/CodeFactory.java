@@ -1,7 +1,6 @@
 package slogo.model.parse;
 
-import slogo.model.Code;
-import slogo.model.Instruction;
+import slogo.model.code.Code;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;

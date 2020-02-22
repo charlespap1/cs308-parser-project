@@ -1,8 +1,9 @@
-package slogo.model;
+package slogo.model.code.instructions;
 
-import java.util.List;
+import slogo.model.Turtle;
+import slogo.model.code.instructions.Instruction;
 
-public class Back extends Instruction {
+public class Left extends Instruction {
 
     private static final int numArgs = 1;
 
@@ -11,8 +12,7 @@ public class Back extends Instruction {
 //        if (this.hasInnerInstruction()) {
 //            this.valueForExec = this.possibleInner.execute(t, vars);
 //        }
-//        t.setxPos(t.getxPos() - valueForExec * Math.cos(t.getAngle()));
-//        t.setyPos(t.getyPos() - valueForExec * Math.sin(t.getAngle()));
+//        t.setAngle(t.getAngle() + this.valueForExec);
 //        return valueForExec;
         return -1;
     }
