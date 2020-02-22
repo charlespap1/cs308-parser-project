@@ -1,16 +1,17 @@
 package slogo.model.parse;
 
+import slogo.model.Code;
 import slogo.model.Instruction;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 
-public class InstructionFactory {
+public class CodeFactory {
     private RegexHandler keyGrabber;
     private Map<String,Class> mappings;
 
-    public InstructionFactory(String language){
+    public CodeFactory(String language){
         keyGrabber = new RegexHandler();
         mappings = new HashMap<>();
 
@@ -20,15 +21,15 @@ public class InstructionFactory {
         keyGrabber.addPatterns("Syntax");
     }
 
-    public Object getSymbolAsObj(String piece) {
+    public Code getSymbolAsObj(String piece) {
         String objectType = keyGrabber.getSymbol(piece);
-        Object ret = null;
+        Code ret = null;
         try{
             Class c = mappings.get(objectType);
             RegexHandler r = new RegexHandler();
             Constructor objConstruct = c.getDeclaredConstructor();
             objConstruct.setAccessible(true);
-            ret = objConstruct.newInstance();
+            ret = (Code)objConstruct.newInstance();
         }
         catch(Exception e){
             e.printStackTrace();
