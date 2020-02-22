@@ -6,10 +6,6 @@ public class Left extends Instruction {
 
     private static final int numArgs = 1;
 
-    public Left () {
-        super();
-    }
-
     @Override
     public int execute (Turtle t) {
 //        if (this.hasInnerInstruction()) {
