@@ -1,6 +1,7 @@
 package slogo.model.code.instructions;
 
 import slogo.model.Turtle;
+import slogo.model.code.Token;
 import slogo.model.code.instructions.Instruction;
 
 public class SetHeading extends Instruction {
@@ -23,6 +24,12 @@ public class SetHeading extends Instruction {
 //        double prevAngle = t.getAngle();
 //        t.setProperties(t.getXPos(), t.getYPos(), valueForExec, t.getIsPenUp());
 //        return Math.abs(t.getAngle() - prevAngle);
+        Token angleValue = this.parameters.get(0);
+        if (angleValue instanceof Instruction) {
+            ((Instruction) angleValue).execute(t);
+        }
+        int valueForExec = angleValue.generateValue();
+        t.setProperties(t.getXPos(), t.getYPos(), valueForExec, t.getIsPenUp());
     }
 
     public int numRequiredArgs(){
@@ -32,6 +39,7 @@ public class SetHeading extends Instruction {
     public int generateValue(){
         return this.parameters.get(0).generateValue();
     }
+    //TODO: needs to return the change in angle
 
     public String toString(){
         return "";

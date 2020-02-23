@@ -9,17 +9,7 @@ public class PenUp extends Instruction {
 
     @Override
     public void execute (Turtle t) { //(Turtle t, Collection<Variable> vars)
-//        if (this.hasInnerInstruction()) {
-//            this.valueForExec = this.possibleInner.execute(t, vars);
-//        }
-//        t.setPenUp(true);
-
-        // bound vars code:
-//        if (this.hasInnerInstruction()) {
-//            valueForExec = possibleInner.execute(t, vars);
-//        }
-//        t.setProperties(t.getXPos(), t.getYPos(), t.getAngle(), true);
-//        return 0;
+        t.setProperties(t.getXPos(), t.getYPos(), t.getAngle(), true);
     }
 
     public int numRequiredArgs(){

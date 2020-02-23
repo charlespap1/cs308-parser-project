@@ -11,8 +11,9 @@ public class Forward extends Instruction {
     @Override
     public void execute (Turtle t) {
         Token valueToMove = this.parameters.get(0);
-        if(valueToMove instanceof Instruction)
-            ((Instruction)valueToMove).execute(t);
+        if (valueToMove instanceof Instruction) {
+            ((Instruction) valueToMove).execute(t);
+        }
         int valueForExec = valueToMove.generateValue();
         double x = t.getXPos() + valueForExec * Math.cos(t.getAngle());
         double y = t.getYPos() + valueForExec * Math.sin(t.getAngle());
