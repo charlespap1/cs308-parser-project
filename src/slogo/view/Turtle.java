@@ -17,24 +17,13 @@ import slogo.State;
  * This class holds all of the attributes of our GUI turtle
  * @author Juliet
  */
-
 public class Turtle {
   public static final int TURTLE_IMAGE_SIZE = 30;
   public static final Color DEFAULT_PEN_COLOR = Color.BLACK;
   public static final double DEFAULT_ANGLE = 0;
   public static final double TURTLE_FACTOR = TURTLE_IMAGE_SIZE/2;
 
-  private double canvasWidth;
-  private double canvasHeight;
-  private double canvasTopPadding;
-  private double canvasLeftPadding;
-
-  private double centerX;
-  private double centerY;
-
-  private ImageView myView;
-  private double xPos;
-  private double yPos;
+  private ImageView myTurtleView;
 
   private DoubleProperty x;
   private DoubleProperty y;
@@ -45,30 +34,22 @@ public class Turtle {
 
   public Turtle(Image image, double canvasWidth, double canvasHeight)
   {
-    canvasLeftPadding = DrawingCanvas.CANVAS_SIDE_PADDING;
-    canvasTopPadding = DrawingCanvas.CANVAS_TOP_PADDING;
+    double centerX = DrawingCanvas.CANVAS_SIDE_PADDING + canvasWidth/2 - TURTLE_FACTOR;
+    double centerY = DrawingCanvas.CANVAS_TOP_PADDING + canvasHeight/2 - TURTLE_FACTOR;
 
-    myView = new ImageView(image);
-
-    myView.setFitWidth(TURTLE_IMAGE_SIZE);
-    myView.setFitHeight(TURTLE_IMAGE_SIZE);
-
-    this.canvasWidth = canvasWidth;
-    this.canvasHeight = canvasHeight;
-
-
-
+    myTurtleView = new ImageView(image);
+    myTurtleView.setFitWidth(TURTLE_IMAGE_SIZE);
+    myTurtleView.setFitHeight(TURTLE_IMAGE_SIZE);
 
     x = new SimpleDoubleProperty();
     y = new SimpleDoubleProperty();
     angle = new SimpleDoubleProperty();
     penUp = new SimpleBooleanProperty();
-    setDefaultValues();
 
     //this binding should take care of all changes in x and y and angle later on
-    myView.xProperty().bind(x.add(-TURTLE_FACTOR));
-    myView.yProperty().bind(y.add(-TURTLE_FACTOR));
-    myView.rotateProperty().bind(angle);
+    myTurtleView.xProperty().bind(x.add(centerX-TURTLE_FACTOR));
+    myTurtleView.yProperty().bind(y.add(centerY-TURTLE_FACTOR));
+    myTurtleView.rotateProperty().bind(angle);
   }
 
   public void setProperties(slogo.model.Turtle turtle){
@@ -88,8 +69,19 @@ public class Turtle {
       // DELETE THIS COMMENT LATER
       drawLine();
     });
-    setDefaultValues();
+    returnTurtleToDefault();
   }
+
+  /**
+   * Allows Main class to be put turtle back in center
+   * with default values
+   */
+  public void returnTurtleToDefault() {
+    x.setValue(0);
+    y.setValue(0);
+    angle.setValue(DEFAULT_ANGLE);
+  }
+
 
   public String getCommand(){
     return "x pos: " + x.getValue() + ", y pos: " + y.getValue() + ", angle: " + angle.getValue() + ", pen up: " + penUp.getValue();
@@ -106,25 +98,13 @@ public class Turtle {
     return line;
   }
 
-  private void setDefaultValues()
-  {
-    centerX = canvasLeftPadding + canvasWidth/2;
-    centerY = canvasTopPadding + canvasHeight/2;
-
-    // this should be all we need to change to reset turtle in front and back end
-    x.setValue(centerX);
-    y.setValue(centerY);
-    angle.setValue(DEFAULT_ANGLE);
-  }
-
   /**
    * Will be needed when we change turtle images
    * @param image
    */
-
   public void changeImage(Image image)
   {
-    myView.setImage(image);
+    myTurtleView.setImage(image);
   }
 
   /**
@@ -132,25 +112,6 @@ public class Turtle {
    * @return
    */
   public Node getView () {
-    return myView;
+    return myTurtleView;
   }
-
-  public Line drawLine(State nextState)
-  {
-    Line line = new Line (xPos, yPos, nextState.getX() + xPos, nextState.getY() + yPos);
-    //line.setStroke(nextState.getPenColor());
-    return line;
-  }
-
-  /**
-   * Allows Main class to be put turtle back in center
-   * with default values
-   */
-  public void returnTurtleToDefault()
-  {
-    setDefaultValues();
-  }
-
-
-
 }
