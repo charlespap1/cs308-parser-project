@@ -8,7 +8,7 @@ public class PenUp extends Instruction {
     private static final int numArgs = 0;
 
     @Override
-    public int execute (Turtle t) { //(Turtle t, Collection<Variable> vars)
+    public void execute (Turtle t) { //(Turtle t, Collection<Variable> vars)
 //        if (this.hasInnerInstruction()) {
 //            this.valueForExec = this.possibleInner.execute(t, vars);
 //        }
@@ -20,7 +20,6 @@ public class PenUp extends Instruction {
 //        }
 //        t.setProperties(t.getXPos(), t.getYPos(), t.getAngle(), true);
 //        return 0;
-        return 0;
     }
 
     public int numRequiredArgs(){

@@ -10,8 +10,10 @@ public class ListSyntax implements Token {
     }
 
     public int generateValue(){
-        return 0;
+        return contents.size();
     }
+
+    public List<Token> getContents() { return contents; }
 
     public String toString(){
         return "";

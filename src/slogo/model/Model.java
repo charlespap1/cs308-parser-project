@@ -49,16 +49,19 @@ public class Model implements ModelAPI{
         for (String piece: inputPieces) {
             if (piece.trim().length() > 0) {
                 SyntaxType currType = SyntaxType.valueOf(typeCheck.getSymbol(piece).toUpperCase());
-                addToAppropriateStack(currType,piece);
+                //TODO: error handling when no match found
+                addToAppropriateStack(currType, piece);
             }
         }
     }
 
     private void addToAppropriateStack(SyntaxType currType, String piece) {
-        if(currType == SyntaxType.COMMAND)
-            commands.add((Instruction)createFromString.getSymbolAsObj(piece));
-        else{
-            arguments.add(createFromString.getSymbolAsObj(piece));
+        Token currentItem = createFromString.getSymbolAsObj(piece);
+        if(currentItem instanceof Instruction)
+            commands.add((Instruction) currentItem);
+        else {
+            //TODO: handle other types besides commands
+            arguments.add(currentItem);
             attemptToCreateFullInstruction();
         }
     }
@@ -88,8 +91,7 @@ public class Model implements ModelAPI{
     private List<Token> grabParameters(int numArgsNeeded) {
         List<Token> params = new ArrayList<>();
         while(params.size() < numArgsNeeded){
-            Token currArg = arguments.pop();
-            params.add(currArg);
+            params.add(arguments.pop());
         }
         return params;
     }

@@ -8,7 +8,7 @@ public class SetHeading extends Instruction {
     private static final int numArgs = 1;
 
     @Override
-    public int execute (Turtle t) { //(Turtle t, Collection<Variable> vars)
+    public void execute (Turtle t) { //(Turtle t, Collection<Variable> vars)
 //        if (this.hasInnerInstruction()) {
 //            this.valueForExec = this.possibleInner.execute(t, vars);
 //        }
@@ -23,7 +23,6 @@ public class SetHeading extends Instruction {
 //        double prevAngle = t.getAngle();
 //        t.setProperties(t.getXPos(), t.getYPos(), valueForExec, t.getIsPenUp());
 //        return Math.abs(t.getAngle() - prevAngle);
-        return 0;
     }
 
     public int numRequiredArgs(){

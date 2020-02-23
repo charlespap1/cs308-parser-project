@@ -1,6 +1,9 @@
 package slogo.model.parse;
 
+import slogo.model.code.NewCommandName;
 import slogo.model.code.Token;
+import slogo.model.code.Variable;
+import slogo.model.code.instructions.NewCommand;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
@@ -10,10 +13,13 @@ import java.util.Map;
 public class CodeFactory {
     private RegexHandler keyGrabber;
     private Map<String,Class> mappings;
+    private Map<String, NewCommand> newCommandMap;
+    private Map<String, Variable> variableMap;
 
     public CodeFactory(String language){
         keyGrabber = new RegexHandler();
         mappings = new HashMap<>();
+        newCommandMap = new HashMap<>();
 
         keyGrabber.addPatterns(language);
 
@@ -28,20 +34,36 @@ public class CodeFactory {
         System.out.println(keys);
     }
 
+    private Token getVariable(String piece){
+        if (!variableMap.containsKey(piece)) {
+            Variable variable = new Variable(piece);
+            variableMap.put(piece, variable);
+        }
+        return variableMap.get(piece);
+    }
+
+    private Token getNewCommand(String piece){
+        if (newCommandMap.containsKey(piece)) return newCommandMap.get(piece);
+        return new NewCommandName(piece);
+    }
+
     public Token getSymbolAsObj(String piece) {
         String objectType = keyGrabber.getSymbol(piece);
-        Token ret = null;
+        if (objectType.equals("Variable")) return getVariable(piece);
+        if (objectType.equals("Command")) return getNewCommand(piece);
+        Token token = null;
         try{
             Class c = mappings.get(objectType);
-            RegexHandler r = new RegexHandler();
             Constructor objConstruct = c.getDeclaredConstructor();
             objConstruct.setAccessible(true);
-            ret = (Token)objConstruct.newInstance();
+            token = (Token) objConstruct.newInstance();
+            //token = (Token) objConstruct.newInstance(piece);
+            // TODO: pass string
         }
         catch(Exception e){
             e.printStackTrace();
             //TODO: relay some message back to UI that code was no bueno.
         }
-        return ret;
+        return token;
     }
 }
