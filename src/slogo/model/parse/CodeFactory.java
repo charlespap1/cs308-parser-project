@@ -4,6 +4,7 @@ import slogo.model.code.Token;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CodeFactory {
@@ -23,7 +24,7 @@ public class CodeFactory {
     }
 
     private void generateMappings() {
-        //TODO: add code to create mappings between Strings returned from parsing and class types
+        List<String> keys = keyGrabber.getKeys();
     }
 
     public Token getSymbolAsObj(String piece) {
