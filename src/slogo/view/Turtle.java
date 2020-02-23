@@ -59,16 +59,6 @@ public class Turtle {
     penUp.bindBidirectional(turtle.penUpProperty());
     currX = x.getValue();
     currY = y.getValue();
-
-    y.addListener((o, oldVal, newVal) -> {
-      System.out.println("turtle has changed!");
-      // x, y, angle, and penUp will update automatically w binding. also if we change them here, it should
-      // also change the values in model.turtle since the binding is bidirectional
-      // so once y changes, you know all 3 others are changed and you can draw a line (or not) and update currx and
-      // curry, which exist specifically for line drawing purposes
-      // DELETE THIS COMMENT LATER
-      drawLine();
-    });
     returnTurtleToDefault();
   }
 
