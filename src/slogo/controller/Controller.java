@@ -2,10 +2,9 @@ package slogo.controller;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import slogo.model.ModelAPI;
+import slogo.model.Model;
 import slogo.model.Turtle;
 import slogo.view.Interactions;
-import slogo.view.SetupScreen;
 
 /**
  * Main method where the GUI comes together
@@ -19,7 +18,7 @@ public class Controller extends Application {
 
     ButtonAction goButtonAction = () -> getInstruction();
 
-    private ModelAPI myModel;
+    private Model myModel;
     private Interactions myView;
     /**
      * Allows us to set up the initial stage and animation
@@ -27,7 +26,7 @@ public class Controller extends Application {
      */
     @Override
     public void start(Stage primaryStage) {
-        myModel = new ModelAPI();
+        myModel = new Model();
         myView = new Interactions(primaryStage);
         Turtle myTurtle = myModel.getTurtle();
         myView.setProperties(myTurtle);

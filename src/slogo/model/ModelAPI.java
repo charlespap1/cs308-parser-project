@@ -1,25 +1,12 @@
 package slogo.model;
 
-import java.util.List;
-import java.util.Map;
+import java.io.File;
 
-public class ModelAPI {
+public interface ModelAPI {
 
-    private Parser p;
-    private Turtle turtle;
+    void executeCode(String rawCode);
 
-    public ModelAPI() {
-        p = new Parser();
-        turtle = new Turtle(0, 0, true, 0);
-    }
+    void executeCode(File f);
 
-    public void executeCode(String rawString) {
-        Map<String, Variable> vars = p.parseVars(rawString);
-        List<Instruction> instructions = p.parseInstructions(rawString);
-        for (Instruction i : instructions) {
-            i.execute(turtle, vars.values());
-        }
-    }
-
-    public Turtle getTurtle(){ return turtle; }
+    Turtle getTurtle();
 }
