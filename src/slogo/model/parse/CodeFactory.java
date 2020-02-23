@@ -25,6 +25,7 @@ public class CodeFactory {
 
     private void generateMappings() {
         List<String> keys = keyGrabber.getKeys();
+        System.out.println(keys);
     }
 
     public Token getSymbolAsObj(String piece) {
