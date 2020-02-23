@@ -8,7 +8,7 @@ public class Back extends Instruction {
     private static final int numArgs = 1;
 
     @Override
-    public int execute (Turtle t) { //(Turtle t, Collection<Variable> vars)
+    public void execute (Turtle t) { //(Turtle t, Collection<Variable> vars)
 //        if (this.hasInnerInstruction()) {
 //            this.valueForExec = this.possibleInner.execute(t, vars);
 //        }
@@ -24,7 +24,6 @@ public class Back extends Instruction {
 //        double y = t.getYPos() - valueForExec * Math.sin(t.getAngle());
 //        t.setProperties(x, y, t.getAngle(), t.getIsPenUp());
 //        return valueForExec;
-        return -1;
     }
 
     public int numRequiredArgs(){
