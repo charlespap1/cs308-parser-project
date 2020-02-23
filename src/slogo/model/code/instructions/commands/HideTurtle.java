@@ -1,6 +1,7 @@
-package slogo.model.code.instructions;
+package slogo.model.code.instructions.commands;
 
 import slogo.model.Turtle;
+import slogo.model.code.instructions.Instruction;
 
 public class HideTurtle extends Instruction {
 
