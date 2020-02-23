@@ -14,7 +14,7 @@ public abstract class Instruction implements Token {
         parameters = null;
     }
 
-    public abstract int execute(Turtle turtle); //Collection<Variable> vars)
+    public abstract void execute(Turtle turtle);
     public abstract int numRequiredArgs();
 
     public void setParameters(List<Token> params){

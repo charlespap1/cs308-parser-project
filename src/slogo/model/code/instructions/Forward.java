@@ -1,35 +1,26 @@
 package slogo.model.code.instructions;
 
 import slogo.model.Turtle;
+import slogo.model.code.Token;
 import slogo.model.code.instructions.Instruction;
 
 public class Forward extends Instruction {
 
-    private static final int numArgs = 1;
+    private static final int NUM_ARGS = 1;
 
     @Override
-    public int execute (Turtle t) { //(Turtle t, Collection<Variable> vars)
-        //TODO: check if parameter is instruction, if so execute
-//        if (this.hasInnerInstruction()) {
-//            this.valueForExec = this.possibleInner.execute(t, vars);
-//        }
-//        t.setxPos(t.getxPos() + valueForExec * Math.cos(t.getAngle()));
-//        t.setyPos(t.getyPos() + valueForExec * Math.sin(t.getAngle()));
-//        return valueForExec;
-
-        //here is the logic that works for bound variables:
-//        if (hasInnerInstruction()) {
-//            valueForExec = possibleInner.execute(t, vars);
-//        }
-//        double x = t.getXPos() + valueForExec * Math.cos(t.getAngle());
-//        double y = t.getYPos() + valueForExec * Math.sin(t.getAngle());
-//        t.setProperties(x, y, t.getAngle(), t.getIsPenUp());
-//        return valueForExec;
-        return 0;
+    public void execute (Turtle t) {
+        Token valueToMove = this.parameters.get(0);
+        if(valueToMove instanceof Instruction)
+            ((Instruction)valueToMove).execute(t);
+        int valueForExec = valueToMove.generateValue();
+        double x = t.getXPos() + valueForExec * Math.cos(t.getAngle());
+        double y = t.getYPos() + valueForExec * Math.sin(t.getAngle());
+        t.setProperties(x, y, t.getAngle(), t.getIsPenUp());
     }
 
     public int numRequiredArgs(){
-        return numArgs;
+        return NUM_ARGS;
     }
 
     public int generateValue(){

@@ -4,8 +4,9 @@ public class Constant implements Token {
 
     private final int val;
 
-    public Constant(int value){
-        val = value;
+    public Constant(String value){
+        val = Integer.parseInt(value);
+        //TODO: error handling
     }
 
     public int generateValue() {
