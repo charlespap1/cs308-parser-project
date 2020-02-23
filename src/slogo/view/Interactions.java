@@ -1,17 +1,21 @@
 package slogo.view;
 
 import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import slogo.State;
+import slogo.controller.ButtonAction;
 import slogo.view.scrollers.HistoryCanvas;
 
 /**
  * This class holds all of the interactions between the UI objects
  */
-public class Interactions implements View{
+public class Interactions implements View {
+  public static final String TITLE = "SLogo";
 
   private UserCommandField myUserInput;
   private Group root;
@@ -23,14 +27,14 @@ public class Interactions implements View{
   private HistoryCanvas myHistory;
   private Text myCurrentErrorMessage;
 
-  public Interactions(SetupScreen setup)
+  public Interactions(Stage primaryStage)
   {
-    myGo = setup.getGoButton();
-    myGo.setOnAction(e -> getInstruction());
+    SetupScreen setup = new SetupScreen();
+    Scene myScene = setup.setupGame();
 
+    myGo = setup.getGoButton();
     myClear = setup.getClearButton();
     myClear.setOnAction(e -> clearCanvas());
-
     myStop = setup.getStopButton();
     myStop.setOnAction(e -> returnToDefaultTurtle());
 
@@ -40,6 +44,10 @@ public class Interactions implements View{
     myHistory = setup.getHistoryCanvas();
     root = setup.getRoot();
     myCurrentErrorMessage = setup.getCurrentErrorMessage();
+
+    primaryStage.setScene(myScene);
+    primaryStage.setTitle(TITLE);
+    primaryStage.show();
   }
 
   /**
@@ -53,14 +61,15 @@ public class Interactions implements View{
     String input = myUserInput.getUserInput();
     if(input.equals("hi"))
     {
+      //there is now a listener so that when the ylocation of the turtle changes, update in this class will be called
       State newState = new State(50, 50, false, 0);
-      updateDisplay(newState);
+      //updateDisplay(newState);
       newState = new State(50, 30, false, 0);
-      updateDisplay(newState);
+      //updateDisplay(newState);
       newState = new State(0, -100, false, 0);
-      updateDisplay(newState);
+      //updateDisplay(newState);
       newState = new State(-200, -200, false, -90);
-      updateDisplay(newState);
+      //updateDisplay(newState);
     }
     else if(input.equals("bye"))
     {
@@ -73,22 +82,22 @@ public class Interactions implements View{
     return myUserInput.getUserInput();
   }
 
+  public void setGoButton(ButtonAction goAction){
+    myGo.setOnAction(e -> goAction.onClickAction());
+  }
+
   /**
    * Updates the movement of the turtle according to new states
-   * @param nextState
    */
-  @Override
-  public void updateDisplay(State nextState) {
-    Line newLine = myTurtle.update(nextState);
+  public void update() {
+    Line newLine = myTurtle.drawLine();
     root.getChildren().add(newLine);
-    root.getChildren().remove(myTurtle.getView());
-    root.getChildren().add(myTurtle.getView());
     myCanvas.addLine(newLine);
 
     //add stuff 5 times to see scrolling effect
     for(int i = 0; i < 5; i++)
     {
-      String command = nextState.toString();
+      String command = myTurtle.getCommand();
       myHistory.addHistory(command);
     }
 
@@ -113,5 +122,18 @@ public class Interactions implements View{
   {
     myTurtle.returnTurtleToDefault();
     clearCanvas();
+  }
+
+  public void setProperties(slogo.model.Turtle turtle){
+    myTurtle.setProperties(turtle);
+    turtle.turtleYProperty().addListener((o, oldVal, newVal) -> {
+      System.out.println("turtle has changed!");
+      update();
+      // x, y, angle, and penUp will update automatically w binding. also if we change them here, it should
+      // also change the values in model.turtle since the binding is bidirectional
+      // so once y changes, you know all 3 others are changed and you can draw a line (or not) and update currx and
+      // curry, which exist specifically for line drawing purposes
+      // DELETE THIS COMMENT LATER
+    });
   }
 }

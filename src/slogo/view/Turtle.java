@@ -1,5 +1,11 @@
 package slogo.view;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -30,6 +36,13 @@ public class Turtle {
   private double xPos;
   private double yPos;
 
+  private DoubleProperty x;
+  private DoubleProperty y;
+  private DoubleProperty angle;
+  private BooleanProperty penUp;
+  private double currX;
+  private double currY;
+
   public Turtle(Image image, double canvasWidth, double canvasHeight)
   {
     canvasLeftPadding = DrawingCanvas.CANVAS_SIDE_PADDING;
@@ -40,12 +53,57 @@ public class Turtle {
     myView.setFitWidth(TURTLE_IMAGE_SIZE);
     myView.setFitHeight(TURTLE_IMAGE_SIZE);
 
-
     this.canvasWidth = canvasWidth;
     this.canvasHeight = canvasHeight;
 
+
+
+
+    x = new SimpleDoubleProperty();
+    y = new SimpleDoubleProperty();
+    angle = new SimpleDoubleProperty();
+    penUp = new SimpleBooleanProperty();
     setDefaultValues();
 
+    //this binding should take care of all changes in x and y and angle later on
+    myView.xProperty().bind(x.add(-TURTLE_FACTOR));
+    myView.yProperty().bind(y.add(-TURTLE_FACTOR));
+    myView.rotateProperty().bind(angle);
+  }
+
+  public void setProperties(slogo.model.Turtle turtle){
+    x.bindBidirectional(turtle.turtleXProperty());
+    y.bindBidirectional(turtle.turtleYProperty());
+    angle.bindBidirectional(turtle.turtleAngleProperty());
+    penUp.bindBidirectional(turtle.penUpProperty());
+    currX = x.getValue();
+    currY = y.getValue();
+
+    y.addListener((o, oldVal, newVal) -> {
+      System.out.println("turtle has changed!");
+      // x, y, angle, and penUp will update automatically w binding. also if we change them here, it should
+      // also change the values in model.turtle since the binding is bidirectional
+      // so once y changes, you know all 3 others are changed and you can draw a line (or not) and update currx and
+      // curry, which exist specifically for line drawing purposes
+      // DELETE THIS COMMENT LATER
+      drawLine();
+    });
+    setDefaultValues();
+  }
+
+  public String getCommand(){
+    return "x pos: " + x.getValue() + ", y pos: " + y.getValue() + ", angle: " + angle.getValue() + ", pen up: " + penUp.getValue();
+  }
+
+  //new drawline method simpler, replace old one with this once we're done transitioning to props
+  public Line drawLine(){
+    Line line = null;
+    if (!penUp.getValue()) {
+      line = new Line (currX, currY, x.getValue(), y.getValue());
+    }
+    currX = x.getValue();
+    currY = y.getValue();
+    return line;
   }
 
   private void setDefaultValues()
@@ -53,12 +111,10 @@ public class Turtle {
     centerX = canvasLeftPadding + canvasWidth/2;
     centerY = canvasTopPadding + canvasHeight/2;
 
-    xPos = centerX;
-    yPos = centerY;
-
-    myView.setX(xPos - TURTLE_FACTOR);
-    myView.setY(yPos - TURTLE_FACTOR);
-    myView.setRotate(DEFAULT_ANGLE);
+    // this should be all we need to change to reset turtle in front and back end
+    x.setValue(centerX);
+    y.setValue(centerY);
+    angle.setValue(DEFAULT_ANGLE);
   }
 
   /**
@@ -79,29 +135,7 @@ public class Turtle {
     return myView;
   }
 
-  /**
-   * Updates the location or attributes of the turtle
-   * @param nextState
-   */
-  public Line update(State nextState)
-  {
-    Line newLine = null;
-    if(!nextState.isPenUp())
-    {
-      newLine = drawLine(nextState);
-    }
-    xPos = xPos + nextState.getX();
-    yPos = yPos + nextState.getY();
-
-    myView.setX(xPos - TURTLE_FACTOR);
-    myView.setY(yPos - TURTLE_FACTOR);
-    myView.setRotate(nextState.getAngleFacing());
-
-    return newLine;
-  }
-
-
-  private Line drawLine(State nextState)
+  public Line drawLine(State nextState)
   {
     Line line = new Line (xPos, yPos, nextState.getX() + xPos, nextState.getY() + yPos);
     //line.setStroke(nextState.getPenColor());

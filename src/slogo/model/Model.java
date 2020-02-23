@@ -34,6 +34,8 @@ public class Model implements ModelAPI{
         turtle = new Turtle(0, 0, true, 0);
     }
 
+    public Turtle getTurtle(){ return turtle; }
+
     public void executeCode(String rawString) {
         parseInstructions(rawString);
     }

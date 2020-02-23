@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import slogo.Main;
@@ -23,7 +24,10 @@ import slogo.view.scrollers.VariableViewer;
 public class SetupScreen {
 
   public static final String TURTLE_IMAGE = "turtle.png";
-  private static final double BOX_SPACING = Main.BOX_SPACING;
+  public static final double BOX_SPACING = 10;
+  public static final int WIDTH = 1000;
+  public static final int HEIGHT = 600;
+  public static final Paint BACKGROUND = Color.AZURE;
 
   private int width;
   private int height;
@@ -46,12 +50,12 @@ public class SetupScreen {
   private HBox belowCanvasButtons;
 
 
-  public SetupScreen(int width, int height, Paint background, Group root)
+  public SetupScreen()
   {
-    this.width = width;
-    this.height = height;
-    this.background = background;
-    this.root = root;
+    this.width = WIDTH;
+    this.height = HEIGHT;
+    this.background = BACKGROUND;
+    this.root = new Group();
   }
 
   /**
@@ -106,18 +110,15 @@ public class SetupScreen {
   {
     myGo = new Button(GoButton.BUTTON_TEXT);
     myGo.setMinWidth(myUserInput.getWidth());
-    //myGo.setOnAction(e -> getInstruction());
     belowInputFieldItems.getChildren().add(myGo);
     belowInputFieldItems.getChildren().add(myCurrentErrorMessage);
 
     myClear = new Button("Clear Canvas");
     myClear.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
-    //myClear.setOnAction(e -> clearCanvas());
     belowCanvasButtons.getChildren().add(myClear);
 
     myStop = new Button("Stop Turtle");
     myStop.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
-    //myStop.setOnAction(e -> returnTurtle());
     belowCanvasButtons.getChildren().add(myStop);
   }
 
@@ -127,22 +128,18 @@ public class SetupScreen {
    */
   public Button getGoButton()
   {
-
     return myGo;
   }
   public Button getStopButton()
   {
-
     return myStop;
   }
   public Button getClearButton()
   {
-
     return myClear;
   }
   public Turtle getTurtle()
   {
-
     return myTurtle;
   }
 
@@ -152,19 +149,16 @@ public class SetupScreen {
   }
   public DrawingCanvas getDrawingCanvas()
   {
-
     return myDrawingCanvas;
   }
 
   public HistoryCanvas getHistoryCanvas()
   {
-
     return myHistory;
   }
 
   public Text getCurrentErrorMessage()
   {
-
     return myCurrentErrorMessage;
   }
 

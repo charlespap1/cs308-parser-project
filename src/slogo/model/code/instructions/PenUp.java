@@ -8,11 +8,18 @@ public class PenUp extends Instruction {
     private static final int numArgs = 0;
 
     @Override
-    public int execute (Turtle t) {
+    public int execute (Turtle t) { //(Turtle t, Collection<Variable> vars)
 //        if (this.hasInnerInstruction()) {
 //            this.valueForExec = this.possibleInner.execute(t, vars);
 //        }
 //        t.setPenUp(true);
+
+        // bound vars code:
+//        if (this.hasInnerInstruction()) {
+//            valueForExec = possibleInner.execute(t, vars);
+//        }
+//        t.setProperties(t.getXPos(), t.getYPos(), t.getAngle(), true);
+//        return 0;
         return 0;
     }
 
@@ -27,4 +34,5 @@ public class PenUp extends Instruction {
     public String toString(){
         return "Pen Up";
     }
+    // TODO: why is this here? should be from resource file
 }

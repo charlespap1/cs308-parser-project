@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 public class RegexHandler {
 
     // where to find resources specifically for this class
-    private static final String RESOURCES_PACKAGE = ".resources.languages.";
+    private static final String RESOURCES_PACKAGE = "slogo.model.parse.";
     // "types" and the regular expression patterns that recognize those types
     // note, it is a list because order matters (some patterns may be more generic)
     private List<Map.Entry<String, Pattern>> mySymbols;

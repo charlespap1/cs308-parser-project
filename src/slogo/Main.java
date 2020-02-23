@@ -48,9 +48,9 @@ public class Main extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception {
         root = new Group();
-        mySetup = new SetupScreen(WIDTH, HEIGHT, BACKGROUND, root);
+        mySetup = new SetupScreen();
         myScene = mySetup.setupGame();
-        myInteractions = new Interactions(mySetup);
+        //myInteractions = new Interactions(mySetup);
         //setNeededVars();
         //System.out.println(getClass().getResource(DEFAULT_RESOURCE_FOLDER + MAIN_STYLESHEET).toExternalForm());
         //myScene.getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + MAIN_STYLESHEET).toExternalForm());
@@ -66,6 +66,8 @@ public class Main extends Application{
         animation.play();
 
     }
+
+
 
     private void step (double elapsedTime){
 
