@@ -27,11 +27,11 @@ public class Turtle {
   private double centerX;
   private double centerY;
 
-  private DoubleProperty x;
-  private DoubleProperty y;
-  private DoubleProperty angle;
-  private BooleanProperty penUp;
-  private BooleanProperty visible;
+  private DoubleProperty x = new SimpleDoubleProperty();
+  private DoubleProperty y = new SimpleDoubleProperty();
+  private DoubleProperty angle = new SimpleDoubleProperty();
+  private BooleanProperty penUp = new SimpleBooleanProperty();
+  private BooleanProperty visible = new SimpleBooleanProperty();
   private double currX;
   private double currY;
 
@@ -43,12 +43,6 @@ public class Turtle {
     myTurtleView = new ImageView(image);
     myTurtleView.setFitWidth(TURTLE_IMAGE_SIZE);
     myTurtleView.setFitHeight(TURTLE_IMAGE_SIZE);
-
-    x = new SimpleDoubleProperty();
-    y = new SimpleDoubleProperty();
-    angle = new SimpleDoubleProperty();
-    penUp = new SimpleBooleanProperty();
-    visible = new SimpleBooleanProperty();
 
     //this binding should take care of all changes in x and y and angle later on
     myTurtleView.xProperty().bind(x.add(centerX-TURTLE_FACTOR));
@@ -78,12 +72,6 @@ public class Turtle {
     angle.setValue(DEFAULT_ANGLE);
   }
 
-
-  public String getCommand(){
-    return "x pos: " + x.getValue() + ", y pos: " + y.getValue() + ", angle: " + angle.getValue() + ", pen up: " + penUp.getValue();
-  }
-
-  //new drawline method simpler, replace old one with this once we're done transitioning to props
   public Line drawLine(){
     Line line = null;
     if (!penUp.getValue()) {

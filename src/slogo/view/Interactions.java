@@ -1,5 +1,6 @@
 package slogo.view;
 
+import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -7,9 +8,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import slogo.State;
 import slogo.controller.ButtonAction;
 import slogo.view.scrollers.HistoryCanvas;
+import slogo.view.scrollers.ListViewer;
 
 /**
  * This class holds all of the interactions between the UI objects
@@ -17,6 +18,7 @@ import slogo.view.scrollers.HistoryCanvas;
 public class Interactions implements View {
   public static final String TITLE = "SLogo";
 
+  private SetupScreen mySetup;
   private UserCommandField myUserInput;
   private Group root;
   private Turtle myTurtle;
@@ -29,21 +31,21 @@ public class Interactions implements View {
 
   public Interactions(Stage primaryStage)
   {
-    SetupScreen setup = new SetupScreen();
-    Scene myScene = setup.setupGame();
+    mySetup = new SetupScreen();
+    Scene myScene = mySetup.setupGame();
 
-    myGo = setup.getGoButton();
-    myClear = setup.getClearButton();
+    myGo = mySetup.getGoButton();
+    myClear = mySetup.getClearButton();
     myClear.setOnAction(e -> clearCanvas());
-    myStop = setup.getStopButton();
+    myStop = mySetup.getStopButton();
     myStop.setOnAction(e -> returnToDefaultTurtle());
 
-    myTurtle = setup.getTurtle();
-    myUserInput = setup.getUserInput();
-    myCanvas = setup.getDrawingCanvas();
-    myHistory = setup.getHistoryCanvas();
-    root = setup.getRoot();
-    myCurrentErrorMessage = setup.getCurrentErrorMessage();
+    myTurtle = mySetup.getTurtle();
+    myUserInput = mySetup.getUserInput();
+    myCanvas = mySetup.getDrawingCanvas();
+    myHistory = mySetup.getHistoryCanvas();
+    root = mySetup.getRoot();
+    myCurrentErrorMessage = mySetup.getCurrentErrorMessage();
 
     primaryStage.setScene(myScene);
     primaryStage.setTitle(TITLE);
@@ -109,5 +111,10 @@ public class Interactions implements View {
       // DELETE THIS COMMENT LATER});
     });
     turtle.currCommandProperty().addListener((o, oldVal, newVal) -> myHistory.addHistory(newVal));
+  }
+
+  public void setViewLists(ObservableList<String> variableList, ObservableList<String> newCommandList){
+    mySetup.setVariableList(variableList);
+    mySetup.setNewCommandList(newCommandList);
   }
 }
