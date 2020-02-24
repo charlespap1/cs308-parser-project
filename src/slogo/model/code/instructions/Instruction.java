@@ -9,6 +9,7 @@ import java.util.List;
 public abstract class Instruction implements Token {
 
     protected List<Token> parameters;
+    protected String instrName;
 
     public Instruction(){
         parameters = null;
@@ -21,4 +22,3 @@ public abstract class Instruction implements Token {
         parameters = params;
     }
 }
-

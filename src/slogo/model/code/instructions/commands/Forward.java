@@ -8,6 +8,11 @@ public class Forward extends Instruction {
 
     private static final int NUM_ARGS = 1;
 
+    public Forward(String name){
+        super();
+        this.instrName = name;
+    }
+
     @Override
     public void execute (Turtle t) {
         Token valueToMove = this.parameters.get(0);
@@ -15,9 +20,10 @@ public class Forward extends Instruction {
             ((Instruction) valueToMove).execute(t);
         }
         int valueForExec = valueToMove.generateValue();
-        double x = t.getXPos() + valueForExec * Math.cos(t.getAngle());
-        double y = t.getYPos() + valueForExec * Math.sin(t.getAngle());
-        t.setProperties(x, y, t.getAngle(), t.getIsPenUp());
+        double x = t.getXPos() + valueForExec * Math.cos(Math.toRadians(t.getAngle()));
+        double y = t.getYPos() + valueForExec * Math.sin(Math.toRadians(t.getAngle()));
+        t.setLocation(x, y);
+        t.setCurrCommand("forward " +valueForExec +"\n");
     }
 
     public int numRequiredArgs(){
@@ -29,6 +35,6 @@ public class Forward extends Instruction {
     }
 
     public String toString(){
-        return "";
+        return instrName;
     }
 }

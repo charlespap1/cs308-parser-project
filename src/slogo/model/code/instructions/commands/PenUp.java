@@ -9,7 +9,8 @@ public class PenUp extends Instruction {
 
     @Override
     public void execute (Turtle t) { //(Turtle t, Collection<Variable> vars)
-        t.setProperties(t.getXPos(), t.getYPos(), t.getAngle(), true);
+        //t.setProperties(t.getXPos(), t.getYPos(), t.getAngle(), true);
+        t.setPenUp(true);
     }
 
     public int numRequiredArgs(){

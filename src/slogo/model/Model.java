@@ -31,7 +31,7 @@ public class Model implements ModelAPI{
         createFromString = new CodeFactory(LANG);
         typeCheck = new RegexHandler();
         typeCheck.addPatterns(SYNTAX);
-        turtle = new Turtle(0, 0, true, 0);
+        turtle = new Turtle(0, 0, false, 0);
     }
 
     public Turtle getTurtle(){ return turtle; }

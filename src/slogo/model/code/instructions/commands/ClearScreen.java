@@ -13,7 +13,7 @@ public class ClearScreen extends Instruction {
     @Override
     public void execute (Turtle t) {
         //TODO: how will frontend know when this instruction is called and erase the turtle's trails?
-        t.setProperties(HOME_X, HOME_Y, t.getAngle(), t.getIsPenUp());
+        t.setLocation(HOME_X, HOME_Y);
     }
 
     public int numRequiredArgs(){

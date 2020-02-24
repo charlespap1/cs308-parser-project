@@ -10,7 +10,8 @@ public class PenDown extends Instruction {
 
     @Override
     public void execute (Turtle t) { //(Turtle t, Collection<Variable> vars)
-        t.setProperties(t.getXPos(), t.getYPos(), t.getAngle(), false);
+        //t.setProperties(t.getXPos(), t.getYPos(), t.getAngle(), false);
+        t.setPenUp(false);
     }
 
     public int numRequiredArgs(){

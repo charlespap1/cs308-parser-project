@@ -10,26 +10,12 @@ public class SetHeading extends Instruction {
 
     @Override
     public void execute (Turtle t) { //(Turtle t, Collection<Variable> vars)
-//        if (this.hasInnerInstruction()) {
-//            this.valueForExec = this.possibleInner.execute(t, vars);
-//        }
-//        double prevAngle = t.getAngle();
-//        t.setAngle(this.valueForExec);
-//        return Math.abs(t.getAngle() - prevAngle);
-
-        // bound vars code:
-//        if (this.hasInnerInstruction()) {
-//            valueForExec = possibleInner.execute(t, vars);
-//        }
-//        double prevAngle = t.getAngle();
-//        t.setProperties(t.getXPos(), t.getYPos(), valueForExec, t.getIsPenUp());
-//        return Math.abs(t.getAngle() - prevAngle);
         Token angleValue = this.parameters.get(0);
         if (angleValue instanceof Instruction) {
             ((Instruction) angleValue).execute(t);
         }
         int valueForExec = angleValue.generateValue();
-        t.setProperties(t.getXPos(), t.getYPos(), valueForExec, t.getIsPenUp());
+        t.setAngle(valueForExec);
     }
 
     public int numRequiredArgs(){

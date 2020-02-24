@@ -16,7 +16,7 @@ public class Left extends Instruction {
         }
         int valueForExec = valueToRotate.generateValue();
         double angle = t.getAngle() + valueForExec;
-        t.setProperties(t.getXPos(), t.getYPos(), angle, t.getIsPenUp());
+        t.setAngle(angle);
     }
 
     public int numRequiredArgs(){

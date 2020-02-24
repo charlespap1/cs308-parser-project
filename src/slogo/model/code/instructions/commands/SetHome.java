@@ -11,24 +11,7 @@ public class SetHome extends Instruction {
 
     @Override
     public void execute (Turtle t) { //(Turtle t, Collection<Variable> vars)
-//        if (this.hasInnerInstruction()) {
-//            this.valueForExec = this.possibleInner.execute(t, vars);
-//        }
-//        double xPos = t.getxPos();
-//        double yPos = t.getyPos();
-//        t.setxPos(0);
-//        t.setyPos(0);
-//        return Math.sqrt(Math.pow(xPos, 2) + Math.pow(yPos, 2));
-
-        // bound vars code:
-//        if (this.hasInnerInstruction()) {
-//            this.valueForExec = this.possibleInner.execute(t, vars);
-//        }
-//        double xPos = t.getXPos();
-//        double yPos = t.getYPos();
-//        t.setProperties(HOME_X, HOME_Y, t.getAngle(), t.getIsPenUp());
-//        return Math.sqrt(Math.pow(xPos, 2) + Math.pow(yPos, 2));
-        t.setProperties(HOME_X, HOME_Y, t.getAngle(), t.getIsPenUp());
+        t.setLocation(HOME_X, HOME_Y);
     }
 
     public int numRequiredArgs(){

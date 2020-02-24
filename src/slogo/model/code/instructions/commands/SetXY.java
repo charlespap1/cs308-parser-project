@@ -20,7 +20,7 @@ public class SetXY extends Instruction {
         }
         int xCoord = xCoordToRelocate.generateValue();
         int yCoord = yCoordToRelocate.generateValue();
-        t.setProperties(xCoord, yCoord, t.getAngle(), t.getIsPenUp());
+        t.setLocation(xCoord, yCoord);
     }
 
     public int numRequiredArgs(){

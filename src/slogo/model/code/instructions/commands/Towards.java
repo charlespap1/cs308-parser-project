@@ -21,7 +21,7 @@ public class Towards extends Instruction {
         int xCoord = xCoordToFace.generateValue();
         int yCoord = yCoordToFace.generateValue();
         double angle = Math.atan2(yCoord - t.getYPos(), xCoord - t.getXPos());
-        t.setProperties(t.getXPos(), t.getYPos(), angle, t.getIsPenUp());
+        t.setAngle(angle);
     }
 
     public int numRequiredArgs(){

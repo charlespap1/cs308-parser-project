@@ -17,7 +17,7 @@ public class Back extends Instruction {
         int valueForExec = valueToMove.generateValue();
         double x = t.getXPos() - valueForExec * Math.cos(t.getAngle());
         double y = t.getYPos() - valueForExec * Math.sin(t.getAngle());
-        t.setProperties(x, y, t.getAngle(), t.getIsPenUp());
+        t.setLocation(x, y);
     }
 
     public int numRequiredArgs(){

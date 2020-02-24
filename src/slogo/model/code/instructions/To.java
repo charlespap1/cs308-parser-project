@@ -24,7 +24,6 @@ public class To extends Instruction {
 
         myCommand = new NewCommand(name, variables, instructions);
         myFunction.addToList(myCommand);
-        //TODO: put into list in code factory
     }
 
     @Override

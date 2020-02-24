@@ -3,10 +3,9 @@ package slogo.model.parse;
 import slogo.model.code.NewCommandName;
 import slogo.model.code.Token;
 import slogo.model.code.Variable;
-import slogo.model.code.instructions.NewCommand;
-import slogo.model.code.instructions.To;
-
+import slogo.model.code.instructions.*;
 import java.lang.reflect.Constructor;
+import java.util.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,7 +36,11 @@ public class CodeFactory {
     }
 
     private void generateMappings() {
-        //TODO: add code to create mappings between Strings returned from parsing and class types
+        List<String> keys = keyGrabber.getKeys();
+        for(String key: keys){
+            CodeType currentType = CodeType.valueOf(key.toUpperCase());
+            mappings.put(key,currentType.getAssociatedClass());
+        }
     }
 
     private Token getVariable(String piece){
@@ -61,11 +64,9 @@ public class CodeFactory {
         Token token = null;
         try{
             Class c = mappings.get(objectType);
-            Constructor objConstruct = c.getDeclaredConstructor();
+            Constructor objConstruct = c.getDeclaredConstructor(String.class);
             objConstruct.setAccessible(true);
-            token = (Token) objConstruct.newInstance();
-            //token = (Token) objConstruct.newInstance(piece);
-            // TODO: pass string
+            token = (Token) objConstruct.newInstance(piece);
         }
         catch(Exception e){
             e.printStackTrace();
