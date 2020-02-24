@@ -2,7 +2,6 @@ package slogo.view.scrollers;
 
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
-import javafx.scene.text.Text;
 
 public class ListViewer extends ScrollingWindow {
   private ListView<String> myList = new ListView<>();

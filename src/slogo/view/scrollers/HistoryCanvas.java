@@ -13,8 +13,7 @@ public class HistoryCanvas extends ScrollingWindow {
 
   public static final String DEFAULT_HISTORY = "Your history: ";
 
-  public HistoryCanvas(double elementWidthFactor, double topPadding)
-  {
+  public HistoryCanvas(double elementWidthFactor, double topPadding) {
     super(elementWidthFactor, topPadding, DEFAULT_HISTORY);
   }
 

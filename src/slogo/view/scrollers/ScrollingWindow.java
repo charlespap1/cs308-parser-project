@@ -7,7 +7,7 @@ import javafx.scene.text.Text;
 import slogo.Main;
 import slogo.view.DrawingCanvas;
 
-public class ScrollingWindow extends Object{
+abstract class ScrollingWindow extends Object{
 
   public static final double SCROLLING_SIDE_PADDING = DrawingCanvas.CANVAS_SIDE_PADDING;
   public static final double SCROLLING_TOP_PADDING = DrawingCanvas.CANVAS_TOP_PADDING;
@@ -31,11 +31,8 @@ public class ScrollingWindow extends Object{
     myHolder.setLayoutX(elementWidthFactor*Main.WIDTH/3 + SCROLLING_SIDE_PADDING);
     myHolder.setLayoutY(topPadding);
 
-
     myTextHolder = new VBox(TEXT_HOLDER_SPACING);
     myTitle = new Text(title);
-
-    myHolder.getChildren().add(myTitle);
 
     myView = new ScrollPane();
     myView.setContent(myTextHolder);
@@ -45,7 +42,7 @@ public class ScrollingWindow extends Object{
     myView.setMaxWidth(myWidth);
     myView.setMinWidth(myWidth);
 
-    myHolder.getChildren().add(myView);
+    myHolder.getChildren().addAll(myView, myTitle);
   }
 
   /**
