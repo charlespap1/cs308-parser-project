@@ -1,25 +1,25 @@
-package slogo.model.code.instructions.math;
+package slogo.model.code.instructions.booleans;
 
 import slogo.model.Turtle;
-import slogo.model.code.Token;
 import slogo.model.code.instructions.Instruction;
 
 import java.util.List;
 
-public class Cosine extends Instruction {
+public class Greater extends Instruction {
 
-    private static final int NUM_ARGS = 1;
+    private static final int NUM_ARGS = 2;
 
-    public Cosine(String name) {
+    public Greater(String name) {
         super();
         this.instrName = name;
     }
 
     @Override
     public void execute (Turtle t) {
-        List<Integer> paramsAsVals = this.getParamsAsVals(t);
-        int val = paramsAsVals.get(0);
-        this.valueOfExecution = (int) Math.cos(Math.toRadians(val));
+        List<Integer> paramsAsInts = this.getParamsAsVals(t);
+        int val1 = paramsAsInts.get(0);
+        int val2 = paramsAsInts.get(1);
+        this.valueOfExecution = val1 > val2 ? 1 : 0;
     }
 
     public int numRequiredArgs(){

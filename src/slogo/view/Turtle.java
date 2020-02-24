@@ -4,14 +4,11 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import slogo.State;
 
 /**
  * This class holds all of the attributes of our GUI turtle
@@ -34,6 +31,8 @@ public class Turtle {
   private BooleanProperty visible = new SimpleBooleanProperty();
   private double currX;
   private double currY;
+
+  private Color penColor = DEFAULT_PEN_COLOR;
 
   public Turtle(Image image, double canvasWidth, double canvasHeight)
   {
@@ -76,6 +75,7 @@ public class Turtle {
     Line line = null;
     if (!penUp.getValue()) {
       line = new Line(currX, currY, x.getValue() + centerX, y.getValue() + centerY);
+      line.setStroke(penColor);
     }
     currX = x.getValue() + centerX;
     currY = y.getValue() + centerY;
@@ -98,4 +98,11 @@ public class Turtle {
   public Node getView () {
     return myTurtleView;
   }
+
+  public void changePenColor(Color color)
+  {
+    penColor = color;
+    System.out.println("here");
+  }
+
 }

@@ -6,6 +6,8 @@ import slogo.model.code.NewCommandName;
 import slogo.model.code.Token;
 import slogo.model.code.Variable;
 import slogo.model.code.instructions.*;
+import slogo.model.code.instructions.misc.To;
+
 import java.lang.reflect.Constructor;
 import java.util.*;
 import java.util.HashMap;

@@ -1,21 +1,24 @@
-package slogo.model.code.instructions.math;
+package slogo.model.code.instructions.booleans;
 
 import slogo.model.Turtle;
-import slogo.model.code.Token;
 import slogo.model.code.instructions.Instruction;
 
-public class Pi extends Instruction {
+import java.util.List;
 
-    private static final int NUM_ARGS = 0;
+public class Not extends Instruction {
 
-    public Pi(String name) {
+    private static final int NUM_ARGS = 1;
+
+    public Not(String name) {
         super();
         this.instrName = name;
     }
 
     @Override
     public void execute (Turtle t) {
-        this.valueOfExecution = (int) Math.PI;
+        List<Integer> paramsAsInts = this.getParamsAsVals(t);
+        int val = paramsAsInts.get(0);
+        this.valueOfExecution = (val == 0) ? 1 : 0;
     }
 
     public int numRequiredArgs(){
