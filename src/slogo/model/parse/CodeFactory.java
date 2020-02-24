@@ -4,10 +4,10 @@ import slogo.model.code.NewCommandName;
 import slogo.model.code.Token;
 import slogo.model.code.Variable;
 import slogo.model.code.instructions.NewCommand;
+import slogo.model.code.instructions.To;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class CodeFactory {
@@ -15,6 +15,8 @@ public class CodeFactory {
     private Map<String,Class> mappings;
     private Map<String, NewCommand> newCommandMap;
     private Map<String, Variable> variableMap;
+
+    AddToListFunction addToNewCommandsList = token -> addNewCommand(token);
 
     public CodeFactory(String language){
         keyGrabber = new RegexHandler();
@@ -27,6 +29,11 @@ public class CodeFactory {
         keyGrabber.addPatterns("Syntax");
 
         generateMappings();
+    }
+
+    private void addNewCommand(Token token){
+        NewCommand command = (NewCommand) token;
+        newCommandMap.put(command.getName(), command);
     }
 
     private void generateMappings() {
@@ -50,6 +57,7 @@ public class CodeFactory {
         String objectType = keyGrabber.getSymbol(piece);
         if (objectType.equals("Variable")) return getVariable(piece);
         if (objectType.equals("Command")) return getNewCommand(piece);
+        if (objectType.equals("To")) return new To(addToNewCommandsList);
         Token token = null;
         try{
             Class c = mappings.get(objectType);
