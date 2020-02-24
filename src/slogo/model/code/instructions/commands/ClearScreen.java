@@ -18,10 +18,7 @@ public class ClearScreen extends Instruction {
     @Override
     public void execute (Turtle t) {
         //TODO: how will frontend know when this instruction is called and erase the turtle's trails?
-        double currX = t.getXPos();
-        double currY = t.getYPos();
-        double distToHome = Math.sqrt(Math.pow(currX - HOME_X,2) + Math.pow(currY - HOME_Y,2));
-        this.valueOfExecution = (int)distToHome;
+        this.valueOfExecution = (int)distFromHome(t.getXPos(),t.getYPos());
         t.setLocation(HOME_X, HOME_Y);
         t.setCurrCommand(toString());
         t.setCurrCommand("");
