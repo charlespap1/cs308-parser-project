@@ -21,6 +21,7 @@ public class IfElse extends Instruction {
         Token expr = this.parameters.get(0);
         Token list1 = this.parameters.get(1);
         Token list2 = this.parameters.get(2);
+        assert !(expr instanceof ListSyntax);
         this.valueOfExecution = 0;
         if (expr.generateValue() != 0) {
             runCommandsInList(list1, t);
@@ -30,16 +31,12 @@ public class IfElse extends Instruction {
     }
 
     public void runCommandsInList (Token list, Turtle t) {
-        if (list instanceof ListSyntax) {
-            List<Token> commands = ((ListSyntax) list).getContents();
-            for (Token command: commands) {
-                if (command instanceof Instruction) {
-                    ((Instruction) command).execute(t);
-                }
-                this.valueOfExecution = command.generateValue();
-            }
-        } else {
-            //throw error
+        assert list instanceof ListSyntax;
+        List<Token> commands = ((ListSyntax) list).getContents();
+        for (Token command: commands) {
+            assert command instanceof Instruction;
+            ((Instruction) command).execute(t);
+            this.valueOfExecution = command.generateValue();
         }
     }
 
@@ -48,6 +45,6 @@ public class IfElse extends Instruction {
     }
 
     public String toString(){
-        return instrName;
+        return instrName + " " + valueOfExecution;
     }
 }

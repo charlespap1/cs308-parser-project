@@ -20,18 +20,15 @@ public class If extends Instruction {
     public void execute (Turtle t) {
         Token expr = this.parameters.get(0);
         Token list = this.parameters.get(1);
+        assert !(expr instanceof ListSyntax);
+        assert list instanceof ListSyntax;
         this.valueOfExecution = 0;
         if (expr.generateValue() != 0) {
-            if (list instanceof ListSyntax) {
-                List<Token> commands = ((ListSyntax) list).getContents();
-                for (Token command: commands) {
-                    if (command instanceof Instruction) {
-                        ((Instruction) command).execute(t);
-                    }
-                    this.valueOfExecution = command.generateValue();
-                }
-            } else {
-                //throw error
+            List<Token> commands = ((ListSyntax) list).getContents();
+            for (Token command: commands) {
+                assert command instanceof Instruction;
+                ((Instruction) command).execute(t);
+                this.valueOfExecution = command.generateValue();
             }
         }
     }
@@ -41,6 +38,6 @@ public class If extends Instruction {
     }
 
     public String toString(){
-        return instrName;
+        return instrName + " " + valueOfExecution;
     }
 }

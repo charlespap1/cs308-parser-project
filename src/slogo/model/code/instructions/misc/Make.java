@@ -1,6 +1,7 @@
 package slogo.model.code.instructions.misc;
 
 import slogo.model.Turtle;
+import slogo.model.code.ListSyntax;
 import slogo.model.code.Token;
 import slogo.model.code.Variable;
 import slogo.model.code.instructions.Instruction;
@@ -18,16 +19,14 @@ public class Make extends Instruction {
     public void execute (Turtle t) {
         Token var = this.parameters.get(0);
         Token expr = this.parameters.get(1);
+        assert var instanceof Variable;
+        assert !(expr instanceof ListSyntax);
         if (expr instanceof Instruction) {
             ((Instruction) expr).execute(t);
         }
         int val = expr.generateValue();
-        if (var instanceof Variable) {
-            ((Variable) var).setVariable(val);
-            this.valueOfExecution = val;
-        } else {
-            //throw error
-        }
+        ((Variable) var).setVariable(val);
+        this.valueOfExecution = val;
     }
 
     public int numRequiredArgs(){
@@ -35,6 +34,6 @@ public class Make extends Instruction {
     }
 
     public String toString(){
-        return instrName;
+        return instrName + " " + valueOfExecution;
     }
 }

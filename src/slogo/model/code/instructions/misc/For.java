@@ -21,29 +21,26 @@ public class For extends Instruction {
     public void execute (Turtle t) {
         Token list1 = this.parameters.get(0);
         Token list2 = this.parameters.get(1);
+        assert list1 instanceof ListSyntax;
+        assert list2 instanceof ListSyntax;
         this.valueOfExecution = 0;
-        if (list1 instanceof ListSyntax) {
-            List<Token> loopParameters = ((ListSyntax) list1).getContents();
-            Token variable = loopParameters.get(0);
-            int start = loopParameters.get(1).generateValue();
-            int end = loopParameters.get(2).generateValue();
-            int increment = loopParameters.get(3).generateValue();
-            if (list2 instanceof ListSyntax) {
-                List<Token> commands = ((ListSyntax) list2).getContents();
-                for (int i = start; i <= end; i += increment) {
-                    if (variable instanceof Variable) {
-                        ((Variable) variable).setVariable(i);
-                    }
-                    for (Token command: commands) {
-                        if (command instanceof Instruction) {
-                            ((Instruction) command).execute(t);
-                        }
-                        this.valueOfExecution = command.generateValue();
-                    }
-                }
+
+        List<Token> loopParameters = ((ListSyntax) list1).getContents();
+        Token variable = loopParameters.get(0);
+        assert variable instanceof Variable;
+        // need to error check these?
+        int start = loopParameters.get(1).generateValue();
+        int end = loopParameters.get(2).generateValue();
+        int increment = loopParameters.get(3).generateValue();
+
+        List<Token> commands = ((ListSyntax) list2).getContents();
+        for (int i = start; i <= end; i += increment) {
+            ((Variable) variable).setVariable(i);
+            for (Token command: commands) {
+                assert command instanceof Instruction;
+                ((Instruction) command).execute(t);
+                this.valueOfExecution = command.generateValue();
             }
-        } else {
-            //throw error
         }
     }
 
@@ -52,6 +49,6 @@ public class For extends Instruction {
     }
 
     public String toString(){
-        return instrName;
+        return instrName + " " + valueOfExecution;
     }
 }

@@ -21,27 +21,24 @@ public class DoTimes extends Instruction {
     public void execute (Turtle t) {
         Token list1 = this.parameters.get(0);
         Token list2 = this.parameters.get(1);
+        assert (list1 instanceof ListSyntax) : "First parameter of this instruction needs to be a list";
+        assert (list2 instanceof ListSyntax) : "Second parameter of this instruction needs to be a list";
         this.valueOfExecution = 0;
-        if (list1 instanceof ListSyntax) {
-            List<Token> loopParameters = ((ListSyntax) list1).getContents();
-            Token variable = loopParameters.get(0);
-            int limit = loopParameters.get(1).generateValue();
-            if (list2 instanceof ListSyntax) {
-                List<Token> commands = ((ListSyntax) list2).getContents();
-                for (int i = 1; i <= limit; i++) {
-                    if (variable instanceof Variable) {
-                        ((Variable) variable).setVariable(i);
-                    }
-                    for (Token command: commands) {
-                        if (command instanceof Instruction) {
-                            ((Instruction) command).execute(t);
-                        }
-                        this.valueOfExecution = command.generateValue();
-                    }
-                }
+
+        List<Token> loopParameters = ((ListSyntax) list1).getContents();
+        Token variable = loopParameters.get(0);
+        assert variable instanceof Variable;
+        // need to error check this? if so, check limit is not a list. also, if it's an instruction, need to execute
+        int limit = loopParameters.get(1).generateValue();
+
+        List<Token> commands = ((ListSyntax) list2).getContents();
+        for (int i = 1; i <= limit; i++) {
+            ((Variable) variable).setVariable(i);
+            for (Token command: commands) {
+                assert command instanceof Instruction;
+                ((Instruction) command).execute(t);
+                this.valueOfExecution = command.generateValue();
             }
-        } else {
-            //throw error
         }
     }
 
@@ -50,6 +47,6 @@ public class DoTimes extends Instruction {
     }
 
     public String toString(){
-        return instrName;
+        return instrName + " " + valueOfExecution;
     }
 }
