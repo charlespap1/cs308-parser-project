@@ -20,8 +20,8 @@ public class Back extends Instruction {
         List<Integer> paramsAsVals = getParamsAsVals(t);
         int valueForExec = paramsAsVals.get(0);
         this.valueOfExecution = valueForExec;
-        double x = t.getXPos() - valueForExec * Math.cos(Math.toRadians(t.getAngle()));
-        double y = t.getYPos() - valueForExec * Math.sin(Math.toRadians(t.getAngle()));
+        double x = t.getXPos() + valueForExec * Math.cos(Math.toRadians(t.getAngle()));
+        double y = t.getYPos() + valueForExec * Math.sin(Math.toRadians(t.getAngle()));
         t.setLocation(x, y);
         t.setCurrCommand(toString());
         t.setCurrCommand("");
