@@ -24,7 +24,7 @@ public class Back extends Instruction {
         double x = t.getXPos() - valueForExec * Math.cos(t.getAngle());
         double y = t.getYPos() - valueForExec * Math.sin(t.getAngle());
         t.setLocation(x, y);
-        t.setCurrCommand("forward " +valueForExec);
+        t.setCurrCommand(toString());
         t.setCurrCommand("");
     }
 
@@ -33,6 +33,6 @@ public class Back extends Instruction {
     }
 
     public String toString(){
-        return "";
+        return instrName + valueOfExecution;
     }
 }

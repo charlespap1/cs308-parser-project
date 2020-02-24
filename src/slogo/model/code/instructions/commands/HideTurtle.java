@@ -16,7 +16,7 @@ public class HideTurtle extends Instruction {
     public void execute (Turtle t) {
         t.setVisible(false);
         this.valueOfExecution = 0;
-        t.setCurrCommand("Hide Turtle");
+        t.setCurrCommand(toString());
         t.setCurrCommand("");
     }
 
@@ -25,6 +25,6 @@ public class HideTurtle extends Instruction {
     }
 
     public String toString(){
-        return "";
+        return instrName;
     }
 }

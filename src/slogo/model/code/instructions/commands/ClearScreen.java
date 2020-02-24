@@ -23,7 +23,7 @@ public class ClearScreen extends Instruction {
         double distToHome = Math.sqrt(Math.pow(currX - HOME_X,2) + Math.pow(currY - HOME_Y,2));
         this.valueOfExecution = (int)distToHome;
         t.setLocation(HOME_X, HOME_Y);
-        t.setCurrCommand("Cleared Screen");
+        t.setCurrCommand(toString());
         t.setCurrCommand("");
     }
 
@@ -32,6 +32,6 @@ public class ClearScreen extends Instruction {
     }
 
     public String toString(){
-        return "";
+        return instrName;
     }
 }

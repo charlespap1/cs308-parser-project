@@ -23,7 +23,7 @@ public class Left extends Instruction {
         this.valueOfExecution = valueForExec;
         double angle = t.getAngle() + valueForExec;
         t.setAngle(angle);
-        t.setCurrCommand("rotate right by" + valueForExec);
+        t.setCurrCommand(toString());
         t.setCurrCommand("");
     }
 
@@ -32,6 +32,6 @@ public class Left extends Instruction {
     }
 
     public String toString(){
-        return "";
+        return instrName + valueOfExecution;
     }
 }

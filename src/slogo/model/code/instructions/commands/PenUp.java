@@ -16,7 +16,7 @@ public class PenUp extends Instruction {
     public void execute (Turtle t) {
         t.setPenUp(true);
         this.valueOfExecution = 0;
-        t.setCurrCommand("Pen Up");
+        t.setCurrCommand(toString());
         t.setCurrCommand("");
     }
 
@@ -25,6 +25,6 @@ public class PenUp extends Instruction {
     }
 
     public String toString(){
-        return "Pen Up";
+        return instrName;
     }
 }
