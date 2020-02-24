@@ -4,34 +4,30 @@ import slogo.model.Turtle;
 import slogo.model.code.Token;
 import slogo.model.code.instructions.Instruction;
 
+import java.util.List;
+
 public class Pow extends Instruction {
 
     private static final int NUM_ARGS = 2;
 
+    public Pow(String name) {
+        super();
+        this.instrName = name;
+    }
+
     @Override
     public void execute (Turtle t) {
-        Token firstVal = this.parameters.get(0);
-        Token secondVal = this.parameters.get(1);
-        if (firstVal instanceof Instruction) {
-            ((Instruction) firstVal).execute(t);
-        }
-        if (secondVal instanceof Instruction) {
-            ((Instruction) secondVal).execute(t);
-        }
-        int base = firstVal.generateValue();
-        int exponent = secondVal.generateValue();
+        List<Integer> paramsAsVals = this.getParamsAsVals(t);
+        int base = paramsAsVals.get(0);
+        int exponent = paramsAsVals.get(1);
+        this.valueOfExecution = (int) Math.pow(base, exponent);
     }
 
     public int numRequiredArgs(){
         return NUM_ARGS;
     }
 
-    // needs to return Math.pow(base, exponent)
-    public int generateValue(){
-        return this.parameters.get(0).generateValue();
-    }
-
     public String toString(){
-        return "";
+        return instrName + " " + valueOfExecution;
     }
 }

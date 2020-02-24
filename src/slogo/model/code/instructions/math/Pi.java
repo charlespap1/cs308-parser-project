@@ -8,21 +8,21 @@ public class Pi extends Instruction {
 
     private static final int NUM_ARGS = 0;
 
+    public Pi(String name) {
+        super();
+        this.instrName = name;
+    }
+
     @Override
     public void execute (Turtle t) {
-        // nothing
+        this.valueOfExecution = (int) Math.PI;
     }
 
     public int numRequiredArgs(){
         return NUM_ARGS;
     }
 
-    public int generateValue(){
-        //return Math.PI;
-        return 0;
-    }
-
     public String toString(){
-        return "";
+        return instrName + " " + valueOfExecution;
     }
 }
