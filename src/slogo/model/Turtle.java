@@ -1,9 +1,6 @@
 package slogo.model;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.*;
 
 public class Turtle {
 
@@ -12,7 +9,7 @@ public class Turtle {
     private DoubleProperty turtleAngle;
     private BooleanProperty penUp;
     private BooleanProperty visible;
-
+    private StringProperty currCommand;
 
     public Turtle(int xPos, int yPos, boolean isPenUp, int angle) {
         turtleX = new SimpleDoubleProperty(xPos);
@@ -20,6 +17,7 @@ public class Turtle {
         turtleAngle = new SimpleDoubleProperty(angle);
         penUp = new SimpleBooleanProperty(isPenUp);
         visible = new SimpleBooleanProperty(true);
+        currCommand = new SimpleStringProperty();
     }
 
     public DoubleProperty turtleXProperty(){ return turtleX; }
@@ -27,6 +25,7 @@ public class Turtle {
     public DoubleProperty turtleAngleProperty(){ return turtleAngle; }
     public BooleanProperty penUpProperty(){ return penUp; }
     public BooleanProperty visibleProperty(){ return visible; }
+    public StringProperty currCommandProperty(){ return currCommand; }
 
     // update all at once so that we know y is set last, drawline in view/turtle will work
     // would also probably work to update all individually if that's easier, as long as y is set last
@@ -38,6 +37,7 @@ public class Turtle {
     public void setVisible(boolean isVisible) { visible.set(isVisible); }
     public void setAngle(double angle) { turtleAngle.setValue(angle); }
     public void setPenUp(boolean isPenUp) { penUp.setValue(isPenUp);}
+    public void setCurrCommand(String command) { currCommand.setValue(command); }
 
     public double getXPos() {
         return turtleX.getValue();
