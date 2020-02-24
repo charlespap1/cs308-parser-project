@@ -1,17 +1,20 @@
 package slogo.view;
 
+import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
-import slogo.view.scrollers.NewCommandViewer;
 import slogo.view.scrollers.HistoryCanvas;
 import slogo.view.scrollers.ListViewer;
 
@@ -46,7 +49,7 @@ public class SetupScreen {
   private ListViewer myNewCommandViewer;
   private ListViewer myVariableView;
 
-  private Text myCurrentErrorMessage;
+  private Label myCurrentErrorMessage = new Label();
 
   private VBox belowInputFieldItems;
   private HBox belowCanvasButtons;
@@ -70,13 +73,12 @@ public class SetupScreen {
     //TODO: error handling also make settable
     Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(TURTLE_IMAGE)));
 
-    myCurrentErrorMessage = new Text("");
     myDrawingCanvas = new DrawingCanvas(width, height);
     myTurtle = new Turtle(image, myDrawingCanvas.getWidth(), myDrawingCanvas.getHeight());
     myUserInput = new UserCommandField(width, height);
 
     myHistory = new HistoryCanvas(2, DrawingCanvas.CANVAS_TOP_PADDING);
-    //TODO: remove hard coded text
+    //TODO: hard coded text
     myVariableView = new ListViewer(2, height/2.0, "Your variables: ");
     myNewCommandViewer = new ListViewer(1, DrawingCanvas.CANVAS_TOP_PADDING, "Your new commands: ");
 
@@ -85,7 +87,6 @@ public class SetupScreen {
     setButtons();
 
     root.getChildren().addAll(myDrawingCanvas.getView(), myTurtle.getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myNewCommandViewer.getView(), myVariableView.getView());
-
     return new Scene(root, width, height, background);
   }
 
@@ -97,7 +98,6 @@ public class SetupScreen {
     belowCanvasButtons.setMinWidth(myDrawingCanvas.getWidth());
     belowCanvasButtons.setAlignment(Pos.CENTER);
   }
-
 
   private void setVBoxLayout()
   {
@@ -115,6 +115,7 @@ public class SetupScreen {
     belowInputFieldItems.getChildren().add(myGo);
     belowInputFieldItems.getChildren().add(myCurrentErrorMessage);
 
+    //TODO: hard coded text
     myClear = new Button("Clear Canvas");
     myClear.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
     belowCanvasButtons.getChildren().add(myClear);
@@ -128,42 +129,31 @@ public class SetupScreen {
    * Getter methods necessary to access these elements in the Main class
    * @return
    */
-  public Button getGoButton()
-  {
-    return myGo;
-  }
-  public Button getStopButton()
-  {
-    return myStop;
-  }
-  public Button getClearButton()
-  {
-    return myClear;
-  }
   public Turtle getTurtle()
   {
     return myTurtle;
   }
 
-  public UserCommandField getUserInput()
+  public String getUserInput()
   {
-    return myUserInput;
+    return myUserInput.getUserInput();
   }
   public DrawingCanvas getDrawingCanvas()
   {
     return myDrawingCanvas;
   }
 
-  public HistoryCanvas getHistoryCanvas()
-  {
-    return myHistory;
-  }
   public void setVariableList(ObservableList<String> variableList) { myVariableView.bindList(variableList); }
   public void setNewCommandList(ObservableList<String> newCommandList) { myNewCommandViewer.bindList(newCommandList); }
-
-  public Text getCurrentErrorMessage()
+  public void addHistory(String command) { myHistory.addHistory(command);}
+  public void bindErrorMessage(StringProperty message) { myCurrentErrorMessage.textProperty().bind(message); }
+  public void setGoButton(EventHandler<ActionEvent> goAction)
   {
-    return myCurrentErrorMessage;
+    myGo.setOnAction(goAction);
+  }
+  public void setBelowCanvasButtons(EventHandler<ActionEvent> stopAction, EventHandler<ActionEvent> clearAction) {
+    myStop.setOnAction(stopAction);
+    myClear.setOnAction(clearAction);
   }
 
   public Group getRoot()
