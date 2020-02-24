@@ -29,6 +29,7 @@ public class Turtle {
   private DoubleProperty y;
   private DoubleProperty angle;
   private BooleanProperty penUp;
+  private BooleanProperty visible;
   private double currX;
   private double currY;
 
@@ -45,11 +46,13 @@ public class Turtle {
     y = new SimpleDoubleProperty();
     angle = new SimpleDoubleProperty();
     penUp = new SimpleBooleanProperty();
+    visible = new SimpleBooleanProperty();
 
     //this binding should take care of all changes in x and y and angle later on
     myTurtleView.xProperty().bind(x.add(centerX-TURTLE_FACTOR));
     myTurtleView.yProperty().bind(y.add(centerY-TURTLE_FACTOR));
     myTurtleView.rotateProperty().bind(angle);
+    myTurtleView.visibleProperty().bind(visible);
   }
 
   public void setProperties(slogo.model.Turtle turtle){
