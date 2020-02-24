@@ -8,18 +8,21 @@ public class PenDown extends Instruction {
 
     private static final int numArgs = 0;
 
+    public PenDown(String name){
+        super();
+        this.instrName = name;
+    }
+
     @Override
-    public void execute (Turtle t) { //(Turtle t, Collection<Variable> vars)
-        //t.setProperties(t.getXPos(), t.getYPos(), t.getAngle(), false);
+    public void execute (Turtle t) {
         t.setPenUp(false);
+        this.valueOfExecution = 1;
+        t.setCurrCommand("Pen Down");
+        t.setCurrCommand("");
     }
 
     public int numRequiredArgs(){
         return numArgs;
-    }
-
-    public int generateValue(){
-        return 1;
     }
 
     public String toString(){
