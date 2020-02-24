@@ -5,11 +5,11 @@ import slogo.model.code.instructions.Instruction;
 
 import java.util.List;
 
-public class Less extends Instruction {
+public class Equal extends Instruction {
 
     private static final int NUM_ARGS = 2;
 
-    public Less(String name) {
+    public Equal(String name) {
         super();
         this.instrName = name;
     }
@@ -19,7 +19,7 @@ public class Less extends Instruction {
         List<Integer> paramsAsInts = this.getParamsAsVals(t);
         int val1 = paramsAsInts.get(0);
         int val2 = paramsAsInts.get(1);
-        this.valueOfExecution = val1 < val2 ? 1 : 0;
+        this.valueOfExecution = val1 == val2 ? 1 : 0;
     }
 
     public int numRequiredArgs(){
