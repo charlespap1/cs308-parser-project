@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -26,6 +27,8 @@ public class Turtle {
   private ImageView myTurtleView;
   private double centerX;
   private double centerY;
+  private double canvasWidth;
+  private double canvasHeight;
 
   private DoubleProperty x = new SimpleDoubleProperty();
   private DoubleProperty y = new SimpleDoubleProperty();
@@ -35,8 +38,10 @@ public class Turtle {
   private double currX;
   private double currY;
 
-  public Turtle(Image image, double canvasWidth, double canvasHeight)
+  public Turtle(Image image, double width, double height)
   {
+    canvasWidth = width;
+    canvasHeight = height;
     centerX = DrawingCanvas.CANVAS_SIDE_PADDING + canvasWidth/2 - TURTLE_FACTOR;
     centerY = DrawingCanvas.CANVAS_TOP_PADDING + canvasHeight/2 - TURTLE_FACTOR;
 
@@ -44,7 +49,6 @@ public class Turtle {
     myTurtleView.setFitWidth(TURTLE_IMAGE_SIZE);
     myTurtleView.setFitHeight(TURTLE_IMAGE_SIZE);
 
-    //this binding should take care of all changes in x and y and angle later on
     myTurtleView.xProperty().bind(x.add(centerX-TURTLE_FACTOR));
     myTurtleView.yProperty().bind(y.add(centerY-TURTLE_FACTOR));
     myTurtleView.rotateProperty().bind(angle);
@@ -57,9 +61,29 @@ public class Turtle {
     angle.bindBidirectional(turtle.turtleAngleProperty());
     penUp.bind(turtle.penUpProperty());
     visible.bind(turtle.visibleProperty());
-    currX = x.getValue() + centerX;
-    currY = y.getValue() + centerY;
+    currX = x.getValue();
+    currY = y.getValue();
     returnTurtleToDefault();
+  }
+
+  public void drawLineAndBound(Group root, DrawingCanvas canvas){
+    System.out.println("new method call");
+    if (outOfBounds()){
+      System.out.println("inbounds: "+false);
+      fixBounding();
+    }
+    else {
+      System.out.println("inbounds: "+true);
+      Line line = drawLine();
+      if (line != null) {
+        root.getChildren().add(line);
+        canvas.addLine(line);
+      }
+    }
+  }
+
+  private boolean outOfBounds(){
+    return Math.abs(x.getValue()) > canvasWidth/2 || Math.abs(y.getValue()) > canvasHeight/2;
   }
 
   /**
@@ -73,13 +97,72 @@ public class Turtle {
   }
 
   public Line drawLine(){
+    System.out.println("drawLine called");
     Line line = null;
     if (!penUp.getValue()) {
-      line = new Line(currX, currY, x.getValue() + centerX, y.getValue() + centerY);
+      line = new Line(currX + centerX, currY + centerY, x.getValue() + centerX, y.getValue() + centerY);
     }
-    currX = x.getValue() + centerX;
-    currY = y.getValue() + centerY;
+    currX = x.getValue();
+    currY = y.getValue();
     return line;
+  }
+
+  private void fixBounding(){
+    double xDistanceOutOfBounds = 0;
+    if (x.getValue()>canvasWidth/2) xDistanceOutOfBounds = x.getValue()-canvasWidth/2;
+    else if (x.getValue()<-canvasWidth/2) xDistanceOutOfBounds = Math.abs(x.getValue() + canvasWidth/2);
+    double yDistanceOutOfBounds = 0;
+    if (y.getValue()>canvasHeight/2) yDistanceOutOfBounds = y.getValue()-canvasHeight/2;
+    else if (y.getValue()<-canvasHeight/2) yDistanceOutOfBounds = Math.abs(y.getValue() + canvasHeight/2);
+    System.out.println("x dist out: "+xDistanceOutOfBounds + " y dist out: "+yDistanceOutOfBounds);
+    if (xDistanceOutOfBounds>yDistanceOutOfBounds) stopAlongVerticalSide();
+    else stopAlongHorizontalSide();
+  }
+
+  private void stopAlongVerticalSide(){
+    System.out.println("vertical side");
+    double deltaX = x.getValue() - currX;
+    double deltaY = y.getValue() - currY;
+    double xDist = 0;
+    double xVal = 0;
+    if (x.getValue()>canvasWidth/2) {
+      xDist = canvasWidth/2 - currX;
+      xVal = canvasWidth/2;
+      System.out.println("x too big");
+    }
+    if (x.getValue()<(-1*canvasWidth/2)) {
+      xDist = -canvasWidth/2 - currY;
+      xVal = -canvasWidth/2;
+      System.out.println("x too small");
+    }
+    System.out.println("x: "+x.get());
+    double yDist = deltaY/deltaX*xDist;
+    x.setValue(xVal);
+    System.out.println(currY + " currY, yDist: "+yDist);
+    y.setValue(currY+yDist);
+
+    System.out.println("x: "+x.getValue() + " y: " + y.getValue());
+  }
+
+  private void stopAlongHorizontalSide(){
+    System.out.println("horiz side");
+    double deltaX = x.getValue() - currX;
+    double deltaY = y.getValue() - currY;
+    double yDist = 0;
+    double yVal = 0;
+    if (y.getValue()>canvasHeight/2) {
+      yDist = canvasHeight/2-currY;
+      yVal = canvasHeight/2;
+      System.out.println("y too big");
+    }
+    if (y.getValue()<-canvasHeight/2) {
+      yDist = -canvasHeight/2-currY;
+      yVal = -canvasHeight/2;
+      System.out.println("y too small");
+    }
+    double xDist = deltaX/deltaY*yDist;
+    x.setValue(currX+xDist);
+    y.setValue(yVal);
   }
 
   /**

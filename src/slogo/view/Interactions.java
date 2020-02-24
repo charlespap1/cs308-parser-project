@@ -8,7 +8,6 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 
@@ -55,11 +54,12 @@ public class Interactions implements View {
    * Updates the movement of the turtle according to new states
    */
   private void update() {
-    Line newLine = myTurtle.drawLine();
-    if (newLine!=null) {
-      root.getChildren().add(newLine);
-      myCanvas.addLine(newLine);
-    }
+//    Line newLine = myTurtle.drawLine();
+//    if (newLine!=null) {
+//      root.getChildren().add(newLine);
+//      myCanvas.addLine(newLine);
+//    }
+    //myTurtle.addLines(root, myCanvas);
   }
 
   // TODO: we probably don't need this publicly here, as it will all be front end
@@ -80,7 +80,7 @@ public class Interactions implements View {
 
   public void setTurtle(slogo.model.Turtle turtle){
     myTurtle.setProperties(turtle);
-    turtle.turtleYProperty().addListener((o, oldVal, newVal) -> update());
+    turtle.turtleYProperty().addListener((o, oldVal, newVal) -> myTurtle.drawLineAndBound(root, myCanvas));
     turtle.currCommandProperty().addListener((o, oldVal, newVal) -> mySetup.addHistory(newVal));
   }
 
