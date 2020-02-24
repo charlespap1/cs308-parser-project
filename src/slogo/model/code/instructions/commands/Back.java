@@ -33,6 +33,6 @@ public class Back extends Instruction {
     }
 
     public String toString(){
-        return instrName + valueOfExecution;
+        return instrName + " " + valueOfExecution;
     }
 }

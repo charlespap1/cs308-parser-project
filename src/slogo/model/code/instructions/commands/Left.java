@@ -32,6 +32,6 @@ public class Left extends Instruction {
     }
 
     public String toString(){
-        return instrName + valueOfExecution;
+        return instrName + " " + valueOfExecution;
     }
 }

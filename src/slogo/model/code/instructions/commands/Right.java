@@ -32,6 +32,6 @@ public class Right extends Instruction {
     }
 
     public String toString(){
-        return instrName + valueOfExecution;
+        return instrName + " " + valueOfExecution;
     }
 }
