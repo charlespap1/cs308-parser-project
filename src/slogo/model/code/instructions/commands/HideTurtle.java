@@ -6,6 +6,7 @@ import slogo.model.code.instructions.Instruction;
 public class HideTurtle extends Instruction {
 
     private static final int NUM_ARGS = 0;
+    
     public HideTurtle(String name){
         super();
         this.instrName = name;
