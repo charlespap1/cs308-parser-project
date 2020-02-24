@@ -16,8 +16,8 @@ abstract class ScrollingWindow extends Object{
   public static final double TEXT_HOLDER_SPACING =5;
 
   protected VBox myHolder;
-  private double myWidth;
-  private double myHeight;
+  protected double myWidth;
+  protected double myHeight;
   private Text myTitle;
   protected VBox myTextHolder;
   private ScrollPane myView;
@@ -42,7 +42,7 @@ abstract class ScrollingWindow extends Object{
     myView.setMaxWidth(myWidth);
     myView.setMinWidth(myWidth);
 
-    myHolder.getChildren().addAll(myView, myTitle);
+    myHolder.getChildren().addAll(myTitle, myView);
   }
 
   /**
