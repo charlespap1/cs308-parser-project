@@ -47,4 +47,5 @@ public class Turtle {
         return penUp.getValue();
     }
     public double getAngle() { return turtleAngle.getValue(); }
+    public boolean isVisible() { return visible.getValue(); }
 }

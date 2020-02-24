@@ -1,8 +1,10 @@
-package slogo.model.code.instructions;
+package slogo.model.code.instructions.misc;
 
 import slogo.model.Turtle;
 import slogo.model.code.ListSyntax;
 import slogo.model.code.Token;
+import slogo.model.code.instructions.Instruction;
+import slogo.model.code.instructions.NewCommand;
 import slogo.model.parse.AddToListFunction;
 
 import java.util.List;

@@ -7,21 +7,21 @@ public class TurtleShowingQuery extends Instruction {
 
     private static final int NUM_ARGS = 0;
 
+    public TurtleShowingQuery(String name) {
+        super();
+        this.instrName = name;
+    }
+
     @Override
     public void execute (Turtle t) {
-        // no functionality
+        this.valueOfExecution = t.isVisible() ? 1 : 0;
     }
 
     public int numRequiredArgs(){
         return NUM_ARGS;
     }
 
-    //TODO: needs to have access to the turtle so it can return whether turtle is visible or not
-    public int generateValue(){
-        return this.parameters.get(0).generateValue();
-    }
-
     public String toString(){
-        return "";
+        return instrName + " " + valueOfExecution;
     }
 }
