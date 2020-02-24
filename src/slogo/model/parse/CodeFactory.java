@@ -3,12 +3,14 @@ package slogo.model.parse;
 import slogo.model.code.NewCommandName;
 import slogo.model.code.Token;
 import slogo.model.code.Variable;
-import slogo.model.code.instructions.NewCommand;
+import slogo.model.code.instructions.*;
 
 import java.lang.reflect.Constructor;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+
+//[ClearScreen, IsShowing, AskWith, Left, Or, SetPosition, Product, Sine, Repeat, Difference, SetBackground, MakeVariable, LessThan, IsPenDown, Random, GreaterThan, Equal, GetPenColor, SetHeading, Pi, ID, YCoordinate, NotEqual, For, SetPalette, Sum, ArcTangent, Not, And, Turtles, DoTimes, XCoordinate, SetTowards, If, Minus, HideTurtle, Cosine, PenDown, SetPenSize, Heading, SetPenColor, IfElse, Right, Remainder, Backward, Ask, NaturalLog, Home, PenUp, Stamp, Tangent, MakeUserInstruction, SetShape, GetShape, Tell, Forward, ShowTurtle, ClearStamps, Quotient, Power, Comment, Variable, GroupEnd, Command, Constant, ListStart, GroupStart, Newline, ListEnd, Whitespace]
+
 
 public class CodeFactory {
     private RegexHandler keyGrabber;
@@ -31,7 +33,10 @@ public class CodeFactory {
 
     private void generateMappings() {
         List<String> keys = keyGrabber.getKeys();
-        System.out.println(keys);
+        for(String key: keys){
+            CodeType currentType = CodeType.valueOf(key.toUpperCase());
+            mappings.put(key,currentType.getAssociatedClass());
+        }
     }
 
     private Token getVariable(String piece){
@@ -54,11 +59,9 @@ public class CodeFactory {
         Token token = null;
         try{
             Class c = mappings.get(objectType);
-            Constructor objConstruct = c.getDeclaredConstructor();
+            Constructor objConstruct = c.getDeclaredConstructor(String.class);
             objConstruct.setAccessible(true);
-            token = (Token) objConstruct.newInstance();
-            //token = (Token) objConstruct.newInstance(piece);
-            // TODO: pass string
+            token = (Token) objConstruct.newInstance(piece);
         }
         catch(Exception e){
             e.printStackTrace();

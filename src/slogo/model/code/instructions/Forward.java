@@ -8,6 +8,11 @@ public class Forward extends Instruction {
 
     private static final int NUM_ARGS = 1;
 
+    public Forward(String name){
+        super();
+        this.instrName = name;
+    }
+
     @Override
     public void execute (Turtle t) {
         Token valueToMove = this.parameters.get(0);
@@ -28,6 +33,6 @@ public class Forward extends Instruction {
     }
 
     public String toString(){
-        return "";
+        return instrName;
     }
 }

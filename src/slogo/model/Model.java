@@ -72,7 +72,7 @@ public class Model implements ModelAPI{
         if(enoughArgs(numRequiredArgs)){
             Instruction currInstr = createCompleteInstruction();
             if(commands.isEmpty()){
-                //TODO: execute currInstr
+                currInstr.execute(turtle);
             }
             else{
                 arguments.push(currInstr);
