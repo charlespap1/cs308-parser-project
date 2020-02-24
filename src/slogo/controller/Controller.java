@@ -11,7 +11,6 @@ import slogo.view.Interactions;
  * @author natalie
  */
 public class Controller extends Application {
-    ButtonAction goButtonAction = () -> getInstruction();
 
     private Model myModel;
     private Interactions myView;
@@ -24,11 +23,12 @@ public class Controller extends Application {
         myModel = new Model();
         myView = new Interactions(primaryStage);
         Turtle myTurtle = myModel.getTurtle();
-        myView.setProperties(myTurtle);
+        myView.setTurtle(myTurtle);
         // this allows us to set the onclick action for the go button to be the getInstruction method in Controller,
         // prevents us from having to give the View access to the Controller
-        myView.setGoButton(goButtonAction);
+        myView.setGoButton(e -> getInstruction());
         myView.setViewLists(myModel.getVariableList(), myModel.getNewCommandsList());
+        myView.setErrorMessage(myModel.getErrorMessage());
     }
 
 
@@ -38,7 +38,7 @@ public class Controller extends Application {
      * @return
      * @throws NullPointerException
      */
-    public void getInstruction() throws NullPointerException {
+    private void getInstruction() throws NullPointerException {
         //make this get called when button is pressed in front end -- set some kind of event listener? ask TA
         String input = myView.getInstruction();
         myModel.executeCode(input);

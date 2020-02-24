@@ -1,5 +1,7 @@
 package slogo.model;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import slogo.model.code.Token;
 import slogo.model.code.instructions.Instruction;
@@ -25,6 +27,7 @@ public class Model implements ModelAPI{
     private CodeFactory createFromString = new CodeFactory(LANG);
     private RegexHandler typeCheck = new RegexHandler();
     private Turtle turtle;
+    private StringProperty errorMessage = new SimpleStringProperty();
 
     public Model() {
         typeCheck.addPatterns(SYNTAX);
@@ -99,4 +102,5 @@ public class Model implements ModelAPI{
 
     public ObservableList<String> getVariableList(){ return createFromString.getVariableList(); }
     public ObservableList<String> getNewCommandsList(){ return createFromString.getNewCommandList(); }
+    public StringProperty getErrorMessage(){ return errorMessage; }
 }
