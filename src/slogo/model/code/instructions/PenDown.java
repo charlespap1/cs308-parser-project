@@ -18,7 +18,7 @@ public class PenDown extends Instruction {
 //        if (this.hasInnerInstruction()) {
 //            valueForExec = possibleInner.execute(t, vars);
 //        }
-//        t.setProperties(t.getXPos(), t.getYPos(), t.getAngle(), false);
+//        t.setPenUp(false);
 //        return 1;
     }
 

@@ -20,10 +20,12 @@ import slogo.State;
 public class Turtle {
   public static final int TURTLE_IMAGE_SIZE = 30;
   public static final Color DEFAULT_PEN_COLOR = Color.BLACK;
-  public static final double DEFAULT_ANGLE = 0;
-  public static final double TURTLE_FACTOR = TURTLE_IMAGE_SIZE/2;
+  public static final double DEFAULT_ANGLE = 90;
+  public static final double TURTLE_FACTOR = TURTLE_IMAGE_SIZE/2.0;
 
   private ImageView myTurtleView;
+  private double centerX;
+  private double centerY;
 
   private DoubleProperty x;
   private DoubleProperty y;
@@ -35,8 +37,8 @@ public class Turtle {
 
   public Turtle(Image image, double canvasWidth, double canvasHeight)
   {
-    double centerX = DrawingCanvas.CANVAS_SIDE_PADDING + canvasWidth/2 - TURTLE_FACTOR;
-    double centerY = DrawingCanvas.CANVAS_TOP_PADDING + canvasHeight/2 - TURTLE_FACTOR;
+    centerX = DrawingCanvas.CANVAS_SIDE_PADDING + canvasWidth/2 - TURTLE_FACTOR;
+    centerY = DrawingCanvas.CANVAS_TOP_PADDING + canvasHeight/2 - TURTLE_FACTOR;
 
     myTurtleView = new ImageView(image);
     myTurtleView.setFitWidth(TURTLE_IMAGE_SIZE);
@@ -55,13 +57,14 @@ public class Turtle {
     myTurtleView.visibleProperty().bind(visible);
   }
 
-  public void setProperties(slogo.model.Turtle turtle){
+  public void setProperties(slogo.model.Turtle turtle) {
     x.bindBidirectional(turtle.turtleXProperty());
     y.bindBidirectional(turtle.turtleYProperty());
     angle.bindBidirectional(turtle.turtleAngleProperty());
-    penUp.bindBidirectional(turtle.penUpProperty());
-    currX = x.getValue();
-    currY = y.getValue();
+    penUp.bind(turtle.penUpProperty());
+    visible.bind(turtle.visibleProperty());
+    currX = x.getValue() + centerX;
+    currY = y.getValue() + centerY;
     returnTurtleToDefault();
   }
 
@@ -84,10 +87,10 @@ public class Turtle {
   public Line drawLine(){
     Line line = null;
     if (!penUp.getValue()) {
-      line = new Line (currX, currY, x.getValue(), y.getValue());
+      line = new Line(currX, currY, x.getValue() + centerX, y.getValue() + centerY);
     }
-    currX = x.getValue();
-    currY = y.getValue();
+    currX = x.getValue() + centerX;
+    currY = y.getValue() + centerY;
     return line;
   }
 

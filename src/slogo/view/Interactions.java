@@ -89,7 +89,7 @@ public class Interactions implements View {
   /**
    * Updates the movement of the turtle according to new states
    */
-  public void update() {
+  private void update() {
     Line newLine = myTurtle.drawLine();
     root.getChildren().add(newLine);
     myCanvas.addLine(newLine);

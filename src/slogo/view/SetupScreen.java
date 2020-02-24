@@ -52,10 +52,10 @@ public class SetupScreen {
 
   public SetupScreen()
   {
-    this.width = WIDTH;
-    this.height = HEIGHT;
-    this.background = BACKGROUND;
-    this.root = new Group();
+    width = WIDTH;
+    height = HEIGHT;
+    background = BACKGROUND;
+    root = new Group();
   }
 
   /**

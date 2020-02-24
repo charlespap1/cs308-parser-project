@@ -25,7 +25,7 @@ public class SetHome extends Instruction {
 //        }
 //        double xPos = t.getXPos();
 //        double yPos = t.getYPos();
-//        t.setProperties(HOME_X, HOME_Y, t.getAngle(), t.getIsPenUp());
+//        t.setLocation(HOME_X, HOME_Y);
 //        return Math.sqrt(Math.pow(xPos, 2) + Math.pow(yPos, 2));
     }
 

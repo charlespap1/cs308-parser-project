@@ -18,7 +18,7 @@ public class PenUp extends Instruction {
 //        if (this.hasInnerInstruction()) {
 //            valueForExec = possibleInner.execute(t, vars);
 //        }
-//        t.setProperties(t.getXPos(), t.getYPos(), t.getAngle(), true);
+//        t.setPenUp(true);
 //        return 0;
     }
 

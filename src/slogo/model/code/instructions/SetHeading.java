@@ -21,7 +21,7 @@ public class SetHeading extends Instruction {
 //            valueForExec = possibleInner.execute(t, vars);
 //        }
 //        double prevAngle = t.getAngle();
-//        t.setProperties(t.getXPos(), t.getYPos(), valueForExec, t.getIsPenUp());
+//        t.setAngle(valueForExec);
 //        return Math.abs(t.getAngle() - prevAngle);
     }
 
