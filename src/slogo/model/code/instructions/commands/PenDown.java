@@ -1,6 +1,7 @@
-package slogo.model.code.instructions;
+package slogo.model.code.instructions.commands;
 
 import slogo.model.Turtle;
+import slogo.model.code.Token;
 import slogo.model.code.instructions.Instruction;
 
 public class PenDown extends Instruction {
@@ -9,17 +10,8 @@ public class PenDown extends Instruction {
 
     @Override
     public void execute (Turtle t) { //(Turtle t, Collection<Variable> vars)
-//        if (this.hasInnerInstruction()) {
-//            this.valueForExec = this.possibleInner.execute(t, vars);
-//        }
-//        t.setPenUp(false);
-
-        //bound vars code:
-//        if (this.hasInnerInstruction()) {
-//            valueForExec = possibleInner.execute(t, vars);
-//        }
-//        t.setPenUp(false);
-//        return 1;
+        //t.setProperties(t.getXPos(), t.getYPos(), t.getAngle(), false);
+        t.setPenUp(false);
     }
 
     public int numRequiredArgs(){

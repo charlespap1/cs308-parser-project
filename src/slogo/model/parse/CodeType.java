@@ -3,6 +3,7 @@ package slogo.model.parse;
 import slogo.model.code.Constant;
 import slogo.model.code.Variable;
 import slogo.model.code.instructions.*;
+import slogo.model.code.instructions.commands.*;
 
 public enum CodeType {
     CLEARSCREEN(null),
