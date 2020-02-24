@@ -6,24 +6,27 @@ import slogo.model.code.instructions.Instruction;
 
 public class SetHome extends Instruction {
     public static final int HOME_X = 0;
-    public static final int HOME_Y = 0; // TODO: how to handle home/ (0,0) in center of window
+    public static final int HOME_Y = 0;
     private static final int NUM_ARGS = 0;
 
+    public SetHome(String name){
+        super();
+        this.instrName = name;
+    }
+
     @Override
-    public void execute (Turtle t) { //(Turtle t, Collection<Variable> vars)
+    public void execute (Turtle t) {
+        this.valueOfExecution = (int)distFrom(t.getXPos(),t.getYPos(),HOME_X,HOME_Y);
         t.setLocation(HOME_X, HOME_Y);
+        t.setCurrCommand(toString());
+        t.setCurrCommand("");
     }
 
     public int numRequiredArgs(){
         return NUM_ARGS;
     }
 
-    public int generateValue(){
-        return this.parameters.get(0).generateValue();
-    }
-    //TODO: needs to return the distance the turtle moved
-
     public String toString(){
-        return "";
+        return instrName;
     }
 }

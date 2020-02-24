@@ -10,22 +10,25 @@ public class ClearScreen extends Instruction {
     public static final int HOME_Y = 0;
     private static final int NUM_ARGS = 0;
 
+    public ClearScreen(String name){
+        super();
+        this.instrName = name;
+    }
+
     @Override
     public void execute (Turtle t) {
         //TODO: how will frontend know when this instruction is called and erase the turtle's trails?
+        this.valueOfExecution = (int)distFrom(t.getXPos(),t.getYPos(),HOME_X,HOME_Y);
         t.setLocation(HOME_X, HOME_Y);
+        t.setCurrCommand(toString());
+        t.setCurrCommand("");
     }
 
     public int numRequiredArgs(){
         return NUM_ARGS;
     }
 
-    //TODO: needs to return the distance turtle moved
-    public int generateValue(){
-        return this.parameters.get(0).generateValue();
-    }
-
     public String toString(){
-        return "";
+        return instrName;
     }
 }
