@@ -20,7 +20,7 @@ public class Left extends Instruction {
 //            valueForExec = possibleInner.execute(t, vars);
 //        }
 //        double angle = t.getAngle() + valueForExec;
-//        t.setProperties(t.getXPos(), t.getYPos(), angle, t.getIsPenUp());
+//        t.setAngle(angle);
 //        return valueForExec;
     }
 

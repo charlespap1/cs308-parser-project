@@ -20,10 +20,9 @@ public class Back extends Instruction {
 //        if (this.hasInnerInstruction()) {
 //            valueForExec = possibleInner.execute(t, vars);
 //        }
-//        double x = t.getXPos() - valueForExec * Math.cos(t.getAngle());
-//        double y = t.getYPos() - valueForExec * Math.sin(t.getAngle());
-//        t.setProperties(x, y, t.getAngle(), t.getIsPenUp());
-//        return valueForExec;
+//        double x = t.getXPos() - valueForExec * Math.cos(Math.toRadians(t.getAngle()));
+//        double y = t.getYPos() - valueForExec * Math.sin(Math.toRadians(t.getAngle()));
+//        t.setLocation(x, y);
     }
 
     public int numRequiredArgs(){
