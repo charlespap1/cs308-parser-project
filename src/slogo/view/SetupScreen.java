@@ -33,6 +33,7 @@ public class SetupScreen {
   public static final int WIDTH = 1000;
   public static final int HEIGHT = 600;
   public static final Paint BACKGROUND = Color.AZURE;
+  public static final double BUTTON_HEIGHT_OFFSET = 40;
 
   private int width;
   private int height;
@@ -48,6 +49,7 @@ public class SetupScreen {
   private HistoryCanvas myHistory;
   private ListViewer myNewCommandViewer;
   private ListViewer myVariableView;
+  private BackgroundSelector myBackgroundSelector;
 
   private Label myCurrentErrorMessage = new Label();
 
@@ -86,7 +88,9 @@ public class SetupScreen {
     setHBoxLayout();
     setButtons();
 
-    root.getChildren().addAll(myDrawingCanvas.getView(), myTurtle.getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myNewCommandViewer.getView(), myVariableView.getView());
+    myBackgroundSelector = new BackgroundSelector(myDrawingCanvas, belowCanvasButtons.getLayoutX(), belowCanvasButtons.getLayoutY() + BUTTON_HEIGHT_OFFSET);
+
+    root.getChildren().addAll(myDrawingCanvas.getView(), myTurtle.getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myNewCommandViewer.getView(), myVariableView.getView(), myBackgroundSelector.getView());
     return new Scene(root, width, height, background);
   }
 
@@ -123,6 +127,7 @@ public class SetupScreen {
     myStop = new Button("Stop Turtle");
     myStop.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
     belowCanvasButtons.getChildren().add(myStop);
+
   }
 
   /**
@@ -138,19 +143,25 @@ public class SetupScreen {
   {
     return myUserInput.getUserInput();
   }
+
   public DrawingCanvas getDrawingCanvas()
   {
     return myDrawingCanvas;
   }
 
   public void setVariableList(ObservableList<String> variableList) { myVariableView.bindList(variableList); }
+
   public void setNewCommandList(ObservableList<String> newCommandList) { myNewCommandViewer.bindList(newCommandList); }
+
   public void addHistory(String command) { myHistory.addHistory(command);}
+
   public void bindErrorMessage(StringProperty message) { myCurrentErrorMessage.textProperty().bind(message); }
+
   public void setGoButton(EventHandler<ActionEvent> goAction)
   {
     myGo.setOnAction(goAction);
   }
+
   public void setBelowCanvasButtons(EventHandler<ActionEvent> stopAction, EventHandler<ActionEvent> clearAction) {
     myStop.setOnAction(stopAction);
     myClear.setOnAction(clearAction);
@@ -160,6 +171,5 @@ public class SetupScreen {
   {
     return root;
   }
-
 
 }
