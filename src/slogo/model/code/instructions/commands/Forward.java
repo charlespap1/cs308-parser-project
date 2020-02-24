@@ -1,4 +1,4 @@
-package slogo.model.code.instructions;
+package slogo.model.code.instructions.commands;
 
 import slogo.model.Turtle;
 import slogo.model.code.Token;
@@ -16,8 +16,9 @@ public class Forward extends Instruction {
     @Override
     public void execute (Turtle t) {
         Token valueToMove = this.parameters.get(0);
-        if(valueToMove instanceof Instruction)
-            ((Instruction)valueToMove).execute(t);
+        if (valueToMove instanceof Instruction) {
+            ((Instruction) valueToMove).execute(t);
+        }
         int valueForExec = valueToMove.generateValue();
         this.valueOfExecution = valueForExec;
         double x = t.getXPos() + valueForExec * Math.cos(Math.toRadians(t.getAngle()));
