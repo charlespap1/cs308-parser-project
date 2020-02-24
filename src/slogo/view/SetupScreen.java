@@ -14,11 +14,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.text.Text;
 import slogo.view.scrollers.HistoryCanvas;
 import slogo.view.scrollers.ListViewer;
 
 import java.util.Objects;
+import slogo.view.selectors.BackgroundSelector;
+import slogo.view.selectors.PenSelector;
 
 /**
  * This class allows us to make our main class less fat
@@ -49,7 +50,9 @@ public class SetupScreen {
   private HistoryCanvas myHistory;
   private ListViewer myNewCommandViewer;
   private ListViewer myVariableView;
+
   private BackgroundSelector myBackgroundSelector;
+  private PenSelector myPenSelector;
 
   private Label myCurrentErrorMessage = new Label();
 
@@ -87,10 +90,9 @@ public class SetupScreen {
     setVBoxLayout();
     setHBoxLayout();
     setButtons();
+    setSelectors();
 
-    myBackgroundSelector = new BackgroundSelector(myDrawingCanvas, belowCanvasButtons.getLayoutX(), belowCanvasButtons.getLayoutY() + BUTTON_HEIGHT_OFFSET);
-
-    root.getChildren().addAll(myDrawingCanvas.getView(), myTurtle.getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myNewCommandViewer.getView(), myVariableView.getView(), myBackgroundSelector.getView());
+    root.getChildren().addAll(myDrawingCanvas.getView(), myTurtle.getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myNewCommandViewer.getView(), myVariableView.getView());
     return new Scene(root, width, height, background);
   }
 
@@ -129,6 +131,15 @@ public class SetupScreen {
     belowCanvasButtons.getChildren().add(myStop);
 
   }
+
+  private void setSelectors()
+  {
+    myBackgroundSelector = new BackgroundSelector(myDrawingCanvas, belowCanvasButtons.getLayoutX(), belowCanvasButtons.getLayoutY() + BUTTON_HEIGHT_OFFSET);
+    //myPenSelector = new PenSelector(myTurtle, belowInputFieldItems.getLayoutX(), belowInputFieldItems.getLayoutY() + BUTTON_HEIGHT_OFFSET);
+
+    root.getChildren().addAll(myBackgroundSelector.getView());
+  }
+
 
   /**
    * Getter methods necessary to access these elements in the Main class
