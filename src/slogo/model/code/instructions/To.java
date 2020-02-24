@@ -3,11 +3,18 @@ package slogo.model.code.instructions;
 import slogo.model.Turtle;
 import slogo.model.code.ListSyntax;
 import slogo.model.code.Token;
+import slogo.model.parse.AddToListFunction;
 
 import java.util.List;
 
 public class To extends Instruction {
     private static final int NUM_ARGS = 3;
+    private NewCommand myCommand;
+    private AddToListFunction myFunction;
+
+    public To(AddToListFunction function){
+        myFunction = function;
+    }
 
     @Override
     public void execute(Turtle turtle) {
@@ -15,7 +22,9 @@ public class To extends Instruction {
         List<Token> variables = ((ListSyntax) parameters.get(1)).getContents();
         List<Token> instructions = ((ListSyntax) parameters.get(2)).getContents();
 
-        NewCommand newCommand = new NewCommand(name, variables, instructions);
+        myCommand = new NewCommand(name, variables, instructions);
+        myFunction.addToList(myCommand);
+        //TODO: put into list in code factory
     }
 
     @Override
@@ -25,6 +34,7 @@ public class To extends Instruction {
 
     @Override
     public int generateValue() {
+        if (myCommand != null) return 1;
         return 0;
     }
 }

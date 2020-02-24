@@ -4,19 +4,18 @@ import slogo.model.code.NewCommandName;
 import slogo.model.code.Token;
 import slogo.model.code.Variable;
 import slogo.model.code.instructions.*;
-
 import java.lang.reflect.Constructor;
 import java.util.*;
-
-
-//[ClearScreen, IsShowing, AskWith, Left, Or, SetPosition, Product, Sine, Repeat, Difference, SetBackground, MakeVariable, LessThan, IsPenDown, Random, GreaterThan, Equal, GetPenColor, SetHeading, Pi, ID, YCoordinate, NotEqual, For, SetPalette, Sum, ArcTangent, Not, And, Turtles, DoTimes, XCoordinate, SetTowards, If, Minus, HideTurtle, Cosine, PenDown, SetPenSize, Heading, SetPenColor, IfElse, Right, Remainder, Backward, Ask, NaturalLog, Home, PenUp, Stamp, Tangent, MakeUserInstruction, SetShape, GetShape, Tell, Forward, ShowTurtle, ClearStamps, Quotient, Power, Comment, Variable, GroupEnd, Command, Constant, ListStart, GroupStart, Newline, ListEnd, Whitespace]
-
+import java.util.HashMap;
+import java.util.Map;
 
 public class CodeFactory {
     private RegexHandler keyGrabber;
     private Map<String,Class> mappings;
     private Map<String, NewCommand> newCommandMap;
     private Map<String, Variable> variableMap;
+
+    AddToListFunction addToNewCommandsList = token -> addNewCommand(token);
 
     public CodeFactory(String language){
         keyGrabber = new RegexHandler();
@@ -29,6 +28,11 @@ public class CodeFactory {
         keyGrabber.addPatterns("Syntax");
 
         generateMappings();
+    }
+
+    private void addNewCommand(Token token){
+        NewCommand command = (NewCommand) token;
+        newCommandMap.put(command.getName(), command);
     }
 
     private void generateMappings() {
@@ -56,6 +60,7 @@ public class CodeFactory {
         String objectType = keyGrabber.getSymbol(piece);
         if (objectType.equals("Variable")) return getVariable(piece);
         if (objectType.equals("Command")) return getNewCommand(piece);
+        if (objectType.equals("To")) return new To(addToNewCommandsList);
         Token token = null;
         try{
             Class c = mappings.get(objectType);
