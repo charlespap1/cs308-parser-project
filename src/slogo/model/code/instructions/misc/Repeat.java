@@ -18,21 +18,19 @@ public class Repeat extends Instruction {
 
     @Override
     public void execute (Turtle t) {
+        Token expr = this.parameters.get(0);
+        assert !(expr instanceof ListSyntax);
         List<Integer> paramsAsVals = getParamsAsVals(t);
         int numRepeats = paramsAsVals.get(0);
         Token list = this.parameters.get(1);
-        if (list instanceof ListSyntax) {
-            List<Token> commands = ((ListSyntax) list).getContents();
-            for (int i = 0; i < numRepeats; i++) {
-                for (Token command : commands) {
-                    if (command instanceof Instruction) {
-                        ((Instruction) command).execute(t);
-                    }
-                    this.valueOfExecution = command.generateValue();
-                }
+
+        List<Token> commands = ((ListSyntax) list).getContents();
+        for (int i = 0; i < numRepeats; i++) {
+            for (Token command : commands) {
+                assert command instanceof Instruction;
+                ((Instruction) command).execute(t);
+                this.valueOfExecution = command.generateValue();
             }
-        } else {
-            //throw error
         }
         t.setCurrCommand("Repeat ");
         t.setCurrCommand("");
@@ -43,6 +41,6 @@ public class Repeat extends Instruction {
     }
 
     public String toString(){
-        return instrName;
+        return instrName + " " + valueOfExecution;
     }
 }

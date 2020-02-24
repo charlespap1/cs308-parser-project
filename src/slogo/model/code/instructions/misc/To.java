@@ -21,6 +21,8 @@ public class To extends Instruction {
     @Override
     public void execute(Turtle turtle) {
         String name = parameters.get(0).toString();
+        assert parameters.get(1) instanceof ListSyntax;
+        assert parameters.get(2) instanceof ListSyntax;
         List<Token> variables = ((ListSyntax) parameters.get(1)).getContents();
         List<Token> instructions = ((ListSyntax) parameters.get(2)).getContents();
 
