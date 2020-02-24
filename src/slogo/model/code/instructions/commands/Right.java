@@ -20,7 +20,7 @@ public class Right extends Instruction {
         List<Integer> paramsAsVals = getParamsAsVals(t);
         int valueForExec = paramsAsVals.get(0);
         this.valueOfExecution = valueForExec;
-        double angle = t.getAngle() - valueForExec;
+        double angle = t.getAngle() + valueForExec;
         t.setAngle(angle);
         t.setCurrCommand(toString());
         t.setCurrCommand("");
