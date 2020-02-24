@@ -22,10 +22,11 @@ public class HistoryCanvas extends ScrollingWindow {
    * Ability to add newly executed commands to the history
    * @param command
    */
-  public void addHistory(String command)
-  {
-    Text newCommand = new Text(command);
-    myTextHolder.getChildren().add(newCommand);
+  public void addHistory(String command) {
+    if (!command.equals("")){
+      Text newCommand = new Text(command);
+      myTextHolder.getChildren().add(newCommand);
+    }
   }
 
 }

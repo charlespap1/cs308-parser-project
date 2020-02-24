@@ -1,5 +1,6 @@
 package slogo.model;
 
+import javafx.collections.ObservableList;
 import slogo.model.code.Token;
 import slogo.model.code.instructions.Instruction;
 import slogo.model.parse.CodeFactory;
@@ -19,17 +20,13 @@ public class Model implements ModelAPI{
     public static final String LANG = "English";
     public static final String SYNTAX = "Syntax";
 
-    private Stack<Instruction> commands;
-    private Stack<Token> arguments;
-    private CodeFactory createFromString;
-    private RegexHandler typeCheck;
+    private Stack<Instruction> commands = new Stack<>();
+    private Stack<Token> arguments = new Stack<>();
+    private CodeFactory createFromString = new CodeFactory(LANG);
+    private RegexHandler typeCheck = new RegexHandler();
     private Turtle turtle;
 
     public Model() {
-        commands = new Stack<>();
-        arguments = new Stack<>();
-        createFromString = new CodeFactory(LANG);
-        typeCheck = new RegexHandler();
         typeCheck.addPatterns(SYNTAX);
         turtle = new Turtle(0, 0, false, 0);
     }
@@ -99,4 +96,7 @@ public class Model implements ModelAPI{
     private boolean enoughArgs(int numNeeded){
         return arguments.size() >= numNeeded;
     }
+
+    public ObservableList<String> getVariableList(){ return createFromString.getVariableList(); }
+    public ObservableList<String> getNewCommandsList(){ return createFromString.getNewCommandList(); }
 }

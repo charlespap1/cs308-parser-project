@@ -8,16 +8,14 @@ public class Turtle {
     private DoubleProperty turtleY;
     private DoubleProperty turtleAngle;
     private BooleanProperty penUp;
-    private BooleanProperty visible;
-    private StringProperty currCommand;
+    private BooleanProperty visible = new SimpleBooleanProperty(true);
+    private StringProperty currCommand = new SimpleStringProperty();
 
     public Turtle(int xPos, int yPos, boolean isPenUp, int angle) {
         turtleX = new SimpleDoubleProperty(xPos);
         turtleY = new SimpleDoubleProperty(yPos);
         turtleAngle = new SimpleDoubleProperty(angle);
         penUp = new SimpleBooleanProperty(isPenUp);
-        visible = new SimpleBooleanProperty(true);
-        currCommand = new SimpleStringProperty();
     }
 
     public DoubleProperty turtleXProperty(){ return turtleX; }

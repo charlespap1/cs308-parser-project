@@ -9,7 +9,7 @@ import slogo.view.scrollers.ScrollingWindow;
  * GUI which displays common commands
  * @author Juliet
  */
-public class CommonCommands extends ScrollingWindow {
+public class NewCommandViewer extends ScrollingWindow {
 
   public static final String TITLE = "Helpful Commands: ";
   private static final String RESOURCES = "resources";
@@ -20,7 +20,7 @@ public class CommonCommands extends ScrollingWindow {
 
   private ResourceBundle myResources;
 
-  public CommonCommands(double elementWidthFactor, double topPadding)
+  public NewCommandViewer(double elementWidthFactor, double topPadding, String title)
   {
     super(elementWidthFactor, topPadding, TITLE);
 

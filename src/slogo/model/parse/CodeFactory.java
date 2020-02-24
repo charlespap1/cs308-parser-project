@@ -1,5 +1,7 @@
 package slogo.model.parse;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import slogo.model.code.NewCommandName;
 import slogo.model.code.Token;
 import slogo.model.code.Variable;
@@ -10,29 +12,25 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CodeFactory {
-    private RegexHandler keyGrabber;
-    private Map<String,Class> mappings;
-    private Map<String, NewCommand> newCommandMap;
-    private Map<String, Variable> variableMap;
+    private RegexHandler keyGrabber = new RegexHandler();
+    private Map<String,Class> mappings = new HashMap<>();
+    private Map<String, NewCommand> newCommandMap = new HashMap<>();
+    private Map<String, Variable> variableMap = new HashMap<>();
+    private ObservableList<String> vars = FXCollections.observableArrayList();
+    private ObservableList<String> newCommands = FXCollections.observableArrayList();
 
     AddToListFunction addToNewCommandsList = token -> addNewCommand(token);
 
     public CodeFactory(String language){
-        keyGrabber = new RegexHandler();
-        mappings = new HashMap<>();
-        newCommandMap = new HashMap<>();
-
         keyGrabber.addPatterns(language);
-
-        // general checks, added last
         keyGrabber.addPatterns("Syntax");
-
         generateMappings();
     }
 
     private void addNewCommand(Token token){
         NewCommand command = (NewCommand) token;
         newCommandMap.put(command.getName(), command);
+        newCommands.add(command.getName());
     }
 
     private void generateMappings() {
@@ -47,6 +45,7 @@ public class CodeFactory {
         if (!variableMap.containsKey(piece)) {
             Variable variable = new Variable(piece);
             variableMap.put(piece, variable);
+            vars.add(piece);
         }
         return variableMap.get(piece);
     }
@@ -74,4 +73,7 @@ public class CodeFactory {
         }
         return token;
     }
+
+    public ObservableList<String> getVariableList(){ return vars; }
+    public ObservableList<String> getNewCommandList(){ return newCommands; }
 }

@@ -11,11 +11,6 @@ import slogo.view.Interactions;
  * @author natalie
  */
 public class Controller extends Application {
-
-    public static final int FRAMES_PER_SECOND = 60;
-    public static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
-    public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
-
     ButtonAction goButtonAction = () -> getInstruction();
 
     private Model myModel;
@@ -33,12 +28,7 @@ public class Controller extends Application {
         // this allows us to set the onclick action for the go button to be the getInstruction method in Controller,
         // prevents us from having to give the View access to the Controller
         myView.setGoButton(goButtonAction);
-
-//        KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step(SECOND_DELAY));
-//        Timeline animation = new Timeline();
-//        animation.setCycleCount(Timeline.INDEFINITE);
-//        animation.getKeyFrames().add(frame);
-//        animation.play();
+        myView.setViewLists(myModel.getVariableList(), myModel.getNewCommandsList());
     }
 
 
