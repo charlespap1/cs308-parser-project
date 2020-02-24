@@ -1,5 +1,7 @@
 package slogo.model.parse;
 
+import slogo.model.code.BracketClose;
+import slogo.model.code.BracketOpen;
 import slogo.model.code.Constant;
 import slogo.model.code.Variable;
 import slogo.model.code.instructions.booleans.*;
@@ -74,10 +76,10 @@ public enum CodeType {
     GROUPEND(null),
     COMMAND(null),
     CONSTANT(Constant.class),
-    LISTSTART(null),
+    LISTSTART(BracketOpen.class),
     GROUPSTART(null),
     NEWLINE(null),
-    LISTEND(null),
+    LISTEND(BracketClose.class),
     WHITESPACE(null);
 
     private Class associatedClass;

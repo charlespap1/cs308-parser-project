@@ -3,6 +3,9 @@ package slogo.model;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
+import slogo.model.code.BracketClose;
+import slogo.model.code.BracketOpen;
+import slogo.model.code.ListSyntax;
 import slogo.model.code.Token;
 import slogo.model.code.instructions.Instruction;
 import slogo.model.parse.CodeFactory;
@@ -22,7 +25,7 @@ public class Model implements ModelAPI{
     public static final String LANG = "English";
     public static final String SYNTAX = "Syntax";
 
-    private Stack<Instruction> commands = new Stack<>();
+    private Stack<Token> commands = new Stack<>();
     private Stack<Token> arguments = new Stack<>();
     private CodeFactory createFromString = new CodeFactory(LANG);
     private RegexHandler typeCheck = new RegexHandler();
@@ -50,24 +53,71 @@ public class Model implements ModelAPI{
             if (piece.trim().length() > 0) {
                 SyntaxType currType = SyntaxType.valueOf(typeCheck.getSymbol(piece).toUpperCase());
                 //TODO: error handling when no match found
-                addToAppropriateStack(currType, piece);
+                addToAppropriateStack(piece);
             }
         }
     }
 
-    private void addToAppropriateStack(SyntaxType currType, String piece) {
+    private void addToAppropriateStack(String piece) {
+        System.out.println(piece);
         Token currentItem = createFromString.getSymbolAsObj(piece);
-        if(currentItem instanceof Instruction)
-            commands.add((Instruction) currentItem);
+        if(currentItem instanceof Instruction) {
+            Instruction currInstr = (Instruction) currentItem;
+            if(currInstr.numRequiredArgs() == 0 && commands.isEmpty())
+                currInstr.execute(turtle);
+            else if(currInstr.numRequiredArgs() == 0){
+                arguments.add(currentItem);
+                attemptToCreateFullInstruction();
+            }
+            else
+                commands.add(currInstr);
+        }
+        else if(currentItem instanceof BracketOpen){
+            commands.add(currentItem);
+            arguments.add(currentItem);
+        }
         else {
-            //TODO: handle other types besides commands
             arguments.add(currentItem);
             attemptToCreateFullInstruction();
         }
     }
 
-    private void attemptToCreateFullInstruction() {
-        Instruction currCommand = commands.peek();
+    private void listCreateFullHandler(){
+        System.out.println("*");
+        if(closeBracketExist()){
+            System.out.println("found close");
+            commands.pop();
+            ListSyntax newList = createCompleteList();
+            arguments.push(newList);
+            attemptToCreateFullInstruction();
+        }
+    }
+
+    private ListSyntax createCompleteList() {
+        List<Token> listContents = grabListContents();
+        ListSyntax newList = new ListSyntax(listContents);
+        return newList;
+    }
+
+    private List<Token> grabListContents() {
+        List<Token> args = new ArrayList<>();
+        //get rid of close bracket
+        arguments.pop();
+        //start with next in stack
+        Token currToken = arguments.pop();
+        while(!(currToken instanceof BracketOpen)){
+            args.add(currToken);
+            currToken = arguments.pop();
+        }
+        return args;
+    }
+
+    private boolean closeBracketExist() {
+        return arguments.peek() instanceof BracketClose;
+    }
+
+    private void instrCreateFullHandler(){
+        Instruction currCommand = (Instruction)commands.peek();
         int numRequiredArgs = currCommand.numRequiredArgs();
         if(enoughArgs(numRequiredArgs)){
             Instruction currInstr = createCompleteInstruction();
@@ -81,8 +131,18 @@ public class Model implements ModelAPI{
         }
     }
 
+    private void attemptToCreateFullInstruction() {
+        System.out.println(commands.peek());
+        if(commands.peek() instanceof Instruction){
+            instrCreateFullHandler();
+        }
+        else{
+            listCreateFullHandler();
+        }
+    }
+
     private Instruction createCompleteInstruction() {
-        Instruction currCommand = commands.pop();
+        Instruction currCommand = (Instruction)commands.pop();
         List<Token> params = grabParameters(currCommand.numRequiredArgs());
         currCommand.setParameters(params);
         return currCommand;
