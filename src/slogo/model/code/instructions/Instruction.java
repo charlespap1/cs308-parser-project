@@ -29,8 +29,8 @@ public abstract class Instruction implements Token {
         parameters = params;
     }
 
-    protected double distFromHome(double x, double y){
-        return Math.sqrt(Math.pow(x,2) + Math.pow(y,2));
+    protected double distFrom(double x, double y, double x2, double y2){
+        return Math.sqrt(Math.pow(x2 - x,2) + Math.pow(y2 - y,2));
     }
 
 }

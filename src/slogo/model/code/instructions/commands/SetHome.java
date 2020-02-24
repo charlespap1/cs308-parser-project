@@ -16,7 +16,7 @@ public class SetHome extends Instruction {
 
     @Override
     public void execute (Turtle t) {
-        this.valueOfExecution = (int)distFromHome(t.getXPos(),t.getYPos());
+        this.valueOfExecution = (int)distFrom(t.getXPos(),t.getYPos(),HOME_X,HOME_Y);
         t.setLocation(HOME_X, HOME_Y);
         t.setCurrCommand(toString());
         t.setCurrCommand("");
