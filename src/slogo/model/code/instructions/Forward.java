@@ -19,6 +19,7 @@ public class Forward extends Instruction {
         if(valueToMove instanceof Instruction)
             ((Instruction)valueToMove).execute(t);
         int valueForExec = valueToMove.generateValue();
+        this.valueOfExecution = valueForExec;
         double x = t.getXPos() + valueForExec * Math.cos(Math.toRadians(t.getAngle()));
         double y = t.getYPos() + valueForExec * Math.sin(Math.toRadians(t.getAngle()));
         t.setLocation(x, y);
@@ -27,10 +28,6 @@ public class Forward extends Instruction {
 
     public int numRequiredArgs(){
         return NUM_ARGS;
-    }
-
-    public int generateValue(){
-        return this.parameters.get(0).generateValue();
     }
 
     public String toString(){
