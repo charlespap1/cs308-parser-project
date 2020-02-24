@@ -22,7 +22,8 @@ public class Forward extends Instruction {
         double x = t.getXPos() + valueForExec * Math.cos(Math.toRadians(t.getAngle()));
         double y = t.getYPos() + valueForExec * Math.sin(Math.toRadians(t.getAngle()));
         t.setLocation(x, y);
-        t.setCurrCommand("forward " +valueForExec +"\n");
+        t.setCurrCommand("forward " +valueForExec);
+        t.setCurrCommand("");
     }
 
     public int numRequiredArgs(){

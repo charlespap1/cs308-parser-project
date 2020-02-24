@@ -1,5 +1,6 @@
 package slogo.view;
 
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -10,10 +11,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
-import slogo.Main;
-import slogo.view.scrollers.CommonCommands;
+import slogo.view.scrollers.NewCommandViewer;
 import slogo.view.scrollers.HistoryCanvas;
-import slogo.view.scrollers.VariableViewer;
+import slogo.view.scrollers.ListViewer;
+
+import java.util.Objects;
 
 /**
  * This class allows us to make our main class less fat
@@ -41,8 +43,8 @@ public class SetupScreen {
   private Button myClear;
   private Button myStop;
   private HistoryCanvas myHistory;
-  private CommonCommands myCommonCommands;
-  private VariableViewer myVariableView;
+  private ListViewer myNewCommandViewer;
+  private ListViewer myVariableView;
 
   private Text myCurrentErrorMessage;
 
@@ -65,7 +67,8 @@ public class SetupScreen {
    */
   public Scene setupGame()
   {
-    Image image = new Image(this.getClass().getClassLoader().getResourceAsStream(TURTLE_IMAGE));
+    //TODO: error handling also make settable
+    Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(TURTLE_IMAGE)));
 
     myCurrentErrorMessage = new Text("");
     myDrawingCanvas = new DrawingCanvas(width, height);
@@ -73,18 +76,17 @@ public class SetupScreen {
     myUserInput = new UserCommandField(width, height);
 
     myHistory = new HistoryCanvas(2, DrawingCanvas.CANVAS_TOP_PADDING);
-    myVariableView = new VariableViewer(2, height/2);
-    myCommonCommands = new CommonCommands(1, DrawingCanvas.CANVAS_TOP_PADDING);
+    //TODO: remove hard coded text
+    myVariableView = new ListViewer(2, height/2.0, "Your variables: ");
+    myNewCommandViewer = new ListViewer(1, DrawingCanvas.CANVAS_TOP_PADDING, "Your new commands: ");
 
     setVBoxLayout();
     setHBoxLayout();
     setButtons();
 
-    root.getChildren().addAll(myDrawingCanvas.getView(), myTurtle.getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myCommonCommands.getView(), myVariableView.getView());
+    root.getChildren().addAll(myDrawingCanvas.getView(), myTurtle.getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myNewCommandViewer.getView(), myVariableView.getView());
 
-    Scene scene = new Scene(root, width, height, background);
-    return scene;
-
+    return new Scene(root, width, height, background);
   }
 
   private void setHBoxLayout()
@@ -156,6 +158,8 @@ public class SetupScreen {
   {
     return myHistory;
   }
+  public void setVariableList(ObservableList<String> variableList) { myVariableView.bindList(variableList); }
+  public void setNewCommandList(ObservableList<String> newCommandList) { myNewCommandViewer.bindList(newCommandList); }
 
   public Text getCurrentErrorMessage()
   {
