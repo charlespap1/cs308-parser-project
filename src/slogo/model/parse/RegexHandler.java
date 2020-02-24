@@ -49,4 +49,10 @@ public class RegexHandler {
         return regex.matcher(text).matches();
     }
 
+    public List<String> getKeys() {
+        List<String> keys = new ArrayList<>();
+        for(Map.Entry<String,Pattern> e: mySymbols)
+            keys.add(e.getKey());
+        return keys;
+    }
 }
