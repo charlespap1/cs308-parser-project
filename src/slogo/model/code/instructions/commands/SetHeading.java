@@ -4,6 +4,8 @@ import slogo.model.Turtle;
 import slogo.model.code.Token;
 import slogo.model.code.instructions.Instruction;
 
+import java.util.List;
+
 public class SetHeading extends Instruction {
 
     private static final int numArgs = 1;
@@ -15,11 +17,8 @@ public class SetHeading extends Instruction {
 
     @Override
     public void execute (Turtle t) {
-        Token angleValue = this.parameters.get(0);
-        if (angleValue instanceof Instruction) {
-            ((Instruction) angleValue).execute(t);
-        }
-        int valueForExec = angleValue.generateValue();
+        List<Integer> paramsAsVals = getParamsAsVals(t);
+        int valueForExec = paramsAsVals.get(0);
         this.valueOfExecution = (int)Math.abs(t.getAngle() - valueForExec);
         t.setAngle(valueForExec);
         t.setCurrCommand(toString(valueForExec + ""));

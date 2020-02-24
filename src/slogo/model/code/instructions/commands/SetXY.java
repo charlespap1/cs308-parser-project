@@ -17,7 +17,7 @@ public class SetXY extends Instruction {
 
     @Override
     public void execute (Turtle t) {
-        List<Integer> paramsAsInts = getParamsAsInts(t);
+        List<Integer> paramsAsInts = getParamsAsVals(t);
         int xCord = paramsAsInts.get(0);
         int yCord = paramsAsInts.get(1);
         this.valueOfExecution = (int)distFrom(xCord,yCord,t.getXPos(),t.getYPos());

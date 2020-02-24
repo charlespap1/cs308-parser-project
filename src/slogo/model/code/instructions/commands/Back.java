@@ -4,6 +4,8 @@ import slogo.model.Turtle;
 import slogo.model.code.Token;
 import slogo.model.code.instructions.Instruction;
 
+import java.util.List;
+
 public class Back extends Instruction {
 
     private static final int numArgs = 1;
@@ -15,11 +17,8 @@ public class Back extends Instruction {
 
     @Override
     public void execute (Turtle t) {
-        Token valueToMove = this.parameters.get(0);
-        if (valueToMove instanceof Instruction) {
-            ((Instruction) valueToMove).execute(t);
-        }
-        int valueForExec = valueToMove.generateValue();
+        List<Integer> paramsAsVals = getParamsAsVals(t);
+        int valueForExec = paramsAsVals.get(0);
         this.valueOfExecution = valueForExec;
         double x = t.getXPos() - valueForExec * Math.cos(t.getAngle());
         double y = t.getYPos() - valueForExec * Math.sin(t.getAngle());

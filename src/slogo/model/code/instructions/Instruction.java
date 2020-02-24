@@ -34,7 +34,7 @@ public abstract class Instruction implements Token {
         return Math.sqrt(Math.pow(x2 - x,2) + Math.pow(y2 - y,2));
     }
 
-    protected List<Integer> getParamsAsInts(Turtle t){
+    protected List<Integer> getParamsAsVals(Turtle t){
         List<Integer> paramsAsInts = new ArrayList<>();
         for(Token currToken: parameters){
             if(currToken instanceof Instruction){

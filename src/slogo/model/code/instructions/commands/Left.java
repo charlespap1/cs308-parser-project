@@ -4,6 +4,8 @@ import slogo.model.Turtle;
 import slogo.model.code.Token;
 import slogo.model.code.instructions.Instruction;
 
+import java.util.List;
+
 public class Left extends Instruction {
 
     private static final int numArgs = 1;
@@ -15,11 +17,8 @@ public class Left extends Instruction {
 
     @Override
     public void execute (Turtle t) {
-        Token valueToRotate = this.parameters.get(0);
-        if (valueToRotate instanceof Instruction) {
-            ((Instruction) valueToRotate).execute(t);
-        }
-        int valueForExec = valueToRotate.generateValue();
+        List<Integer> paramsAsVals = getParamsAsVals(t);
+        int valueForExec = paramsAsVals.get(0);
         this.valueOfExecution = valueForExec;
         double angle = t.getAngle() + valueForExec;
         t.setAngle(angle);
