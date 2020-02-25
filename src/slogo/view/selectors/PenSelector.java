@@ -20,6 +20,7 @@ public class PenSelector extends ColorSelector{
   public PenSelector(Turtle t, double x, double y)
   {
     super(TITLE,  x,  y, BACKGROUND_COLORS,  BACKGROUND_RESOURCE_PACKAGE);
+    setColorButtons();
     this.t = t;
   }
 
