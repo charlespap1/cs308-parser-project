@@ -101,6 +101,4 @@ public class DrawingCanvas {
     return myLines;
   }
 
-
-
 }

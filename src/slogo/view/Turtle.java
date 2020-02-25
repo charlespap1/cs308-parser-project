@@ -23,6 +23,8 @@ public class Turtle {
   private ImageView myTurtleView;
   private double centerX;
   private double centerY;
+  private double canvasWidth;
+  private double canvasHeight;
 
   private DoubleProperty x = new SimpleDoubleProperty();
   private DoubleProperty y = new SimpleDoubleProperty();
@@ -34,8 +36,10 @@ public class Turtle {
 
   private Color penColor = DEFAULT_PEN_COLOR;
 
-  public Turtle(Image image, double canvasWidth, double canvasHeight)
+  public Turtle(Image image, double width, double height)
   {
+    canvasWidth = width;
+    canvasHeight = height;
     centerX = DrawingCanvas.CANVAS_SIDE_PADDING + canvasWidth/2 - TURTLE_FACTOR;
     centerY = DrawingCanvas.CANVAS_TOP_PADDING + canvasHeight/2 - TURTLE_FACTOR;
 
@@ -43,7 +47,6 @@ public class Turtle {
     myTurtleView.setFitWidth(TURTLE_IMAGE_SIZE);
     myTurtleView.setFitHeight(TURTLE_IMAGE_SIZE);
 
-    //this binding should take care of all changes in x and y and angle later on
     myTurtleView.xProperty().bind(x.add(centerX-TURTLE_FACTOR));
     myTurtleView.yProperty().bind(y.add(centerY-TURTLE_FACTOR));
     myTurtleView.rotateProperty().bind(angle);
@@ -56,9 +59,21 @@ public class Turtle {
     angle.bindBidirectional(turtle.turtleAngleProperty());
     penUp.bind(turtle.penUpProperty());
     visible.bind(turtle.visibleProperty());
-    currX = x.getValue() + centerX;
-    currY = y.getValue() + centerY;
+    currX = x.getValue();
+    currY = y.getValue();
     returnTurtleToDefault();
+  }
+
+  public Line drawLineAndBound(){
+    Line line = null;
+    if (outOfBounds()) fixBounding();
+    else line = drawLine();
+    return line;
+  }
+
+  private boolean outOfBounds(){
+    return x.getValue() > canvasWidth/2 || x.getValue() < -canvasWidth/2+TURTLE_IMAGE_SIZE ||
+            y.getValue() > canvasHeight/2 || y.getValue() < -canvasHeight/2+TURTLE_IMAGE_SIZE;
   }
 
   /**
@@ -74,12 +89,59 @@ public class Turtle {
   public Line drawLine(){
     Line line = null;
     if (!penUp.getValue()) {
-      line = new Line(currX, currY, x.getValue() + centerX, y.getValue() + centerY);
+      line = new Line(currX + centerX, currY + centerY, x.getValue() + centerX, y.getValue() + centerY);
       line.setStroke(penColor);
     }
-    currX = x.getValue() + centerX;
-    currY = y.getValue() + centerY;
+    currX = x.getValue();
+    currY = y.getValue();
     return line;
+  }
+
+  private void fixBounding(){
+    double xDistanceOutOfBounds = 0;
+    if (x.getValue()>canvasWidth/2) xDistanceOutOfBounds = x.getValue()-canvasWidth/2;
+    else if (x.getValue()<-canvasWidth/2+TURTLE_IMAGE_SIZE) xDistanceOutOfBounds = Math.abs(x.getValue() + canvasWidth/2);
+    double yDistanceOutOfBounds = 0;
+    if (y.getValue()>canvasHeight/2) yDistanceOutOfBounds = y.getValue()-canvasHeight/2;
+    else if (y.getValue()<-canvasHeight/2+TURTLE_IMAGE_SIZE) yDistanceOutOfBounds = Math.abs(y.getValue() + canvasHeight/2);
+    if (xDistanceOutOfBounds>yDistanceOutOfBounds) stopAlongVerticalSide();
+    else stopAlongHorizontalSide();
+  }
+
+  private void stopAlongVerticalSide(){
+    double deltaX = x.getValue() - currX;
+    double deltaY = y.getValue() - currY;
+    double xDist = 0;
+    double xVal = 0;
+    if (x.getValue()>canvasWidth/2) {
+      xDist = canvasWidth/2 - currX;
+      xVal = canvasWidth/2;
+    }
+    if (x.getValue()<-canvasWidth/2+TURTLE_IMAGE_SIZE) {
+      xDist = -canvasWidth/2+TURTLE_IMAGE_SIZE - currX;
+      xVal = -canvasWidth/2+TURTLE_IMAGE_SIZE;
+    }
+    double yDist = (deltaY/deltaX)*xDist;
+    x.setValue(xVal);
+    y.setValue(currY+yDist);
+  }
+
+  private void stopAlongHorizontalSide(){
+    double deltaX = x.getValue() - currX;
+    double deltaY = y.getValue() - currY;
+    double yDist = 0;
+    double yVal = 0;
+    if (y.getValue()>canvasHeight/2) {
+      yDist = canvasHeight/2-currY;
+      yVal = canvasHeight/2;
+    }
+    if (y.getValue()<-canvasHeight/2+TURTLE_FACTOR) {
+      yDist = -canvasHeight/2+TURTLE_IMAGE_SIZE-currY;
+      yVal = -canvasHeight/2+TURTLE_IMAGE_SIZE;
+    }
+    double xDist = deltaX/deltaY*yDist;
+    x.setValue(currX+xDist);
+    y.setValue(yVal);
   }
 
   /**

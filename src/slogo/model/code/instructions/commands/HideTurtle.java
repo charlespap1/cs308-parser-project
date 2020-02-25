@@ -14,6 +14,7 @@ public class HideTurtle extends Instruction {
 
     @Override
     public void execute (Turtle t) {
+        System.out.println("exec");
         t.setVisible(false);
         this.valueOfExecution = 0;
         t.setCurrCommand(toString());
