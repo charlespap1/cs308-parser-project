@@ -66,24 +66,16 @@ public class Turtle {
     returnTurtleToDefault();
   }
 
-  public void drawLineAndBound(Group root, DrawingCanvas canvas){
-    System.out.println("new method call");
-    if (outOfBounds()){
-      System.out.println("inbounds: "+false);
-      fixBounding();
-    }
-    else {
-      System.out.println("inbounds: "+true);
-      Line line = drawLine();
-      if (line != null) {
-        root.getChildren().add(line);
-        canvas.addLine(line);
-      }
-    }
+  public Line drawLineAndBound(){
+    Line line = null;
+    if (outOfBounds()) fixBounding();
+    else line = drawLine();
+    return line;
   }
 
   private boolean outOfBounds(){
-    return Math.abs(x.getValue()) > canvasWidth/2 || Math.abs(y.getValue()) > canvasHeight/2;
+    return x.getValue() > canvasWidth/2 || x.getValue() < -canvasWidth/2+TURTLE_IMAGE_SIZE ||
+            y.getValue() > canvasHeight/2 || y.getValue() < -canvasHeight/2+TURTLE_IMAGE_SIZE;
   }
 
   /**
@@ -97,7 +89,6 @@ public class Turtle {
   }
 
   public Line drawLine(){
-    System.out.println("drawLine called");
     Line line = null;
     if (!penUp.getValue()) {
       line = new Line(currX + centerX, currY + centerY, x.getValue() + centerX, y.getValue() + centerY);
@@ -110,17 +101,15 @@ public class Turtle {
   private void fixBounding(){
     double xDistanceOutOfBounds = 0;
     if (x.getValue()>canvasWidth/2) xDistanceOutOfBounds = x.getValue()-canvasWidth/2;
-    else if (x.getValue()<-canvasWidth/2) xDistanceOutOfBounds = Math.abs(x.getValue() + canvasWidth/2);
+    else if (x.getValue()<-canvasWidth/2+TURTLE_IMAGE_SIZE) xDistanceOutOfBounds = Math.abs(x.getValue() + canvasWidth/2);
     double yDistanceOutOfBounds = 0;
     if (y.getValue()>canvasHeight/2) yDistanceOutOfBounds = y.getValue()-canvasHeight/2;
-    else if (y.getValue()<-canvasHeight/2) yDistanceOutOfBounds = Math.abs(y.getValue() + canvasHeight/2);
-    System.out.println("x dist out: "+xDistanceOutOfBounds + " y dist out: "+yDistanceOutOfBounds);
+    else if (y.getValue()<-canvasHeight/2+TURTLE_IMAGE_SIZE) yDistanceOutOfBounds = Math.abs(y.getValue() + canvasHeight/2);
     if (xDistanceOutOfBounds>yDistanceOutOfBounds) stopAlongVerticalSide();
     else stopAlongHorizontalSide();
   }
 
   private void stopAlongVerticalSide(){
-    System.out.println("vertical side");
     double deltaX = x.getValue() - currX;
     double deltaY = y.getValue() - currY;
     double xDist = 0;
@@ -128,24 +117,17 @@ public class Turtle {
     if (x.getValue()>canvasWidth/2) {
       xDist = canvasWidth/2 - currX;
       xVal = canvasWidth/2;
-      System.out.println("x too big");
     }
-    if (x.getValue()<(-1*canvasWidth/2)) {
-      xDist = -canvasWidth/2 - currY;
-      xVal = -canvasWidth/2;
-      System.out.println("x too small");
+    if (x.getValue()<-canvasWidth/2+TURTLE_IMAGE_SIZE) {
+      xDist = -canvasWidth/2+TURTLE_IMAGE_SIZE - currX;
+      xVal = -canvasWidth/2+TURTLE_IMAGE_SIZE;
     }
-    System.out.println("x: "+x.get());
-    double yDist = deltaY/deltaX*xDist;
+    double yDist = (deltaY/deltaX)*xDist;
     x.setValue(xVal);
-    System.out.println(currY + " currY, yDist: "+yDist);
     y.setValue(currY+yDist);
-
-    System.out.println("x: "+x.getValue() + " y: " + y.getValue());
   }
 
   private void stopAlongHorizontalSide(){
-    System.out.println("horiz side");
     double deltaX = x.getValue() - currX;
     double deltaY = y.getValue() - currY;
     double yDist = 0;
@@ -153,12 +135,10 @@ public class Turtle {
     if (y.getValue()>canvasHeight/2) {
       yDist = canvasHeight/2-currY;
       yVal = canvasHeight/2;
-      System.out.println("y too big");
     }
-    if (y.getValue()<-canvasHeight/2) {
-      yDist = -canvasHeight/2-currY;
-      yVal = -canvasHeight/2;
-      System.out.println("y too small");
+    if (y.getValue()<-canvasHeight/2+TURTLE_FACTOR) {
+      yDist = -canvasHeight/2+TURTLE_IMAGE_SIZE-currY;
+      yVal = -canvasHeight/2+TURTLE_IMAGE_SIZE;
     }
     double xDist = deltaX/deltaY*yDist;
     x.setValue(currX+xDist);

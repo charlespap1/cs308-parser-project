@@ -54,12 +54,11 @@ public class Interactions implements View {
    * Updates the movement of the turtle according to new states
    */
   private void update() {
-//    Line newLine = myTurtle.drawLine();
-//    if (newLine!=null) {
-//      root.getChildren().add(newLine);
-//      myCanvas.addLine(newLine);
-//    }
-    //myTurtle.addLines(root, myCanvas);
+    Line newLine = myTurtle.drawLineAndBound();
+    if (newLine!=null) {
+      root.getChildren().add(newLine);
+      myCanvas.addLine(newLine);
+    }
   }
 
   // TODO: we probably don't need this publicly here, as it will all be front end
@@ -80,7 +79,7 @@ public class Interactions implements View {
 
   public void setTurtle(slogo.model.Turtle turtle){
     myTurtle.setProperties(turtle);
-    turtle.turtleYProperty().addListener((o, oldVal, newVal) -> myTurtle.drawLineAndBound(root, myCanvas));
+    turtle.turtleYProperty().addListener((o, oldVal, newVal) -> update());
     turtle.currCommandProperty().addListener((o, oldVal, newVal) -> mySetup.addHistory(newVal));
   }
 
