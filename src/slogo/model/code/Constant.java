@@ -14,6 +14,6 @@ public class Constant implements Token {
     }
 
     public String toString(){
-        return "";
+        return val + "";
     }
 }

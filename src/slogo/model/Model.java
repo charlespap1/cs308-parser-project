@@ -63,7 +63,6 @@ public class Model implements ModelAPI{
     }
 
     private void addToAppropriateStack(String piece) {
-        System.out.println(piece);
         Token currentItem = createFromString.getSymbolAsObj(piece);
         if(currentItem instanceof Instruction) {
             Instruction currInstr = (Instruction) currentItem;
@@ -87,9 +86,7 @@ public class Model implements ModelAPI{
     }
 
     private void listCreateFullHandler(){
-        System.out.println("*");
         if(closeBracketExist()){
-            System.out.println("found close");
             commands.pop();
             ListSyntax newList = createCompleteList();
             arguments.push(newList);
@@ -110,7 +107,7 @@ public class Model implements ModelAPI{
         //start with next in stack
         Token currToken = arguments.pop();
         while(!(currToken instanceof BracketOpen)){
-            args.add(currToken);
+            args.add(0,currToken);
             currToken = arguments.pop();
         }
         return args;
@@ -125,18 +122,19 @@ public class Model implements ModelAPI{
         int numRequiredArgs = currCommand.numRequiredArgs();
         if(enoughArgs(numRequiredArgs)){
             Instruction currInstr = createCompleteInstruction();
-            if(commands.isEmpty()){
-                currInstr.execute(turtle);
-            }
-            else{
-                arguments.push(currInstr);
-                attemptToCreateFullInstruction();
+            if(currInstr != null){
+                if(commands.isEmpty()){
+                    currInstr.execute(turtle);
+                }
+                else{
+                    arguments.push(currInstr);
+                    attemptToCreateFullInstruction();
+                }
             }
         }
     }
 
     private void attemptToCreateFullInstruction() {
-        System.out.println(commands.peek());
         if(commands.peek() instanceof Instruction){
             instrCreateFullHandler();
         }
@@ -148,16 +146,32 @@ public class Model implements ModelAPI{
     private Instruction createCompleteInstruction() {
         Instruction currCommand = (Instruction)commands.pop();
         List<Token> params = grabParameters(currCommand.numRequiredArgs());
-        currCommand.setParameters(params);
-        return currCommand;
+        if(params == null){
+            commands.push(currCommand);
+            return null;
+        }
+        else{
+            currCommand.setParameters(params);
+            return currCommand;
+        }
     }
 
     private List<Token> grabParameters(int numArgsNeeded) {
         List<Token> params = new ArrayList<>();
         while(params.size() < numArgsNeeded){
-            params.add(arguments.pop());
+            if(arguments.peek() instanceof BracketClose || arguments.peek() instanceof BracketOpen) {
+                replenishArgsStack(params);
+                return null;
+            }
+            else
+                params.add(0,arguments.pop());
         }
         return params;
+    }
+
+    private void replenishArgsStack(List<Token> params) {
+        while(params.size() > 0)
+            arguments.push(params.remove(0));
     }
 
     private boolean enoughArgs(int numNeeded){
