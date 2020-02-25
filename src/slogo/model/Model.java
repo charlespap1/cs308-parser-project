@@ -122,12 +122,14 @@ public class Model implements ModelAPI{
         int numRequiredArgs = currCommand.numRequiredArgs();
         if(enoughArgs(numRequiredArgs)){
             Instruction currInstr = createCompleteInstruction();
-            if(commands.isEmpty()){
-                currInstr.execute(turtle);
-            }
-            else{
-                arguments.push(currInstr);
-                attemptToCreateFullInstruction();
+            if(currInstr != null){
+                if(commands.isEmpty()){
+                    currInstr.execute(turtle);
+                }
+                else{
+                    arguments.push(currInstr);
+                    attemptToCreateFullInstruction();
+                }
             }
         }
     }
@@ -144,16 +146,32 @@ public class Model implements ModelAPI{
     private Instruction createCompleteInstruction() {
         Instruction currCommand = (Instruction)commands.pop();
         List<Token> params = grabParameters(currCommand.numRequiredArgs());
-        currCommand.setParameters(params);
-        return currCommand;
+        if(params == null){
+            commands.push(currCommand);
+            return null;
+        }
+        else{
+            currCommand.setParameters(params);
+            return currCommand;
+        }
     }
 
     private List<Token> grabParameters(int numArgsNeeded) {
         List<Token> params = new ArrayList<>();
         while(params.size() < numArgsNeeded){
-            params.add(0,arguments.pop());
+            if(arguments.peek() instanceof BracketClose || arguments.peek() instanceof BracketOpen) {
+                replenishArgsStack(params);
+                return null;
+            }
+            else
+                params.add(0,arguments.pop());
         }
         return params;
+    }
+
+    private void replenishArgsStack(List<Token> params) {
+        while(params.size() > 0)
+            arguments.push(params.remove(0));
     }
 
     private boolean enoughArgs(int numNeeded){
