@@ -1,8 +1,10 @@
-package slogo.model.code.instructions;
+package slogo.model.code.instructions.misc;
 
 import slogo.model.Turtle;
 import slogo.model.code.ListSyntax;
 import slogo.model.code.Token;
+import slogo.model.code.instructions.Instruction;
+import slogo.model.code.instructions.NewCommand;
 import slogo.model.parse.AddToListFunction;
 
 import java.util.List;
@@ -19,6 +21,8 @@ public class To extends Instruction {
     @Override
     public void execute(Turtle turtle) {
         String name = parameters.get(0).toString();
+        assert parameters.get(1) instanceof ListSyntax;
+        assert parameters.get(2) instanceof ListSyntax;
         List<Token> variables = ((ListSyntax) parameters.get(1)).getContents();
         List<Token> instructions = ((ListSyntax) parameters.get(2)).getContents();
 

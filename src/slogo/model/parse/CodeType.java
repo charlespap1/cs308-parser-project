@@ -1,53 +1,58 @@
 package slogo.model.parse;
 
+import slogo.model.code.BracketClose;
+import slogo.model.code.BracketOpen;
 import slogo.model.code.Constant;
 import slogo.model.code.Variable;
+import slogo.model.code.instructions.booleans.*;
 import slogo.model.code.instructions.commands.*;
 import slogo.model.code.instructions.math.*;
+import slogo.model.code.instructions.misc.*;
+import slogo.model.code.instructions.queries.*;
 
 public enum CodeType {
-    CLEARSCREEN(null),
-    ISSHOWING(null),
+    CLEARSCREEN(ClearScreen.class),
+    ISSHOWING(TurtleShowingQuery.class),
     ASKWITH(null),
     LEFT(Left.class),
-    OR(null),
+    OR(Or.class),
     SETPOSITION(SetXY.class),
     PRODUCT(Product.class),
     SINE(Sine.class),
-    REPEAT(null),
-    DIFFERENCE(null),
+    REPEAT(Repeat.class),
+    DIFFERENCE(Difference.class),
     SETBACKGROUND(null),
-    MAKEVARIABLE(null),
-    LESSTHAN(null),
-    ISPENDOWN(null),
+    MAKEVARIABLE(Make.class),
+    LESSTHAN(Less.class),
+    ISPENDOWN(PenDownQuery.class),
     RANDOM(Random.class),
-    GREATERTHAN(null),
-    EQUAL(null),
+    GREATERTHAN(Greater.class),
+    EQUAL(Equal.class),
     GETPENCOLOR(null),
     SETHEADING(SetHeading.class),
     PI(Pi.class),
     ID(null),
-    YCOORDINATE(null),
-    NOTEQUAL(null),
-    FOR(null),
+    YCOORDINATE(YCor.class),
+    NOTEQUAL(NotEqual.class),
+    FOR(For.class),
     SETPALETTE(null),
     SUM(Sum.class),
     ARCTANGENT(Arctan.class),
-    NOT(null),
-    AND(null),
+    NOT(Not.class),
+    AND(And.class),
     TURTLES(null),
     DOTIMES(null),
-    XCOORDINATE(null),
+    XCOORDINATE(XCor.class),
     SETTOWARDS(Towards.class),
-    IF(null),
+    IF(If.class),
     MINUS(Minus.class),
     HIDETURTLE(HideTurtle.class),
     COSINE(Cosine.class),
     PENDOWN(PenDown.class),
     SETPENSIZE(null),
-    HEADING(null),
+    HEADING(Heading.class),
     SETPENCOLOR(null),
-    IFELSE(null),
+    IFELSE(IfElse.class),
     RIGHT(Right.class),
     REMAINDER(Remainder.class),
     BACKWARD(Back.class),
@@ -71,10 +76,10 @@ public enum CodeType {
     GROUPEND(null),
     COMMAND(null),
     CONSTANT(Constant.class),
-    LISTSTART(null),
+    LISTSTART(BracketOpen.class),
     GROUPSTART(null),
     NEWLINE(null),
-    LISTEND(null),
+    LISTEND(BracketClose.class),
     WHITESPACE(null);
 
     private Class associatedClass;

@@ -16,6 +16,6 @@ public class ListSyntax implements Token {
     public List<Token> getContents() { return contents; }
 
     public String toString(){
-        return "";
+        return contents.toString();
     }
 }
