@@ -52,6 +52,7 @@ public class SetupScreen {
   private ListViewer myVariableView;
 
   private BackgroundSelector myBackgroundSelector;
+  private BackgroundSelector myCharacterSelector;
   private PenSelector myPenSelector;
 
   private Label myCurrentErrorMessage = new Label();
@@ -136,6 +137,7 @@ public class SetupScreen {
   {
     myBackgroundSelector = new BackgroundSelector(myDrawingCanvas, belowCanvasButtons.getLayoutX(), belowCanvasButtons.getLayoutY() + BUTTON_HEIGHT_OFFSET);
     //myPenSelector = new PenSelector(myTurtle, belowInputFieldItems.getLayoutX(), belowInputFieldItems.getLayoutY() + BUTTON_HEIGHT_OFFSET);
+    myCharacterSelector = new BackgroundSelector(myDrawingCanvas, belowCanvasButtons.getLayoutX(), belowCanvasButtons.getLayoutY() + BUTTON_HEIGHT_OFFSET);
 
     root.getChildren().addAll(myBackgroundSelector.getView());
   }
