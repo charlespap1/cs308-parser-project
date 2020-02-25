@@ -48,13 +48,17 @@ public class Model implements ModelAPI{
     }
 
     private void parseInstructions(String rawString) {
-        List<String> inputPieces = Arrays.asList(rawString.split(WHITESPACE));
-        for (String piece: inputPieces) {
-            if (piece.trim().length() > 0) {
-                SyntaxType currType = SyntaxType.valueOf(typeCheck.getSymbol(piece).toUpperCase());
-                //TODO: error handling when no match found
-                addToAppropriateStack(piece);
+        try {
+            List<String> inputPieces = Arrays.asList(rawString.split(WHITESPACE));
+            for (String piece: inputPieces) {
+                if (piece.trim().length() > 0) {
+                    SyntaxType currType = SyntaxType.valueOf(typeCheck.getSymbol(piece).toUpperCase());
+                    //TODO: error handling when no match found
+                    addToAppropriateStack(piece);
+                }
             }
+        } catch (AssertionError e) {
+            System.out.println(e.getMessage());
         }
     }
 

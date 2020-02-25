@@ -8,7 +8,6 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 
@@ -55,7 +54,7 @@ public class Interactions implements View {
    * Updates the movement of the turtle according to new states
    */
   private void update() {
-    Line newLine = myTurtle.drawLine();
+    Line newLine = myTurtle.drawLineAndBound();
     if (newLine!=null) {
       root.getChildren().add(newLine);
       myCanvas.addLine(newLine);
