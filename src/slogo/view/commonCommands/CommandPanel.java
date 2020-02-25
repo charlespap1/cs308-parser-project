@@ -35,11 +35,12 @@ public class CommandPanel extends Object {
   {
     for(String comm: myIdentifiers){
       String command = myResources.getString(comm);
+      System.out.println(command);
       Text newCommand = new Text(command);
       myHolder.getChildren().add(newCommand);
     }
+    System.out.println("MyHolder: " + myHolder.getChildren().size());
   }
-
   public Node getView()
   {
     return myHolder;

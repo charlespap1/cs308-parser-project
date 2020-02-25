@@ -20,7 +20,6 @@ public class BackgroundSelector extends ColorSelector{
     super(TITLE,  x,  y, BACKGROUND_COLORS,  BACKGROUND_RESOURCE_PACKAGE);
     this.dc = dc;
     setColorButtons();
-
   }
 
   @Override

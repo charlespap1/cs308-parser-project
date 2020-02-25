@@ -22,7 +22,6 @@ public class CommonCommands {
 
 
   public CommonCommands(Stage primaryStage, Scene previousScene) {
-    myScene = setupCommandScene();
     myStage = primaryStage;
     myPrevious = previousScene;
     previousTitle = myStage.getTitle();
@@ -38,12 +37,15 @@ public class CommonCommands {
     TurtleCommandPanel turtleCommands = new TurtleCommandPanel();
 
     myRoot.getChildren().add(turtleCommands.getView());
+    System.out.println(myRoot.getChildren().size());
 
     return new Scene(myRoot, width, height, background);
   }
 
   public void showCommonCommandScene()
   {
+    myScene = setupCommandScene();
+
     myStage.setScene(myScene);
     myStage.setTitle(COMMON_COMMAND_TITLE);
     myStage.show();
