@@ -9,7 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
-
+import slogo.view.commonCommands.CommonCommands;
 
 
 /**
@@ -19,14 +19,20 @@ public class Interactions implements View {
   public static final String TITLE = "SLogo";
 
   private SetupScreen mySetup;
+  private Stage myPrimaryStage;
   private Group root;
   private Turtle myTurtle;
   private DrawingCanvas myCanvas;
+  private CommonCommands myCommonCommands;
 
   public Interactions(Stage primaryStage)
   {
+    myPrimaryStage = primaryStage;
+
     mySetup = new SetupScreen();
     Scene myScene = mySetup.setupGame();
+    myCommonCommands = new CommonCommands(primaryStage, myScene);
+    mySetup.addCommonCommands(myCommonCommands);
 
     mySetup.setBelowCanvasButtons(e -> returnToDefaultTurtle(), e -> clearCanvas());
 
@@ -34,9 +40,9 @@ public class Interactions implements View {
     root = mySetup.getRoot();
     myCanvas = mySetup.getDrawingCanvas();
 
-    primaryStage.setScene(myScene);
-    primaryStage.setTitle(TITLE);
-    primaryStage.show();
+    myPrimaryStage.setScene(myScene);
+    myPrimaryStage.setTitle(TITLE);
+    myPrimaryStage.show();
   }
 
   /**

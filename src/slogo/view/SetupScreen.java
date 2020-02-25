@@ -14,6 +14,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import slogo.view.commonCommands.CommonCommands;
 import slogo.view.scrollers.HistoryCanvas;
 import slogo.view.scrollers.ListViewer;
 
@@ -35,6 +36,8 @@ public class SetupScreen {
   public static final int HEIGHT = 600;
   public static final Paint BACKGROUND = Color.AZURE;
   public static final double BUTTON_HEIGHT_OFFSET = 40;
+  public static final String COMMON_COMMAND_BUTTON_TEXT = "See Common Commands";
+  public static final double COMMON_COMMAND_BUTTON_WIDTH_OFFSET = 200;
 
   private int width;
   private int height;
@@ -93,6 +96,7 @@ public class SetupScreen {
     setSelectors();
 
     root.getChildren().addAll(myDrawingCanvas.getView(), myTurtle.getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myNewCommandViewer.getView(), myVariableView.getView());
+    root.getChildren().addAll(myBackgroundSelector.getView(), myPenSelector.getView());
     return new Scene(root, width, height, background);
   }
 
@@ -135,9 +139,16 @@ public class SetupScreen {
   private void setSelectors()
   {
     myBackgroundSelector = new BackgroundSelector(myDrawingCanvas, belowCanvasButtons.getLayoutX(), belowCanvasButtons.getLayoutY() + BUTTON_HEIGHT_OFFSET);
-    //myPenSelector = new PenSelector(myTurtle, belowInputFieldItems.getLayoutX(), belowInputFieldItems.getLayoutY() + BUTTON_HEIGHT_OFFSET);
+    myPenSelector = new PenSelector(myTurtle, belowInputFieldItems.getLayoutX(), belowInputFieldItems.getLayoutY() + BUTTON_HEIGHT_OFFSET);
+  }
 
-    root.getChildren().addAll(myBackgroundSelector.getView());
+  public void addCommonCommands(CommonCommands commonCommands)
+  {
+    Button commandJumper = new Button(COMMON_COMMAND_BUTTON_TEXT);
+    commandJumper.setOnAction(e -> commonCommands.showCommonCommandScene());
+    commandJumper.setLayoutX(width - COMMON_COMMAND_BUTTON_WIDTH_OFFSET);
+    commandJumper.setLayoutY(BUTTON_HEIGHT_OFFSET);
+    root.getChildren().add(commandJumper);
   }
 
 

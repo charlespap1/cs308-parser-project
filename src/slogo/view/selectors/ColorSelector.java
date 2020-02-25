@@ -38,14 +38,16 @@ public abstract class ColorSelector {
       newColor.setMinHeight(COLOR_SELECTOR_HEIGHT);
       String hex = myResources.getString(currColor);
       newColor.setStyle(DEFAULT_BACKGROUND_SETTER + hex);
-
       newColor.setOnAction(e -> changeSomething(hex));
 
       myHolder.getChildren().add(newColor);
     }
   }
 
-  public abstract void changeSomething(String hex);
+  public void changeSomething(String hex)
+  {
+    System.out.println("Here");
+  }
 
   public Node getView()
   {
