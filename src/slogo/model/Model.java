@@ -59,7 +59,6 @@ public class Model implements ModelAPI{
     }
 
     private void addToAppropriateStack(String piece) {
-        System.out.println(piece);
         Token currentItem = createFromString.getSymbolAsObj(piece);
         if(currentItem instanceof Instruction) {
             Instruction currInstr = (Instruction) currentItem;
@@ -83,9 +82,7 @@ public class Model implements ModelAPI{
     }
 
     private void listCreateFullHandler(){
-        System.out.println("*");
         if(closeBracketExist()){
-            System.out.println("found close");
             commands.pop();
             ListSyntax newList = createCompleteList();
             arguments.push(newList);
@@ -106,7 +103,7 @@ public class Model implements ModelAPI{
         //start with next in stack
         Token currToken = arguments.pop();
         while(!(currToken instanceof BracketOpen)){
-            args.add(currToken);
+            args.add(0,currToken);
             currToken = arguments.pop();
         }
         return args;
@@ -132,7 +129,6 @@ public class Model implements ModelAPI{
     }
 
     private void attemptToCreateFullInstruction() {
-        System.out.println(commands.peek());
         if(commands.peek() instanceof Instruction){
             instrCreateFullHandler();
         }
@@ -151,7 +147,7 @@ public class Model implements ModelAPI{
     private List<Token> grabParameters(int numArgsNeeded) {
         List<Token> params = new ArrayList<>();
         while(params.size() < numArgsNeeded){
-            params.add(arguments.pop());
+            params.add(0,arguments.pop());
         }
         return params;
     }
