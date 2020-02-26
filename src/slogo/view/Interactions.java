@@ -6,7 +6,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import slogo.view.commonCommands.CommonCommands;
@@ -19,30 +18,23 @@ public class Interactions implements View {
   public static final String TITLE = "SLogo";
 
   private SetupScreen mySetup;
-  private Stage myPrimaryStage;
   private Group root;
   private Turtle myTurtle;
   private DrawingCanvas myCanvas;
-  private CommonCommands myCommonCommands;
 
-  public Interactions(Stage primaryStage)
-  {
-    myPrimaryStage = primaryStage;
-
+  public Interactions(Stage primaryStage) {
     mySetup = new SetupScreen();
     Scene myScene = mySetup.setupGame();
-    myCommonCommands = new CommonCommands(primaryStage, myScene);
+    CommonCommands myCommonCommands = new CommonCommands(primaryStage, myScene, getLanguageChoice());
     mySetup.addCommonCommands(myCommonCommands);
-
     mySetup.setBelowCanvasButtons(e -> returnToDefaultTurtle(), e -> clearCanvas());
-
     myTurtle = mySetup.getTurtle();
     root = mySetup.getRoot();
     myCanvas = mySetup.getDrawingCanvas();
 
-    myPrimaryStage.setScene(myScene);
-    myPrimaryStage.setTitle(TITLE);
-    myPrimaryStage.show();
+    primaryStage.setScene(myScene);
+    primaryStage.setTitle(TITLE);
+    primaryStage.show();
   }
 
   /**
@@ -51,11 +43,25 @@ public class Interactions implements View {
    * @return
    * @throws NullPointerException
    */
-  @Override
   public String getInstruction() throws NullPointerException {
     //TODO: is this all the error handling we need for this?
     return mySetup.getUserInput();
   }
+
+  public void setTurtle(slogo.model.Turtle turtle){
+    myTurtle.setProperties(turtle);
+    turtle.pointProperty().addListener((o, oldVal, newVal) -> update());
+    turtle.currCommandProperty().addListener((o, oldVal, newVal) -> mySetup.addHistory(newVal));
+  }
+
+  public void setViewLists(ObservableList<String> variableList, ObservableList<String> newCommandList){
+    mySetup.setVariableList(variableList);
+    mySetup.setNewCommandList(newCommandList);
+  }
+
+  public void setGoButton(EventHandler<ActionEvent> goAction){ mySetup.setGoButton(goAction); }
+
+  public void setErrorMessage(StringProperty error){ mySetup.bindErrorMessage(error); }
 
   public StringProperty getLanguageChoice() { return mySetup.getLanguageChoice(); }
 
@@ -71,40 +77,12 @@ public class Interactions implements View {
     }
   }
 
-  // TODO: we probably don't need this publicly here, as it will all be front end
-  @Override
-  public void changeCanvasColor(Color color) {
-    myCanvas.changeBackground(color);
+  private void returnToDefaultTurtle() {
+    myTurtle.returnTurtleToDefault();
+    clearCanvas();
   }
 
   private void clearCanvas() {
     root.getChildren().removeAll(myCanvas.getLines());
   }
-
-  private void returnToDefaultTurtle()
-  {
-    myTurtle.returnTurtleToDefault();
-    clearCanvas();
-  }
-
-  public void setTurtle(slogo.model.Turtle turtle){
-    myTurtle.setProperties(turtle);
-    turtle.turtleYProperty().addListener((o, oldVal, newVal) -> update());
-    turtle.currCommandProperty().addListener((o, oldVal, newVal) -> mySetup.addHistory(newVal));
-  }
-
-  public void setGoButton(EventHandler<ActionEvent> goAction){
-    mySetup.setGoButton(goAction);
-  }
-
-  public void setViewLists(ObservableList<String> variableList, ObservableList<String> newCommandList){
-    mySetup.setVariableList(variableList);
-    mySetup.setNewCommandList(newCommandList);
-  }
-
-  public void setErrorMessage(StringProperty error){
-    mySetup.bindErrorMessage(error);
-  }
-
-
 }

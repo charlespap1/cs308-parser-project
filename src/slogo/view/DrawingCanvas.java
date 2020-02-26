@@ -25,32 +25,24 @@ public class DrawingCanvas {
 
   private double canvasWidth;
   private double canvasHeight;
-  private Rectangle myView;
+  private Rectangle myView = new Rectangle();
 
-  private List<Line> myLines;
+  private List<Line> myLines = new ArrayList<>();
 
-  public DrawingCanvas(double screenWidth, double screenHeight)
-  {
+  public DrawingCanvas(double screenWidth, double screenHeight) {
     canvasWidth = screenWidth/3 - 2*CANVAS_SIDE_PADDING;
     canvasHeight = screenHeight - CANVAS_TOP_PADDING - CANVAS_BOTTOM_PADDING;
-    myLines = new ArrayList<>();
     setBody();
   }
 
-  private void setBody()
-  {
-    myView = new Rectangle();
-
+  private void setBody() {
     myView.setX(CANVAS_SIDE_PADDING);
     myView.setY(CANVAS_TOP_PADDING);
     myView.setWidth(canvasWidth);
     myView.setHeight(canvasHeight);
-
     myView.setArcWidth(ARC_RADIUS);
     myView.setArcHeight(ARC_RADIUS);
-
     myView.setFill(BACKGROUND_COLOR);
-
     myView.setStroke(BORDER_COLOR);
   }
 
