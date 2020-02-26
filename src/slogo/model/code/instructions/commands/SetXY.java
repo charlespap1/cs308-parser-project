@@ -21,7 +21,7 @@ public class SetXY extends Instruction {
         int xCord = paramsAsInts.get(0);
         int yCord = paramsAsInts.get(1);
         this.valueOfExecution = (int)distFrom(xCord,yCord,t.getXPos(),t.getYPos());
-        t.setLocation(xCord, yCord);
+        t.setLocation(xCord, -yCord);
         t.setCurrCommand(toString(xCord + "",yCord + ""));
         t.setCurrCommand("");
     }

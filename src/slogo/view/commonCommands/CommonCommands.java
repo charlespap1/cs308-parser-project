@@ -2,12 +2,14 @@ package slogo.view.commonCommands;
 
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.paint.Color;
+import javafx.scene.control.Button;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 public class CommonCommands {
   public static final String COMMON_COMMAND_TITLE = "Common Commands";
+  public static final double BUTTON_PADDING = 10;
+  public static final double TOP_PADDING = 30 + BUTTON_PADDING;
 
   private Scene myPrevious;
   private Stage myStage;
@@ -22,7 +24,6 @@ public class CommonCommands {
 
 
   public CommonCommands(Stage primaryStage, Scene previousScene) {
-    myScene = setupCommandScene();
     myStage = primaryStage;
     myPrevious = previousScene;
     previousTitle = myStage.getTitle();
@@ -34,16 +35,33 @@ public class CommonCommands {
 
   public Scene setupCommandScene()
   {
+    String language = "English";
     myRoot = new Group();
-    TurtleCommandPanel turtleCommands = new TurtleCommandPanel();
+    TurtleCommandPanel turtleCommands = new TurtleCommandPanel(language, 0);
+    TurtleQueriesPanel turtleQueries = new TurtleQueriesPanel(language, width/4);
+    MathOperationsPanel mathOPs = new MathOperationsPanel(language, 2*width/4);
+    BooleanOperationsPanel boolOps = new BooleanOperationsPanel(language, 3*width/4);
 
-    myRoot.getChildren().add(turtleCommands.getView());
+    myRoot.getChildren().addAll(turtleCommands.getView(), turtleQueries.getView(), mathOPs.getView(), boolOps.getView());
+
+    setBackButton(myRoot);
 
     return new Scene(myRoot, width, height, background);
   }
 
+  private void setBackButton(Group root)
+  {
+    Button backButton = new Button("Back");
+    backButton.setLayoutX(BUTTON_PADDING);
+    backButton.setLayoutY(BUTTON_PADDING);
+    backButton.setOnAction(e -> showPreviousScene());
+    root.getChildren().add(backButton);
+  }
+
+
   public void showCommonCommandScene()
   {
+    myScene = setupCommandScene();
     myStage.setScene(myScene);
     myStage.setTitle(COMMON_COMMAND_TITLE);
     myStage.show();
