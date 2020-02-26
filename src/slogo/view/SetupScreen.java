@@ -38,7 +38,8 @@ public class SetupScreen {
   public static final int HEIGHT = 600;
   public static final Paint BACKGROUND = Color.AZURE;
   public static final double BUTTON_HEIGHT_OFFSET = 40;
-  public static final double COMMON_COMMAND_BUTTON_WIDTH_OFFSET = 175;
+  public static final double COMMON_COMMAND_BUTTON_HEIGHT_OFFSET = 15;
+  public static final double COMMON_COMMAND_BUTTON_WIDTH_OFFSET = 185;
   public static final int COMMAND_COLUMN = 1;
   public static final int LIST_VIEW_COLUMN = 2;
   //TODO: hard coded text
@@ -89,11 +90,15 @@ public class SetupScreen {
     return new Scene(root, WIDTH, HEIGHT, BACKGROUND);
   }
 
+  /**
+   * Allows us to add a jumper to a common command page
+   * @param commonCommands
+   */
   public void addCommonCommands(CommonCommands commonCommands) {
     Button commandJumper = new Button(COMMON_COMMAND_BUTTON_TEXT);
     commandJumper.setOnAction(e -> commonCommands.showCommonCommandScene());
     commandJumper.setLayoutX(WIDTH - COMMON_COMMAND_BUTTON_WIDTH_OFFSET);
-    commandJumper.setLayoutY(BUTTON_HEIGHT_OFFSET);
+    commandJumper.setLayoutY(COMMON_COMMAND_BUTTON_HEIGHT_OFFSET);
     root.getChildren().add(commandJumper);
   }
 
@@ -117,14 +122,19 @@ public class SetupScreen {
 
   public void setGoButton(EventHandler<ActionEvent> goAction) { myGo.setOnAction(goAction); }
 
+  public Group getRoot() { return root; }
+
+  public StringProperty getLanguageChoice() { return myLanguageSelector.getLanguageChoiceProperty(); }
+
+  /**
+   * Gives all of the buttons below the canvas their functions
+   * @param stopAction
+   * @param clearAction
+   */
   public void setBelowCanvasButtons(EventHandler<ActionEvent> stopAction, EventHandler<ActionEvent> clearAction) {
     myStop.setOnAction(stopAction);
     myClear.setOnAction(clearAction);
   }
-
-  public Group getRoot() { return root; }
-
-  public StringProperty getLanguageChoice() { return myLanguageSelector.getLanguageChoiceProperty(); }
 
   private void setupBox(Pane box, double x, double y, double width){
     box.setLayoutX(x);

@@ -11,6 +11,7 @@ import java.util.*;
  * An extension of the Color Selector which controls the Turtle Image Selector in the GUI. The Color Selector wasn't made
  * for this purpose, but its use of Strings rather than a color-specific object makes it flexible enough to be used here.
  * Unfortunately, using the Color Selector means some method and variable names may be misleading. Our apologies.
+ * @author Braeden
  */
 public class TurtleFaceSelector extends ColorSelector {
   public static final List<String> IMAGES = new ArrayList<>(Arrays.asList("Turtle", "Airplane", "Car", "Dog"));

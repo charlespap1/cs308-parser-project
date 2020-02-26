@@ -18,16 +18,17 @@ public class IfElse extends Instruction {
 
     public void execute (Turtle t) {
         Token expr = this.parameters.get(0);
+        if(expr instanceof Instruction)
+            ((Instruction)expr).execute(t);
         Token list1 = this.parameters.get(1);
         Token list2 = this.parameters.get(2);
         // TODO error if assertion fails
         assert !(expr instanceof ListSyntax);
         this.valueOfExecution = 0;
-        if (expr.generateValue() != 0) {
+        if (expr.generateValue() != 0)
             runCommandsInList(list1, t);
-        } else {
+        else
             runCommandsInList(list2, t);
-        }
     }
 
     public void runCommandsInList (Token list, Turtle t) {

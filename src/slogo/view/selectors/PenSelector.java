@@ -6,6 +6,10 @@ import java.util.List;
 import javafx.scene.paint.Color;
 import slogo.view.Turtle;
 
+/**
+ * Allows the user to choose different pen colors
+ * @author Juliet
+ */
 
 public class PenSelector extends ColorSelector{
 
@@ -23,6 +27,10 @@ public class PenSelector extends ColorSelector{
     this.turtle = turtle;
   }
 
+  /**
+   * Changes color of turtle pen if button is clicked
+   * @param hex
+   */
   @Override
   protected void changeAppearance(String hex) {
     Color color = Color.web(hex);
