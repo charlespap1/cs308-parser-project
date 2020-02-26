@@ -58,7 +58,9 @@ public class CodeFactory {
     }
 
     public Token getSymbolAsObj(String piece) {
+        System.out.println("Getting symb for: " + piece);
         String objectType = keyGrabber.getSymbol(piece);
+        System.out.println(objectType);
         if (objectType.equals("Variable")) return getVariable(piece);
         if (objectType.equals("Command")) return getNewCommand(piece);
         if (objectType.equals("To")) return new To(addToNewCommandsList);

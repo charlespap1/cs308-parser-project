@@ -22,7 +22,6 @@ public class Towards extends Instruction {
         int yCord = paramsAsInts.get(1);
         double angle = Math.atan2(xCord - t.getXPos(), yCord - t.getYPos());
         double angleDegrees = Math.toDegrees(angle);
-        System.out.println(angleDegrees);
         this.valueOfExecution = (int)(Math.abs(t.getAngle() - angleDegrees));
         t.setAngle(angleDegrees+90);
         t.setCurrCommand(toString(xCord + "", yCord + ""));
