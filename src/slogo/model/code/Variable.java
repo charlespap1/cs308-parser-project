@@ -1,8 +1,7 @@
 package slogo.model.code;
 
 public class Variable implements Token {
-
-    private int value;
+    private double value;
     private String name;
 
     public Variable(String name){
@@ -10,11 +9,11 @@ public class Variable implements Token {
         value = 0;
     }
 
-    public void setVariable(int var){
+    public void setVariable(double var){
         value = var;
     }
 
-    public int generateValue(){
+    public double generateValue(){
         return value;
     }
 

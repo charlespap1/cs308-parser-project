@@ -9,7 +9,7 @@ public class ListSyntax implements Token {
         contents = stuff;
     }
 
-    public int generateValue(){
+    public double generateValue(){
         return contents.size();
     }
 
