@@ -1,10 +1,16 @@
 package slogo.view.commonCommands;
 
+import java.io.IOException;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
@@ -14,6 +20,7 @@ public class CommonCommands {
   public static final String BACK_BUTTON_TEXT = "Back";
   public static final double BUTTON_PADDING = 10;
   public static final double TOP_PADDING = 30 + BUTTON_PADDING;
+  private static final double HYPERLINK_PADDING = 150;
 
   private Scene myPrevious;
   private Stage myStage;
@@ -46,9 +53,37 @@ public class CommonCommands {
     MathOperationsPanel mathOps = new MathOperationsPanel(language.get(), width/2);
     BooleanOperationsPanel boolOps = new BooleanOperationsPanel(language.get(), 3*width/4);
 
+    setHyperlink(myRoot);
+
     myRoot.getChildren().addAll(turtleCommands.getView(), turtleQueries.getView(), mathOps.getView(), boolOps.getView(), backButton);
     return new Scene(myRoot, width, height, background);
   }
+
+
+  private void setHyperlink(Group root)
+  {
+    HBox centerText = new HBox();
+    centerText.setAlignment(Pos.CENTER);
+
+    Hyperlink link = new Hyperlink();
+    link.setText("Click Here For More Information on Commands");
+    link.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent e) {
+        String url_open ="https://www2.cs.duke.edu/courses/spring20/compsci308/assign/03_parser/commands.php";
+        try {
+          java.awt.Desktop.getDesktop().browse(java.net.URI.create(url_open));
+        } catch (IOException ex) {
+          ex.printStackTrace();
+        }
+      }
+    });
+
+    centerText.getChildren().add(link);
+    centerText.setLayoutX(width/2 - HYPERLINK_PADDING);
+    root.getChildren().add(centerText);
+  }
+
 
   public void showCommonCommandScene() {
     myStage.setScene(setupCommandScene());
