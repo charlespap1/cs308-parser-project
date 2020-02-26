@@ -17,4 +17,9 @@ public class TurtleFaceSelector extends ColorSelector {
 
   }
 
+  @Override
+  public void changeSomething(String hex) {
+
+  }
+
 }

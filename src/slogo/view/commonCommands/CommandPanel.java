@@ -3,7 +3,6 @@ package slogo.view.commonCommands;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
@@ -36,6 +35,7 @@ public class CommandPanel extends Object {
     for(String comm: myIdentifiers){
       String command = myResources.getString(comm);
       Text newCommand = new Text(command);
+      System.out.println(command);
       myHolder.getChildren().add(newCommand);
     }
   }

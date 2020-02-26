@@ -43,10 +43,7 @@ public abstract class ColorSelector{
     }
   }
 
-  public void changeSomething(String hex)
-  {
-    System.out.println("Here");
-  }
+  public abstract void changeSomething(String hex);
 
   public Node getView()
   {
