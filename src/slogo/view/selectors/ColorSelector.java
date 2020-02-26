@@ -7,6 +7,12 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 
+/**
+ * This class allows us to remove duplicated constructor
+ * code of the Pen, Background and TurtleFace selectors
+ * @author Juliet
+ */
+
 public abstract class ColorSelector{
   public static final int HBOX_SPACING = 10;
   public static final double COLOR_SELECTOR_HEIGHT = 17;
@@ -26,13 +32,25 @@ public abstract class ColorSelector{
     myIdentifiers = identifiers;
   }
 
+  /**
+   * Performs the action of changing whatever element
+   * of the selector is clicked
+   * @param hex
+   */
   protected abstract void changeAppearance(String hex);
 
+  /**
+   * Allows for adding the selector to the root
+   * @return
+   */
   public Node getView()
   {
     return myHolder;
   }
 
+  /**
+   * Sets color or view and layout of button given the resource class it's reading from
+   */
   protected void setColorButtons() {
     for (String identifier: myIdentifiers) {
       Button newColor = new Button();
@@ -44,6 +62,11 @@ public abstract class ColorSelector{
     }
   }
 
+  /**
+   * Gets the style of the button from the resource given
+   * @param newColor
+   * @param hex
+   */
   protected void setButtonFromResourceResult(Button newColor, String hex) {
     newColor.setStyle(DEFAULT_BACKGROUND_SETTER + hex);
     newColor.setOnAction(e -> changeAppearance(hex));
