@@ -5,7 +5,7 @@ public class Constant implements Token {
     private double val;
 
     public Constant(String value){
-        val = Integer.parseInt(value);
+        val = Double.parseDouble(value);
         //TODO: error handling
     }
 
