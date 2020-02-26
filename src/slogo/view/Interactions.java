@@ -57,6 +57,8 @@ public class Interactions implements View {
     return mySetup.getUserInput();
   }
 
+  public StringProperty getLanguageChoice() { return mySetup.getLanguageChoice(); }
+
   /**
    * Updates the movement of the turtle according to new states
    */

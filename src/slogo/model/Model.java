@@ -31,14 +31,15 @@ public class Model implements ModelAPI{
     private Turtle turtle;
     private StringProperty errorMessage = new SimpleStringProperty();
 
-    public Model(String language) {
+    public Model(StringProperty language) {
         typeCheck.addPatterns(SYNTAX);
-        changeLanguage(language);
+        setupLanguage(language);
         turtle = new Turtle(0, 0, false, 0);
     }
 
-    public void changeLanguage(String language) {
-        createFromString = new CodeFactory(language);
+    private void setupLanguage(StringProperty language) {
+        createFromString = new CodeFactory(language.getValue());
+        language.addListener((o, oldVal, newVal) ->  createFromString = new CodeFactory(newVal));
     }
 
     public Turtle getTurtle(){ return turtle; }

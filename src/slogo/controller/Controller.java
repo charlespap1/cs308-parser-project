@@ -21,16 +21,15 @@ public class Controller extends Application {
      */
     @Override
     public void start(Stage primaryStage) {
-        myModel = new Model(LANG);
         myView = new Interactions(primaryStage);
-        Turtle myTurtle = myModel.getTurtle();
-        myView.setTurtle(myTurtle);
+        myModel = new Model(myView.getLanguageChoice());
+        myView.setTurtle(myModel.getTurtle());
         // this allows us to set the onclick action for the go button to be the getInstruction method in Controller,
         // prevents us from having to give the View access to the Controller
         myView.setGoButton(e -> getInstruction());
         myView.setViewLists(myModel.getVariableList(), myModel.getNewCommandsList());
         myView.setErrorMessage(myModel.getErrorMessage());
-        myView.setLanguageChanger((String language) -> setLanguage(language));
+        //myView.setLanguageChanger((String language) -> setLanguage(language));
     }
 
 
@@ -44,10 +43,6 @@ public class Controller extends Application {
         //make this get called when button is pressed in front end -- set some kind of event listener? ask TA
         String input = myView.getInstruction();
         myModel.executeCode(input);
-    }
-
-    private void setLanguage(String language){
-        myModel.changeLanguage(language);
     }
 
     public static void main (String[] args) {
