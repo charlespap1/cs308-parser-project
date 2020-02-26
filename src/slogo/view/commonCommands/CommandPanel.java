@@ -38,8 +38,8 @@ public class CommandPanel extends Object {
 
   private void setHolderLayout()
   {
-    myHolder.setMinWidth(SetupScreen.WIDTH/3);
-    myHolder.setMaxWidth(SetupScreen.WIDTH/3);
+    myHolder.setMinWidth(SetupScreen.WIDTH/4);
+    myHolder.setMaxWidth(SetupScreen.WIDTH/4);
   }
 
 
@@ -48,7 +48,6 @@ public class CommandPanel extends Object {
     for(String comm: myIdentifiers){
       String command = myResources.getString(comm);
       Text newCommand = new Text(command);
-      System.out.println(command);
       myHolder.getChildren().add(newCommand);
     }
   }

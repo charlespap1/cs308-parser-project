@@ -35,11 +35,14 @@ public class CommonCommands {
 
   public Scene setupCommandScene()
   {
+    String language = "English";
     myRoot = new Group();
-    TurtleCommandPanel turtleCommands = new TurtleCommandPanel();
-    TurtleQueriesPanel turtleQueries = new TurtleQueriesPanel(width/3);
+    TurtleCommandPanel turtleCommands = new TurtleCommandPanel(language, 0);
+    TurtleQueriesPanel turtleQueries = new TurtleQueriesPanel(language, width/4);
+    MathOperationsPanel mathOPs = new MathOperationsPanel(language, 2*width/4);
+    BooleanOperationsPanel boolOps = new BooleanOperationsPanel(language, 3*width/4);
 
-    myRoot.getChildren().addAll(turtleCommands.getView(), turtleQueries.getView());
+    myRoot.getChildren().addAll(turtleCommands.getView(), turtleQueries.getView(), mathOPs.getView(), boolOps.getView());
 
     setBackButton(myRoot);
 
