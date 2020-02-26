@@ -53,6 +53,7 @@ public class Interactions implements View {
    */
   @Override
   public String getInstruction() throws NullPointerException {
+    //TODO: is this all the error handling we need for this?
     return mySetup.getUserInput();
   }
 
