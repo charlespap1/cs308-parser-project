@@ -7,12 +7,13 @@ import slogo.model.code.Variable;
 import java.util.List;
 
 public class NewCommand extends Instruction {
-    private static final int NUM_ARGS = 1;
+    private static final int numArgs = 1;
     private String myName;
     private List<Token> myVariables;
     private List<Token> myInstructions;
 
     public NewCommand(String name, List<Token> variables, List<Token> instructions){
+        super(numArgs);
         myName = name;
         myVariables = variables;
         myInstructions = instructions;
@@ -22,7 +23,6 @@ public class NewCommand extends Instruction {
         return myName;
     }
 
-    @Override
     public void execute(Turtle turtle) {
         if (parameters.get(0).generateValue() != myVariables.size()) throw new Error("wrong number of params");
         //TODO: error handling
@@ -35,13 +35,7 @@ public class NewCommand extends Instruction {
         }
     }
 
-    @Override
-    public int numRequiredArgs() {
-        return NUM_ARGS;
-    }
-
-    @Override
-    public int generateValue() {
+    public double generateValue() {
         return 0;
     }
 }

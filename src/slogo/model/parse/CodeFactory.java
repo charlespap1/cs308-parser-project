@@ -14,19 +14,53 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CodeFactory {
+    public static String VARIABLE_TYPE = "Variable";
+    public static String NEW_COMMAND_TYPE = "Command";
+    public static String TO_TYPE = "To";
+
     private RegexHandler keyGrabber = new RegexHandler();
-    private Map<String,Class> mappings = new HashMap<>();
+    private Map<String, Class> mappings = new HashMap<>();
     private Map<String, NewCommand> newCommandMap = new HashMap<>();
     private Map<String, Variable> variableMap = new HashMap<>();
     private ObservableList<String> vars = FXCollections.observableArrayList();
     private ObservableList<String> newCommands = FXCollections.observableArrayList();
 
-    AddToListFunction addToNewCommandsList = this::addNewCommand;
-
     public CodeFactory(String language){
         keyGrabber.addPatterns(language);
         keyGrabber.addPatterns("Syntax");
         generateMappings();
+    }
+
+    public Token getSymbolAsObj(String piece) {
+        String objectType = keyGrabber.getSymbol(piece);
+        if (objectType.equals(VARIABLE_TYPE)) return getVariable(piece);
+        if (objectType.equals(NEW_COMMAND_TYPE)) return getNewCommand(piece);
+        if (objectType.equals(TO_TYPE)) return new To(this::addNewCommand);
+        Token token = null;
+        try {
+            Class c = mappings.get(objectType);
+            Constructor objConstruct = c.getDeclaredConstructor(String.class);
+            objConstruct.setAccessible(true);
+            token = (Token) objConstruct.newInstance(piece);
+        }
+        catch (Exception e) {
+            System.out.println("can't find: "+piece);
+            e.printStackTrace();
+            //TODO: relay some message back to UI that code was no bueno.
+        }
+        return token;
+    }
+
+    public ObservableList<String> getVariableList(){ return vars; }
+
+    public ObservableList<String> getNewCommandList(){ return newCommands; }
+
+    private void generateMappings() {
+        List<String> keys = keyGrabber.getKeys();
+        for (String key: keys) {
+            CodeType currentType = CodeType.valueOf(key.toUpperCase());
+            mappings.put(key, currentType.getAssociatedClass());
+        }
     }
 
     private void addNewCommand(Token token){
@@ -35,15 +69,7 @@ public class CodeFactory {
         newCommands.add(command.getName());
     }
 
-    private void generateMappings() {
-        List<String> keys = keyGrabber.getKeys();
-        for(String key: keys){
-            CodeType currentType = CodeType.valueOf(key.toUpperCase());
-            mappings.put(key,currentType.getAssociatedClass());
-        }
-    }
-
-    private Token getVariable(String piece){
+    private Token getVariable(String piece) {
         if (!variableMap.containsKey(piece)) {
             Variable variable = new Variable(piece);
             variableMap.put(piece, variable);
@@ -52,30 +78,8 @@ public class CodeFactory {
         return variableMap.get(piece);
     }
 
-    private Token getNewCommand(String piece){
+    private Token getNewCommand(String piece) {
         if (newCommandMap.containsKey(piece)) return newCommandMap.get(piece);
         return new NewCommandName(piece);
     }
-
-    public Token getSymbolAsObj(String piece) {
-        String objectType = keyGrabber.getSymbol(piece);
-        if (objectType.equals("Variable")) return getVariable(piece);
-        if (objectType.equals("Command")) return getNewCommand(piece);
-        if (objectType.equals("MakeUserInstruction")) return new To(addToNewCommandsList);
-        Token token = null;
-        try{
-            Class c = mappings.get(objectType);
-            Constructor objConstruct = c.getDeclaredConstructor(String.class);
-            objConstruct.setAccessible(true);
-            token = (Token) objConstruct.newInstance(piece);
-        }
-        catch(Exception e){
-            e.printStackTrace();
-            //TODO: relay some message back to UI that code was no bueno.
-        }
-        return token;
-    }
-
-    public ObservableList<String> getVariableList(){ return vars; }
-    public ObservableList<String> getNewCommandList(){ return newCommands; }
 }

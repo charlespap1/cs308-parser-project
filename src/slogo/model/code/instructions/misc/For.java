@@ -10,17 +10,17 @@ import java.util.List;
 
 public class For extends Instruction {
 
-    private static final int NUM_ARGS = 2;
+    private static final int numArgs = 2;
 
     public For(String name){
-        super();
+        super(numArgs);
         this.instrName = name;
     }
 
-    @Override
     public void execute (Turtle t) {
         Token list1 = this.parameters.get(0);
         Token list2 = this.parameters.get(1);
+        // TODO: error handling if assertion fails
         assert list1 instanceof ListSyntax;
         assert list2 instanceof ListSyntax;
         this.valueOfExecution = 0;
@@ -29,26 +29,20 @@ public class For extends Instruction {
         Token variable = loopParameters.get(0);
         assert variable instanceof Variable;
         // need to error check these?
-        int start = loopParameters.get(1).generateValue();
-        int end = loopParameters.get(2).generateValue();
-        int increment = loopParameters.get(3).generateValue();
+        // TODO: assert ints
+        int start = (int) loopParameters.get(1).generateValue();
+        int end = (int) loopParameters.get(2).generateValue();
+        int increment = (int) loopParameters.get(3).generateValue();
 
         List<Token> commands = ((ListSyntax) list2).getContents();
         for (int i = start; i <= end; i += increment) {
             ((Variable) variable).setVariable(i);
             for (Token command: commands) {
+                // TODO: error if assertion fails
                 assert command instanceof Instruction;
                 ((Instruction) command).execute(t);
                 this.valueOfExecution = command.generateValue();
             }
         }
-    }
-
-    public int numRequiredArgs(){
-        return NUM_ARGS;
-    }
-
-    public String toString(){
-        return instrName + " " + valueOfExecution;
     }
 }

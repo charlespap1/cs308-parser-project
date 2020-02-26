@@ -1,7 +1,6 @@
 package slogo.model.code.instructions.commands;
 
 import slogo.model.Turtle;
-import slogo.model.code.Token;
 import slogo.model.code.instructions.Instruction;
 
 import java.util.List;
@@ -11,24 +10,21 @@ public class SetHeading extends Instruction {
     private static final int numArgs = 1;
 
     public SetHeading(String name){
-        super();
+        super(numArgs);
         this.instrName = name;
     }
 
-    @Override
     public void execute (Turtle t) {
-        List<Integer> paramsAsVals = getParamsAsVals(t);
-        int valueForExec = paramsAsVals.get(0);
-        this.valueOfExecution = (int)Math.abs(t.getAngle() - valueForExec);
+        List<Double> paramsAsVals = getParamsAsVals(t);
+        double valueForExec = paramsAsVals.get(0);
+        valueOfExecution = Math.abs(t.getAngle() - valueForExec);
         t.setAngle(valueForExec);
+        // TODO: better stringifying
         t.setCurrCommand(toString(valueForExec + ""));
         t.setCurrCommand("");
     }
 
-    public int numRequiredArgs(){
-        return numArgs;
-    }
-
+    @Override
     public String toString(){
         return instrName;
     }

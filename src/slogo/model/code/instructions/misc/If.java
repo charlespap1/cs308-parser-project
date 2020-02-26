@@ -9,14 +9,13 @@ import java.util.List;
 
 public class If extends Instruction {
 
-    private static final int NUM_ARGS = 2;
+    private static final int numArgs = 2;
 
     public If(String name){
-        super();
+        super(numArgs);
         this.instrName = name;
     }
 
-    @Override
     public void execute (Turtle t) {
         Token expr = this.parameters.get(0);
         if (expr instanceof Instruction)
@@ -28,18 +27,11 @@ public class If extends Instruction {
         if (expr.generateValue() != 0) {
             List<Token> commands = ((ListSyntax) list).getContents();
             for (Token command: commands) {
+                // TODO: error if assertion fails
                 assert command instanceof Instruction;
                 ((Instruction) command).execute(t);
                 this.valueOfExecution = command.generateValue();
             }
         }
-    }
-
-    public int numRequiredArgs(){
-        return NUM_ARGS;
-    }
-
-    public String toString(){
-        return instrName + " " + valueOfExecution;
     }
 }

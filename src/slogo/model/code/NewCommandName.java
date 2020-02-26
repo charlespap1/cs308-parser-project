@@ -7,8 +7,7 @@ public class NewCommandName implements Token {
         myName = name;
     }
 
-    @Override
-    public int generateValue() {
+    public double generateValue() {
         return 0;
     }
 

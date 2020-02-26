@@ -4,23 +4,20 @@ import slogo.model.Turtle;
 import slogo.model.code.instructions.Instruction;
 
 public class BracketOpen extends Instruction {
-
+    // TODO: write this one, move to instruction level in pkg?
     public BracketOpen(String name){
-        super();
+        super(0);
     }
 
-    @Override
     public void execute(Turtle turtle) {
 
     }
 
-    @Override
     public int numRequiredArgs() {
         return -1;
     }
 
-    @Override
-    public int generateValue() {
+    public double generateValue() {
         return -1;
     }
 }

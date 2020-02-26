@@ -4,35 +4,28 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 public class RegexHandler {
+    public static final String RESOURCES_PACKAGE = "resources.commands.";
+    // TODO: error handling
+    public static final String ERROR = "NO MATCH";
 
-    // where to find resources specifically for this class
-    private static final String RESOURCES_PACKAGE = "resources.commands.";
-    // "types" and the regular expression patterns that recognize those types
-    // note, it is a list because order matters (some patterns may be more generic)
-    private List<Map.Entry<String, Pattern>> mySymbols;
-
-    public RegexHandler(){
-        mySymbols = new ArrayList<>();
-    }
+    private List<Map.Entry<String, Pattern>> mySymbols = new ArrayList<>();
 
     /**
      * Adds the given resource file to this language's recognized types
      */
-    public void addPatterns (String syntax) {
+    public void addPatterns(String syntax) {
         ResourceBundle resources = ResourceBundle.getBundle(RESOURCES_PACKAGE + syntax);
         for (String key : Collections.list(resources.getKeys())) {
+            //TODO: this will never run into an error -- double check with backend people
             String regex = resources.getString(key);
-            mySymbols.add(new AbstractMap.SimpleEntry<>(key,
-                    // THIS IS THE IMPORTANT LINE
-                    Pattern.compile(regex, Pattern.CASE_INSENSITIVE)));
+            mySymbols.add(new AbstractMap.SimpleEntry<>(key, Pattern.compile(regex, Pattern.CASE_INSENSITIVE)));
         }
     }
 
     /**
      * Returns language's type associated with the given text if one exists
      */
-    public String getSymbol (String text) {
-        final String ERROR = "NO MATCH";
+    public String getSymbol(String text) {
         for (Map.Entry<String, Pattern> e : mySymbols) {
             if (match(text, e.getValue())) {
                 return e.getKey();
@@ -42,17 +35,12 @@ public class RegexHandler {
         return ERROR;
     }
 
-
-    // Returns true if the given text matches the given regular expression pattern
-    private boolean match (String text, Pattern regex) {
-        // THIS IS THE IMPORTANT LINE
-        return regex.matcher(text).matches();
-    }
-
     public List<String> getKeys() {
         List<String> keys = new ArrayList<>();
         for(Map.Entry<String,Pattern> e: mySymbols)
             keys.add(e.getKey());
         return keys;
     }
+
+    private boolean match(String text, Pattern regex) { return regex.matcher(text).matches(); }
 }

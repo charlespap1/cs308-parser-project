@@ -1,32 +1,23 @@
 package slogo.model.code.instructions.math;
 
 import slogo.model.Turtle;
-import slogo.model.code.Token;
 import slogo.model.code.instructions.Instruction;
 
 import java.util.List;
 
 public class Tangent extends Instruction {
 
-    private static final int NUM_ARGS = 1;
+    private static final int numArgs = 1;
 
     public Tangent(String name) {
-        super();
+        super(numArgs);
         this.instrName = name;
     }
 
-    @Override
     public void execute (Turtle t) {
-        List<Integer> paramsAsVals = this.getParamsAsVals(t);
-        int val = paramsAsVals.get(0);
-        this.valueOfExecution = (int) Math.tan(Math.toRadians(val));
-    }
-
-    public int numRequiredArgs(){
-        return NUM_ARGS;
-    }
-
-    public String toString(){
-        return instrName + " " + valueOfExecution;
+        List<Double> paramsAsVals = this.getParamsAsVals(t);
+        // TODO: check type
+        double val = paramsAsVals.get(0);
+        this.valueOfExecution = Math.tan(Math.toRadians(val));
     }
 }

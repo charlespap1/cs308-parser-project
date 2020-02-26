@@ -8,11 +8,10 @@ public class PenUp extends Instruction {
     private static final int numArgs = 0;
 
     public PenUp(String name){
-        super();
+        super(numArgs);
         this.instrName = name;
     }
 
-    @Override
     public void execute (Turtle t) {
         t.setPenUp(true);
         this.valueOfExecution = 0;
@@ -20,10 +19,7 @@ public class PenUp extends Instruction {
         t.setCurrCommand("");
     }
 
-    public int numRequiredArgs(){
-        return numArgs;
-    }
-
+    @Override
     public String toString(){
         return instrName;
     }

@@ -10,19 +10,20 @@ import slogo.model.parse.AddToListFunction;
 import java.util.List;
 
 public class To extends Instruction {
-    private static final int NUM_ARGS = 3;
+    private static final int numArgs = 3;
     private NewCommand myCommand;
     private AddToListFunction myFunction;
 
     public To(AddToListFunction function){
+        super(numArgs);
         myFunction = function;
     }
 
-    @Override
     public void execute(Turtle turtle) {
         String name = parameters.get(0).toString();
         assert parameters.get(1) instanceof ListSyntax;
         assert parameters.get(2) instanceof ListSyntax;
+        // TODO: error handling if not so
         List<Token> variables = ((ListSyntax) parameters.get(1)).getContents();
         List<Token> instructions = ((ListSyntax) parameters.get(2)).getContents();
 
@@ -30,13 +31,7 @@ public class To extends Instruction {
         myFunction.addToList(myCommand);
     }
 
-    @Override
-    public int numRequiredArgs() {
-        return NUM_ARGS;
-    }
-
-    @Override
-    public int generateValue() {
+    public double generateValue() {
         if (myCommand != null) return 1;
         return 0;
     }

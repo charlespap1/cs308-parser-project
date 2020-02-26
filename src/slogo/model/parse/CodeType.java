@@ -83,11 +83,12 @@ public enum CodeType {
     WHITESPACE(null);
 
     private Class associatedClass;
+
     CodeType(Class c){
         associatedClass = c;
     }
 
-    Class getAssociatedClass(){
+    public Class getAssociatedClass(){
         return associatedClass;
     }
 }
