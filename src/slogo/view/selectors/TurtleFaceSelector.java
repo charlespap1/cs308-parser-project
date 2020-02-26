@@ -14,17 +14,16 @@ import java.util.*;
  */
 public class TurtleFaceSelector extends ColorSelector {
   public static final List<String> IMAGES = new ArrayList<>(Arrays.asList("Turtle", "Airplane", "Car", "Dog"));
-  private static final String RESOURCES = "resources";
-  private static final String TITLE = "Character types: ";
+  public static final String RESOURCES = "resources";
   public static final String IMAGE_RESOURCE_PACKAGE = RESOURCES + ".commands.TurtleImages";
+  // TODO: hard coded text
+  public static final String TITLE = "Character types: ";
 
-  private Turtle t;
+  private Turtle turtle;
 
-
-  public TurtleFaceSelector(Turtle turtle, double x, double y)
-  {
+  public TurtleFaceSelector(Turtle turtle, double x, double y) {
     super(TITLE, x, y, IMAGES, IMAGE_RESOURCE_PACKAGE);
-    t = turtle;
+    this.turtle = turtle;
     setColorButtons();
   }
 
@@ -35,18 +34,12 @@ public class TurtleFaceSelector extends ColorSelector {
     iv.setPreserveRatio(true);
     iv.setFitHeight(COLOR_SELECTOR_HEIGHT);
     newImageButton.setGraphic(iv);
-    newImageButton.setOnAction(e -> changeSomething(imageFileName));
+    newImageButton.setOnAction(e -> changeAppearance(imageFileName));
   }
 
   @Override
-  public void changeSomething(String imageFileName)
-  {
-    changeTurtleImage(imageFileName);
-  }
-
-  private void changeTurtleImage(String imageFileName) {
+  protected void changeAppearance(String imageFileName) {
     Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(imageFileName)));
-    t.changeImage(image);
+    turtle.changeImage(image);
   }
-
 }
