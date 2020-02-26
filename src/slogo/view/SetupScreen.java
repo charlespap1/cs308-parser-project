@@ -20,6 +20,7 @@ import slogo.view.scrollers.ListViewer;
 
 import java.util.Objects;
 import slogo.view.selectors.BackgroundSelector;
+import slogo.view.selectors.LanguageSelector;
 import slogo.view.selectors.PenSelector;
 import slogo.view.selectors.TurtleFaceSelector;
 
@@ -58,12 +59,12 @@ public class SetupScreen {
   private BackgroundSelector myBackgroundSelector;
   private TurtleFaceSelector myCharacterSelector;
   private PenSelector myPenSelector;
+  private LanguageSelector myLanguageSelector;
 
   private Label myCurrentErrorMessage = new Label();
 
   private VBox belowInputFieldItems;
   private HBox belowCanvasButtons;
-  private VBox belowVariablesItems;
 
 
   public SetupScreen()
@@ -99,7 +100,7 @@ public class SetupScreen {
     setSelectors();
 
     root.getChildren().addAll(myDrawingCanvas.getView(), myTurtle.getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myNewCommandViewer.getView(), myVariableView.getView());
-    root.getChildren().addAll(myBackgroundSelector.getView(), myPenSelector.getView(), myCharacterSelector.getView());
+    root.getChildren().addAll(myBackgroundSelector.getView(), myPenSelector.getView(), myCharacterSelector.getView(), myLanguageSelector.getView());
     return new Scene(root, width, height, background);
   }
 
@@ -123,7 +124,7 @@ public class SetupScreen {
 
   private void setButtons()
   {
-    myGo = new Button(GoButton.BUTTON_TEXT);
+    myGo = new Button("Go");
     myGo.setMinWidth(myUserInput.getWidth());
     belowInputFieldItems.getChildren().add(myGo);
     belowInputFieldItems.getChildren().add(myCurrentErrorMessage);
@@ -144,6 +145,7 @@ public class SetupScreen {
     myBackgroundSelector = new BackgroundSelector(myDrawingCanvas, belowCanvasButtons.getLayoutX(), belowCanvasButtons.getLayoutY()+ BUTTON_HEIGHT_OFFSET);
     myCharacterSelector = new TurtleFaceSelector(myTurtle, myVariableView.getView().getLayoutX(), belowInputFieldItems.getLayoutY() + BUTTON_HEIGHT_OFFSET);
     myPenSelector = new PenSelector(myTurtle, belowInputFieldItems.getLayoutX(), belowInputFieldItems.getLayoutY() + BUTTON_HEIGHT_OFFSET);
+    myLanguageSelector = new LanguageSelector(DrawingCanvas.CANVAS_SIDE_PADDING, DrawingCanvas.CANVAS_TOP_PADDING/4);
   }
 
   public void addCommonCommands(CommonCommands commonCommands)
@@ -197,5 +199,7 @@ public class SetupScreen {
   {
     return root;
   }
+
+  public StringProperty getLanguageChoice() { return myLanguageSelector.getLanguageChoiceProperty(); }
 
 }

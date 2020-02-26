@@ -11,6 +11,7 @@ import slogo.view.Interactions;
  * @author natalie
  */
 public class Controller extends Application {
+    public static final String LANG = "English";
 
     private Model myModel;
     private Interactions myView;
@@ -20,15 +21,15 @@ public class Controller extends Application {
      */
     @Override
     public void start(Stage primaryStage) {
-        myModel = new Model();
         myView = new Interactions(primaryStage);
-        Turtle myTurtle = myModel.getTurtle();
-        myView.setTurtle(myTurtle);
+        myModel = new Model(myView.getLanguageChoice());
+        myView.setTurtle(myModel.getTurtle());
         // this allows us to set the onclick action for the go button to be the getInstruction method in Controller,
         // prevents us from having to give the View access to the Controller
         myView.setGoButton(e -> getInstruction());
         myView.setViewLists(myModel.getVariableList(), myModel.getNewCommandsList());
         myView.setErrorMessage(myModel.getErrorMessage());
+        //myView.setLanguageChanger((String language) -> setLanguage(language));
     }
 
 
