@@ -57,12 +57,14 @@ public class Model implements ModelAPI{
             List<String> inputPieces = Arrays.asList(rawString.split(WHITESPACE));
             for (String piece: inputPieces) {
                 if (piece.trim().length() > 0) {
+                    //TODO is this line used?
                     SyntaxType currType = SyntaxType.valueOf(typeCheck.getSymbol(piece).toUpperCase());
                     //TODO: error handling when no match found
                     addToAppropriateStack(piece);
                 }
             }
         } catch (AssertionError e) {
+            //TODO failure of parsing error
             System.out.println(e.getMessage());
         }
     }
@@ -89,7 +91,7 @@ public class Model implements ModelAPI{
     }
 
     private void attemptToCreateFullInstruction() {
-        Instruction currCommand = (Instruction)commands.peek();
+        Instruction currCommand = (Instruction) commands.peek();
         int numRequiredArgs = currCommand.numRequiredArgs();
         if(enoughArgs(numRequiredArgs)){
             if(commands.peek() instanceof BracketOpen) {

@@ -6,7 +6,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import slogo.view.commonCommands.CommonCommands;
@@ -25,8 +24,7 @@ public class Interactions implements View {
   private DrawingCanvas myCanvas;
   private CommonCommands myCommonCommands;
 
-  public Interactions(Stage primaryStage)
-  {
+  public Interactions(Stage primaryStage) {
     myPrimaryStage = primaryStage;
 
     mySetup = new SetupScreen();
@@ -46,20 +44,6 @@ public class Interactions implements View {
   }
 
   /**
-   * Method which can be called by any instance of a Visual object
-   * and allows the caller to get the user input from the command input field
-   * @return
-   * @throws NullPointerException
-   */
-  @Override
-  public String getInstruction() throws NullPointerException {
-    //TODO: is this all the error handling we need for this?
-    return mySetup.getUserInput();
-  }
-
-  public StringProperty getLanguageChoice() { return mySetup.getLanguageChoice(); }
-
-  /**
    * Updates the movement of the turtle according to new states
    */
   private void update() {
@@ -71,30 +55,31 @@ public class Interactions implements View {
     }
   }
 
-  // TODO: we probably don't need this publicly here, as it will all be front end
-  @Override
-  public void changeCanvasColor(Color color) {
-    myCanvas.changeBackground(color);
+  private void returnToDefaultTurtle() {
+    myTurtle.returnTurtleToDefault();
+    clearCanvas();
   }
 
   private void clearCanvas() {
     root.getChildren().removeAll(myCanvas.getLines());
   }
 
-  private void returnToDefaultTurtle()
-  {
-    myTurtle.returnTurtleToDefault();
-    clearCanvas();
+
+  /**
+   * Method which can be called by any instance of a Visual object
+   * and allows the caller to get the user input from the command input field
+   * @return
+   * @throws NullPointerException
+   */
+  public String getInstruction() throws NullPointerException {
+    //TODO: is this all the error handling we need for this?
+    return mySetup.getUserInput();
   }
 
   public void setTurtle(slogo.model.Turtle turtle){
     myTurtle.setProperties(turtle);
-    turtle.turtleYProperty().addListener((o, oldVal, newVal) -> update());
+    turtle.pointProperty().addListener((o, oldVal, newVal) -> update());
     turtle.currCommandProperty().addListener((o, oldVal, newVal) -> mySetup.addHistory(newVal));
-  }
-
-  public void setGoButton(EventHandler<ActionEvent> goAction){
-    mySetup.setGoButton(goAction);
   }
 
   public void setViewLists(ObservableList<String> variableList, ObservableList<String> newCommandList){
@@ -102,9 +87,12 @@ public class Interactions implements View {
     mySetup.setNewCommandList(newCommandList);
   }
 
-  public void setErrorMessage(StringProperty error){
-    mySetup.bindErrorMessage(error);
-  }
+  public void setGoButton(EventHandler<ActionEvent> goAction){ mySetup.setGoButton(goAction); }
+
+  public void setErrorMessage(StringProperty error){ mySetup.bindErrorMessage(error); }
+
+  public StringProperty getLanguageChoice() { return mySetup.getLanguageChoice(); }
+
 
 
 }
