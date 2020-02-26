@@ -11,15 +11,14 @@ public class PenSelector extends ColorSelector{
 
   public static final List<String> BACKGROUND_COLORS = new ArrayList<>(
       Arrays.asList("Blue", "Green", "White", "Red", "Black", "Magenta"));
-  private static final String RESOURCES = "resources";
-  public static final String BACKGROUND_RESOURCE_PACKAGE = RESOURCES + ".commands.PenColors";
+  private static final String RESOURCES_PATH = "resources.colors.PenColors";
   public static final String TITLE = "Pen colors: ";
 
   private Turtle t;
 
   public PenSelector(Turtle t, double x, double y)
   {
-    super(TITLE,  x,  y, BACKGROUND_COLORS,  BACKGROUND_RESOURCE_PACKAGE);
+    super(TITLE,  x,  y, BACKGROUND_COLORS,  RESOURCES_PATH);
     setColorButtons();
     this.t = t;
   }

@@ -21,7 +21,7 @@ public class CodeFactory {
     private ObservableList<String> vars = FXCollections.observableArrayList();
     private ObservableList<String> newCommands = FXCollections.observableArrayList();
 
-    AddToListFunction addToNewCommandsList = token -> addNewCommand(token);
+    AddToListFunction addToNewCommandsList = this::addNewCommand;
 
     public CodeFactory(String language){
         keyGrabber.addPatterns(language);
