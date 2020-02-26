@@ -63,6 +63,7 @@ public class SetupScreen {
 
   private VBox belowInputFieldItems;
   private HBox belowCanvasButtons;
+  private VBox belowVariablesItems;
 
 
   public SetupScreen()
@@ -140,8 +141,8 @@ public class SetupScreen {
 
   private void setSelectors()
   {
-    myBackgroundSelector = new BackgroundSelector(myDrawingCanvas, belowCanvasButtons.getLayoutX(), belowCanvasButtons.getLayoutY() + BUTTON_HEIGHT_OFFSET);
-    myCharacterSelector = new TurtleFaceSelector(belowCanvasButtons.getLayoutX(), belowCanvasButtons.getLayoutY() + BUTTON_HEIGHT_OFFSET);
+    myBackgroundSelector = new BackgroundSelector(myDrawingCanvas, belowCanvasButtons.getLayoutX(), belowCanvasButtons.getLayoutY()+ BUTTON_HEIGHT_OFFSET);
+    myCharacterSelector = new TurtleFaceSelector(myTurtle, myVariableView.getView().getLayoutX(), belowInputFieldItems.getLayoutY() + BUTTON_HEIGHT_OFFSET);
     myPenSelector = new PenSelector(myTurtle, belowInputFieldItems.getLayoutX(), belowInputFieldItems.getLayoutY() + BUTTON_HEIGHT_OFFSET);
   }
 

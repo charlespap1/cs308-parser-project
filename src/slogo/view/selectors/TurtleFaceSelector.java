@@ -3,9 +3,7 @@ package slogo.view.selectors;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
+import slogo.view.Turtle;
 
 import java.util.*;
 
@@ -20,22 +18,19 @@ public class TurtleFaceSelector extends ColorSelector {
   private static final String TITLE = "Character types: ";
   public static final String IMAGE_RESOURCE_PACKAGE = RESOURCES + ".commands.TurtleImages";
 
-  private List<String> myIdentifiers;
-  private ResourceBundle myResources;
+  private Turtle t;
 
-  private HBox myHolder;
 
-  public TurtleFaceSelector(double x, double y)
+  public TurtleFaceSelector(Turtle turtle, double x, double y)
   {
     super(TITLE, x, y, IMAGES, IMAGE_RESOURCE_PACKAGE);
-    myResources = ResourceBundle.getBundle(IMAGE_RESOURCE_PACKAGE);
+    t = turtle;
     setColorButtons();
   }
 
   @Override
   protected void setButtonFromResourceResult(Button newImageButton, String imageFileName) {
-    Image image;
-    image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(imageFileName)));
+    Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(imageFileName)));
     ImageView iv = new ImageView(image);
     iv.setPreserveRatio(true);
     iv.setFitHeight(COLOR_SELECTOR_HEIGHT);
@@ -50,7 +45,8 @@ public class TurtleFaceSelector extends ColorSelector {
   }
 
   private void changeTurtleImage(String imageFileName) {
-    System.out.println("Change color to " + imageFileName);
+    Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(imageFileName)));
+    t.changeImage(image);
   }
 
 }
