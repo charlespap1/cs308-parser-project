@@ -4,7 +4,6 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -15,7 +14,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Box;
 import slogo.view.commonCommands.CommonCommands;
 import slogo.view.scrollers.HistoryCanvas;
 import slogo.view.scrollers.ListViewer;
@@ -40,23 +38,27 @@ public class SetupScreen {
   public static final int HEIGHT = 600;
   public static final Paint BACKGROUND = Color.AZURE;
   public static final double BUTTON_HEIGHT_OFFSET = 40;
+  public static final double COMMON_COMMAND_BUTTON_WIDTH_OFFSET = 175;
+  public static final int COMMAND_COLUMN = 1;
+  public static final int LIST_VIEW_COLUMN = 2;
+  //TODO: hard coded text
+  public static final String VARIABLE_TEXT = "Your variables: ";
+  public static final String COMMAND_TEXT = "Your new commands: ";
   public static final String COMMON_COMMAND_BUTTON_TEXT = "See Common Commands";
-  public static final double COMMON_COMMAND_BUTTON_WIDTH_OFFSET = 200;
+  public static final String GO_BUTTON_TEXT = "Go";
+  public static final String CLEAR_BUTTON_TEXT = "Clear Canvas";
+  public static final String STOP_BUTTON_TEXT = "Stop Turtle";
 
-  private int width;
-  private int height;
-  private Paint background;
-
-  private UserCommandField myUserInput;
-  private Group root;
+  private UserCommandField myUserInput = new UserCommandField(WIDTH, HEIGHT);
+  private Group root = new Group();
   private Turtle myTurtle;
-  private DrawingCanvas myDrawingCanvas;
+  private DrawingCanvas myDrawingCanvas = new DrawingCanvas(WIDTH, HEIGHT);
   private Button myGo;
   private Button myClear;
   private Button myStop;
-  private HistoryCanvas myHistory;
-  private ListViewer myNewCommandViewer;
-  private ListViewer myVariableView;
+  private HistoryCanvas myHistory = new HistoryCanvas(COMMAND_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING);
+  private ListViewer myNewCommandViewer = new ListViewer(LIST_VIEW_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING, COMMAND_TEXT);
+  private ListViewer myVariableView = new ListViewer(LIST_VIEW_COLUMN, HEIGHT/2.0, VARIABLE_TEXT);
 
   private BackgroundSelector myBackgroundSelector;
   private TurtleFaceSelector myCharacterSelector;
@@ -67,33 +69,15 @@ public class SetupScreen {
   private VBox belowInputFieldItems = new VBox(BOX_SPACING);
   private HBox belowCanvasButtons = new HBox(BOX_SPACING);
 
-
-  public SetupScreen()
-  {
-    width = WIDTH;
-    height = HEIGHT;
-    background = BACKGROUND;
-    root = new Group();
-  }
-
   /**
    * Sets up all of the visual elements so that
    * the Main class doesn't have to do as much work
    * @return
    */
-  public Scene setupGame()
-  {
-    //TODO: error handling also make settable
+  public Scene setupGame() {
+    //TODO: error handling if image not found
     Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(DEFAULT_TURTLE_IMAGE)));
-
-    myDrawingCanvas = new DrawingCanvas(width, height);
     myTurtle = new Turtle(image, myDrawingCanvas.getWidth(), myDrawingCanvas.getHeight());
-    myUserInput = new UserCommandField(width, height);
-
-    myHistory = new HistoryCanvas(2, DrawingCanvas.CANVAS_TOP_PADDING);
-    //TODO: hard coded text
-    myVariableView = new ListViewer(2, height/2.0, "Your variables: ");
-    myNewCommandViewer = new ListViewer(1, DrawingCanvas.CANVAS_TOP_PADDING, "Your new commands: ");
 
     setupBox(belowInputFieldItems, UserCommandField.FIELD_SIDE_PADDING*3 + myUserInput.getWidth(), DrawingCanvas.CANVAS_TOP_PADDING + myDrawingCanvas.getHeight() + BOX_SPACING, myDrawingCanvas.getWidth());
     setupBox(belowCanvasButtons, DrawingCanvas.CANVAS_SIDE_PADDING, DrawingCanvas.CANVAS_TOP_PADDING + myDrawingCanvas.getHeight() + BOX_SPACING, myDrawingCanvas.getWidth());
@@ -102,14 +86,13 @@ public class SetupScreen {
 
     root.getChildren().addAll(myDrawingCanvas.getView(), myTurtle.getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myNewCommandViewer.getView(), myVariableView.getView());
     root.getChildren().addAll(myBackgroundSelector.getView(), myPenSelector.getView(), myCharacterSelector.getView(), myLanguageSelector.getView());
-    return new Scene(root, width, height, background);
+    return new Scene(root, WIDTH, HEIGHT, BACKGROUND);
   }
 
-  public void addCommonCommands(CommonCommands commonCommands)
-  {
+  public void addCommonCommands(CommonCommands commonCommands) {
     Button commandJumper = new Button(COMMON_COMMAND_BUTTON_TEXT);
     commandJumper.setOnAction(e -> commonCommands.showCommonCommandScene());
-    commandJumper.setLayoutX(width - COMMON_COMMAND_BUTTON_WIDTH_OFFSET);
+    commandJumper.setLayoutX(WIDTH - COMMON_COMMAND_BUTTON_WIDTH_OFFSET);
     commandJumper.setLayoutY(BUTTON_HEIGHT_OFFSET);
     root.getChildren().add(commandJumper);
   }
@@ -118,20 +101,11 @@ public class SetupScreen {
    * Getter methods necessary to access these elements in the Main class
    * @return
    */
-  public Turtle getTurtle()
-  {
-    return myTurtle;
-  }
+  public Turtle getTurtle() { return myTurtle; }
 
-  public String getUserInput()
-  {
-    return myUserInput.getUserInput();
-  }
+  public String getUserInput() { return myUserInput.getUserInput(); }
 
-  public DrawingCanvas getDrawingCanvas()
-  {
-    return myDrawingCanvas;
-  }
+  public DrawingCanvas getDrawingCanvas() { return myDrawingCanvas; }
 
   public void setVariableList(ObservableList<String> variableList) { myVariableView.bindList(variableList); }
 
@@ -141,20 +115,14 @@ public class SetupScreen {
 
   public void bindErrorMessage(StringProperty message) { myCurrentErrorMessage.textProperty().bind(message); }
 
-  public void setGoButton(EventHandler<ActionEvent> goAction)
-  {
-    myGo.setOnAction(goAction);
-  }
+  public void setGoButton(EventHandler<ActionEvent> goAction) { myGo.setOnAction(goAction); }
 
   public void setBelowCanvasButtons(EventHandler<ActionEvent> stopAction, EventHandler<ActionEvent> clearAction) {
     myStop.setOnAction(stopAction);
     myClear.setOnAction(clearAction);
   }
 
-  public Group getRoot()
-  {
-    return root;
-  }
+  public Group getRoot() { return root; }
 
   public StringProperty getLanguageChoice() { return myLanguageSelector.getLanguageChoiceProperty(); }
 
@@ -164,34 +132,17 @@ public class SetupScreen {
     box.setMinWidth(width);
   }
 
-  private void setHBoxLayout() {
-    belowCanvasButtons = new HBox(BOX_SPACING);
-    belowCanvasButtons.setLayoutX(DrawingCanvas.CANVAS_SIDE_PADDING);
-    belowCanvasButtons.setLayoutY(DrawingCanvas.CANVAS_TOP_PADDING + myDrawingCanvas.getHeight() + BOX_SPACING);
-    belowCanvasButtons.setMinWidth(myDrawingCanvas.getWidth());
-    belowCanvasButtons.setAlignment(Pos.CENTER);
-  }
-
-  private void setVBoxLayout() {
-    belowInputFieldItems = new VBox(BOX_SPACING);
-    belowInputFieldItems.setLayoutY(DrawingCanvas.CANVAS_TOP_PADDING + myDrawingCanvas.getHeight() + BOX_SPACING);
-    belowInputFieldItems.setLayoutX(UserCommandField.FIELD_SIDE_PADDING*3 + myUserInput.getWidth());
-    belowInputFieldItems.setMinWidth(myUserInput.getWidth());
-    belowInputFieldItems.setAlignment(Pos.CENTER);
-  }
-
   private void setButtons() {
-    myGo = new Button("Go");
+    myGo = new Button(GO_BUTTON_TEXT);
     myGo.setMinWidth(myUserInput.getWidth());
     belowInputFieldItems.getChildren().add(myGo);
     belowInputFieldItems.getChildren().add(myCurrentErrorMessage);
 
-    //TODO: hard coded text
-    myClear = new Button("Clear Canvas");
+    myClear = new Button(CLEAR_BUTTON_TEXT);
     myClear.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
     belowCanvasButtons.getChildren().add(myClear);
 
-    myStop = new Button("Stop Turtle");
+    myStop = new Button(STOP_BUTTON_TEXT);
     myStop.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
     belowCanvasButtons.getChildren().add(myStop);
 

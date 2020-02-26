@@ -10,26 +10,20 @@ public class BackgroundSelector extends ColorSelector{
 
   public static final List<String> BACKGROUND_COLORS = new ArrayList<>(Arrays.asList("White", "Red", "Magenta", "Blue", "Green", "Black"));
   private static final String RESOURCES_PATH = "resources.colors.BackgroundColors";
+  //TODO: text hard coded
   public static final String TITLE = "Background colors: ";
 
-  private DrawingCanvas dc;
+  private DrawingCanvas canvas;
 
-  public BackgroundSelector(DrawingCanvas dc, double x, double y)
-  {
+  public BackgroundSelector(DrawingCanvas canvas, double x, double y) {
     super(TITLE,  x,  y, BACKGROUND_COLORS,  RESOURCES_PATH);
-    this.dc = dc;
+    this.canvas = canvas;
     setColorButtons();
   }
 
   @Override
-  public void changeSomething(String hex)
-  {
-    changeBackground(hex);
+  protected void changeAppearance(String hex) {
+    Color color = Color.web(hex);
+    canvas.changeBackground(color);
   }
-
-  private void changeBackground(String hexColor) {
-    Color color = Color.web(hexColor);
-    dc.changeBackground(color);
-  }
-
 }

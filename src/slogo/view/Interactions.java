@@ -18,52 +18,24 @@ public class Interactions implements View {
   public static final String TITLE = "SLogo";
 
   private SetupScreen mySetup;
-  private Stage myPrimaryStage;
   private Group root;
   private Turtle myTurtle;
   private DrawingCanvas myCanvas;
-  private CommonCommands myCommonCommands;
 
   public Interactions(Stage primaryStage) {
-    myPrimaryStage = primaryStage;
-
     mySetup = new SetupScreen();
     Scene myScene = mySetup.setupGame();
-    myCommonCommands = new CommonCommands(primaryStage, myScene);
+    CommonCommands myCommonCommands = new CommonCommands(primaryStage, myScene, getLanguageChoice());
     mySetup.addCommonCommands(myCommonCommands);
-
     mySetup.setBelowCanvasButtons(e -> returnToDefaultTurtle(), e -> clearCanvas());
-
     myTurtle = mySetup.getTurtle();
     root = mySetup.getRoot();
     myCanvas = mySetup.getDrawingCanvas();
 
-    myPrimaryStage.setScene(myScene);
-    myPrimaryStage.setTitle(TITLE);
-    myPrimaryStage.show();
+    primaryStage.setScene(myScene);
+    primaryStage.setTitle(TITLE);
+    primaryStage.show();
   }
-
-  /**
-   * Updates the movement of the turtle according to new states
-   */
-  private void update() {
-    Line newLine = myTurtle.drawLineAndBound();
-    if (newLine!=null) {
-      root.getChildren().add(newLine);
-      myCanvas.addLine(newLine);
-      myTurtle.getView().toFront();
-    }
-  }
-
-  private void returnToDefaultTurtle() {
-    myTurtle.returnTurtleToDefault();
-    clearCanvas();
-  }
-
-  private void clearCanvas() {
-    root.getChildren().removeAll(myCanvas.getLines());
-  }
-
 
   /**
    * Method which can be called by any instance of a Visual object
@@ -93,6 +65,24 @@ public class Interactions implements View {
 
   public StringProperty getLanguageChoice() { return mySetup.getLanguageChoice(); }
 
+  /**
+   * Updates the movement of the turtle according to new states
+   */
+  private void update() {
+    Line newLine = myTurtle.drawLineAndBound();
+    if (newLine!=null) {
+      root.getChildren().add(newLine);
+      myCanvas.addLine(newLine);
+      myTurtle.getView().toFront();
+    }
+  }
 
+  private void returnToDefaultTurtle() {
+    myTurtle.returnTurtleToDefault();
+    clearCanvas();
+  }
 
+  private void clearCanvas() {
+    root.getChildren().removeAll(myCanvas.getLines());
+  }
 }

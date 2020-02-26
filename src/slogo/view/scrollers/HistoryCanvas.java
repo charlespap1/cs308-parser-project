@@ -1,7 +1,6 @@
 package slogo.view.scrollers;
 
 import javafx.scene.text.Text;
-import slogo.view.scrollers.ScrollingWindow;
 
 /**
  * This class allows us to show the history of commands
@@ -11,6 +10,7 @@ import slogo.view.scrollers.ScrollingWindow;
 
 public class HistoryCanvas extends ScrollingWindow {
 
+  //TODO: hard coded text
   public static final String DEFAULT_HISTORY = "Your history: ";
 
   public HistoryCanvas(double elementWidthFactor, double topPadding) {
@@ -21,11 +21,5 @@ public class HistoryCanvas extends ScrollingWindow {
    * Ability to add newly executed commands to the history
    * @param command
    */
-  public void addHistory(String command) {
-    if (!command.equals("")){
-      Text newCommand = new Text(command);
-      myTextHolder.getChildren().add(newCommand);
-    }
-  }
-
+  public void addHistory(String command) { if (!command.equals("")) myTextHolder.getChildren().add(new Text(command)); }
 }
