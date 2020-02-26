@@ -38,7 +38,8 @@ public class SetupScreen {
   public static final int HEIGHT = 600;
   public static final Paint BACKGROUND = Color.AZURE;
   public static final double BUTTON_HEIGHT_OFFSET = 40;
-  public static final double COMMON_COMMAND_BUTTON_WIDTH_OFFSET = 175;
+  public static final double COMMON_COMMAND_BUTTON_HEIGHT_OFFSET = 15;
+  public static final double COMMON_COMMAND_BUTTON_WIDTH_OFFSET = 185;
   public static final int COMMAND_COLUMN = 1;
   public static final int LIST_VIEW_COLUMN = 2;
   //TODO: hard coded text
@@ -93,7 +94,7 @@ public class SetupScreen {
     Button commandJumper = new Button(COMMON_COMMAND_BUTTON_TEXT);
     commandJumper.setOnAction(e -> commonCommands.showCommonCommandScene());
     commandJumper.setLayoutX(WIDTH - COMMON_COMMAND_BUTTON_WIDTH_OFFSET);
-    commandJumper.setLayoutY(BUTTON_HEIGHT_OFFSET);
+    commandJumper.setLayoutY(COMMON_COMMAND_BUTTON_HEIGHT_OFFSET);
     root.getChildren().add(commandJumper);
   }
 
