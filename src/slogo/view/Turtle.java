@@ -6,9 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Shape;
 
-import java.awt.*;
 import java.awt.geom.Point2D;
 
 /**
@@ -67,12 +65,39 @@ public class Turtle {
     returnTurtleToDefault();
   }
 
+  /**
+   * Allows Main class to be put turtle back in center
+   * with default values
+   */
+  public void returnTurtleToDefault() {
+    x.setValue(0);
+    y.setValue(0);
+    currX = 0;
+    currY = 0;
+    coordinates.set(new Point2D.Double(0, 0));
+    angle.setValue(DEFAULT_ANGLE);
+  }
+
   public Line drawLineAndBound(){
     Line line = null;
     if (outOfBounds()) fixBounding();
     else line = drawLine();
     return line;
   }
+
+  /**
+   * Allows the Main class to get the image body of the turtle to display
+   * @return
+   */
+  public Node getView () { return myTurtleView; }
+
+  /**
+   * Changes image of turtle
+   * @param image
+   */
+  public void changeImage(Image image) { myTurtleView.setImage(image); }
+
+  public void changePenColor(Color color) { penColor = color; }
 
   private boolean outOfBounds(){
     return x.getValue() > canvasWidth/2 || x.getValue() < -canvasWidth/2+TURTLE_IMAGE_SIZE ||
@@ -112,31 +137,4 @@ public class Turtle {
     y.setValue((verticalSide) ? val2 : val1);
     coordinates.set(new Point2D.Double((verticalSide) ? val1 : val2, (verticalSide) ? val2 : val1));
   }
-
-  /**
-   * Allows Main class to be put turtle back in center
-   * with default values
-   */
-  public void returnTurtleToDefault() {
-    x.setValue(0);
-    y.setValue(0);
-    currX = 0;
-    currY = 0;
-    coordinates.set(new Point2D.Double(0, 0));
-    angle.setValue(DEFAULT_ANGLE);
-  }
-
-  /**
-   * Allows the Main class to get the image body of the turtle to display
-   * @return
-   */
-  public Node getView () { return myTurtleView; }
-
-  /**
-   * Changes image of turtle
-   * @param image
-   */
-  public void changeImage(Image image) { myTurtleView.setImage(image); }
-
-  public void changePenColor(Color color) { penColor = color; }
 }

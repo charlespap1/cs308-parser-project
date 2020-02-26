@@ -11,9 +11,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Box;
 import slogo.view.commonCommands.CommonCommands;
 import slogo.view.scrollers.HistoryCanvas;
 import slogo.view.scrollers.ListViewer;
@@ -62,9 +64,8 @@ public class SetupScreen {
   private LanguageSelector myLanguageSelector;
 
   private Label myCurrentErrorMessage = new Label();
-
-  private VBox belowInputFieldItems;
-  private HBox belowCanvasButtons;
+  private VBox belowInputFieldItems = new VBox(BOX_SPACING);
+  private HBox belowCanvasButtons = new HBox(BOX_SPACING);
 
 
   public SetupScreen()
@@ -94,58 +95,14 @@ public class SetupScreen {
     myVariableView = new ListViewer(2, height/2.0, "Your variables: ");
     myNewCommandViewer = new ListViewer(1, DrawingCanvas.CANVAS_TOP_PADDING, "Your new commands: ");
 
-    setVBoxLayout();
-    setHBoxLayout();
+    setupBox(belowInputFieldItems, UserCommandField.FIELD_SIDE_PADDING*3 + myUserInput.getWidth(), DrawingCanvas.CANVAS_TOP_PADDING + myDrawingCanvas.getHeight() + BOX_SPACING, myDrawingCanvas.getWidth());
+    setupBox(belowCanvasButtons, DrawingCanvas.CANVAS_SIDE_PADDING, DrawingCanvas.CANVAS_TOP_PADDING + myDrawingCanvas.getHeight() + BOX_SPACING, myDrawingCanvas.getWidth());
     setButtons();
     setSelectors();
 
     root.getChildren().addAll(myDrawingCanvas.getView(), myTurtle.getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myNewCommandViewer.getView(), myVariableView.getView());
     root.getChildren().addAll(myBackgroundSelector.getView(), myPenSelector.getView(), myCharacterSelector.getView(), myLanguageSelector.getView());
     return new Scene(root, width, height, background);
-  }
-
-  private void setHBoxLayout()
-  {
-    belowCanvasButtons = new HBox(BOX_SPACING);
-    belowCanvasButtons.setLayoutX(DrawingCanvas.CANVAS_SIDE_PADDING);
-    belowCanvasButtons.setLayoutY(DrawingCanvas.CANVAS_TOP_PADDING + myDrawingCanvas.getHeight() + BOX_SPACING);
-    belowCanvasButtons.setMinWidth(myDrawingCanvas.getWidth());
-    belowCanvasButtons.setAlignment(Pos.CENTER);
-  }
-
-  private void setVBoxLayout()
-  {
-    belowInputFieldItems = new VBox(BOX_SPACING);
-    belowInputFieldItems.setLayoutY(DrawingCanvas.CANVAS_TOP_PADDING + myDrawingCanvas.getHeight() + BOX_SPACING);
-    belowInputFieldItems.setLayoutX(UserCommandField.FIELD_SIDE_PADDING*3 + myUserInput.getWidth());
-    belowInputFieldItems.setMinWidth(myUserInput.getWidth());
-    belowInputFieldItems.setAlignment(Pos.CENTER);
-  }
-
-  private void setButtons()
-  {
-    myGo = new Button("Go");
-    myGo.setMinWidth(myUserInput.getWidth());
-    belowInputFieldItems.getChildren().add(myGo);
-    belowInputFieldItems.getChildren().add(myCurrentErrorMessage);
-
-    //TODO: hard coded text
-    myClear = new Button("Clear Canvas");
-    myClear.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
-    belowCanvasButtons.getChildren().add(myClear);
-
-    myStop = new Button("Stop Turtle");
-    myStop.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
-    belowCanvasButtons.getChildren().add(myStop);
-
-  }
-
-  private void setSelectors()
-  {
-    myBackgroundSelector = new BackgroundSelector(myDrawingCanvas, belowCanvasButtons.getLayoutX(), belowCanvasButtons.getLayoutY()+ BUTTON_HEIGHT_OFFSET);
-    myCharacterSelector = new TurtleFaceSelector(myTurtle, myVariableView.getView().getLayoutX(), belowInputFieldItems.getLayoutY() + BUTTON_HEIGHT_OFFSET);
-    myPenSelector = new PenSelector(myTurtle, belowInputFieldItems.getLayoutX(), belowInputFieldItems.getLayoutY() + BUTTON_HEIGHT_OFFSET);
-    myLanguageSelector = new LanguageSelector(DrawingCanvas.CANVAS_SIDE_PADDING, DrawingCanvas.CANVAS_TOP_PADDING/4);
   }
 
   public void addCommonCommands(CommonCommands commonCommands)
@@ -156,7 +113,6 @@ public class SetupScreen {
     commandJumper.setLayoutY(BUTTON_HEIGHT_OFFSET);
     root.getChildren().add(commandJumper);
   }
-
 
   /**
    * Getter methods necessary to access these elements in the Main class
@@ -202,4 +158,49 @@ public class SetupScreen {
 
   public StringProperty getLanguageChoice() { return myLanguageSelector.getLanguageChoiceProperty(); }
 
+  private void setupBox(Pane box, double x, double y, double width){
+    box.setLayoutX(x);
+    box.setLayoutY(y);
+    box.setMinWidth(width);
+  }
+
+  private void setHBoxLayout() {
+    belowCanvasButtons = new HBox(BOX_SPACING);
+    belowCanvasButtons.setLayoutX(DrawingCanvas.CANVAS_SIDE_PADDING);
+    belowCanvasButtons.setLayoutY(DrawingCanvas.CANVAS_TOP_PADDING + myDrawingCanvas.getHeight() + BOX_SPACING);
+    belowCanvasButtons.setMinWidth(myDrawingCanvas.getWidth());
+    belowCanvasButtons.setAlignment(Pos.CENTER);
+  }
+
+  private void setVBoxLayout() {
+    belowInputFieldItems = new VBox(BOX_SPACING);
+    belowInputFieldItems.setLayoutY(DrawingCanvas.CANVAS_TOP_PADDING + myDrawingCanvas.getHeight() + BOX_SPACING);
+    belowInputFieldItems.setLayoutX(UserCommandField.FIELD_SIDE_PADDING*3 + myUserInput.getWidth());
+    belowInputFieldItems.setMinWidth(myUserInput.getWidth());
+    belowInputFieldItems.setAlignment(Pos.CENTER);
+  }
+
+  private void setButtons() {
+    myGo = new Button("Go");
+    myGo.setMinWidth(myUserInput.getWidth());
+    belowInputFieldItems.getChildren().add(myGo);
+    belowInputFieldItems.getChildren().add(myCurrentErrorMessage);
+
+    //TODO: hard coded text
+    myClear = new Button("Clear Canvas");
+    myClear.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
+    belowCanvasButtons.getChildren().add(myClear);
+
+    myStop = new Button("Stop Turtle");
+    myStop.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
+    belowCanvasButtons.getChildren().add(myStop);
+
+  }
+
+  private void setSelectors() {
+    myBackgroundSelector = new BackgroundSelector(myDrawingCanvas, belowCanvasButtons.getLayoutX(), belowCanvasButtons.getLayoutY()+ BUTTON_HEIGHT_OFFSET);
+    myCharacterSelector = new TurtleFaceSelector(myTurtle, myVariableView.getView().getLayoutX(), belowInputFieldItems.getLayoutY() + BUTTON_HEIGHT_OFFSET);
+    myPenSelector = new PenSelector(myTurtle, belowInputFieldItems.getLayoutX(), belowInputFieldItems.getLayoutY() + BUTTON_HEIGHT_OFFSET);
+    myLanguageSelector = new LanguageSelector(DrawingCanvas.CANVAS_SIDE_PADDING, DrawingCanvas.CANVAS_TOP_PADDING/4);
+  }
 }
