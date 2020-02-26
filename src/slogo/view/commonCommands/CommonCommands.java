@@ -1,8 +1,13 @@
 package slogo.view.commonCommands;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
@@ -35,19 +40,46 @@ public class CommonCommands {
 
   public Scene setupCommandScene()
   {
-    String language = "English";
     myRoot = new Group();
+
+    setPanels(myRoot);
+    setBackButton(myRoot);
+    setHyperlink(myRoot);
+
+    return new Scene(myRoot, width, height, background);
+  }
+
+  private void setHyperlink(Group root)
+  {
+    HBox centerText = new HBox();
+    centerText.setAlignment(Pos.CENTER);
+
+    Hyperlink link = new Hyperlink();
+    link.setText("http://example.com");
+    link.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent e) {
+        System.out.println("This link is clicked");
+      }
+    });
+
+    centerText.getChildren().add(link);
+
+    root.getChildren().add(centerText);
+  }
+
+
+  private void setPanels(Group root)
+  {
+    String language = "English";
     TurtleCommandPanel turtleCommands = new TurtleCommandPanel(language, 0);
     TurtleQueriesPanel turtleQueries = new TurtleQueriesPanel(language, width/4);
     MathOperationsPanel mathOPs = new MathOperationsPanel(language, 2*width/4);
     BooleanOperationsPanel boolOps = new BooleanOperationsPanel(language, 3*width/4);
 
-    myRoot.getChildren().addAll(turtleCommands.getView(), turtleQueries.getView(), mathOPs.getView(), boolOps.getView());
-
-    setBackButton(myRoot);
-
-    return new Scene(myRoot, width, height, background);
+    root.getChildren().addAll(turtleCommands.getView(), turtleQueries.getView(), mathOPs.getView(), boolOps.getView());
   }
+
 
   private void setBackButton(Group root)
   {
