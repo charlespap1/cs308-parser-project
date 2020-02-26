@@ -39,6 +39,11 @@ public class Model implements ModelAPI{
 
     public void executeCode(String rawString) {
         parseInstructions(rawString);
+        if(!commands.isEmpty() || !arguments.isEmpty()){
+            //TODO: throw exception for not enough args
+        }
+        commands.clear();
+        arguments.clear();
     }
 
     public void executeCode(File f){
