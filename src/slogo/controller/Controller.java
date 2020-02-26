@@ -11,6 +11,7 @@ import slogo.view.Interactions;
  * @author natalie
  */
 public class Controller extends Application {
+    public static final String LANG = "English";
 
     private Model myModel;
     private Interactions myView;
@@ -20,7 +21,7 @@ public class Controller extends Application {
      */
     @Override
     public void start(Stage primaryStage) {
-        myModel = new Model();
+        myModel = new Model(LANG);
         myView = new Interactions(primaryStage);
         Turtle myTurtle = myModel.getTurtle();
         myView.setTurtle(myTurtle);
@@ -29,6 +30,7 @@ public class Controller extends Application {
         myView.setGoButton(e -> getInstruction());
         myView.setViewLists(myModel.getVariableList(), myModel.getNewCommandsList());
         myView.setErrorMessage(myModel.getErrorMessage());
+        myView.setLanguageChanger((String language) -> setLanguage(language));
     }
 
 
@@ -42,6 +44,10 @@ public class Controller extends Application {
         //make this get called when button is pressed in front end -- set some kind of event listener? ask TA
         String input = myView.getInstruction();
         myModel.executeCode(input);
+    }
+
+    private void setLanguage(String language){
+        myModel.changeLanguage(language);
     }
 
     public static void main (String[] args) {

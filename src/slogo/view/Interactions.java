@@ -65,6 +65,7 @@ public class Interactions implements View {
     if (newLine!=null) {
       root.getChildren().add(newLine);
       myCanvas.addLine(newLine);
+      myTurtle.getView().toFront();
     }
   }
 

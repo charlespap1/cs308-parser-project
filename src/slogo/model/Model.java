@@ -22,19 +22,23 @@ public class Model implements ModelAPI{
 
     // regular expression representing any whitespace characters (space, tab, or newline)
     public static final String WHITESPACE = "\\s+";
-    public static final String LANG = "English";
     public static final String SYNTAX = "Syntax";
 
     private Stack<Token> commands = new Stack<>();
     private Stack<Token> arguments = new Stack<>();
-    private CodeFactory createFromString = new CodeFactory(LANG);
+    private CodeFactory createFromString;
     private RegexHandler typeCheck = new RegexHandler();
     private Turtle turtle;
     private StringProperty errorMessage = new SimpleStringProperty();
 
-    public Model() {
+    public Model(String language) {
         typeCheck.addPatterns(SYNTAX);
+        createFromString = new CodeFactory(language);
         turtle = new Turtle(0, 0, false, 0);
+    }
+
+    public void changeLanguage(String language) {
+        createFromString = new CodeFactory(language);
     }
 
     public Turtle getTurtle(){ return turtle; }

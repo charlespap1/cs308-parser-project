@@ -120,7 +120,7 @@ public class SetupScreen {
 
   private void setButtons()
   {
-    myGo = new Button(GoButton.BUTTON_TEXT);
+    myGo = new Button("Go");
     myGo.setMinWidth(myUserInput.getWidth());
     belowInputFieldItems.getChildren().add(myGo);
     belowInputFieldItems.getChildren().add(myCurrentErrorMessage);
