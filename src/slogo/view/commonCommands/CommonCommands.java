@@ -2,12 +2,14 @@ package slogo.view.commonCommands;
 
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.paint.Color;
+import javafx.scene.control.Button;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 public class CommonCommands {
   public static final String COMMON_COMMAND_TITLE = "Common Commands";
+  public static final double BUTTON_PADDING = 10;
+  public static final double TOP_PADDING = 30 + BUTTON_PADDING;
 
   private Scene myPrevious;
   private Stage myStage;
@@ -35,11 +37,24 @@ public class CommonCommands {
   {
     myRoot = new Group();
     TurtleCommandPanel turtleCommands = new TurtleCommandPanel();
+    TurtleQueriesPanel turtleQueries = new TurtleQueriesPanel(width/3);
 
-    myRoot.getChildren().add(turtleCommands.getView());
+    myRoot.getChildren().addAll(turtleCommands.getView(), turtleQueries.getView());
+
+    setBackButton(myRoot);
 
     return new Scene(myRoot, width, height, background);
   }
+
+  private void setBackButton(Group root)
+  {
+    Button backButton = new Button("Back");
+    backButton.setLayoutX(BUTTON_PADDING);
+    backButton.setLayoutY(BUTTON_PADDING);
+    backButton.setOnAction(e -> showPreviousScene());
+    root.getChildren().add(backButton);
+  }
+
 
   public void showCommonCommandScene()
   {
