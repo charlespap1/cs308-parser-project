@@ -12,6 +12,6 @@ public class TurtleCommandPanel extends CommandPanel{
 
   public TurtleCommandPanel()
   {
-    super(RESOURCE_FILE_NAME, IDENTIFIERS ,TITLE);
+    super(RESOURCE_FILE_NAME, IDENTIFIERS ,TITLE, 0, CommonCommands.TOP_PADDING);
   }
 }
