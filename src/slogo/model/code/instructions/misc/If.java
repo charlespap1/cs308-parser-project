@@ -19,6 +19,8 @@ public class If extends Instruction {
     @Override
     public void execute (Turtle t) {
         Token expr = this.parameters.get(0);
+        if (expr instanceof Instruction)
+            ((Instruction)expr).execute(t);
         Token list = this.parameters.get(1);
         assert !(expr instanceof ListSyntax);
         assert list instanceof ListSyntax;
