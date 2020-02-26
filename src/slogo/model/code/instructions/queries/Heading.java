@@ -5,10 +5,10 @@ import slogo.model.code.instructions.Instruction;
 
 public class Heading extends Instruction {
 
-    protected int NUM_ARGS = 0;
+    private static final int numArgs = 0;
 
     public Heading(String name) {
-        super();
+        super(numArgs);
         this.instrName = name;
     }
 

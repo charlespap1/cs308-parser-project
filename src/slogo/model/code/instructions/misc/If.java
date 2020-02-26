@@ -9,10 +9,10 @@ import java.util.List;
 
 public class If extends Instruction {
 
-    protected int NUM_ARGS = 2;
+    private static final int numArgs = 2;
 
     public If(String name){
-        super();
+        super(numArgs);
         this.instrName = name;
     }
 

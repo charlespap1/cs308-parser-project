@@ -7,10 +7,10 @@ import java.util.List;
 
 public class Sine extends Instruction {
 
-    protected int NUM_ARGS = 1;
+    private static final int numArgs = 1;
 
     public Sine(String name) {
-        super();
+        super(numArgs);
         this.instrName = name;
     }
 

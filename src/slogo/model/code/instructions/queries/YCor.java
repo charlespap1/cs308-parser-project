@@ -4,10 +4,10 @@ import slogo.model.Turtle;
 import slogo.model.code.instructions.Instruction;
 
 public class YCor extends Instruction {
-    protected int NUM_ARGS = 0;
+    private static final int numArgs = 0;
 
     public YCor(String name) {
-        super();
+        super(numArgs);
         this.instrName = name;
     }
 

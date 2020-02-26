@@ -8,10 +8,10 @@ import slogo.model.code.instructions.Instruction;
 
 public class Make extends Instruction {
 
-    protected int NUM_ARGS = 2;
+    private static final int numArgs = 2;
 
     public Make(String name){
-        super();
+        super(numArgs);
         this.instrName = name;
     }
 

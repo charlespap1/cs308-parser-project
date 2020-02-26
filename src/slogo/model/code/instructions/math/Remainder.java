@@ -7,10 +7,10 @@ import java.util.List;
 
 public class Remainder extends Instruction {
 
-    protected int NUM_ARGS = 2;
+    private static final int numArgs = 2;
 
     public Remainder(String name) {
-        super();
+        super(numArgs);
         this.instrName = name;
     }
 

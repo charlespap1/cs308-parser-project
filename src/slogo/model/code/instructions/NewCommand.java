@@ -7,12 +7,13 @@ import slogo.model.code.Variable;
 import java.util.List;
 
 public class NewCommand extends Instruction {
-    protected int NUM_ARGS = 1;
+    private static final int numArgs = 1;
     private String myName;
     private List<Token> myVariables;
     private List<Token> myInstructions;
 
     public NewCommand(String name, List<Token> variables, List<Token> instructions){
+        super(numArgs);
         myName = name;
         myVariables = variables;
         myInstructions = instructions;

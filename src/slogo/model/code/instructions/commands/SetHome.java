@@ -6,10 +6,10 @@ import slogo.model.code.instructions.Instruction;
 public class SetHome extends Instruction {
     public static final int HOME_X = 0;
     public static final int HOME_Y = 0;
-    protected int NUM_ARGS = 0;
+    private static final int numArgs = 0;
 
     public SetHome(String name){
-        super();
+        super(numArgs);
         this.instrName = name;
     }
 

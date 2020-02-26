@@ -15,7 +15,11 @@ public abstract class Instruction implements Token {
     protected List<Token> parameters = null;
     protected String instrName = "";
     protected double valueOfExecution = 0;
-    protected int NUM_ARGS;
+    private int NUM_ARGS;
+
+    public Instruction(int numArgs){
+        NUM_ARGS = numArgs;
+    }
 
     public abstract void execute(Turtle turtle);
 
@@ -34,15 +38,15 @@ public abstract class Instruction implements Token {
     }
 
     protected List<Double> getParamsAsVals(Turtle t){
-        List<Double> paramsAsInts = new ArrayList<>();
+        List<Double> paramsAsDoubles = new ArrayList<>();
         for (Token currToken: parameters){
             assert !(currToken instanceof ListSyntax) : ERROR_MESSAGE;
             if (currToken instanceof Instruction){
                 ((Instruction) currToken).execute(t);
             }
-            paramsAsInts.add(currToken.generateValue());
+            paramsAsDoubles.add(currToken.generateValue());
         }
-        return paramsAsInts;
+        return paramsAsDoubles;
     }
 
     public String toString(){

@@ -5,10 +5,10 @@ import slogo.model.code.instructions.Instruction;
 
 public class Pi extends Instruction {
 
-    protected int NUM_ARGS = 0;
+    private static final int numArgs = 0;
 
     public Pi(String name) {
-        super();
+        super(numArgs);
         this.instrName = name;
     }
 

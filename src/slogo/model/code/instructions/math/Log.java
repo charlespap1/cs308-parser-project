@@ -7,10 +7,10 @@ import java.util.List;
 
 public class Log extends Instruction {
 
-    protected int NUM_ARGS = 1;
+    private static final int numArgs = 1;
 
     public Log(String name) {
-        super();
+        super(numArgs);
         this.instrName = name;
     }
 

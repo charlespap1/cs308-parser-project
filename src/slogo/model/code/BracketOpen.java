@@ -6,7 +6,7 @@ import slogo.model.code.instructions.Instruction;
 public class BracketOpen extends Instruction {
     // TODO: write this one, move to instruction level in pkg?
     public BracketOpen(String name){
-        super();
+        super(0);
     }
 
     public void execute(Turtle turtle) {
