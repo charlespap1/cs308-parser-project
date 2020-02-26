@@ -164,7 +164,6 @@ public class Turtle {
   public void changePenColor(Color color)
   {
     penColor = color;
-    System.out.println("here");
   }
 
 }

@@ -57,6 +57,8 @@ public class Interactions implements View {
     return mySetup.getUserInput();
   }
 
+  public StringProperty getLanguageChoice() { return mySetup.getLanguageChoice(); }
+
   /**
    * Updates the movement of the turtle according to new states
    */
@@ -65,6 +67,7 @@ public class Interactions implements View {
     if (newLine!=null) {
       root.getChildren().add(newLine);
       myCanvas.addLine(newLine);
+      myTurtle.getView().toFront();
     }
   }
 
