@@ -12,25 +12,20 @@ public class PenSelector extends ColorSelector{
   public static final List<String> BACKGROUND_COLORS = new ArrayList<>(
       Arrays.asList("Blue", "Green", "White", "Red", "Black", "Magenta"));
   private static final String RESOURCES_PATH = "resources.colors.PenColors";
+  //TODO: text hard coded
   public static final String TITLE = "Pen colors: ";
 
-  private Turtle t;
+  private Turtle turtle;
 
-  public PenSelector(Turtle t, double x, double y)
-  {
+  public PenSelector(Turtle turtle, double x, double y) {
     super(TITLE,  x,  y, BACKGROUND_COLORS,  RESOURCES_PATH);
     setColorButtons();
-    this.t = t;
+    this.turtle = turtle;
   }
 
   @Override
-  public void changeSomething(String hex) {
-    changePenColor(hex);
+  protected void changeAppearance(String hex) {
+    Color color = Color.web(hex);
+    turtle.changePenColor(color);
   }
-
-  public void changePenColor(String hexColor) {
-    Color color = Color.web(hexColor);
-    t.changePenColor(color);
-  }
-
 }

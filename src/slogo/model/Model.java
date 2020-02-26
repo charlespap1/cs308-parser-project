@@ -22,19 +22,24 @@ public class Model implements ModelAPI{
 
     // regular expression representing any whitespace characters (space, tab, or newline)
     public static final String WHITESPACE = "\\s+";
-    public static final String LANG = "English";
     public static final String SYNTAX = "Syntax";
 
     private Stack<Token> commands = new Stack<>();
-    private Stack<Token> arguments = new Stack<>();
-    private CodeFactory createFromString = new CodeFactory(LANG);
+    private CodeFactory createFromString;
+    private Stack<Stack<Token>> arguments = new Stack<>();
     private RegexHandler typeCheck = new RegexHandler();
     private Turtle turtle;
     private StringProperty errorMessage = new SimpleStringProperty();
 
-    public Model() {
+    public Model(StringProperty language) {
         typeCheck.addPatterns(SYNTAX);
+        setupLanguage(language);
         turtle = new Turtle(0, 0, false, 0);
+    }
+
+    private void setupLanguage(StringProperty language) {
+        createFromString = new CodeFactory(language.getValue());
+        language.addListener((o, oldVal, newVal) ->  createFromString = new CodeFactory(newVal));
     }
 
     public Turtle getTurtle(){ return turtle; }
@@ -52,130 +57,86 @@ public class Model implements ModelAPI{
             List<String> inputPieces = Arrays.asList(rawString.split(WHITESPACE));
             for (String piece: inputPieces) {
                 if (piece.trim().length() > 0) {
+                    //TODO is this line used?
                     SyntaxType currType = SyntaxType.valueOf(typeCheck.getSymbol(piece).toUpperCase());
                     //TODO: error handling when no match found
                     addToAppropriateStack(piece);
                 }
             }
         } catch (AssertionError e) {
+            //TODO failure of parsing error
             System.out.println(e.getMessage());
         }
     }
 
     private void addToAppropriateStack(String piece) {
-        Token currentItem = createFromString.getSymbolAsObj(piece);
-        if(currentItem instanceof Instruction) {
-            Instruction currInstr = (Instruction) currentItem;
+        Token currItem = createFromString.getSymbolAsObj(piece);
+        if(currItem instanceof Instruction) {
+            Instruction currInstr = (Instruction)currItem;
             if(currInstr.numRequiredArgs() == 0 && commands.isEmpty())
                 currInstr.execute(turtle);
             else if(currInstr.numRequiredArgs() == 0){
-                arguments.add(currentItem);
+                arguments.peek().push(currItem);
                 attemptToCreateFullInstruction();
             }
-            else
-                commands.add(currInstr);
-        }
-        else if(currentItem instanceof BracketOpen){
-            commands.add(currentItem);
-            arguments.add(currentItem);
+            else{
+                commands.push(currInstr);
+                arguments.push(new Stack<>());
+            }
         }
         else {
-            arguments.add(currentItem);
+            arguments.peek().push(currItem);
             attemptToCreateFullInstruction();
         }
     }
 
-    private void listCreateFullHandler(){
-        if(closeBracketExist()){
-            commands.pop();
-            ListSyntax newList = createCompleteList();
-            arguments.push(newList);
-            attemptToCreateFullInstruction();
-        }
-    }
-
-    private ListSyntax createCompleteList() {
-        List<Token> listContents = grabListContents();
-        ListSyntax newList = new ListSyntax(listContents);
-        return newList;
-    }
-
-    private List<Token> grabListContents() {
-        List<Token> args = new ArrayList<>();
-        //get rid of close bracket
-        arguments.pop();
-        //start with next in stack
-        Token currToken = arguments.pop();
-        while(!(currToken instanceof BracketOpen)){
-            args.add(0,currToken);
-            currToken = arguments.pop();
-        }
-        return args;
-    }
-
-    private boolean closeBracketExist() {
-        return arguments.peek() instanceof BracketClose;
-    }
-
-    private void instrCreateFullHandler(){
-        Instruction currCommand = (Instruction)commands.peek();
+    private void attemptToCreateFullInstruction() {
+        Instruction currCommand = (Instruction) commands.peek();
         int numRequiredArgs = currCommand.numRequiredArgs();
         if(enoughArgs(numRequiredArgs)){
-            Instruction currInstr = createCompleteInstruction();
-            if(currInstr != null){
+            if(commands.peek() instanceof BracketOpen) {
+                ListSyntax completeList = grabList(arguments.pop());
+                arguments.peek().push(completeList);
+                attemptToCreateFullInstruction();
+            }
+            else {
+                Instruction currInstr = createCompleteInstruction(arguments.pop());
                 if(commands.isEmpty()){
                     currInstr.execute(turtle);
                 }
                 else{
-                    arguments.push(currInstr);
+                    arguments.peek().push(currInstr);
                     attemptToCreateFullInstruction();
                 }
             }
         }
     }
 
-    private void attemptToCreateFullInstruction() {
-        if(commands.peek() instanceof Instruction){
-            instrCreateFullHandler();
-        }
-        else{
-            listCreateFullHandler();
-        }
+    private ListSyntax grabList(Stack<Token> args) {
+        commands.pop();
+        args.pop();
+        List<Token> thingsInList = grabParameters(args);
+        ListSyntax fullList = new ListSyntax(thingsInList);
+        return fullList;
     }
 
-    private Instruction createCompleteInstruction() {
+    private Instruction createCompleteInstruction(Stack<Token> args) {
         Instruction currCommand = (Instruction)commands.pop();
-        List<Token> params = grabParameters(currCommand.numRequiredArgs());
-        if(params == null){
-            commands.push(currCommand);
-            return null;
-        }
-        else{
-            currCommand.setParameters(params);
-            return currCommand;
-        }
+        List<Token> params = grabParameters(args);
+        currCommand.setParameters(params);
+        return currCommand;
     }
 
-    private List<Token> grabParameters(int numArgsNeeded) {
+    private List<Token> grabParameters(Stack<Token> args) {
         List<Token> params = new ArrayList<>();
-        while(params.size() < numArgsNeeded){
-            if(arguments.peek() instanceof BracketClose || arguments.peek() instanceof BracketOpen) {
-                replenishArgsStack(params);
-                return null;
-            }
-            else
-                params.add(0,arguments.pop());
+        while(!args.isEmpty()){
+            params.add(0,args.pop());
         }
         return params;
     }
 
-    private void replenishArgsStack(List<Token> params) {
-        while(params.size() > 0)
-            arguments.push(params.remove(0));
-    }
-
     private boolean enoughArgs(int numNeeded){
-        return arguments.size() >= numNeeded;
+        return (commands.peek() instanceof BracketOpen && arguments.peek().peek() instanceof BracketClose) || (arguments.peek().size() >= numNeeded && numNeeded != -1);
     }
 
     public ObservableList<String> getVariableList(){ return createFromString.getVariableList(); }

@@ -8,7 +8,7 @@ public class ListViewer extends ScrollingWindow {
 
   public ListViewer(double elementWidthFactor, double topPadding, String title) {
     super(elementWidthFactor, topPadding, title);
-    myList.setMinSize(myWidth, myHeight);
+    myList.setPrefSize(myWidth-2*VBOX_SPACING, myHeight);
     myTextHolder.getChildren().add(myList);
   }
 

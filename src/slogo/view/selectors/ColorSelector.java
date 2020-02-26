@@ -12,41 +12,40 @@ public abstract class ColorSelector{
   public static final double COLOR_SELECTOR_HEIGHT = 17;
   public static final String DEFAULT_BACKGROUND_SETTER = "-fx-background-color: ";
 
-  private HBox myHolder;
+  private HBox myHolder = new HBox(HBOX_SPACING);
   private List<String> myIdentifiers;
   private ResourceBundle myResources;
 
-  public ColorSelector(String intro, double x, double y, List<String> identifiers, String resourcePackage)
-  {
-    myHolder = new HBox(HBOX_SPACING);
+  public ColorSelector(String intro, double x, double y, List<String> identifiers, String resourcePackage) {
     Text title = new Text(intro);
     myHolder.getChildren().add(title);
     myHolder.setLayoutX(x);
     myHolder.setLayoutY(y);
 
     myResources = ResourceBundle.getBundle(resourcePackage);
-
     myIdentifiers = identifiers;
   }
 
-  public void setColorButtons()
-  {
-    for(String identifier: myIdentifiers){
-      Button newColor = new Button();
-      newColor.setMaxHeight(COLOR_SELECTOR_HEIGHT);
-      newColor.setMinHeight(COLOR_SELECTOR_HEIGHT);
-      String hex = myResources.getString(identifier);
-      newColor.setStyle(DEFAULT_BACKGROUND_SETTER + hex);
-      newColor.setOnAction(e -> changeSomething(hex));
-
-      myHolder.getChildren().add(newColor);
-    }
-  }
-
-  public abstract void changeSomething(String hex);
+  protected abstract void changeAppearance(String hex);
 
   public Node getView()
   {
     return myHolder;
+  }
+
+  protected void setColorButtons() {
+    for (String identifier: myIdentifiers) {
+      Button newColor = new Button();
+      newColor.setMaxHeight(COLOR_SELECTOR_HEIGHT);
+      newColor.setMinHeight(COLOR_SELECTOR_HEIGHT);
+      String hex = myResources.getString(identifier);
+      setButtonFromResourceResult(newColor, hex);
+      myHolder.getChildren().add(newColor);
+    }
+  }
+
+  protected void setButtonFromResourceResult(Button newColor, String hex) {
+    newColor.setStyle(DEFAULT_BACKGROUND_SETTER + hex);
+    newColor.setOnAction(e -> changeAppearance(hex));
   }
 }

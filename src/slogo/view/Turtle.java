@@ -1,14 +1,13 @@
 package slogo.view;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.*;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+
+import java.awt.geom.Point2D;
 
 /**
  * This class holds all of the attributes of our GUI turtle
@@ -28,6 +27,7 @@ public class Turtle {
 
   private DoubleProperty x = new SimpleDoubleProperty();
   private DoubleProperty y = new SimpleDoubleProperty();
+  private ObjectProperty<Point2D> coordinates = new SimpleObjectProperty<>();
   private DoubleProperty angle = new SimpleDoubleProperty();
   private BooleanProperty penUp = new SimpleBooleanProperty();
   private BooleanProperty visible = new SimpleBooleanProperty();
@@ -59,21 +59,10 @@ public class Turtle {
     angle.bindBidirectional(turtle.turtleAngleProperty());
     penUp.bind(turtle.penUpProperty());
     visible.bind(turtle.visibleProperty());
+    coordinates.bindBidirectional(turtle.pointProperty());
     currX = x.getValue();
     currY = y.getValue();
     returnTurtleToDefault();
-  }
-
-  public Line drawLineAndBound(){
-    Line line = null;
-    if (outOfBounds()) fixBounding();
-    else line = drawLine();
-    return line;
-  }
-
-  private boolean outOfBounds(){
-    return x.getValue() > canvasWidth/2 || x.getValue() < -canvasWidth/2+TURTLE_IMAGE_SIZE ||
-            y.getValue() > canvasHeight/2 || y.getValue() < -canvasHeight/2+TURTLE_IMAGE_SIZE;
   }
 
   /**
@@ -83,7 +72,36 @@ public class Turtle {
   public void returnTurtleToDefault() {
     x.setValue(0);
     y.setValue(0);
+    currX = 0;
+    currY = 0;
+    coordinates.set(new Point2D.Double(0, 0));
     angle.setValue(DEFAULT_ANGLE);
+  }
+
+  public Line drawLineAndBound(){
+    Line line = null;
+    if (outOfBounds()) fixBounding();
+    else line = drawLine();
+    return line;
+  }
+
+  /**
+   * Allows the Main class to get the image body of the turtle to display
+   * @return
+   */
+  public Node getView () { return myTurtleView; }
+
+  /**
+   * Changes image of turtle
+   * @param image
+   */
+  public void changeImage(Image image) { myTurtleView.setImage(image); }
+
+  public void changePenColor(Color color) { penColor = color; }
+
+  private boolean outOfBounds(){
+    return x.getValue() > canvasWidth/2 || x.getValue() < -canvasWidth/2+TURTLE_IMAGE_SIZE ||
+            y.getValue() > canvasHeight/2 || y.getValue() < -canvasHeight/2+TURTLE_IMAGE_SIZE;
   }
 
   public Line drawLine(){
@@ -104,67 +122,19 @@ public class Turtle {
     double yDistanceOutOfBounds = 0;
     if (y.getValue()>canvasHeight/2) yDistanceOutOfBounds = y.getValue()-canvasHeight/2;
     else if (y.getValue()<-canvasHeight/2+TURTLE_IMAGE_SIZE) yDistanceOutOfBounds = Math.abs(y.getValue() + canvasHeight/2);
-    if (xDistanceOutOfBounds>yDistanceOutOfBounds) stopAlongVerticalSide();
-    else stopAlongHorizontalSide();
+    hitsSide(xDistanceOutOfBounds>yDistanceOutOfBounds);
   }
 
-  private void stopAlongVerticalSide(){
+  private void hitsSide(boolean verticalSide){
     double deltaX = x.getValue() - currX;
     double deltaY = y.getValue() - currY;
-    double xDist = 0;
-    double xVal = 0;
-    if (x.getValue()>canvasWidth/2) {
-      xDist = canvasWidth/2 - currX;
-      xVal = canvasWidth/2;
-    }
-    if (x.getValue()<-canvasWidth/2+TURTLE_IMAGE_SIZE) {
-      xDist = -canvasWidth/2+TURTLE_IMAGE_SIZE - currX;
-      xVal = -canvasWidth/2+TURTLE_IMAGE_SIZE;
-    }
-    double yDist = (deltaY/deltaX)*xDist;
-    x.setValue(xVal);
-    y.setValue(currY+yDist);
-  }
+    double val1 = (verticalSide) ? ((x.getValue()>canvasWidth/2) ? canvasWidth/2 : -canvasWidth/2+TURTLE_IMAGE_SIZE) : ((y.getValue()>canvasHeight/2) ? canvasHeight/2 : -canvasHeight/2+TURTLE_IMAGE_SIZE);
+    double delta1 = (verticalSide) ? val1 - currX : val1 - currY;
+    double delta2 = delta1 * ((verticalSide) ? deltaY/deltaX : deltaX/deltaY);
+    double val2 = delta2 + ((verticalSide) ? currY : currX);
 
-  private void stopAlongHorizontalSide(){
-    double deltaX = x.getValue() - currX;
-    double deltaY = y.getValue() - currY;
-    double yDist = 0;
-    double yVal = 0;
-    if (y.getValue()>canvasHeight/2) {
-      yDist = canvasHeight/2-currY;
-      yVal = canvasHeight/2;
-    }
-    if (y.getValue()<-canvasHeight/2+TURTLE_FACTOR) {
-      yDist = -canvasHeight/2+TURTLE_IMAGE_SIZE-currY;
-      yVal = -canvasHeight/2+TURTLE_IMAGE_SIZE;
-    }
-    double xDist = deltaX/deltaY*yDist;
-    x.setValue(currX+xDist);
-    y.setValue(yVal);
+    x.setValue((verticalSide) ? val1 : val2);
+    y.setValue((verticalSide) ? val2 : val1);
+    coordinates.set(new Point2D.Double((verticalSide) ? val1 : val2, (verticalSide) ? val2 : val1));
   }
-
-  /**
-   * Will be needed when we change turtle images
-   * @param image
-   */
-  public void changeImage(Image image)
-  {
-    myTurtleView.setImage(image);
-  }
-
-  /**
-   * Allows the Main class to get the image body of the turtle to display
-   * @return
-   */
-  public Node getView () {
-    return myTurtleView;
-  }
-
-  public void changePenColor(Color color)
-  {
-    penColor = color;
-    System.out.println("here");
-  }
-
 }

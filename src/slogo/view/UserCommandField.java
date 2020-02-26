@@ -14,7 +14,6 @@ public class UserCommandField {
 
   private TextArea myTextField;
 
-
   public UserCommandField(double screenWidth, double screenHeight)
   {
     myTextField = new TextArea();
@@ -22,7 +21,6 @@ public class UserCommandField {
     myTextField.setMinHeight(screenHeight/2 - FIELD_BOTTOM_PADDING);
     myTextField.setLayoutX(screenWidth/3 + FIELD_SIDE_PADDING);
     myTextField.setLayoutY(screenHeight/2);
-
   }
 
   /**
@@ -52,12 +50,4 @@ public class UserCommandField {
   {
     return myTextField.getMaxWidth();
   }
-
-  public double getHeight()
-  {
-    return myTextField.getMinHeight();
-  }
-
-
-
 }
