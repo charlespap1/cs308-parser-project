@@ -21,6 +21,7 @@ import slogo.view.scrollers.ListViewer;
 import java.util.Objects;
 import slogo.view.selectors.BackgroundSelector;
 import slogo.view.selectors.PenSelector;
+import slogo.view.selectors.TurtleFaceSelector;
 
 /**
  * This class allows us to make our main class less fat
@@ -30,7 +31,7 @@ import slogo.view.selectors.PenSelector;
 
 public class SetupScreen {
 
-  public static final String TURTLE_IMAGE = "turtle.png";
+  public static final String DEFAULT_TURTLE_IMAGE = "turtle.png";
   public static final double BOX_SPACING = 10;
   public static final int WIDTH = 1000;
   public static final int HEIGHT = 600;
@@ -55,7 +56,7 @@ public class SetupScreen {
   private ListViewer myVariableView;
 
   private BackgroundSelector myBackgroundSelector;
-  private BackgroundSelector myCharacterSelector;
+  private TurtleFaceSelector myCharacterSelector;
   private PenSelector myPenSelector;
 
   private Label myCurrentErrorMessage = new Label();
@@ -80,7 +81,7 @@ public class SetupScreen {
   public Scene setupGame()
   {
     //TODO: error handling also make settable
-    Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(TURTLE_IMAGE)));
+    Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(DEFAULT_TURTLE_IMAGE)));
 
     myDrawingCanvas = new DrawingCanvas(width, height);
     myTurtle = new Turtle(image, myDrawingCanvas.getWidth(), myDrawingCanvas.getHeight());
@@ -97,7 +98,7 @@ public class SetupScreen {
     setSelectors();
 
     root.getChildren().addAll(myDrawingCanvas.getView(), myTurtle.getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myNewCommandViewer.getView(), myVariableView.getView());
-    root.getChildren().addAll(myBackgroundSelector.getView(), myPenSelector.getView());
+    root.getChildren().addAll(myBackgroundSelector.getView(), myPenSelector.getView(), myCharacterSelector.getView());
     return new Scene(root, width, height, background);
   }
 
@@ -140,7 +141,7 @@ public class SetupScreen {
   private void setSelectors()
   {
     myBackgroundSelector = new BackgroundSelector(myDrawingCanvas, belowCanvasButtons.getLayoutX(), belowCanvasButtons.getLayoutY() + BUTTON_HEIGHT_OFFSET);
-    //myCharacterSelector = new BackgroundSelector(myDrawingCanvas, belowCanvasButtons.getLayoutX(), belowCanvasButtons.getLayoutY() + BUTTON_HEIGHT_OFFSET);
+    myCharacterSelector = new TurtleFaceSelector(belowCanvasButtons.getLayoutX(), belowCanvasButtons.getLayoutY() + BUTTON_HEIGHT_OFFSET);
     myPenSelector = new PenSelector(myTurtle, belowInputFieldItems.getLayoutX(), belowInputFieldItems.getLayoutY() + BUTTON_HEIGHT_OFFSET);
   }
 

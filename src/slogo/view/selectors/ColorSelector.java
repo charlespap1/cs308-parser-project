@@ -36,12 +36,17 @@ public abstract class ColorSelector{
       newColor.setMaxHeight(COLOR_SELECTOR_HEIGHT);
       newColor.setMinHeight(COLOR_SELECTOR_HEIGHT);
       String hex = myResources.getString(identifier);
-      newColor.setStyle(DEFAULT_BACKGROUND_SETTER + hex);
-      newColor.setOnAction(e -> changeSomething(hex));
+      setButtonFromResourceResult(newColor, hex);
 
       myHolder.getChildren().add(newColor);
     }
   }
+
+  protected void setButtonFromResourceResult(Button newColor, String hex) {
+    newColor.setStyle(DEFAULT_BACKGROUND_SETTER + hex);
+    newColor.setOnAction(e -> changeSomething(hex));
+  }
+
 
   public void changeSomething(String hex)
   {
