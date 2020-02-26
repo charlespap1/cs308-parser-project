@@ -4,7 +4,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 
 public class GoButton implements ViewButton {
-
+// TODO: hard coded text
   public static final String BUTTON_TEXT = "Go";
 
   private UserCommandField myUserInput;
@@ -18,6 +18,7 @@ public class GoButton implements ViewButton {
     myButton.setOnAction(e -> execute());
   }
 
+  // TODO: why is this souted
   @Override
   public void execute() {
     System.out.println(myUserInput.getUserInput());
@@ -28,6 +29,7 @@ public class GoButton implements ViewButton {
     return myButton;
   }
 
+  //TODO: delete?
   public double getHeight()
   {
     return myButton.getHeight();

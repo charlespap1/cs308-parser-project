@@ -2,13 +2,15 @@ package slogo.view.commonCommands;
 
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import slogo.view.SetupScreen;
 
 public class CommandPanel extends Object {
-  private static final String RESOURCES = "resources";
+  public static final int HOLDER_PADDING = 10;
+  public static final String RESOURCES = "resources";
   public static final String RESOURCE_PACKAGE = RESOURCES + ".commands.";
   public static final int VBOX_SPACING = 10;
 
@@ -19,7 +21,7 @@ public class CommandPanel extends Object {
   private Text myTitle;
   private List<String> myIdentifiers;
 
-  public CommandPanel(String resourceTextFile, List<String> identifiers, String title)
+  public CommandPanel(String resourceTextFile, List<String> identifiers, String title, double x, double y)
   {
     myPackage = RESOURCE_PACKAGE + resourceTextFile;
     myTitle = new Text(title);
@@ -28,8 +30,18 @@ public class CommandPanel extends Object {
 
     myHolder = new VBox(VBOX_SPACING);
     myHolder.getChildren().add(myTitle);
+    setHolderLayout();
+    myHolder.setLayoutX(x + HOLDER_PADDING);
+    myHolder.setLayoutY(y + HOLDER_PADDING);
     fillCommands();
   }
+
+  private void setHolderLayout()
+  {
+    myHolder.setMinWidth(SetupScreen.WIDTH/4);
+    myHolder.setMaxWidth(SetupScreen.WIDTH/4);
+  }
+
 
   private void fillCommands()
   {
@@ -39,7 +51,6 @@ public class CommandPanel extends Object {
       myHolder.getChildren().add(newCommand);
     }
   }
-
   public Node getView()
   {
     return myHolder;

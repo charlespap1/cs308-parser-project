@@ -49,4 +49,9 @@ public class TurtleFaceSelector extends ColorSelector {
     t.changeImage(image);
   }
 
+  @Override
+  public void changeSomething(String hex) {
+
+  }
+
 }

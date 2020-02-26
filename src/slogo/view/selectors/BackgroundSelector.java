@@ -9,18 +9,16 @@ import slogo.view.DrawingCanvas;
 public class BackgroundSelector extends ColorSelector{
 
   public static final List<String> BACKGROUND_COLORS = new ArrayList<>(Arrays.asList("White", "Red", "Magenta", "Blue", "Green", "Black"));
-  private static final String RESOURCES = "resources";
-  public static final String BACKGROUND_RESOURCE_PACKAGE = RESOURCES + ".commands.BackgroundColors";
+  private static final String RESOURCES_PATH = "resources.colors.BackgroundColors";
   public static final String TITLE = "Background colors: ";
 
   private DrawingCanvas dc;
 
   public BackgroundSelector(DrawingCanvas dc, double x, double y)
   {
-    super(TITLE,  x,  y, BACKGROUND_COLORS,  BACKGROUND_RESOURCE_PACKAGE);
+    super(TITLE,  x,  y, BACKGROUND_COLORS,  RESOURCES_PATH);
     this.dc = dc;
     setColorButtons();
-
   }
 
   @Override

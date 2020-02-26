@@ -47,11 +47,7 @@ public abstract class ColorSelector{
     newColor.setOnAction(e -> changeSomething(hex));
   }
 
-
-  public void changeSomething(String hex)
-  {
-    System.out.println("Here");
-  }
+  public abstract void changeSomething(String hex);
 
   public Node getView()
   {
