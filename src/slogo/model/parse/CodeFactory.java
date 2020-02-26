@@ -61,7 +61,7 @@ public class CodeFactory {
         String objectType = keyGrabber.getSymbol(piece);
         if (objectType.equals("Variable")) return getVariable(piece);
         if (objectType.equals("Command")) return getNewCommand(piece);
-        if (objectType.equals("To")) return new To(addToNewCommandsList);
+        if (objectType.equals("MakeUserInstruction")) return new To(addToNewCommandsList);
         Token token = null;
         try{
             Class c = mappings.get(objectType);
