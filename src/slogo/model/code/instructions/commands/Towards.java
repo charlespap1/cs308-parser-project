@@ -20,9 +20,11 @@ public class Towards extends Instruction {
         List<Integer> paramsAsInts = getParamsAsVals(t);
         int xCord = paramsAsInts.get(0);
         int yCord = paramsAsInts.get(1);
-        double angle = Math.atan2(yCord - t.getYPos(), xCord - t.getXPos());
-        this.valueOfExecution = (int)(Math.abs(t.getAngle() - angle));
-        t.setAngle(angle);
+        double angle = Math.atan2(xCord - t.getXPos(), yCord - t.getYPos());
+        double angleDegrees = Math.toDegrees(angle);
+        System.out.println(angleDegrees);
+        this.valueOfExecution = (int)(Math.abs(t.getAngle() - angleDegrees));
+        t.setAngle(angleDegrees+90);
         t.setCurrCommand(toString(xCord + "", yCord + ""));
         t.setCurrCommand("");
     }
