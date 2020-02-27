@@ -3,6 +3,11 @@ package slogo.view.commonCommands;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Displays commands only associated with math operations
+ * @author Juliet
+ */
+
 public class MathOperationsPanel extends CommandPanel{
 
   // TODO: hard coded text

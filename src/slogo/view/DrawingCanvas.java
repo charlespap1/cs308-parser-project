@@ -35,22 +35,10 @@ public class DrawingCanvas {
     setBody();
   }
 
-  private void setBody() {
-    myView.setX(CANVAS_SIDE_PADDING);
-    myView.setY(CANVAS_TOP_PADDING);
-    myView.setWidth(canvasWidth);
-    myView.setHeight(canvasHeight);
-    myView.setArcWidth(ARC_RADIUS);
-    myView.setArcHeight(ARC_RADIUS);
-    myView.setFill(BACKGROUND_COLOR);
-    myView.setStroke(BORDER_COLOR);
-  }
-
   /**
    * Allows the canvas to be added to the root of the main class
    * @return
    */
-
   public Node getView()
   {
     return myView;
@@ -91,6 +79,17 @@ public class DrawingCanvas {
   public List<Line> getLines()
   {
     return myLines;
+  }
+
+  private void setBody() {
+    myView.setX(CANVAS_SIDE_PADDING);
+    myView.setY(CANVAS_TOP_PADDING);
+    myView.setWidth(canvasWidth);
+    myView.setHeight(canvasHeight);
+    myView.setArcWidth(ARC_RADIUS);
+    myView.setArcHeight(ARC_RADIUS);
+    myView.setFill(BACKGROUND_COLOR);
+    myView.setStroke(BORDER_COLOR);
   }
 
 }

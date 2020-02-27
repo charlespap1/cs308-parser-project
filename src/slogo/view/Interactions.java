@@ -13,6 +13,7 @@ import slogo.view.commonCommands.CommonCommands;
 
 /**
  * This class holds all of the interactions between the UI objects
+ * @author Juliet, Natalie
  */
 public class Interactions implements View {
   public static final String TITLE = "SLogo";
@@ -48,22 +49,37 @@ public class Interactions implements View {
     return mySetup.getUserInput();
   }
 
+  /**
+   * Sets the frontend turtle whenever the location is changed
+   * in the backend
+   * @param turtle
+   */
   public void setTurtle(slogo.model.Turtle turtle){
     myTurtle.setProperties(turtle);
     turtle.pointProperty().addListener((o, oldVal, newVal) -> update());
     turtle.currCommandProperty().addListener((o, oldVal, newVal) -> mySetup.addHistory(newVal));
   }
 
+  /**
+   * Gives the ListViewers their updated list values (binding)
+   * @param variableList
+   * @param newCommandList
+   */
   public void setViewLists(ObservableList<String> variableList, ObservableList<String> newCommandList){
     mySetup.setVariableList(variableList);
     mySetup.setNewCommandList(newCommandList);
   }
 
+  /**
+   * Sets the go button to be binded to do action in the backend
+   * @param goAction
+   */
   public void setGoButton(EventHandler<ActionEvent> goAction){ mySetup.setGoButton(goAction); }
 
   public void setErrorMessage(StringProperty error){ mySetup.bindErrorMessage(error); }
 
   public StringProperty getLanguageChoice() { return mySetup.getLanguageChoice(); }
+
 
   /**
    * Updates the movement of the turtle according to new states

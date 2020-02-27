@@ -11,7 +11,7 @@ import java.awt.geom.Point2D;
 
 /**
  * This class holds all of the attributes of our GUI turtle
- * @author Juliet
+ * @author Juliet, Natalie
  */
 public class Turtle {
   public static final int TURTLE_IMAGE_SIZE = 30;
@@ -53,6 +53,12 @@ public class Turtle {
     myTurtleView.visibleProperty().bind(visible);
   }
 
+  /**
+   * Allows turtle's properties to be binded
+   * to the backend turtle so the turtle will update as soon
+   * as an instruciton is parsed
+   * @param turtle
+   */
   public void setProperties(slogo.model.Turtle turtle) {
     x.bindBidirectional(turtle.turtleXProperty());
     y.bindBidirectional(turtle.turtleYProperty());
@@ -78,6 +84,10 @@ public class Turtle {
     angle.setValue(DEFAULT_ANGLE);
   }
 
+  /**
+   * Draws line as long as turtle is in bounds
+   * @return
+   */
   public Line drawLineAndBound(){
     Line line = null;
     if (outOfBounds()) fixBounding();
@@ -97,14 +107,13 @@ public class Turtle {
    */
   public void changeImage(Image image) { myTurtleView.setImage(image); }
 
+  /**
+   * Allows pen color to be changed by the PenSelector
+   * @param color
+   */
   public void changePenColor(Color color) { penColor = color; }
 
-  private boolean outOfBounds(){
-    return x.getValue() > canvasWidth/2 || x.getValue() < -canvasWidth/2+TURTLE_IMAGE_SIZE ||
-            y.getValue() > canvasHeight/2 || y.getValue() < -canvasHeight/2+TURTLE_IMAGE_SIZE;
-  }
-
-  public Line drawLine(){
+  private Line drawLine(){
     Line line = null;
     if (!penUp.getValue()) {
       line = new Line(currX + centerX, currY + centerY, x.getValue() + centerX, y.getValue() + centerY);
@@ -114,6 +123,12 @@ public class Turtle {
     currY = y.getValue();
     return line;
   }
+
+  private boolean outOfBounds(){
+    return x.getValue() > canvasWidth/2 || x.getValue() < -canvasWidth/2+TURTLE_IMAGE_SIZE ||
+            y.getValue() > canvasHeight/2 || y.getValue() < -canvasHeight/2+TURTLE_IMAGE_SIZE;
+  }
+
 
   private void fixBounding(){
     double xDistanceOutOfBounds = 0;
