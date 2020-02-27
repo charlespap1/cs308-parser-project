@@ -7,7 +7,6 @@ import slogo.model.code.Variable;
 import java.util.List;
 
 public class NewCommand extends Instruction {
-    private int numArgs;
     private String myName;
     private List<Token> myVariables;
     private List<Token> myInstructions;

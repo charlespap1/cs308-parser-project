@@ -75,7 +75,7 @@ public class Model implements ModelAPI{
     private void setupLanguage(StringProperty language) {
         try{
             createFromString = new CodeFactory(language.getValue());
-            language.addListener((o, oldVal, newVal) ->  createFromString = new CodeFactory(newVal));
+            language.addListener((o, oldVal, newVal) ->  createFromString.setLanguage(newVal));
         }
         catch(LanguageFileNotFoundException e)
         {
