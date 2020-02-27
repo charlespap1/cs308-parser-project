@@ -2,7 +2,7 @@ package slogo.model.code.exceptions;
 
 public class InvalidNumberArgumentsException extends RuntimeException {
 
-  private String errorMessage = "ERROR: Invalid Number of Arguments Inputted";
+  private static final String errorMessage = "ERROR: Invalid Number of Arguments Inputted";
 
   public InvalidNumberArgumentsException()
   {

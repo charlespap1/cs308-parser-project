@@ -11,7 +11,7 @@ public class Arctan extends Instruction {
 
     public Arctan(String name) {
         super(numArgs);
-        this.instrName = name;
+        instrName = name;
     }
 
     public void execute (Turtle t) {

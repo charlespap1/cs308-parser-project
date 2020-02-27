@@ -11,12 +11,11 @@ public class Tangent extends Instruction {
 
     public Tangent(String name) {
         super(numArgs);
-        this.instrName = name;
+        instrName = name;
     }
 
     public void execute (Turtle t) {
         List<Double> paramsAsVals = this.getParamsAsVals(t);
-        // TODO: check type
         double val = paramsAsVals.get(0);
         valueOfExecution = Math.tan(Math.toRadians(val));
         t.setCurrCommand(toString(val));

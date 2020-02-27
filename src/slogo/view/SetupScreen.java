@@ -127,13 +127,18 @@ public class SetupScreen {
 
   public void addHistory(String command) { myHistory.addHistory(command);}
 
-  public void bindErrorMessage(StringProperty message) { myCurrentErrorMessage.textProperty().bind(message); }
+  public void bindErrorMessage(StringProperty message) {
+    myCurrentErrorMessage.textProperty().bind(message);
+    myCurrentErrorMessage.setTextFill(Color.RED);
+  }
 
   public void setGoButton(EventHandler<ActionEvent> goAction) { myGo.setOnAction(goAction); }
 
   public Group getRoot() { return root; }
 
   public StringProperty getLanguageChoice() { return myLanguageSelector.getLanguageChoiceProperty(); }
+
+  public void clearHistory() { myHistory.clearHistory(); }
 
   /**
    * Gives all of the buttons below the canvas their functions

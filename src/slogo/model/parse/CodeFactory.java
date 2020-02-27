@@ -48,19 +48,14 @@ public class CodeFactory {
         if (objectType.equals(NEW_COMMAND_TYPE)) return getNewCommand(piece);
         if (objectType.equals(TO_TYPE)) return new To(piece, this::addNewCommand);
         if (objectType.equals(CLEAR_TYPE)) return new ClearScreen(piece, clearAction);
-        Token token = null;
+        Token token;
         try {
             Class c = mappings.get(objectType);
             Constructor objConstruct = c.getDeclaredConstructor(String.class);
             objConstruct.setAccessible(true);
             token = (Token) objConstruct.newInstance(piece);
-        }
-        catch (Exception e) {
-            SyntaxException syntax = new SyntaxException(e);
-            throw syntax;
-            //System.out.println("can't find: "+piece);
-            //e.printStackTrace();
-            //TODO: relay some message back to UI that code was no bueno.
+        } catch (Exception e) {
+            throw new SyntaxException(e);
         }
         return token;
     }

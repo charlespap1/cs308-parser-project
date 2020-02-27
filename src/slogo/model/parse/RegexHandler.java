@@ -2,6 +2,7 @@ package slogo.model.parse;
 
 import java.util.*;
 import java.util.regex.Pattern;
+
 import slogo.model.code.exceptions.LanguageFileNotFoundException;
 
 public class RegexHandler {
@@ -19,24 +20,12 @@ public class RegexHandler {
         try{
             ResourceBundle resources = ResourceBundle.getBundle(RESOURCES_PACKAGE + filename);
             loopThroughKeys(resources);
-        }
-        catch(Exception e)
-        {
+        } catch(Exception e) {
             ResourceBundle resources = ResourceBundle.getBundle(RESOURCES_PACKAGE + DEFAULT_FILE);
             loopThroughKeys(resources);
             throw new LanguageFileNotFoundException(e);
         }
-
     }
-
-    private void loopThroughKeys(ResourceBundle resources)
-    {
-        for (String key : Collections.list(resources.getKeys())) {
-            String regex = resources.getString(key);
-            mySymbols.add(new AbstractMap.SimpleEntry<>(key, Pattern.compile(regex, Pattern.CASE_INSENSITIVE)));
-        }
-    }
-
 
     /**
      * Returns language's type associated with the given text if one exists
@@ -47,15 +36,21 @@ public class RegexHandler {
                 return e.getKey();
             }
         }
-        // FIXME: perhaps throw an exception instead
         return ERROR;
     }
 
     public List<String> getKeys() {
         List<String> keys = new ArrayList<>();
-        for(Map.Entry<String,Pattern> e: mySymbols)
+        for (Map.Entry<String,Pattern> e: mySymbols)
             keys.add(e.getKey());
         return keys;
+    }
+
+    private void loopThroughKeys(ResourceBundle resources) {
+        for (String key : Collections.list(resources.getKeys())) {
+            String regex = resources.getString(key);
+            mySymbols.add(new AbstractMap.SimpleEntry<>(key, Pattern.compile(regex, Pattern.CASE_INSENSITIVE)));
+        }
     }
 
     private boolean match(String text, Pattern regex) { return regex.matcher(text).matches(); }
