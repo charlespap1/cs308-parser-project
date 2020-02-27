@@ -16,7 +16,7 @@ import java.util.Map;
 public class CodeFactory {
     public static String VARIABLE_TYPE = "Variable";
     public static String NEW_COMMAND_TYPE = "Command";
-    public static String TO_TYPE = "To";
+    public static String TO_TYPE = "MakeUserInstruction";
 
     private RegexHandler keyGrabber = new RegexHandler();
     private Map<String, Class> mappings = new HashMap<>();
