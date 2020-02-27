@@ -17,6 +17,12 @@ public class Cosine extends Instruction {
     public void execute (Turtle t) {
         List<Double> paramsAsVals = this.getParamsAsVals(t);
         double val = paramsAsVals.get(0);
-        this.valueOfExecution = Math.cos(Math.toRadians(val));
+        valueOfExecution = Math.cos(Math.toRadians(val));
+        t.setCurrCommand(toString(val));
+        t.setCurrCommand("");
+    }
+
+    public String toString(double val){
+        return instrName + " " + val + " = " + valueOfExecution;
     }
 }

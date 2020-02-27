@@ -8,7 +8,9 @@ import slogo.model.code.Variable;
 import slogo.model.code.exceptions.LanguageFileNotFoundException;
 import slogo.model.code.exceptions.SyntaxException;
 import slogo.model.code.instructions.*;
+import slogo.model.code.instructions.commands.ClearScreen;
 import slogo.model.code.instructions.misc.To;
+import slogo.view.ClearAction;
 
 import java.lang.reflect.Constructor;
 import java.util.*;
@@ -19,6 +21,7 @@ public class CodeFactory {
     public static String VARIABLE_TYPE = "Variable";
     public static String NEW_COMMAND_TYPE = "Command";
     public static String TO_TYPE = "MakeUserInstruction";
+    public static String CLEAR_TYPE = "ClearScreen";
 
     private RegexHandler keyGrabber = new RegexHandler();
     private Map<String, Class> mappings = new HashMap<>();
@@ -26,6 +29,7 @@ public class CodeFactory {
     private Map<String, Variable> variableMap = new HashMap<>();
     private ObservableList<String> vars = FXCollections.observableArrayList();
     private ObservableList<String> newCommands = FXCollections.observableArrayList();
+    private ClearAction clearAction;
 
     public CodeFactory(String language) throws LanguageFileNotFoundException {
         keyGrabber.addPatterns(language);
@@ -38,6 +42,7 @@ public class CodeFactory {
         if (objectType.equals(VARIABLE_TYPE)) return getVariable(piece);
         if (objectType.equals(NEW_COMMAND_TYPE)) return getNewCommand(piece);
         if (objectType.equals(TO_TYPE)) return new To(this::addNewCommand);
+        if (objectType.equals(CLEAR_TYPE)) return new ClearScreen(piece, clearAction);
         Token token = null;
         try {
             Class c = mappings.get(objectType);
@@ -58,6 +63,8 @@ public class CodeFactory {
     public ObservableList<String> getVariableList(){ return vars; }
 
     public ObservableList<String> getNewCommandList(){ return newCommands; }
+
+    public void setClearAction(ClearAction action) { clearAction = action; }
 
     private void generateMappings() {
         List<String> keys = keyGrabber.getKeys();

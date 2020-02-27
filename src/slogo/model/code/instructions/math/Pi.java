@@ -13,7 +13,8 @@ public class Pi extends Instruction {
     }
 
     public void execute (Turtle t) {
-        this.valueOfExecution = Math.PI;
+        valueOfExecution = Math.PI;
+        t.setCurrCommand(toString());
+        t.setCurrCommand("");
     }
-
 }

@@ -21,17 +21,11 @@ public class SetXY extends Instruction {
         double yCord = paramsAsInts.get(1);
         this.valueOfExecution = distFrom(xCord,yCord,t.getXPos(),t.getYPos());
         t.setLocation(xCord, -yCord);
-        // TODO: better stringifying
-        t.setCurrCommand(toString(xCord + "",yCord + ""));
+        t.setCurrCommand(toString(xCord, -yCord));
         t.setCurrCommand("");
     }
 
-    @Override
-    public String toString(){
-        return instrName;
-    }
-
-    public String toString(String x, String y){
-        return toString() + " " + x + "," + y;
+    public String toString(double x, double y){
+        return instrName + " " + x + ", " + y;
     }
 }

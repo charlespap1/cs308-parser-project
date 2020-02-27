@@ -25,13 +25,15 @@ public class IfElse extends Instruction {
         // TODO error if assertion fails
         assert !(expr instanceof ListSyntax);
         this.valueOfExecution = 0;
+        t.setCurrCommand(toString());
+        t.setCurrCommand("");
         if (expr.generateValue() != 0)
             runCommandsInList(list1, t);
         else
             runCommandsInList(list2, t);
     }
 
-    public void runCommandsInList (Token list, Turtle t) {
+    private void runCommandsInList (Token list, Turtle t) {
         assert list instanceof ListSyntax;
         List<Token> commands = ((ListSyntax) list).getContents();
         for (Token command: commands) {
@@ -41,4 +43,7 @@ public class IfElse extends Instruction {
             this.valueOfExecution = command.generateValue();
         }
     }
+
+    @Override
+    public String toString() { return instrName;}
 }

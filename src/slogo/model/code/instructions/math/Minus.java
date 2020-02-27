@@ -19,5 +19,11 @@ public class Minus extends Instruction {
         // TODO: check types
         double val = paramsAsVals.get(0);
         this.valueOfExecution = -val;
+        t.setCurrCommand(toString(val));
+        t.setCurrCommand("");
+    }
+
+    public String toString(double val){
+        return instrName + " " + val + " = " + valueOfExecution;
     }
 }

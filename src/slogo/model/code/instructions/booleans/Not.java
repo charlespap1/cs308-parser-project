@@ -19,5 +19,11 @@ public class Not extends Instruction {
         // TODO: check type
         double val = paramsAsInts.get(0);
         this.valueOfExecution = (val == 0) ? 1 : 0;
+        t.setCurrCommand(toString(val));
+        t.setCurrCommand("");
+    }
+
+    public String toString(double val){
+        return instrName + val + " = " + valueOfExecution;
     }
 }

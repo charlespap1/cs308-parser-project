@@ -18,6 +18,12 @@ public class Sine extends Instruction {
         List<Double> paramsAsVals = this.getParamsAsVals(t);
         // TODO: check type
         double val = paramsAsVals.get(0);;
-        this.valueOfExecution = Math.sin(Math.toRadians(val));
+        valueOfExecution = Math.sin(Math.toRadians(val));
+        t.setCurrCommand(toString(val));
+        t.setCurrCommand("");
+    }
+
+    public String toString(double val){
+        return instrName + " " + val + " = " + valueOfExecution;
     }
 }

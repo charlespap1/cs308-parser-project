@@ -40,6 +40,8 @@ public class For extends Instruction {
         double start = checkIfInt(loopParameters.get(1), t);
         double end = checkIfInt(loopParameters.get(2), t);
         double increment = checkIfInt(loopParameters.get(3), t);
+        t.setCurrCommand(toString());
+        t.setCurrCommand("");
 
         List<Token> commands = ((ListSyntax) list2).getContents();
         for (double i = start; i <= end; i += increment) {
@@ -55,6 +57,9 @@ public class For extends Instruction {
         }
     }
 
+    @Override
+    public String toString(){ return instrName + ": "; }
+
     private double checkIfInt(Token currToken, Turtle t) throws CommandCantDoListException
     {
         if(currToken instanceof ListSyntax)
@@ -67,5 +72,4 @@ public class For extends Instruction {
 
         return currToken.generateValue();
     }
-
 }

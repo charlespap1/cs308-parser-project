@@ -22,8 +22,11 @@ public class Repeat extends Instruction {
             ((Instruction)expr).execute(t);
         }
         int numRepeats = (int) expr.generateValue();
-        // TODO: error if not integer value (ex: repeat + 1.5 2 [ insns ])
+        // TODO: error if not given a list
         Token list = this.parameters.get(1);
+        t.setCurrCommand(toString());
+        t.setCurrCommand("");
+
         List<Token> commands = ((ListSyntax) list).getContents();
         for (int i = 0; i < numRepeats; i++) {
             for (Token command : commands) {
@@ -32,8 +35,8 @@ public class Repeat extends Instruction {
                 this.valueOfExecution = command.generateValue();
             }
         }
-        t.setCurrCommand("Repeat ");
-        t.setCurrCommand("");
-        // TODO how are we doing history??
     }
+
+    @Override
+    public String toString(){ return instrName + ": "; }
 }

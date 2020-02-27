@@ -18,6 +18,12 @@ public class Tangent extends Instruction {
         List<Double> paramsAsVals = this.getParamsAsVals(t);
         // TODO: check type
         double val = paramsAsVals.get(0);
-        this.valueOfExecution = Math.tan(Math.toRadians(val));
+        valueOfExecution = Math.tan(Math.toRadians(val));
+        t.setCurrCommand(toString(val));
+        t.setCurrCommand("");
+    }
+
+    public String toString(double val){
+        return instrName + " " + val + " = " + valueOfExecution;
     }
 }

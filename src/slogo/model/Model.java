@@ -18,6 +18,7 @@ import slogo.model.code.instructions.Instruction;
 import slogo.model.code.instructions.misc.To;
 import slogo.model.parse.CodeFactory;
 import slogo.model.parse.RegexHandler;
+import slogo.view.ClearAction;
 
 import java.io.File;
 import java.util.*;
@@ -69,6 +70,8 @@ public class Model implements ModelAPI{
 
     public StringProperty getErrorMessage(){ return errorMessage; }
 
+    public void setClearAction(ClearAction action){ createFromString.setClearAction(action); }
+
     private void setupLanguage(StringProperty language) {
         try{
             createFromString = new CodeFactory(language.getValue());
@@ -83,7 +86,7 @@ public class Model implements ModelAPI{
 
     private void parseInstructions(String rawString){
         try {
-            List<String> inputPieces = Arrays.asList(rawString.split(WHITESPACE));
+            String[] inputPieces = rawString.split(WHITESPACE);
             for (String piece: inputPieces) {
                 if (piece.trim().length() > 0) {
                     addToAppropriateStack(piece);

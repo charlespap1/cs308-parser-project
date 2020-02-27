@@ -19,6 +19,8 @@ import slogo.view.scrollers.HistoryCanvas;
 import slogo.view.scrollers.ListViewer;
 
 import java.util.Objects;
+import java.util.ResourceBundle;
+
 import slogo.view.selectors.BackgroundSelector;
 import slogo.view.selectors.LanguageSelector;
 import slogo.view.selectors.PenSelector;

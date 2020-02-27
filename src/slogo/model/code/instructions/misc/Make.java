@@ -27,5 +27,9 @@ public class Make extends Instruction {
         double val = expr.generateValue();
         ((Variable) var).setVariable(val);
         this.valueOfExecution = val;
+        t.setCurrCommand(toString(var.toString(), val));
+        t.setCurrCommand("");
     }
+
+    public String toString(String var, double val){ return instrName + ": " + var + " " + val; }
 }
