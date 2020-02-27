@@ -4,10 +4,9 @@ public class ListNotIntegerException extends RuntimeException {
 
   private String errorMessage = "ERROR: Command Does Not Take a List";
 
-  public ListNotIntegerException(Exception e)
+  public ListNotIntegerException()
   {
-    super(e);
-    System.out.println(errorMessage);
+    super();
   }
 
   @Override

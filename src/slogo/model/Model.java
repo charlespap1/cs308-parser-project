@@ -9,7 +9,9 @@ import slogo.model.code.BracketOpen;
 import slogo.model.code.ListSyntax;
 import slogo.model.code.NewCommandName;
 import slogo.model.code.Token;
+import slogo.model.code.exceptions.InvalidCommandException;
 import slogo.model.code.exceptions.InvalidNumberArgumentsException;
+import slogo.model.code.exceptions.ListNotIntegerException;
 import slogo.model.code.instructions.Instruction;
 import slogo.model.code.instructions.NewCommand;
 import slogo.model.code.instructions.misc.To;
@@ -42,12 +44,11 @@ public class Model implements ModelAPI{
         turtle = new Turtle(0, 0, false, 0);
     }
 
-    public void executeCode(String rawString) throws InvalidNumberArgumentsException {
+    public void executeCode(String rawString) {
         parseInstructions(rawString);
         if(!commands.isEmpty() || !arguments.isEmpty()){
             InvalidNumberArgumentsException e = new InvalidNumberArgumentsException();
             errorMessage.setValue(e.getMessage());
-            throw e;
         }
         commands.clear();
         arguments.clear();
@@ -70,7 +71,7 @@ public class Model implements ModelAPI{
         language.addListener((o, oldVal, newVal) ->  createFromString = new CodeFactory(newVal));
     }
 
-    private void parseInstructions(String rawString) {
+    private void parseInstructions(String rawString){
         try {
             List<String> inputPieces = Arrays.asList(rawString.split(WHITESPACE));
             for (String piece: inputPieces) {
@@ -79,18 +80,23 @@ public class Model implements ModelAPI{
                     addToAppropriateStack(piece);
                 }
             }
-        } catch (AssertionError e) {
+        }
+        catch (ListNotIntegerException e) {
+            errorMessage.set(e.getMessage());
+        }
+        catch (InvalidCommandException e) {
             //TODO failure of parsing error
-            System.out.println(e.getMessage());
+            errorMessage.set(e.getMessage());
         }
     }
 
-    private void addToAppropriateStack(String piece) {
+    private void addToAppropriateStack(String piece) throws InvalidCommandException{
         // TODO: error handling if this line fails
         Token currItem = createFromString.getSymbolAsObj(piece);
         if(currItem instanceof NewCommandName && (commands.isEmpty() || !(commands.peek() instanceof To)))
         {
-            
+            throw new InvalidCommandException();
+
         }
         if(currItem instanceof Instruction) {
             Instruction currInstr = (Instruction) currItem;

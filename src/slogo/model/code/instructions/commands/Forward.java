@@ -1,6 +1,7 @@
 package slogo.model.code.instructions.commands;
 
 import slogo.model.Turtle;
+import slogo.model.code.exceptions.ListNotIntegerException;
 import slogo.model.code.instructions.Instruction;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public class Forward extends Instruction {
         this.instrName = name;
     }
 
-    public void execute (Turtle t) {
+    public void execute (Turtle t) throws ListNotIntegerException {
         List<Double> paramsAsVals = getParamsAsVals(t);
         double valueForExec = paramsAsVals.get(0);
         // TODO: check types

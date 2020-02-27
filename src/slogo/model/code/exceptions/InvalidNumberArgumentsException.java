@@ -7,7 +7,6 @@ public class InvalidNumberArgumentsException extends RuntimeException {
   public InvalidNumberArgumentsException()
   {
     super();
-    System.out.println(errorMessage);
   }
 
   @Override
