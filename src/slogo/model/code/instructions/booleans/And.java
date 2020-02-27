@@ -11,7 +11,7 @@ public class And extends Instruction {
 
     public And(String name) {
         super(numArgs);
-        this.instrName = name;
+        instrName = name;
     }
 
     public void execute (Turtle t) {

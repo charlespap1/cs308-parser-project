@@ -11,14 +11,13 @@ public class Not extends Instruction {
 
     public Not(String name) {
         super(numArgs);
-        this.instrName = name;
+        instrName = name;
     }
 
     public void execute (Turtle t) {
         List<Double> paramsAsInts = this.getParamsAsVals(t);
-        // TODO: check type
         double val = paramsAsInts.get(0);
-        this.valueOfExecution = (val == 0) ? 1 : 0;
+        valueOfExecution = (val == 0) ? 1 : 0;
         t.setCurrCommand(toString(val));
         t.setCurrCommand("");
     }

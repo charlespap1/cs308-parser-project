@@ -11,7 +11,7 @@ public class Greater extends Instruction {
 
     public Greater(String name) {
         super(numArgs);
-        this.instrName = name;
+        instrName = name;
     }
 
     public void execute (Turtle t) {

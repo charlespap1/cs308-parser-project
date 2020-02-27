@@ -11,12 +11,11 @@ public class Less extends Instruction {
 
     public Less(String name) {
         super(numArgs);
-        this.instrName = name;
+        instrName = name;
     }
 
     public void execute (Turtle t) {
         List<Double> paramsAsInts = this.getParamsAsVals(t);
-        // TODO: check types
         double val1 = paramsAsInts.get(0);
         double val2 = paramsAsInts.get(1);
         valueOfExecution = val1 < val2 ? 1 : 0;

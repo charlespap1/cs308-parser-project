@@ -11,7 +11,7 @@ public class Or extends Instruction {
 
     public Or(String name) {
         super(numArgs);
-        this.instrName = name;
+        instrName = name;
     }
 
     public void execute (Turtle t) {

@@ -11,12 +11,11 @@ public class Equal extends Instruction {
 
     public Equal(String name) {
         super(numArgs);
-        this.instrName = name;
+        instrName = name;
     }
 
     public void execute (Turtle t) {
         List<Double> paramsAsInts = this.getParamsAsVals(t);
-        // TODO: check type
         double val1 = paramsAsInts.get(0);
         double val2 = paramsAsInts.get(1);
         valueOfExecution = val1 == val2 ? 1 : 0;

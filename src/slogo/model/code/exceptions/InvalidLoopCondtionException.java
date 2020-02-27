@@ -2,7 +2,7 @@ package slogo.model.code.exceptions;
 
 public class InvalidLoopCondtionException extends RuntimeException{
 
-  private String errorMessage = "ERROR: Invalid Loop Condition";
+  private static final String errorMessage = "ERROR: Invalid Loop Condition";
 
   public InvalidLoopCondtionException()
   {

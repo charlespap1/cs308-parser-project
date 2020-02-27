@@ -9,7 +9,7 @@ public class Pi extends Instruction {
 
     public Pi(String name) {
         super(numArgs);
-        this.instrName = name;
+        instrName = name;
     }
 
     public void execute (Turtle t) {

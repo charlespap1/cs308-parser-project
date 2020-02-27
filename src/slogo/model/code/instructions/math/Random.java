@@ -11,7 +11,7 @@ public class Random extends Instruction {
 
     public Random(String name) {
         super(numArgs);
-        this.instrName = name;
+        instrName = name;
     }
 
     public void execute (Turtle t) {

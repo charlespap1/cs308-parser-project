@@ -12,12 +12,11 @@ public class Back extends Instruction {
 
     public Back(String name){
         super(numArgs);
-        this.instrName = name;
+        instrName = name;
     }
 
     public void execute (Turtle t) {
         List<Double> paramsAsVals = getParamsAsVals(t);
-        // TODO: check type
         double valueForExec = paramsAsVals.get(0);
         valueOfExecution = valueForExec;
         double x = t.getXPos() + valueForExec * Math.cos(Math.toRadians(t.getAngle()));

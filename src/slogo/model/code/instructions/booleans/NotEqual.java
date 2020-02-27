@@ -11,7 +11,7 @@ public class NotEqual extends Instruction {
 
     public NotEqual(String name) {
         super(numArgs);
-        this.instrName = name;
+        instrName = name;
     }
 
     public void execute (Turtle t) {

@@ -10,11 +10,11 @@ public class SetHome extends Instruction {
 
     public SetHome(String name){
         super(numArgs);
-        this.instrName = name;
+        instrName = name;
     }
 
     public void execute (Turtle t) {
-        this.valueOfExecution = distFrom(t.getXPos(),t.getYPos(),HOME_X,HOME_Y);
+        valueOfExecution = distFrom(t.getXPos(),t.getYPos(),HOME_X,HOME_Y);
         t.setLocation(HOME_X, HOME_Y);
         t.setCurrCommand(toString());
         t.setCurrCommand("");

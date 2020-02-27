@@ -11,14 +11,13 @@ public class Right extends Instruction {
 
     public Right(String name){
         super(numArgs);
-        this.instrName = name;
+        instrName = name;
     }
 
     public void execute (Turtle t) {
         List<Double> paramsAsVals = getParamsAsVals(t);
-        // TODO: check types
         double valueForExec = paramsAsVals.get(0);
-        this.valueOfExecution = valueForExec;
+        valueOfExecution = valueForExec;
         double angle = t.getAngle() + valueForExec;
         t.setAngle(angle);
         t.setCurrCommand(toString());

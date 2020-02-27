@@ -2,7 +2,7 @@ package slogo.model.code.exceptions;
 
 public class InvalidCommandException extends RuntimeException {
 
-  private String errorMessage = "ERROR: Invalid Command Inputted";
+  private static final String errorMessage = "ERROR: Invalid Command Inputted";
 
   public InvalidCommandException()
   {
