@@ -12,7 +12,7 @@ import java.util.List;
 
 public class IfElse extends Instruction {
 
-    private static final int numArgs = 2;
+    private static final int numArgs = 3;
 
     public IfElse(String name){
         super(numArgs);
