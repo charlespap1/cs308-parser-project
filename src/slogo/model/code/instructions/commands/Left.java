@@ -11,12 +11,11 @@ public class Left extends Instruction {
 
     public Left(String name){
         super(numArgs);
-        this.instrName = name;
+        instrName = name;
     }
 
     public void execute (Turtle t) {
         List<Double> paramsAsVals = getParamsAsVals(t);
-        // TODO: check types
         double valueForExec = paramsAsVals.get(0);
         valueOfExecution = valueForExec;
         double angle = t.getAngle() - valueForExec;

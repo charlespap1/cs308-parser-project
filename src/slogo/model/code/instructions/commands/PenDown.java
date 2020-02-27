@@ -9,12 +9,12 @@ public class PenDown extends Instruction {
 
     public PenDown(String name){
         super(numArgs);
-        this.instrName = name;
+        instrName = name;
     }
 
     public void execute (Turtle t) {
         t.setPenUp(false);
-        this.valueOfExecution = 1;
+        valueOfExecution = 1;
         t.setCurrCommand(toString());
         t.setCurrCommand("");
     }

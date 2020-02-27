@@ -22,11 +22,7 @@ public class IfElse extends Instruction {
         Token expr = this.parameters.get(0);
         Token list1 = this.parameters.get(1);
         Token list2 = this.parameters.get(2);
-        if (expr instanceof ListSyntax) {
-            throw new CommandCannotDoListException();
-        }
-        if(expr instanceof Instruction)
-            ((Instruction)expr).execute(t);
+        checkTokenNotListAndGetVal(expr, t);
         this.valueOfExecution = 0;
         t.setCurrCommand(toString());
         t.setCurrCommand("");

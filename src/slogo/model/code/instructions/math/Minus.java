@@ -11,12 +11,11 @@ public class Minus extends Instruction {
 
     public Minus(String name) {
         super(numArgs);
-        this.instrName = name;
+        instrName = name;
     }
 
     public void execute (Turtle t) {
         List<Double> paramsAsVals = this.getParamsAsVals(t);
-        // TODO: check types
         double val = paramsAsVals.get(0);
         this.valueOfExecution = -val;
         t.setCurrCommand(toString(val));

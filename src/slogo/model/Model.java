@@ -49,7 +49,6 @@ public class Model implements ModelAPI{
     public void executeCode(String rawString) {
         errorMessage.set("");
         clearStacks();
-
         parseInstructions(rawString);
         if(!commands.isEmpty() || !arguments.isEmpty()){
             InvalidNumberArgumentsException e = new InvalidNumberArgumentsException();
@@ -73,12 +72,11 @@ public class Model implements ModelAPI{
     public void setClearAction(ClearAction action){ createFromString.setClearAction(action); }
 
     private void setupLanguage(StringProperty language) {
-        try{
+        try {
             createFromString = new CodeFactory(language.getValue());
             language.addListener((o, oldVal, newVal) ->  createFromString.setLanguage(newVal));
         }
-        catch(LanguageFileNotFoundException e)
-        {
+        catch(LanguageFileNotFoundException e) {
             errorMessage.set(e.getMessage());
         }
 
@@ -93,14 +91,7 @@ public class Model implements ModelAPI{
                 }
             }
         }
-        catch (InvalidNumberArgumentsException e )
-        {
-            errorMessage.set(e.getMessage());
-        }
-        catch (CommandCannotDoListException e) {
-            errorMessage.set(e.getMessage());
-        }
-        catch (InvalidCommandException e) {
+        catch (Exception e) {
             errorMessage.set(e.getMessage());
         }
     }
@@ -108,67 +99,55 @@ public class Model implements ModelAPI{
     private void addToAppropriateStack(String piece) throws InvalidCommandException, InvalidNumberArgumentsException {
         try {
             Token currItem = createFromString.getSymbolAsObj(piece);
-        if (currItem instanceof NewCommandName && (commands.isEmpty() || !(commands
-            .peek() instanceof To))) {
-            throw new InvalidCommandException();
-        }
-        if (currItem instanceof Instruction) {
-            Instruction currInstr = (Instruction) currItem;
-            if (currInstr.numRequiredArgs() == 0) {
-                if (commands.isEmpty()) {
-                    try {
-                        currInstr.execute(turtle);
-                    } catch (InvalidLoopConditionException e) {
-                        errorMessage.set(e.getMessage());
-                    } catch (CommandCannotDoListException e) {
-                        errorMessage.set(e.getMessage());
+            if (currItem instanceof NewCommandName && (commands.isEmpty() || !(commands.peek() instanceof To))) {
+                throw new InvalidCommandException();
+            } else if (currItem instanceof Instruction) {
+                Instruction currInstr = (Instruction) currItem;
+                if (currInstr.numRequiredArgs() == 0) {
+                    if (commands.isEmpty()) {
+                        try {
+                            currInstr.execute(turtle);
+                        } catch (Exception e) {
+                            errorMessage.set(e.getMessage());
+                        }
+                    } else {
+                        arguments.peek().push(currItem);
+                        attemptToCreateFullInstruction();
                     }
                 } else {
-                    arguments.peek().push(currItem);
-                    attemptToCreateFullInstruction();
+                    commands.push(currInstr);
+                    arguments.push(new Stack<>());
                 }
             } else {
-                commands.push(currInstr);
-                arguments.push(new Stack<>());
+                if (arguments.isEmpty() && commands.isEmpty()) {
+                    throw new InvalidNumberArgumentsException();
+                }
+                arguments.peek().push(currItem);
+                attemptToCreateFullInstruction();
             }
-        } else {
-            if (arguments.isEmpty() && commands.isEmpty()) {
-                throw new InvalidNumberArgumentsException();
-            }
-            arguments.peek().push(currItem);
-            attemptToCreateFullInstruction();
         }
-    }
-        catch(SyntaxException e)
-        {
+        catch (SyntaxException e) {
             errorMessage.set(e.getMessage());
         }
     }
 
     private void attemptToCreateFullInstruction() {
         Instruction currCommand = (Instruction) commands.peek();
-        int numRequiredArgs = currCommand.numRequiredArgs();
-        if (enoughArgs(numRequiredArgs)) {
-            if (commands.peek() instanceof BracketOpen) {
+        if (enoughArgs(currCommand.numRequiredArgs())) {
+            if (currCommand instanceof BracketOpen) {
                 ListSyntax completeList = grabList(arguments.pop());
                 arguments.peek().push(completeList);
                 attemptToCreateFullInstruction();
             } else {
                 Instruction currInstr = createCompleteInstruction(arguments.pop());
                 if (commands.isEmpty()) {
-                    try{
+                    try {
                         currInstr.execute(turtle);
                     }
-                    catch(InvalidLoopConditionException e)
-                    {
+                    catch(Exception e) {
                         errorMessage.set(e.getMessage());
                     }
-                    catch(CommandCannotDoListException e)
-                    {
-                        errorMessage.set(e.getMessage());
-                    }
-                }
-                else {
+                } else {
                     arguments.peek().push(currInstr);
                     attemptToCreateFullInstruction();
                 }
@@ -202,8 +181,7 @@ public class Model implements ModelAPI{
         return isCompleteList || enoughCommandParameters;
     }
 
-    private void clearStacks()
-    {
+    private void clearStacks() {
         commands.clear();
         arguments.clear();
     }

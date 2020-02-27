@@ -11,12 +11,11 @@ public class Sine extends Instruction {
 
     public Sine(String name) {
         super(numArgs);
-        this.instrName = name;
+        instrName = name;
     }
 
     public void execute (Turtle t) {
         List<Double> paramsAsVals = this.getParamsAsVals(t);
-        // TODO: check type
         double val = paramsAsVals.get(0);;
         valueOfExecution = Math.sin(Math.toRadians(val));
         t.setCurrCommand(toString(val));

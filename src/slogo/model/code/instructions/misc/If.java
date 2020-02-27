@@ -21,11 +21,7 @@ public class If extends Instruction {
     public void execute (Turtle t) {
         Token expr = this.parameters.get(0);
         Token list = this.parameters.get(1);
-        if (expr instanceof ListSyntax) {
-            throw new CommandCannotDoListException();
-        }
-        if (expr instanceof Instruction)
-            ((Instruction)expr).execute(t);
+        checkTokenNotListAndGetVal(expr, t);
         if (!(list instanceof ListSyntax)) {
             throw new InvalidLoopConditionException();
         }

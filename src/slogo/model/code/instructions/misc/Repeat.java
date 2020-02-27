@@ -19,7 +19,7 @@ public class Repeat extends Instruction {
 
     public void execute (Turtle t) {
         Token expr = this.parameters.get(0);
-        double numRepeats = checkTokenNotList(expr, t);
+        double numRepeats = checkTokenNotListAndGetVal(expr, t);
         Token list = this.parameters.get(1);
         if (!(list instanceof ListSyntax)) {
             throw new InvalidLoopConditionException();

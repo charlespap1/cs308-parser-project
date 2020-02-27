@@ -25,7 +25,7 @@ public class To extends Instruction {
         String name = parameters.get(0).toString();
         Token list1 = parameters.get(1);
         Token list2 = parameters.get(2);
-        if (!(list1 instanceof ListSyntax) && !(list2 instanceof ListSyntax)) {
+        if (!(list1 instanceof ListSyntax) || !(list2 instanceof ListSyntax)) {
             throw new InvalidLoopConditionException();
         }
         List<Token> variables = ((ListSyntax) list1).getContents();

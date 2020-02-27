@@ -3,6 +3,8 @@ package slogo.model.code.instructions;
 import slogo.model.Turtle;
 import slogo.model.code.Token;
 import slogo.model.code.Variable;
+import slogo.model.code.exceptions.InvalidArgumentException;
+import slogo.model.code.exceptions.InvalidCommandException;
 
 import java.util.List;
 
@@ -23,15 +25,14 @@ public class NewCommand extends Instruction {
     }
 
     public void execute(Turtle turtle) {
-        System.out.println(myVariables);
-        System.out.println(myInstructions);
-        System.out.println(parameters);
         for (int i=0; i<parameters.size(); i++){
             if (myVariables.get(i) instanceof Variable)
                 ((Variable) myVariables.get(i)).setVariable(parameters.get(i).generateValue());
+            else throw new InvalidArgumentException();
         }
         for (Token instruction:myInstructions){
             if (instruction instanceof Instruction) ((Instruction) instruction).execute(turtle);
+            else throw new InvalidCommandException();
         }
     }
 

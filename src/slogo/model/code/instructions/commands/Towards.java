@@ -11,17 +11,16 @@ public class Towards extends Instruction {
 
     public Towards(String name){
         super(numArgs);
-        this.instrName = name;
+        instrName = name;
     }
 
     public void execute (Turtle t) {
-        List<Double> paramsAsInts = getParamsAsVals(t);
-        // TODO: check types
-        double xCord = paramsAsInts.get(0);
-        double yCord = paramsAsInts.get(1);
+        List<Double> paramsAsVals = getParamsAsVals(t);
+        double xCord = paramsAsVals.get(0);
+        double yCord = paramsAsVals.get(1);
         double angle = Math.atan2(xCord - t.getXPos(), yCord - t.getYPos());
         double angleDegrees = Math.toDegrees(angle);
-        this.valueOfExecution = (int)(Math.abs(t.getAngle() - angleDegrees));
+        valueOfExecution = Math.abs(t.getAngle() - angleDegrees);
         t.setAngle(angleDegrees+ANGLE_OFFSET);
         t.setCurrCommand(toString(xCord, yCord));
         t.setCurrCommand("");

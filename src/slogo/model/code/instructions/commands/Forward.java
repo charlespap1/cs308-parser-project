@@ -11,13 +11,12 @@ public class Forward extends Instruction {
 
     public Forward(String name){
         super(numArgs);
-        this.instrName = name;
+        instrName = name;
     }
 
     public void execute (Turtle t) {
         List<Double> paramsAsVals = getParamsAsVals(t);
         double valueForExec = paramsAsVals.get(0);
-        // TODO: check types
         valueOfExecution = valueForExec;
         double x = t.getXPos() - valueForExec * Math.cos(Math.toRadians(t.getAngle()));
         double y = t.getYPos() - valueForExec * Math.sin(Math.toRadians(t.getAngle()));

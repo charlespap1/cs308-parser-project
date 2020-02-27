@@ -10,7 +10,6 @@ import slogo.model.code.exceptions.CommandCannotDoListException;
 
 public abstract class Instruction implements Token {
     // TODO: hard coded text
-    private static final String ERROR_MESSAGE = "Parameter for this instruction cannot be a list";
 
     protected List<Token> parameters = null;
     protected String instrName = "";
@@ -39,29 +38,18 @@ public abstract class Instruction implements Token {
 
     protected List<Double> getParamsAsVals(Turtle t) throws CommandCannotDoListException {
         List<Double> paramsAsDoubles = new ArrayList<>();
-        for (Token currToken: parameters){
-            if(currToken instanceof ListSyntax)
-            {
-                throw new CommandCannotDoListException();
-            }
-            if (currToken instanceof Instruction){
-                ((Instruction) currToken).execute(t);
-            }
-            paramsAsDoubles.add(currToken.generateValue());
+        for (Token currToken: parameters) {
+            paramsAsDoubles.add(checkTokenNotListAndGetVal(currToken, t));
         }
         return paramsAsDoubles;
     }
 
-    protected double checkTokenNotList(Token currToken, Turtle t) throws CommandCannotDoListException
-    {
-        if(currToken instanceof ListSyntax)
-        {
+    protected double checkTokenNotListAndGetVal(Token currToken, Turtle t) throws CommandCannotDoListException {
+        if (currToken instanceof ListSyntax) {
             throw new CommandCannotDoListException();
-        }
-        if (currToken instanceof Instruction){
+        } else if (currToken instanceof Instruction){
             ((Instruction) currToken).execute(t);
         }
-
         return currToken.generateValue();
     }
 

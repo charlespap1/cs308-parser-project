@@ -21,7 +21,7 @@ public class DoTimes extends Instruction {
     public void execute (Turtle t) {
         Token list1 = this.parameters.get(0);
         Token list2 = this.parameters.get(1);
-        if (!(list1 instanceof ListSyntax) && !(list2 instanceof ListSyntax)) {
+        if (!(list1 instanceof ListSyntax) || !(list2 instanceof ListSyntax)) {
             throw new InvalidLoopConditionException();
         }
         this.valueOfExecution = 0;
@@ -31,7 +31,7 @@ public class DoTimes extends Instruction {
         if (!(variable instanceof Variable)) {
             throw new InvalidLoopConditionException();
         }
-        double limit = checkTokenNotList(loopParameters.get(1), t);
+        double limit = checkTokenNotListAndGetVal(loopParameters.get(1), t);
         t.setCurrCommand(toString());
         t.setCurrCommand("");
 

@@ -9,7 +9,7 @@ public class PenDownQuery extends Instruction {
 
     public PenDownQuery(String name) {
         super(numArgs);
-        this.instrName = name;
+        instrName = name;
     }
 
     public void execute (Turtle t) {

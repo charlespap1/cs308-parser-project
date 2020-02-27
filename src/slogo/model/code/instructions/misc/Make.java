@@ -21,7 +21,7 @@ public class Make extends Instruction {
         if (!(var instanceof Variable)) {
             throw new InvalidLoopConditionException();
         }
-        double val = checkTokenNotList(expr, t);
+        double val = checkTokenNotListAndGetVal(expr, t);
         ((Variable) var).setVariable(val);
         this.valueOfExecution = val;
         t.setCurrCommand(toString(var.toString(), val));

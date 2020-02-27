@@ -24,9 +24,9 @@ public class ClearScreen extends Instruction {
         valueOfExecution = distFrom(t.getXPos(),t.getYPos(),HOME_X,HOME_Y);
         t.setLocation(HOME_X, HOME_Y);
         t.setAngle(DEFAULT_ROTATION);
-        clearAction.execute();
         t.setCurrCommand(toString());
         t.setCurrCommand("");
+        clearAction.execute();
     }
 
     @Override

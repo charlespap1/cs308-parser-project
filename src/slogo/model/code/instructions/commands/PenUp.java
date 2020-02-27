@@ -9,12 +9,12 @@ public class PenUp extends Instruction {
 
     public PenUp(String name){
         super(numArgs);
-        this.instrName = name;
+        instrName = name;
     }
 
     public void execute (Turtle t) {
         t.setPenUp(true);
-        this.valueOfExecution = 0;
+        valueOfExecution = 0;
         t.setCurrCommand(toString());
         t.setCurrCommand("");
     }

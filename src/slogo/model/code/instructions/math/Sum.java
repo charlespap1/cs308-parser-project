@@ -11,12 +11,11 @@ public class Sum extends Instruction {
 
     public Sum(String name) {
         super(numArgs);
-        this.instrName = name;
+        instrName = name;
     }
 
     public void execute (Turtle t) {
         List<Double> paramsAsVals = this.getParamsAsVals(t);
-        //TODO: check types
         double val1 = paramsAsVals.get(0);
         double val2 = paramsAsVals.get(1);
         valueOfExecution = val1 + val2;
