@@ -9,10 +9,10 @@ import slogo.model.code.ListSyntax;
 import slogo.model.code.NewCommandName;
 import slogo.model.code.Token;
 import slogo.model.code.exceptions.InvalidCommandException;
-import slogo.model.code.exceptions.InvalidLoopCondtionException;
+import slogo.model.code.exceptions.InvalidLoopConditionException;
 import slogo.model.code.exceptions.InvalidNumberArgumentsException;
 import slogo.model.code.exceptions.LanguageFileNotFoundException;
-import slogo.model.code.exceptions.CommandCantDoListException;
+import slogo.model.code.exceptions.CommandCannotDoListException;
 import slogo.model.code.exceptions.SyntaxException;
 import slogo.model.code.instructions.Instruction;
 import slogo.model.code.instructions.misc.To;
@@ -97,7 +97,7 @@ public class Model implements ModelAPI{
         {
             errorMessage.set(e.getMessage());
         }
-        catch (CommandCantDoListException e) {
+        catch (CommandCannotDoListException e) {
             errorMessage.set(e.getMessage());
         }
         catch (InvalidCommandException e) {
@@ -118,9 +118,9 @@ public class Model implements ModelAPI{
                 if (commands.isEmpty()) {
                     try {
                         currInstr.execute(turtle);
-                    } catch (InvalidLoopCondtionException e) {
+                    } catch (InvalidLoopConditionException e) {
                         errorMessage.set(e.getMessage());
-                    } catch (CommandCantDoListException e) {
+                    } catch (CommandCannotDoListException e) {
                         errorMessage.set(e.getMessage());
                     }
                 } else {
@@ -159,11 +159,11 @@ public class Model implements ModelAPI{
                     try{
                         currInstr.execute(turtle);
                     }
-                    catch(InvalidLoopCondtionException e)
+                    catch(InvalidLoopConditionException e)
                     {
                         errorMessage.set(e.getMessage());
                     }
-                    catch(CommandCantDoListException e)
+                    catch(CommandCannotDoListException e)
                     {
                         errorMessage.set(e.getMessage());
                     }

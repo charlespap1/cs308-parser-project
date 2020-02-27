@@ -1,9 +1,9 @@
 package slogo.model.code.instructions.misc;
 
 import slogo.model.Turtle;
-import slogo.model.code.ListSyntax;
 import slogo.model.code.Token;
 import slogo.model.code.Variable;
+import slogo.model.code.exceptions.InvalidLoopConditionException;
 import slogo.model.code.instructions.Instruction;
 
 public class Make extends Instruction {
@@ -18,13 +18,10 @@ public class Make extends Instruction {
     public void execute (Turtle t) {
         Token var = this.parameters.get(0);
         Token expr = this.parameters.get(1);
-        assert var instanceof Variable;
-        // TODO: error handling if assertion fails
-        assert !(expr instanceof ListSyntax);
-        if (expr instanceof Instruction) {
-            ((Instruction) expr).execute(t);
+        if (!(var instanceof Variable)) {
+            throw new InvalidLoopConditionException();
         }
-        double val = expr.generateValue();
+        double val = checkTokenNotList(expr, t);
         ((Variable) var).setVariable(val);
         this.valueOfExecution = val;
         t.setCurrCommand(toString(var.toString(), val));

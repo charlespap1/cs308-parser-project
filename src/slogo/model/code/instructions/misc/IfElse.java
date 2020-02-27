@@ -3,6 +3,8 @@ package slogo.model.code.instructions.misc;
 import slogo.model.Turtle;
 import slogo.model.code.ListSyntax;
 import slogo.model.code.Token;
+import slogo.model.code.exceptions.CommandCannotDoListException;
+import slogo.model.code.exceptions.InvalidLoopConditionException;
 import slogo.model.code.instructions.Instruction;
 
 import java.util.List;
@@ -18,12 +20,13 @@ public class IfElse extends Instruction {
 
     public void execute (Turtle t) {
         Token expr = this.parameters.get(0);
-        if(expr instanceof Instruction)
-            ((Instruction)expr).execute(t);
         Token list1 = this.parameters.get(1);
         Token list2 = this.parameters.get(2);
-        // TODO error if assertion fails
-        assert !(expr instanceof ListSyntax);
+        if (expr instanceof ListSyntax) {
+            throw new CommandCannotDoListException();
+        }
+        if(expr instanceof Instruction)
+            ((Instruction)expr).execute(t);
         this.valueOfExecution = 0;
         t.setCurrCommand(toString());
         t.setCurrCommand("");
@@ -34,11 +37,14 @@ public class IfElse extends Instruction {
     }
 
     private void runCommandsInList (Token list, Turtle t) {
-        assert list instanceof ListSyntax;
+        if (!(list instanceof ListSyntax)) {
+            throw new InvalidLoopConditionException();
+        }
         List<Token> commands = ((ListSyntax) list).getContents();
         for (Token command: commands) {
-            // TODO: error if assertion fails
-            assert command instanceof Instruction;
+            if (!(command instanceof Instruction)) {
+                throw new InvalidLoopConditionException();
+            }
             ((Instruction) command).execute(t);
             this.valueOfExecution = command.generateValue();
         }

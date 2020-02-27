@@ -6,7 +6,7 @@ import slogo.model.code.Token;
 
 import java.util.ArrayList;
 import java.util.List;
-import slogo.model.code.exceptions.CommandCantDoListException;
+import slogo.model.code.exceptions.CommandCannotDoListException;
 
 public abstract class Instruction implements Token {
     // TODO: hard coded text
@@ -37,12 +37,12 @@ public abstract class Instruction implements Token {
         return Math.sqrt(Math.pow(x2 - x,2) + Math.pow(y2 - y,2));
     }
 
-    protected List<Double> getParamsAsVals(Turtle t) throws CommandCantDoListException {
+    protected List<Double> getParamsAsVals(Turtle t) throws CommandCannotDoListException {
         List<Double> paramsAsDoubles = new ArrayList<>();
         for (Token currToken: parameters){
             if(currToken instanceof ListSyntax)
             {
-                throw new CommandCantDoListException();
+                throw new CommandCannotDoListException();
             }
             if (currToken instanceof Instruction){
                 ((Instruction) currToken).execute(t);
@@ -50,6 +50,19 @@ public abstract class Instruction implements Token {
             paramsAsDoubles.add(currToken.generateValue());
         }
         return paramsAsDoubles;
+    }
+
+    protected double checkTokenNotList(Token currToken, Turtle t) throws CommandCannotDoListException
+    {
+        if(currToken instanceof ListSyntax)
+        {
+            throw new CommandCannotDoListException();
+        }
+        if (currToken instanceof Instruction){
+            ((Instruction) currToken).execute(t);
+        }
+
+        return currToken.generateValue();
     }
 
     public String toString(){

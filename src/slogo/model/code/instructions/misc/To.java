@@ -3,6 +3,7 @@ package slogo.model.code.instructions.misc;
 import slogo.model.Turtle;
 import slogo.model.code.ListSyntax;
 import slogo.model.code.Token;
+import slogo.model.code.exceptions.InvalidLoopConditionException;
 import slogo.model.code.instructions.Instruction;
 import slogo.model.code.instructions.NewCommand;
 import slogo.model.parse.AddToListFunction;
@@ -22,12 +23,13 @@ public class To extends Instruction {
 
     public void execute(Turtle turtle) {
         String name = parameters.get(0).toString();
-        assert parameters.get(1) instanceof ListSyntax;
-        assert parameters.get(2) instanceof ListSyntax;
-        // TODO: error handling if not so
-        List<Token> variables = ((ListSyntax) parameters.get(1)).getContents();
-        List<Token> instructions = ((ListSyntax) parameters.get(2)).getContents();
-
+        Token list1 = parameters.get(1);
+        Token list2 = parameters.get(2);
+        if (!(list1 instanceof ListSyntax) && !(list2 instanceof ListSyntax)) {
+            throw new InvalidLoopConditionException();
+        }
+        List<Token> variables = ((ListSyntax) list1).getContents();
+        List<Token> instructions = ((ListSyntax) list2).getContents();
         myCommand = new NewCommand(name, variables, instructions);
         myFunction.addToList(myCommand);
         turtle.setCurrCommand(toString(name));

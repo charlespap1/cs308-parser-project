@@ -4,6 +4,7 @@ import slogo.model.Turtle;
 import slogo.model.code.ListSyntax;
 import slogo.model.code.Token;
 import slogo.model.code.Variable;
+import slogo.model.code.exceptions.InvalidLoopConditionException;
 import slogo.model.code.instructions.Instruction;
 
 import java.util.List;
@@ -20,18 +21,17 @@ public class DoTimes extends Instruction {
     public void execute (Turtle t) {
         Token list1 = this.parameters.get(0);
         Token list2 = this.parameters.get(1);
-        // TODO: pass error back to model
-        assert (list1 instanceof ListSyntax) : "First parameter of this instruction needs to be a list";
-        assert (list2 instanceof ListSyntax) : "Second parameter of this instruction needs to be a list";
+        if (!(list1 instanceof ListSyntax) && !(list2 instanceof ListSyntax)) {
+            throw new InvalidLoopConditionException();
+        }
         this.valueOfExecution = 0;
 
         List<Token> loopParameters = ((ListSyntax) list1).getContents();
         Token variable = loopParameters.get(0);
-        assert variable instanceof Variable;
-        // need to error check this? if so, check limit is not a list. also, if it's an instruction, need to execute
-        // TODO: error if cannot be resolved to an int
-        int limit = (int) loopParameters.get(1).generateValue();
-
+        if (!(variable instanceof Variable)) {
+            throw new InvalidLoopConditionException();
+        }
+        double limit = checkTokenNotList(loopParameters.get(1), t);
         t.setCurrCommand(toString());
         t.setCurrCommand("");
 
@@ -39,7 +39,9 @@ public class DoTimes extends Instruction {
         for (int i = 1; i <= limit; i++) {
             ((Variable) variable).setVariable(i);
             for (Token command : commands) {
-                assert command instanceof Instruction;
+                if (!(command instanceof Instruction)) {
+                    throw new InvalidLoopConditionException();
+                }
                 ((Instruction) command).execute(t);
                 this.valueOfExecution = command.generateValue();
             }

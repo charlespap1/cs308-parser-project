@@ -1,10 +1,10 @@
 package slogo.model.code.exceptions;
 
-public class CommandCantDoListException extends RuntimeException {
+public class CommandCannotDoListException extends RuntimeException {
 
   private String errorMessage = "ERROR: Command Does Not Take a List";
 
-  public CommandCantDoListException()
+  public CommandCannotDoListException()
   {
     super();
   }
