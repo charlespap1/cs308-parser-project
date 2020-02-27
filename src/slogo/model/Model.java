@@ -7,6 +7,7 @@ import slogo.model.code.BracketClose;
 import slogo.model.code.BracketOpen;
 import slogo.model.code.ListSyntax;
 import slogo.model.code.Token;
+import slogo.model.code.exceptions.InvalidNumberArgumentsException;
 import slogo.model.code.instructions.Instruction;
 import slogo.model.parse.CodeFactory;
 import slogo.model.parse.RegexHandler;
@@ -37,10 +38,12 @@ public class Model implements ModelAPI{
         turtle = new Turtle(0, 0, false, 0);
     }
 
-    public void executeCode(String rawString) {
+    public void executeCode(String rawString) throws InvalidNumberArgumentsException {
         parseInstructions(rawString);
         if(!commands.isEmpty() || !arguments.isEmpty()){
-            //TODO: throw exception for not enough args
+            InvalidNumberArgumentsException e = new InvalidNumberArgumentsException();
+            errorMessage.setValue(e.getMessage());
+            throw e;
         }
         commands.clear();
         arguments.clear();

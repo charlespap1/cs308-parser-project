@@ -42,6 +42,7 @@ public class SetupScreen {
   public static final double COMMON_COMMAND_BUTTON_WIDTH_OFFSET = 185;
   public static final int COMMAND_COLUMN = 1;
   public static final int LIST_VIEW_COLUMN = 2;
+  public static final int ERROR_MESSAGE_PADDING = 250;
   //TODO: hard coded text
   public static final String VARIABLE_TEXT = "Your variables: ";
   public static final String COMMAND_TEXT = "Your new commands: ";
@@ -87,6 +88,12 @@ public class SetupScreen {
 
     root.getChildren().addAll(myDrawingCanvas.getView(), myTurtle.getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myNewCommandViewer.getView(), myVariableView.getView());
     root.getChildren().addAll(myBackgroundSelector.getView(), myPenSelector.getView(), myCharacterSelector.getView(), myLanguageSelector.getView());
+
+    myCurrentErrorMessage.setLayoutX(myVariableView.getView().getLayoutX());
+    myCurrentErrorMessage.setLayoutY(myVariableView.getView().getLayoutY() + ERROR_MESSAGE_PADDING);
+
+    root.getChildren().add(myCurrentErrorMessage);
+
     return new Scene(root, WIDTH, HEIGHT, BACKGROUND);
   }
 
@@ -146,7 +153,6 @@ public class SetupScreen {
     myGo = new Button(GO_BUTTON_TEXT);
     myGo.setMinWidth(myUserInput.getWidth());
     belowInputFieldItems.getChildren().add(myGo);
-    belowInputFieldItems.getChildren().add(myCurrentErrorMessage);
 
     myClear = new Button(CLEAR_BUTTON_TEXT);
     myClear.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
