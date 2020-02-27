@@ -30,6 +30,7 @@ public class Controller extends Application {
         myView.setGoButton(e -> getInstruction());
         myView.setViewLists(myModel.getVariableList(), myModel.getNewCommandsList());
         myView.setErrorMessage(myModel.getErrorMessage());
+        myModel.setClearAction(myView.getClearAction());
     }
 
     /**

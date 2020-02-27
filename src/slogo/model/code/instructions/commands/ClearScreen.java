@@ -2,24 +2,29 @@ package slogo.model.code.instructions.commands;
 
 import slogo.model.Turtle;
 import slogo.model.code.instructions.Instruction;
+import slogo.view.ClearAction;
 
-import java.util.EventListener;
 
 public class ClearScreen extends Instruction {
 
     public static final int HOME_X = 0;
     public static final int HOME_Y = 0;
+    public static final int DEFAULT_ROTATION = 90;
     private static final int numArgs = 0;
 
-    public ClearScreen(String name){
+    private ClearAction clearAction;
+
+    public ClearScreen(String name, ClearAction action){
         super(numArgs);
-        this.instrName = name;
+        instrName = name;
+        clearAction = action;
     }
 
     public void execute (Turtle t) {
-        //TODO: how will frontend know when this instruction is called and erase the turtle's trails?
         valueOfExecution = distFrom(t.getXPos(),t.getYPos(),HOME_X,HOME_Y);
         t.setLocation(HOME_X, HOME_Y);
+        t.setAngle(DEFAULT_ROTATION);
+        clearAction.execute();
         t.setCurrCommand(toString());
         t.setCurrCommand("");
     }

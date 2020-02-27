@@ -65,6 +65,8 @@ public class Interactions implements View {
 
   public StringProperty getLanguageChoice() { return mySetup.getLanguageChoice(); }
 
+  public ClearAction getClearAction() { return this::clearCanvas; }
+
   /**
    * Updates the movement of the turtle according to new states
    */
