@@ -15,9 +15,9 @@ public class Or extends Instruction {
     }
 
     public void execute (Turtle t) {
-        List<Double> paramsAsInts = this.getParamsAsVals(t);
-        double val1 = paramsAsInts.get(0);
-        double val2 = paramsAsInts.get(1);
+        List<Double> paramsAsVals = this.getParamsAsVals(t);
+        double val1 = paramsAsVals.get(0);
+        double val2 = paramsAsVals.get(1);
         valueOfExecution = (val1 != 0 || val2 != 0) ? 1 : 0;
         t.setCurrCommand(toString(val1, val2));
         t.setCurrCommand("");
