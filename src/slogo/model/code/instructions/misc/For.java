@@ -21,25 +21,18 @@ public class For extends Instruction {
     }
 
     public void execute (Turtle t) throws InvalidLoopCondtionException, CommandCantDoListException {
-        Token list1 = this.parameters.get(0);
-        Token list2 = this.parameters.get(1);
-        // TODO: error handling if assertion fails
-        if(!(list1 instanceof ListSyntax) && !(list2 instanceof ListSyntax))
-        {
-            throw new InvalidLoopCondtionException();
-        }
-        this.valueOfExecution = 0;
+        Token list1 = parameters.get(0);
+        Token list2 = parameters.get(1);
+        if(!(list1 instanceof ListSyntax) || !(list2 instanceof ListSyntax)) throw new InvalidLoopCondtionException();
+        valueOfExecution = 0;
 
         List<Token> loopParameters = ((ListSyntax) list1).getContents();
         Token variable = loopParameters.get(0);
-        if(!(variable instanceof Variable))
-        {
-            throw new InvalidLoopCondtionException();
-        }
+        if(!(variable instanceof Variable)) throw new InvalidLoopCondtionException();
 
-        double start = checkIfInt(loopParameters.get(1), t);
-        double end = checkIfInt(loopParameters.get(2), t);
-        double increment = checkIfInt(loopParameters.get(3), t);
+        double start = getVal(loopParameters.get(1), t);
+        double end = getVal(loopParameters.get(2), t);
+        double increment = getVal(loopParameters.get(3), t);
         t.setCurrCommand(toString());
         t.setCurrCommand("");
 
@@ -47,12 +40,9 @@ public class For extends Instruction {
         for (double i = start; i <= end; i += increment) {
             ((Variable) variable).setVariable(i);
             for (Token command: commands) {
-                if(!(command instanceof Instruction))
-                {
-                    throw new InvalidLoopCondtionException();
-                }
+                if(!(command instanceof Instruction)) throw new InvalidLoopCondtionException();
                 ((Instruction) command).execute(t);
-                this.valueOfExecution = command.generateValue();
+                valueOfExecution = command.generateValue();
             }
         }
     }
@@ -60,16 +50,9 @@ public class For extends Instruction {
     @Override
     public String toString(){ return instrName + ": "; }
 
-    private double checkIfInt(Token currToken, Turtle t) throws CommandCantDoListException
-    {
-        if(currToken instanceof ListSyntax)
-        {
-            throw new CommandCantDoListException();
-        }
-        if (currToken instanceof Instruction){
-            ((Instruction) currToken).execute(t);
-        }
-
+    private double getVal(Token currToken, Turtle t) throws CommandCantDoListException {
+        if(currToken instanceof ListSyntax) throw new CommandCantDoListException();
+        else if (currToken instanceof Instruction) ((Instruction) currToken).execute(t);
         return currToken.generateValue();
     }
 }
