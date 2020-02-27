@@ -15,7 +15,7 @@ public class Forward extends Instruction {
         this.instrName = name;
     }
 
-    public void execute (Turtle t) throws ListNotIntegerException {
+    public void execute (Turtle t) {
         List<Double> paramsAsVals = getParamsAsVals(t);
         double valueForExec = paramsAsVals.get(0);
         // TODO: check types

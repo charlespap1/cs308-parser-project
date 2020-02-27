@@ -45,13 +45,15 @@ public class Model implements ModelAPI{
     }
 
     public void executeCode(String rawString) {
+        errorMessage.set("");
+        clearStacks();
+
         parseInstructions(rawString);
         if(!commands.isEmpty() || !arguments.isEmpty()){
             InvalidNumberArgumentsException e = new InvalidNumberArgumentsException();
             errorMessage.setValue(e.getMessage());
         }
-        commands.clear();
-        arguments.clear();
+        clearStacks();
     }
 
     public void executeCode(File f){
@@ -76,27 +78,27 @@ public class Model implements ModelAPI{
             List<String> inputPieces = Arrays.asList(rawString.split(WHITESPACE));
             for (String piece: inputPieces) {
                 if (piece.trim().length() > 0) {
-                    //TODO: error handling when no match found
                     addToAppropriateStack(piece);
                 }
             }
+        }
+        catch (InvalidNumberArgumentsException e )
+        {
+            errorMessage.set(e.getMessage());
         }
         catch (ListNotIntegerException e) {
             errorMessage.set(e.getMessage());
         }
         catch (InvalidCommandException e) {
-            //TODO failure of parsing error
             errorMessage.set(e.getMessage());
         }
     }
 
-    private void addToAppropriateStack(String piece) throws InvalidCommandException{
-        // TODO: error handling if this line fails
+    private void addToAppropriateStack(String piece) throws InvalidCommandException, InvalidNumberArgumentsException{
         Token currItem = createFromString.getSymbolAsObj(piece);
         if(currItem instanceof NewCommandName && (commands.isEmpty() || !(commands.peek() instanceof To)))
         {
             throw new InvalidCommandException();
-
         }
         if(currItem instanceof Instruction) {
             Instruction currInstr = (Instruction) currItem;
@@ -111,15 +113,16 @@ public class Model implements ModelAPI{
                 arguments.push(new Stack<>());
             }
         } else {
-            // TODO: this will be an error if there is an argument read in before any commands are read in
-            // check if arg stack of stacks and command stack BOTH not empty, otherwise throw error
+            if(!arguments.isEmpty() && !commands.isEmpty())
+            {
+                throw new InvalidNumberArgumentsException();
+            }
             arguments.peek().push(currItem);
             attemptToCreateFullInstruction();
         }
     }
 
     private void attemptToCreateFullInstruction() {
-        //TODO: error handling null pointer if there is argument without command
         Instruction currCommand = (Instruction) commands.peek();
         int numRequiredArgs = currCommand.numRequiredArgs();
         if (enoughArgs(numRequiredArgs)) {
@@ -163,4 +166,12 @@ public class Model implements ModelAPI{
         boolean enoughCommandParameters = arguments.peek().size() >= numNeeded && numNeeded != -1;
         return isCompleteList || enoughCommandParameters;
     }
+
+    private void clearStacks()
+    {
+        commands.clear();
+        arguments.clear();
+    }
+
+
 }
