@@ -23,7 +23,7 @@ public class CodeFactory {
     public static String TO_TYPE = "MakeUserInstruction";
     public static String CLEAR_TYPE = "ClearScreen";
 
-    private RegexHandler keyGrabber = new RegexHandler();
+    private RegexHandler keyGrabber;
     private Map<String, Class> mappings = new HashMap<>();
     private Map<String, NewCommand> newCommandMap = new HashMap<>();
     private Map<String, Variable> variableMap = new HashMap<>();
@@ -32,6 +32,11 @@ public class CodeFactory {
     private ClearAction clearAction;
 
     public CodeFactory(String language) throws LanguageFileNotFoundException {
+        setLanguage(language);
+    }
+
+    public void setLanguage(String language){
+        keyGrabber = new RegexHandler();
         keyGrabber.addPatterns(language);
         keyGrabber.addPatterns("Syntax");
         generateMappings();
@@ -41,7 +46,7 @@ public class CodeFactory {
         String objectType = keyGrabber.getSymbol(piece);
         if (objectType.equals(VARIABLE_TYPE)) return getVariable(piece);
         if (objectType.equals(NEW_COMMAND_TYPE)) return getNewCommand(piece);
-        if (objectType.equals(TO_TYPE)) return new To(this::addNewCommand);
+        if (objectType.equals(TO_TYPE)) return new To(piece, this::addNewCommand);
         if (objectType.equals(CLEAR_TYPE)) return new ClearScreen(piece, clearAction);
         Token token = null;
         try {

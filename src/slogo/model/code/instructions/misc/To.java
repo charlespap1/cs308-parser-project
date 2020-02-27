@@ -14,8 +14,9 @@ public class To extends Instruction {
     private NewCommand myCommand;
     private AddToListFunction myFunction;
 
-    public To(AddToListFunction function){
+    public To(String name, AddToListFunction function){
         super(numArgs);
+        instrName = name;
         myFunction = function;
     }
 
