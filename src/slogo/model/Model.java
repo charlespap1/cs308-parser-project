@@ -11,6 +11,7 @@ import slogo.model.code.NewCommandName;
 import slogo.model.code.Token;
 import slogo.model.code.exceptions.InvalidCommandException;
 import slogo.model.code.exceptions.InvalidNumberArgumentsException;
+import slogo.model.code.exceptions.LanguageFileNotFoundException;
 import slogo.model.code.exceptions.ListNotIntegerException;
 import slogo.model.code.instructions.Instruction;
 import slogo.model.code.instructions.NewCommand;
@@ -69,8 +70,15 @@ public class Model implements ModelAPI{
     public StringProperty getErrorMessage(){ return errorMessage; }
 
     private void setupLanguage(StringProperty language) {
-        createFromString = new CodeFactory(language.getValue());
-        language.addListener((o, oldVal, newVal) ->  createFromString = new CodeFactory(newVal));
+        try{
+            createFromString = new CodeFactory(language.getValue());
+            language.addListener((o, oldVal, newVal) ->  createFromString = new CodeFactory(newVal));
+        }
+        catch(LanguageFileNotFoundException e)
+        {
+            errorMessage.set(e.getMessage());
+        }
+
     }
 
     private void parseInstructions(String rawString){
@@ -113,7 +121,7 @@ public class Model implements ModelAPI{
                 arguments.push(new Stack<>());
             }
         } else {
-            if(!arguments.isEmpty() && !commands.isEmpty())
+            if(arguments.isEmpty() && commands.isEmpty())
             {
                 throw new InvalidNumberArgumentsException();
             }
@@ -172,6 +180,4 @@ public class Model implements ModelAPI{
         commands.clear();
         arguments.clear();
     }
-
-
 }
