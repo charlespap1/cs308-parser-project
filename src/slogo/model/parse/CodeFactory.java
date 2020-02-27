@@ -6,7 +6,7 @@ import slogo.model.code.NewCommandName;
 import slogo.model.code.Token;
 import slogo.model.code.Variable;
 import slogo.model.code.exceptions.LanguageFileNotFoundException;
-import slogo.model.code.exceptions.ListNotIntegerException;
+import slogo.model.code.exceptions.SyntaxException;
 import slogo.model.code.instructions.*;
 import slogo.model.code.instructions.misc.To;
 
@@ -33,7 +33,7 @@ public class CodeFactory {
         generateMappings();
     }
 
-    public Token getSymbolAsObj(String piece) {
+    public Token getSymbolAsObj(String piece) throws SyntaxException{
         String objectType = keyGrabber.getSymbol(piece);
         if (objectType.equals(VARIABLE_TYPE)) return getVariable(piece);
         if (objectType.equals(NEW_COMMAND_TYPE)) return getNewCommand(piece);
@@ -46,8 +46,10 @@ public class CodeFactory {
             token = (Token) objConstruct.newInstance(piece);
         }
         catch (Exception e) {
-            System.out.println("can't find: "+piece);
-            e.printStackTrace();
+            SyntaxException syntax = new SyntaxException(e);
+            throw syntax;
+            //System.out.println("can't find: "+piece);
+            //e.printStackTrace();
             //TODO: relay some message back to UI that code was no bueno.
         }
         return token;

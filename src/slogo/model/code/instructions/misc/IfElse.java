@@ -44,5 +44,6 @@ public class IfElse extends Instruction {
         }
     }
 
+    @Override
     public String toString() { return instrName;}
 }

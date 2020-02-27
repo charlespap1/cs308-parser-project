@@ -46,5 +46,6 @@ public class DoTimes extends Instruction {
         }
     }
 
+    @Override
     public String toString(){ return instrName + ": "; }
 }

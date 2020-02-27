@@ -37,6 +37,7 @@ public class If extends Instruction {
         }
     }
 
+    @Override
     public String toString() {
         return instrName;
     }
