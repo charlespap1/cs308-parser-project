@@ -8,6 +8,12 @@ import javafx.scene.text.Text;
 import slogo.view.DrawingCanvas;
 import slogo.view.SetupScreen;
 
+/**
+ * Class allows us to create a scrolling box for any element that needs scrolling
+ * This used to be implemented by new commands and new variables until we changed
+ * them to list viewers. As such, only one class, HistoryCanvas, extends this class
+ * @author Juliet
+ */
 abstract class ScrollingWindow {
 
   public static final double SCROLLING_SIDE_PADDING = DrawingCanvas.CANVAS_SIDE_PADDING;

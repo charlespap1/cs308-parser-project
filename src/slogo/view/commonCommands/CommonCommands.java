@@ -14,6 +14,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
+/**
+ * This holds the Scene of the Common Commands page as well as gives the ability to jump
+ * back to your workspace or jump to a link with more information on the commands
+ * @author Juliet
+ */
 public class CommonCommands {
   // TODO: hard coded text
   public static final String COMMON_COMMAND_TITLE = "Common Commands";
@@ -46,7 +51,29 @@ public class CommonCommands {
     backButton.setOnAction(e -> showPreviousScene());
   }
 
-  public Scene setupCommandScene() {
+  /**
+   * This creates the scene to see the common commands.
+   * This will be called when the see common commands button on
+   * the workspace is clicked
+   */
+  public void showCommonCommandScene() {
+    myStage.setScene(setupCommandScene());
+    myStage.setTitle(COMMON_COMMAND_TITLE);
+    myStage.show();
+  }
+
+  /**
+   * Uses the saved data from the previous scene to
+   * load back your workspace
+   */
+  public void showPreviousScene() {
+    myStage.setScene(myPrevious);
+    myStage.setTitle(previousTitle);
+    myStage.show();
+  }
+
+
+  private Scene setupCommandScene() {
     Group myRoot = new Group();
     TurtleCommandPanel turtleCommands = new TurtleCommandPanel(language.get(), 0);
     TurtleQueriesPanel turtleQueries = new TurtleQueriesPanel(language.get(), width/4);
@@ -82,18 +109,5 @@ public class CommonCommands {
     centerText.getChildren().add(link);
     centerText.setLayoutX(width/2 - HYPERLINK_PADDING);
     root.getChildren().add(centerText);
-  }
-
-
-  public void showCommonCommandScene() {
-    myStage.setScene(setupCommandScene());
-    myStage.setTitle(COMMON_COMMAND_TITLE);
-    myStage.show();
-  }
-
-  public void showPreviousScene() {
-    myStage.setScene(myPrevious);
-    myStage.setTitle(previousTitle);
-    myStage.show();
   }
 }

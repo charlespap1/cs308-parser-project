@@ -3,6 +3,11 @@ package slogo.view.commonCommands;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Displays commands only associated with turtle queries
+ * @author Juliet
+ */
+
 public class TurtleQueriesPanel extends CommandPanel{
   //TODO: hard coded text
   public static final String TITLE = "Turtle Queries: ";
