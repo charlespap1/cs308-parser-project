@@ -1,14 +1,18 @@
 package slogo.model;
 
+import java.sql.SQLOutput;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import slogo.model.code.BracketClose;
 import slogo.model.code.BracketOpen;
 import slogo.model.code.ListSyntax;
+import slogo.model.code.NewCommandName;
 import slogo.model.code.Token;
 import slogo.model.code.exceptions.InvalidNumberArgumentsException;
 import slogo.model.code.instructions.Instruction;
+import slogo.model.code.instructions.NewCommand;
+import slogo.model.code.instructions.misc.To;
 import slogo.model.parse.CodeFactory;
 import slogo.model.parse.RegexHandler;
 
@@ -84,6 +88,10 @@ public class Model implements ModelAPI{
     private void addToAppropriateStack(String piece) {
         // TODO: error handling if this line fails
         Token currItem = createFromString.getSymbolAsObj(piece);
+        if(currItem instanceof NewCommandName && (commands.isEmpty() || !(commands.peek() instanceof To)))
+        {
+            
+        }
         if(currItem instanceof Instruction) {
             Instruction currInstr = (Instruction) currItem;
             if (currInstr.numRequiredArgs() == 0){
