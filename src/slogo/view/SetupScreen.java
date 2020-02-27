@@ -19,7 +19,6 @@ import slogo.view.scrollers.HistoryCanvas;
 import slogo.view.scrollers.ListViewer;
 
 import java.util.Objects;
-import java.util.ResourceBundle;
 
 import slogo.view.selectors.BackgroundSelector;
 import slogo.view.selectors.LanguageSelector;
@@ -60,6 +59,7 @@ public class SetupScreen {
   private Button myGo;
   private Button myClear;
   private Button myStop;
+  private Button myCommandJumper;
   private HistoryCanvas myHistory = new HistoryCanvas(COMMAND_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING);
   private ListViewer myNewCommandViewer = new ListViewer(LIST_VIEW_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING, COMMAND_TEXT);
   private ListViewer myVariableView = new ListViewer(LIST_VIEW_COLUMN, HEIGHT/2.0, VARIABLE_TEXT);
@@ -73,12 +73,16 @@ public class SetupScreen {
   private VBox belowInputFieldItems = new VBox(BOX_SPACING);
   private HBox belowCanvasButtons = new HBox(BOX_SPACING);
 
+  private LanguageHelper languageHelper;
+
   /**
    * Sets up all of the visual elements so that
    * the Main class doesn't have to do as much work
    * @return
    */
   public Scene setupGame() {
+    //languageHelper = new LanguageHelper(language);
+
     //TODO: error handling if image not found
     Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(DEFAULT_TURTLE_IMAGE)));
     myTurtle = new Turtle(image, myDrawingCanvas.getWidth(), myDrawingCanvas.getHeight());
@@ -87,6 +91,7 @@ public class SetupScreen {
     setupBox(belowCanvasButtons, DrawingCanvas.CANVAS_SIDE_PADDING, DrawingCanvas.CANVAS_TOP_PADDING + myDrawingCanvas.getHeight() + BOX_SPACING, myDrawingCanvas.getWidth());
     setButtons();
     setSelectors();
+    setText();
 
     root.getChildren().addAll(myDrawingCanvas.getView(), myTurtle.getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myNewCommandViewer.getView(), myVariableView.getView());
     root.getChildren().addAll(myBackgroundSelector.getView(), myPenSelector.getView(), myCharacterSelector.getView(), myLanguageSelector.getView());
@@ -104,11 +109,12 @@ public class SetupScreen {
    * @param commonCommands
    */
   public void addCommonCommands(CommonCommands commonCommands) {
-    Button commandJumper = new Button(COMMON_COMMAND_BUTTON_TEXT);
-    commandJumper.setOnAction(e -> commonCommands.showCommonCommandScene());
-    commandJumper.setLayoutX(WIDTH - COMMON_COMMAND_BUTTON_WIDTH_OFFSET);
-    commandJumper.setLayoutY(COMMON_COMMAND_BUTTON_HEIGHT_OFFSET);
-    root.getChildren().add(commandJumper);
+    myCommandJumper = new Button();
+    myCommandJumper.textProperty().bind(languageHelper.getStringProperty("CommonCommandButton"));
+    myCommandJumper.setOnAction(e -> commonCommands.showCommonCommandScene());
+    myCommandJumper.setLayoutX(WIDTH - COMMON_COMMAND_BUTTON_WIDTH_OFFSET);
+    myCommandJumper.setLayoutY(COMMON_COMMAND_BUTTON_HEIGHT_OFFSET);
+    root.getChildren().add(myCommandJumper);
   }
 
   /**
@@ -157,7 +163,7 @@ public class SetupScreen {
   }
 
   private void setButtons() {
-    myGo = new Button(GO_BUTTON_TEXT);
+    myGo = new Button();
     myGo.setMinWidth(myUserInput.getWidth());
     belowInputFieldItems.getChildren().add(myGo);
 
@@ -177,4 +183,11 @@ public class SetupScreen {
     myPenSelector = new PenSelector(myTurtle, belowInputFieldItems.getLayoutX(), belowInputFieldItems.getLayoutY() + BUTTON_HEIGHT_OFFSET);
     myLanguageSelector = new LanguageSelector(DrawingCanvas.CANVAS_SIDE_PADDING, DrawingCanvas.CANVAS_TOP_PADDING/4);
   }
+
+  private void setText()
+  {
+    languageHelper = new LanguageHelper(myLanguageSelector.getLanguageChoiceProperty());
+    myGo.textProperty().bind(languageHelper.getStringProperty("GoButton"));
+  }
+
 }

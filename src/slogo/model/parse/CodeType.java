@@ -80,7 +80,8 @@ public enum CodeType {
     GROUPSTART(null),
     NEWLINE(null),
     LISTEND(BracketClose.class),
-    WHITESPACE(null);
+    WHITESPACE(null),
+    COMMONCOMMANDBUTTON(null);
 
     private Class associatedClass;
 
