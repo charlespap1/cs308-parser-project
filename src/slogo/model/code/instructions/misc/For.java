@@ -5,6 +5,7 @@ import slogo.model.code.ListSyntax;
 import slogo.model.code.Token;
 import slogo.model.code.Variable;
 import slogo.model.code.exceptions.CommandCannotDoListException;
+import slogo.model.code.exceptions.InvalidArgumentException;
 import slogo.model.code.exceptions.InvalidLoopConditionException;
 import slogo.model.code.instructions.Instruction;
 
@@ -22,7 +23,7 @@ public class For extends Instruction {
     public void execute (Turtle t) throws InvalidLoopConditionException, CommandCannotDoListException {
         Token list1 = parameters.get(0);
         Token list2 = parameters.get(1);
-        if (!(list1 instanceof ListSyntax) || !(list2 instanceof ListSyntax)) throw new InvalidLoopConditionException();
+        if (!(list1 instanceof ListSyntax) || !(list2 instanceof ListSyntax)) throw new InvalidArgumentException();
         valueOfExecution = 0;
 
         List<Token> loopParameters = ((ListSyntax) list1).getContents();

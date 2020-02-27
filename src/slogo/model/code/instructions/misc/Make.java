@@ -3,6 +3,7 @@ package slogo.model.code.instructions.misc;
 import slogo.model.Turtle;
 import slogo.model.code.Token;
 import slogo.model.code.Variable;
+import slogo.model.code.exceptions.InvalidArgumentException;
 import slogo.model.code.exceptions.InvalidLoopConditionException;
 import slogo.model.code.instructions.Instruction;
 
@@ -19,7 +20,7 @@ public class Make extends Instruction {
         Token var = this.parameters.get(0);
         Token expr = this.parameters.get(1);
         if (!(var instanceof Variable)) {
-            throw new InvalidLoopConditionException();
+            throw new InvalidArgumentException();
         }
         double val = checkTokenNotListAndGetVal(expr, t);
         ((Variable) var).setVariable(val);

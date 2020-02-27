@@ -4,6 +4,7 @@ import slogo.model.Turtle;
 import slogo.model.code.ListSyntax;
 import slogo.model.code.Token;
 import slogo.model.code.Variable;
+import slogo.model.code.exceptions.InvalidArgumentException;
 import slogo.model.code.exceptions.InvalidLoopConditionException;
 import slogo.model.code.instructions.Instruction;
 
@@ -22,7 +23,7 @@ public class DoTimes extends Instruction {
         Token list1 = this.parameters.get(0);
         Token list2 = this.parameters.get(1);
         if (!(list1 instanceof ListSyntax) || !(list2 instanceof ListSyntax)) {
-            throw new InvalidLoopConditionException();
+            throw new InvalidArgumentException();
         }
         this.valueOfExecution = 0;
 

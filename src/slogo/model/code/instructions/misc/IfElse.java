@@ -4,6 +4,7 @@ import slogo.model.Turtle;
 import slogo.model.code.ListSyntax;
 import slogo.model.code.Token;
 import slogo.model.code.exceptions.CommandCannotDoListException;
+import slogo.model.code.exceptions.InvalidArgumentException;
 import slogo.model.code.exceptions.InvalidLoopConditionException;
 import slogo.model.code.instructions.Instruction;
 
@@ -34,7 +35,7 @@ public class IfElse extends Instruction {
 
     private void runCommandsInList (Token list, Turtle t) {
         if (!(list instanceof ListSyntax)) {
-            throw new InvalidLoopConditionException();
+            throw new InvalidArgumentException();
         }
         List<Token> commands = ((ListSyntax) list).getContents();
         for (Token command: commands) {

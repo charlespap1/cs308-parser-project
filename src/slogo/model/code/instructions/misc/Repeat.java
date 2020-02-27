@@ -3,6 +3,7 @@ package slogo.model.code.instructions.misc;
 import slogo.model.Turtle;
 import slogo.model.code.ListSyntax;
 import slogo.model.code.Token;
+import slogo.model.code.exceptions.InvalidArgumentException;
 import slogo.model.code.exceptions.InvalidLoopConditionException;
 import slogo.model.code.instructions.Instruction;
 
@@ -22,7 +23,7 @@ public class Repeat extends Instruction {
         double numRepeats = checkTokenNotListAndGetVal(expr, t);
         Token list = this.parameters.get(1);
         if (!(list instanceof ListSyntax)) {
-            throw new InvalidLoopConditionException();
+            throw new InvalidArgumentException();
         }
         t.setCurrCommand(toString());
         t.setCurrCommand("");

@@ -4,6 +4,7 @@ import slogo.model.Turtle;
 import slogo.model.code.ListSyntax;
 import slogo.model.code.Token;
 import slogo.model.code.exceptions.CommandCannotDoListException;
+import slogo.model.code.exceptions.InvalidArgumentException;
 import slogo.model.code.exceptions.InvalidLoopConditionException;
 import slogo.model.code.instructions.Instruction;
 
@@ -23,7 +24,7 @@ public class If extends Instruction {
         Token list = this.parameters.get(1);
         checkTokenNotListAndGetVal(expr, t);
         if (!(list instanceof ListSyntax)) {
-            throw new InvalidLoopConditionException();
+            throw new InvalidArgumentException();
         }
         valueOfExecution = 0;
         t.setCurrCommand(toString());
