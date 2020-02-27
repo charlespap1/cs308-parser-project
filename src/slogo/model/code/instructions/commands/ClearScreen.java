@@ -3,6 +3,8 @@ package slogo.model.code.instructions.commands;
 import slogo.model.Turtle;
 import slogo.model.code.instructions.Instruction;
 
+import java.util.EventListener;
+
 public class ClearScreen extends Instruction {
 
     public static final int HOME_X = 0;

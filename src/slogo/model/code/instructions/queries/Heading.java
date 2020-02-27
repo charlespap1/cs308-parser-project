@@ -9,10 +9,12 @@ public class Heading extends Instruction {
 
     public Heading(String name) {
         super(numArgs);
-        this.instrName = name;
+        instrName = name;
     }
 
     public void execute (Turtle t) {
-        this.valueOfExecution = (int) t.getAngle();
+        valueOfExecution = t.getAngle();
+        t.setCurrCommand(toString());
+        t.setCurrCommand("");
     }
 }

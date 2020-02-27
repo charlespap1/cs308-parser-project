@@ -9,10 +9,12 @@ public class TurtleShowingQuery extends Instruction {
 
     public TurtleShowingQuery(String name) {
         super(numArgs);
-        this.instrName = name;
+        instrName = name;
     }
 
     public void execute (Turtle t) {
-        this.valueOfExecution = t.isVisible() ? 1 : 0;
+        valueOfExecution = t.isVisible() ? 1 : 0;
+        t.setCurrCommand(toString());
+        t.setCurrCommand("");
     }
 }

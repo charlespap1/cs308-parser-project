@@ -12,6 +12,8 @@ public class YCor extends Instruction {
     }
 
     public void execute(Turtle t) {
-        this.valueOfExecution = t.getYPos();
+        valueOfExecution = -t.getYPos();
+        t.setCurrCommand(toString());
+        t.setCurrCommand("");
     }
 }

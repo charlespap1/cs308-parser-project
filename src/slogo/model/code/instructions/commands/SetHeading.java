@@ -19,17 +19,11 @@ public class SetHeading extends Instruction {
         double valueForExec = paramsAsVals.get(0);
         valueOfExecution = Math.abs(t.getAngle() - valueForExec);
         t.setAngle(valueForExec);
-        // TODO: better stringifying
-        t.setCurrCommand(toString(valueForExec + ""));
+        t.setCurrCommand(toString(valueForExec));
         t.setCurrCommand("");
     }
 
-    @Override
-    public String toString(){
-        return instrName;
-    }
-
-    public String toString(String heading){
-        return toString() + " " + heading;
+    public String toString(double heading){
+        return instrName + " " + heading;
     }
 }

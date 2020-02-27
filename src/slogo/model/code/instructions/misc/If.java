@@ -23,15 +23,21 @@ public class If extends Instruction {
         Token list = this.parameters.get(1);
         assert !(expr instanceof ListSyntax);
         assert list instanceof ListSyntax;
-        this.valueOfExecution = 0;
+        valueOfExecution = 0;
+        t.setCurrCommand(toString());
+        t.setCurrCommand("");
         if (expr.generateValue() != 0) {
             List<Token> commands = ((ListSyntax) list).getContents();
             for (Token command: commands) {
                 // TODO: error if assertion fails
                 assert command instanceof Instruction;
                 ((Instruction) command).execute(t);
-                this.valueOfExecution = command.generateValue();
+                valueOfExecution = command.generateValue();
             }
         }
+    }
+
+    public String toString() {
+        return instrName;
     }
 }

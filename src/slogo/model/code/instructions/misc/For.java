@@ -33,6 +33,8 @@ public class For extends Instruction {
         int start = (int) loopParameters.get(1).generateValue();
         int end = (int) loopParameters.get(2).generateValue();
         int increment = (int) loopParameters.get(3).generateValue();
+        t.setCurrCommand(toString());
+        t.setCurrCommand("");
 
         List<Token> commands = ((ListSyntax) list2).getContents();
         for (int i = start; i <= end; i += increment) {
@@ -45,4 +47,6 @@ public class For extends Instruction {
             }
         }
     }
+
+    public String toString(){ return instrName + ": "; }
 }

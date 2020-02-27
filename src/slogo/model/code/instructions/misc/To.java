@@ -29,10 +29,14 @@ public class To extends Instruction {
 
         myCommand = new NewCommand(name, variables, instructions);
         myFunction.addToList(myCommand);
+        turtle.setCurrCommand(toString(name));
+        turtle.setCurrCommand("");
     }
 
     public double generateValue() {
         if (myCommand != null) return 1;
         return 0;
     }
+
+    public String toString(String name){ return instrName + ": " + name; }
 }

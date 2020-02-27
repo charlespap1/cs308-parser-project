@@ -18,6 +18,12 @@ public class Remainder extends Instruction {
         List<Double> paramsAsVals = this.getParamsAsVals(t);
         double val1 = paramsAsVals.get(0);
         double val2 = paramsAsVals.get(1);
-        this.valueOfExecution = val1 % val2;
+        valueOfExecution = val1 % val2;
+        t.setCurrCommand(toString(val1, val2));
+        t.setCurrCommand("");
+    }
+
+    public String toString(double val1, double val2){
+        return val1 + " % " + val2 + " = " + valueOfExecution;
     }
 }

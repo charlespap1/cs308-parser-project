@@ -13,6 +13,8 @@ public class XCor extends Instruction {
     }
 
     public void execute(Turtle t) {
-        this.valueOfExecution = t.getXPos();
+        valueOfExecution = t.getXPos();
+        t.setCurrCommand(toString());
+        t.setCurrCommand("");
     }
 }

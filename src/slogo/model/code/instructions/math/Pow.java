@@ -18,6 +18,12 @@ public class Pow extends Instruction {
         List<Double> paramsAsVals = this.getParamsAsVals(t);
         double base = paramsAsVals.get(0);
         double exponent = paramsAsVals.get(1);
-        this.valueOfExecution = Math.pow(base, exponent);
+        valueOfExecution = Math.pow(base, exponent);
+        t.setCurrCommand(toString(base, exponent));
+        t.setCurrCommand("");
+    }
+
+    public String toString(double val1, double val2){
+        return val1 + " ^ " + val2 + " = " + valueOfExecution;
     }
 }

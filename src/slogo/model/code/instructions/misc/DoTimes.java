@@ -32,14 +32,19 @@ public class DoTimes extends Instruction {
         // TODO: error if cannot be resolved to an int
         int limit = (int) loopParameters.get(1).generateValue();
 
+        t.setCurrCommand(toString());
+        t.setCurrCommand("");
+
         List<Token> commands = ((ListSyntax) list2).getContents();
         for (int i = 1; i <= limit; i++) {
             ((Variable) variable).setVariable(i);
-            for (Token command: commands) {
+            for (Token command : commands) {
                 assert command instanceof Instruction;
                 ((Instruction) command).execute(t);
                 this.valueOfExecution = command.generateValue();
             }
         }
     }
+
+    public String toString(){ return instrName + ": "; }
 }

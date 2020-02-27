@@ -6,7 +6,7 @@ import slogo.model.code.instructions.Instruction;
 import java.util.List;
 
 public class Towards extends Instruction {
-
+    public static final int ANGLE_OFFSET = 90;
     private static final int numArgs = 2;
 
     public Towards(String name){
@@ -22,18 +22,12 @@ public class Towards extends Instruction {
         double angle = Math.atan2(xCord - t.getXPos(), yCord - t.getYPos());
         double angleDegrees = Math.toDegrees(angle);
         this.valueOfExecution = (int)(Math.abs(t.getAngle() - angleDegrees));
-        t.setAngle(angleDegrees+90);
-        t.setCurrCommand(toString(xCord + "", yCord + ""));
+        t.setAngle(angleDegrees+ANGLE_OFFSET);
+        t.setCurrCommand(toString(xCord, yCord));
         t.setCurrCommand("");
     }
 
-    @Override
-    public String toString(){
-        return instrName;
-    }
-
-    // TODO: why is this public?
-    public String toString(String x, String y){
-        return this.toString() + " " + x + "," + y;
+    public String toString(double x, double y){
+        return instrName + " " + x + ", " + y;
     }
 }
