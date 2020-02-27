@@ -22,4 +22,6 @@ public class HistoryCanvas extends ScrollingWindow {
    * @param command
    */
   public void addHistory(String command) { if (!command.equals("")) myTextHolder.getChildren().add(new Text(command)); }
+
+  public void clearHistory() { myTextHolder.getChildren().removeAll(myTextHolder.getChildren()); }
 }

@@ -85,6 +85,7 @@ public class Interactions implements View {
   }
 
   private void clearCanvas() {
+    mySetup.clearHistory();
     root.getChildren().removeAll(myCanvas.getLines());
   }
 }

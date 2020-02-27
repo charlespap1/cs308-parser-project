@@ -135,6 +135,8 @@ public class SetupScreen {
 
   public StringProperty getLanguageChoice() { return myLanguageSelector.getLanguageChoiceProperty(); }
 
+  public void clearHistory() { myHistory.clearHistory(); }
+
   /**
    * Gives all of the buttons below the canvas their functions
    * @param stopAction
