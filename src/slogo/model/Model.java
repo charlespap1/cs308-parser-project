@@ -1,6 +1,5 @@
 package slogo.model;
 
-import java.sql.SQLOutput;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
@@ -10,11 +9,12 @@ import slogo.model.code.ListSyntax;
 import slogo.model.code.NewCommandName;
 import slogo.model.code.Token;
 import slogo.model.code.exceptions.InvalidCommandException;
+import slogo.model.code.exceptions.InvalidLoopCondtionException;
 import slogo.model.code.exceptions.InvalidNumberArgumentsException;
 import slogo.model.code.exceptions.LanguageFileNotFoundException;
-import slogo.model.code.exceptions.ListNotIntegerException;
+import slogo.model.code.exceptions.CommandCantDoListException;
+import slogo.model.code.exceptions.SyntaxException;
 import slogo.model.code.instructions.Instruction;
-import slogo.model.code.instructions.NewCommand;
 import slogo.model.code.instructions.misc.To;
 import slogo.model.parse.CodeFactory;
 import slogo.model.parse.RegexHandler;
@@ -94,7 +94,7 @@ public class Model implements ModelAPI{
         {
             errorMessage.set(e.getMessage());
         }
-        catch (ListNotIntegerException e) {
+        catch (CommandCantDoListException e) {
             errorMessage.set(e.getMessage());
         }
         catch (InvalidCommandException e) {
@@ -102,17 +102,25 @@ public class Model implements ModelAPI{
         }
     }
 
-    private void addToAppropriateStack(String piece) throws InvalidCommandException, InvalidNumberArgumentsException{
-        Token currItem = createFromString.getSymbolAsObj(piece);
-        if(currItem instanceof NewCommandName && (commands.isEmpty() || !(commands.peek() instanceof To)))
-        {
+    private void addToAppropriateStack(String piece) throws InvalidCommandException, InvalidNumberArgumentsException {
+        try {
+            Token currItem = createFromString.getSymbolAsObj(piece);
+        if (currItem instanceof NewCommandName && (commands.isEmpty() || !(commands
+            .peek() instanceof To))) {
             throw new InvalidCommandException();
         }
-        if(currItem instanceof Instruction) {
+        if (currItem instanceof Instruction) {
             Instruction currInstr = (Instruction) currItem;
-            if (currInstr.numRequiredArgs() == 0){
-                if (commands.isEmpty()) currInstr.execute(turtle);
-                else {
+            if (currInstr.numRequiredArgs() == 0) {
+                if (commands.isEmpty()) {
+                    try {
+                        currInstr.execute(turtle);
+                    } catch (InvalidLoopCondtionException e) {
+                        errorMessage.set(e.getMessage());
+                    } catch (CommandCantDoListException e) {
+                        errorMessage.set(e.getMessage());
+                    }
+                } else {
                     arguments.peek().push(currItem);
                     attemptToCreateFullInstruction();
                 }
@@ -121,12 +129,16 @@ public class Model implements ModelAPI{
                 arguments.push(new Stack<>());
             }
         } else {
-            if(arguments.isEmpty() && commands.isEmpty())
-            {
+            if (arguments.isEmpty() && commands.isEmpty()) {
                 throw new InvalidNumberArgumentsException();
             }
             arguments.peek().push(currItem);
             attemptToCreateFullInstruction();
+        }
+    }
+        catch(SyntaxException e)
+        {
+            errorMessage.set(e.getMessage());
         }
     }
 
@@ -140,7 +152,19 @@ public class Model implements ModelAPI{
                 attemptToCreateFullInstruction();
             } else {
                 Instruction currInstr = createCompleteInstruction(arguments.pop());
-                if (commands.isEmpty()) currInstr.execute(turtle);
+                if (commands.isEmpty()) {
+                    try{
+                        currInstr.execute(turtle);
+                    }
+                    catch(InvalidLoopCondtionException e)
+                    {
+                        errorMessage.set(e.getMessage());
+                    }
+                    catch(CommandCantDoListException e)
+                    {
+                        errorMessage.set(e.getMessage());
+                    }
+                }
                 else {
                     arguments.peek().push(currInstr);
                     attemptToCreateFullInstruction();

@@ -5,9 +5,8 @@ import slogo.model.code.ListSyntax;
 import slogo.model.code.Token;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import slogo.model.code.exceptions.ListNotIntegerException;
+import slogo.model.code.exceptions.CommandCantDoListException;
 
 public abstract class Instruction implements Token {
     // TODO: hard coded text
@@ -38,14 +37,13 @@ public abstract class Instruction implements Token {
         return Math.sqrt(Math.pow(x2 - x,2) + Math.pow(y2 - y,2));
     }
 
-    protected List<Double> getParamsAsVals(Turtle t) throws ListNotIntegerException {
+    protected List<Double> getParamsAsVals(Turtle t) throws CommandCantDoListException {
         List<Double> paramsAsDoubles = new ArrayList<>();
         for (Token currToken: parameters){
             if(currToken instanceof ListSyntax)
             {
-                throw new ListNotIntegerException();
+                throw new CommandCantDoListException();
             }
-            //assert !(currToken instanceof ListSyntax) : ERROR_MESSAGE;
             if (currToken instanceof Instruction){
                 ((Instruction) currToken).execute(t);
             }
