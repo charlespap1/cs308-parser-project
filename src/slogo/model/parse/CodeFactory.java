@@ -5,6 +5,8 @@ import javafx.collections.ObservableList;
 import slogo.model.code.NewCommandName;
 import slogo.model.code.Token;
 import slogo.model.code.Variable;
+import slogo.model.code.exceptions.LanguageFileNotFoundException;
+import slogo.model.code.exceptions.ListNotIntegerException;
 import slogo.model.code.instructions.*;
 import slogo.model.code.instructions.misc.To;
 
@@ -16,7 +18,7 @@ import java.util.Map;
 public class CodeFactory {
     public static String VARIABLE_TYPE = "Variable";
     public static String NEW_COMMAND_TYPE = "Command";
-    public static String TO_TYPE = "To";
+    public static String TO_TYPE = "MakeUserInstruction";
 
     private RegexHandler keyGrabber = new RegexHandler();
     private Map<String, Class> mappings = new HashMap<>();
@@ -25,7 +27,7 @@ public class CodeFactory {
     private ObservableList<String> vars = FXCollections.observableArrayList();
     private ObservableList<String> newCommands = FXCollections.observableArrayList();
 
-    public CodeFactory(String language){
+    public CodeFactory(String language) throws LanguageFileNotFoundException {
         keyGrabber.addPatterns(language);
         keyGrabber.addPatterns("Syntax");
         generateMappings();

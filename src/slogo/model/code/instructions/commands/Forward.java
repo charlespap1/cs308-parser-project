@@ -1,6 +1,7 @@
 package slogo.model.code.instructions.commands;
 
 import slogo.model.Turtle;
+import slogo.model.code.exceptions.ListNotIntegerException;
 import slogo.model.code.instructions.Instruction;
 
 import java.util.List;

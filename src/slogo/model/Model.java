@@ -1,13 +1,21 @@
 package slogo.model;
 
+import java.sql.SQLOutput;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import slogo.model.code.BracketClose;
 import slogo.model.code.BracketOpen;
 import slogo.model.code.ListSyntax;
+import slogo.model.code.NewCommandName;
 import slogo.model.code.Token;
+import slogo.model.code.exceptions.InvalidCommandException;
+import slogo.model.code.exceptions.InvalidNumberArgumentsException;
+import slogo.model.code.exceptions.LanguageFileNotFoundException;
+import slogo.model.code.exceptions.ListNotIntegerException;
 import slogo.model.code.instructions.Instruction;
+import slogo.model.code.instructions.NewCommand;
+import slogo.model.code.instructions.misc.To;
 import slogo.model.parse.CodeFactory;
 import slogo.model.parse.RegexHandler;
 
@@ -38,12 +46,15 @@ public class Model implements ModelAPI{
     }
 
     public void executeCode(String rawString) {
+        errorMessage.set("");
+        clearStacks();
+
         parseInstructions(rawString);
         if(!commands.isEmpty() || !arguments.isEmpty()){
-            //TODO: throw exception for not enough args
+            InvalidNumberArgumentsException e = new InvalidNumberArgumentsException();
+            errorMessage.setValue(e.getMessage());
         }
-        commands.clear();
-        arguments.clear();
+        clearStacks();
     }
 
     public void executeCode(File f){
@@ -59,28 +70,44 @@ public class Model implements ModelAPI{
     public StringProperty getErrorMessage(){ return errorMessage; }
 
     private void setupLanguage(StringProperty language) {
-        createFromString = new CodeFactory(language.getValue());
-        language.addListener((o, oldVal, newVal) ->  createFromString = new CodeFactory(newVal));
+        try{
+            createFromString = new CodeFactory(language.getValue());
+            language.addListener((o, oldVal, newVal) ->  createFromString = new CodeFactory(newVal));
+        }
+        catch(LanguageFileNotFoundException e)
+        {
+            errorMessage.set(e.getMessage());
+        }
+
     }
 
-    private void parseInstructions(String rawString) {
+    private void parseInstructions(String rawString){
         try {
             List<String> inputPieces = Arrays.asList(rawString.split(WHITESPACE));
             for (String piece: inputPieces) {
                 if (piece.trim().length() > 0) {
-                    //TODO: error handling when no match found
                     addToAppropriateStack(piece);
                 }
             }
-        } catch (AssertionError e) {
-            //TODO failure of parsing error
-            System.out.println(e.getMessage());
+        }
+        catch (InvalidNumberArgumentsException e )
+        {
+            errorMessage.set(e.getMessage());
+        }
+        catch (ListNotIntegerException e) {
+            errorMessage.set(e.getMessage());
+        }
+        catch (InvalidCommandException e) {
+            errorMessage.set(e.getMessage());
         }
     }
 
-    private void addToAppropriateStack(String piece) {
-        // TODO: error handling if this line fails
+    private void addToAppropriateStack(String piece) throws InvalidCommandException, InvalidNumberArgumentsException{
         Token currItem = createFromString.getSymbolAsObj(piece);
+        if(currItem instanceof NewCommandName && (commands.isEmpty() || !(commands.peek() instanceof To)))
+        {
+            throw new InvalidCommandException();
+        }
         if(currItem instanceof Instruction) {
             Instruction currInstr = (Instruction) currItem;
             if (currInstr.numRequiredArgs() == 0){
@@ -94,15 +121,16 @@ public class Model implements ModelAPI{
                 arguments.push(new Stack<>());
             }
         } else {
-            // TODO: this will be an error if there is an argument read in before any commands are read in
-            // check if arg stack of stacks and command stack BOTH not empty, otherwise throw error
+            if(arguments.isEmpty() && commands.isEmpty())
+            {
+                throw new InvalidNumberArgumentsException();
+            }
             arguments.peek().push(currItem);
             attemptToCreateFullInstruction();
         }
     }
 
     private void attemptToCreateFullInstruction() {
-        //TODO: error handling null pointer if there is argument without command
         Instruction currCommand = (Instruction) commands.peek();
         int numRequiredArgs = currCommand.numRequiredArgs();
         if (enoughArgs(numRequiredArgs)) {
@@ -145,5 +173,11 @@ public class Model implements ModelAPI{
         boolean isCompleteList = commands.peek() instanceof BracketOpen && arguments.peek().peek() instanceof BracketClose;
         boolean enoughCommandParameters = arguments.peek().size() >= numNeeded && numNeeded != -1;
         return isCompleteList || enoughCommandParameters;
+    }
+
+    private void clearStacks()
+    {
+        commands.clear();
+        arguments.clear();
     }
 }
