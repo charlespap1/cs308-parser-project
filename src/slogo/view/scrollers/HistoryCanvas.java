@@ -10,11 +10,9 @@ import javafx.scene.text.Text;
 
 public class HistoryCanvas extends ScrollingWindow {
 
-  //TODO: hard coded text
-  public static final String DEFAULT_HISTORY = "Your history: ";
 
   public HistoryCanvas(double elementWidthFactor, double topPadding) {
-    super(elementWidthFactor, topPadding, DEFAULT_HISTORY);
+    super(elementWidthFactor, topPadding);
   }
 
   /**

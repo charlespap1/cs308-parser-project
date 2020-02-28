@@ -40,17 +40,18 @@ public class SetupScreen {
   public static final Paint BACKGROUND = Color.AZURE;
   public static final double BUTTON_HEIGHT_OFFSET = 40;
   public static final double COMMON_COMMAND_BUTTON_HEIGHT_OFFSET = 15;
-  public static final double COMMON_COMMAND_BUTTON_WIDTH_OFFSET = 185;
+  public static final double COMMON_COMMAND_BUTTON_WIDTH_OFFSET = 225;
   public static final int COMMAND_COLUMN = 1;
   public static final int LIST_VIEW_COLUMN = 2;
   public static final int ERROR_MESSAGE_PADDING = 250;
   //TODO: hard coded text
-  public static final String VARIABLE_TEXT = "Your variables: ";
-  public static final String COMMAND_TEXT = "Your new commands: ";
-  public static final String COMMON_COMMAND_BUTTON_TEXT = "See Common Commands";
-  public static final String GO_BUTTON_TEXT = "Go";
-  public static final String CLEAR_BUTTON_TEXT = "Clear Canvas";
-  public static final String STOP_BUTTON_TEXT = "Stop Turtle";
+  public static final String VARIABLE_TITLE_KEY = "VariableTitleText";
+  public static final String HISTORY_TITLE_KEY = "HistoryTitleText";
+  public static final String NEW_COMMAND_TITLE_KEY = "NewCommandTitleText";
+  public static final String COMMON_COMMAND_BUTTON_KEY = "CommonCommandButton";
+  public static final String GO_BUTTON_KEY = "GoButton";
+  public static final String CLEAR_BUTTON_KEY = "ClearButton";
+  public static final String STOP_BUTTON_KEY = "StopButton";
 
   private UserCommandField myUserInput = new UserCommandField(WIDTH, HEIGHT);
   private Group root = new Group();
@@ -61,8 +62,8 @@ public class SetupScreen {
   private Button myStop;
   private Button myCommandJumper;
   private HistoryCanvas myHistory = new HistoryCanvas(COMMAND_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING);
-  private ListViewer myNewCommandViewer = new ListViewer(LIST_VIEW_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING, COMMAND_TEXT);
-  private ListViewer myVariableView = new ListViewer(LIST_VIEW_COLUMN, HEIGHT/2.0, VARIABLE_TEXT);
+  private ListViewer myNewCommandViewer = new ListViewer(LIST_VIEW_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING);
+  private ListViewer myVariableView = new ListViewer(LIST_VIEW_COLUMN, HEIGHT/2.0);
 
   private BackgroundSelector myBackgroundSelector;
   private TurtleFaceSelector myCharacterSelector;
@@ -110,7 +111,7 @@ public class SetupScreen {
    */
   public void addCommonCommands(CommonCommands commonCommands) {
     myCommandJumper = new Button();
-    myCommandJumper.textProperty().bind(languageHelper.getStringProperty("CommonCommandButton"));
+    myCommandJumper.textProperty().bind(languageHelper.getStringProperty(COMMON_COMMAND_BUTTON_KEY));
     myCommandJumper.setOnAction(e -> commonCommands.showCommonCommandScene());
     myCommandJumper.setLayoutX(WIDTH - COMMON_COMMAND_BUTTON_WIDTH_OFFSET);
     myCommandJumper.setLayoutY(COMMON_COMMAND_BUTTON_HEIGHT_OFFSET);
@@ -167,11 +168,11 @@ public class SetupScreen {
     myGo.setMinWidth(myUserInput.getWidth());
     belowInputFieldItems.getChildren().add(myGo);
 
-    myClear = new Button(CLEAR_BUTTON_TEXT);
+    myClear = new Button();
     myClear.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
     belowCanvasButtons.getChildren().add(myClear);
 
-    myStop = new Button(STOP_BUTTON_TEXT);
+    myStop = new Button();
     myStop.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
     belowCanvasButtons.getChildren().add(myStop);
 
@@ -187,7 +188,12 @@ public class SetupScreen {
   private void setText()
   {
     languageHelper = new LanguageHelper(myLanguageSelector.getLanguageChoiceProperty());
-    myGo.textProperty().bind(languageHelper.getStringProperty("GoButton"));
+    myGo.textProperty().bind(languageHelper.getStringProperty(GO_BUTTON_KEY));
+    myClear.textProperty().bind(languageHelper.getStringProperty(CLEAR_BUTTON_KEY));
+    myStop.textProperty().bind(languageHelper.getStringProperty(STOP_BUTTON_KEY));
+    myVariableView.textProperty().bind(languageHelper.getStringProperty(VARIABLE_TITLE_KEY));
+    myNewCommandViewer.textProperty().bind(languageHelper.getStringProperty(NEW_COMMAND_TITLE_KEY));
+    myHistory.textProperty().bind(languageHelper.getStringProperty(HISTORY_TITLE_KEY));
   }
 
 }
