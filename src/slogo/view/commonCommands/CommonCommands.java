@@ -12,7 +12,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Paint;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import slogo.view.LanguageHelper;
 
 /**
  * This holds the Scene of the Common Commands page as well as gives the ability to jump
@@ -22,7 +24,7 @@ import javafx.stage.Stage;
 public class CommonCommands {
   // TODO: hard coded text
   public static final String COMMON_COMMAND_TITLE = "Common Commands";
-  public static final String BACK_BUTTON_TEXT = "Back";
+  public static final String BACK_BUTTON_KEY = "CommonCommandBackButton";
   public static final double BUTTON_PADDING = 10;
   public static final double TOP_PADDING = 30 + BUTTON_PADDING;
   private static final double HYPERLINK_PADDING = 150;
@@ -33,19 +35,23 @@ public class CommonCommands {
   private double width;
   private double height;
   private Paint background;
-  private Button backButton = new Button(BACK_BUTTON_TEXT);
+  private Button backButton = new Button();
   private StringProperty language = new SimpleStringProperty();
+  private Text myBackButtonText = new Text();
+  private LanguageHelper myLanguageHelper;
 
   public CommonCommands(Stage primaryStage, Scene previousScene, StringProperty languageProperty) {
     myStage = primaryStage;
     myPrevious = previousScene;
     previousTitle = myStage.getTitle();
+    myLanguageHelper = new LanguageHelper(languageProperty);
 
     width = previousScene.getWidth();
     height = previousScene.getHeight();
     background = previousScene.getFill();
     language.bind(languageProperty);
 
+    backButton.textProperty().bind(myLanguageHelper.getStringProperty(BACK_BUTTON_KEY));
     backButton.setLayoutX(BUTTON_PADDING);
     backButton.setLayoutY(BUTTON_PADDING);
     backButton.setOnAction(e -> showPreviousScene());
@@ -84,6 +90,10 @@ public class CommonCommands {
 
     myRoot.getChildren().addAll(turtleCommands.getView(), turtleQueries.getView(), mathOps.getView(), boolOps.getView(), backButton);
     return new Scene(myRoot, width, height, background);
+  }
+
+  private void setTitleProperty(StringProperty  sp){
+    myBackButtonText.textProperty().bind(sp);
   }
 
 

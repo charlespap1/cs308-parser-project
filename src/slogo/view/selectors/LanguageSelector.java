@@ -12,6 +12,7 @@ import javafx.scene.layout.HBox;
 
 import java.util.Collection;
 import java.util.List;
+import javafx.scene.text.Text;
 
 /**
  * This structure allows the user to code in different language environments
@@ -23,9 +24,8 @@ public class LanguageSelector {
     public static final Collection<String> LANGUAGES = List.of("Chinese", "English", "French", "German", "Italian", "Portuguese", "Russian", "Spanish", "Urdu");
     public static final ObservableList<String> LANGUAGE_LIST = FXCollections.observableArrayList(LANGUAGES);
     public static final String DEFAULT_LANGUAGE = "English";
-    // TODO: hard coded text
-    public static final String PROMPT = "Select a language:   ";
 
+    private Text myTitle = new Text();
     private HBox box;
     private StringProperty currentLanguage = new SimpleStringProperty();
 
@@ -50,10 +50,15 @@ public class LanguageSelector {
     public StringProperty getLanguageChoiceProperty() { return currentLanguage; }
 
     private void makeSelector(){
-        Label prompt = new Label(PROMPT);
+        //Label prompt = new Label(PROMPT);
         ComboBox<String> languages = new ComboBox<>(LANGUAGE_LIST);
         languages.valueProperty().setValue(DEFAULT_LANGUAGE);
         currentLanguage.bind(languages.valueProperty());
-        box.getChildren().addAll(prompt, languages);
+        box.getChildren().add(languages);
+    }
+
+    public void setTitleProperty(StringProperty  sp){
+        myTitle.textProperty().bind(sp);
+        box.getChildren().add(0, myTitle);
     }
 }

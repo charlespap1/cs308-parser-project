@@ -48,6 +48,12 @@ public class SetupScreen {
   public static final String VARIABLE_TITLE_KEY = "VariableTitleText";
   public static final String HISTORY_TITLE_KEY = "HistoryTitleText";
   public static final String NEW_COMMAND_TITLE_KEY = "NewCommandTitleText";
+
+  private static final String BACKGROUND_SELECTOR_TEXT_KEY = "BackgroundSelectorText";
+  private static final String LANGUAGE_SELECTOR_TEXT_KEY = "LanguageSelectorText";
+  private static final String PEN_SELECTOR_TEXT_KEY = "PenSelectorText";
+  private static final String TURTLE_SELECTOR_TEXT_KEY = "TurtleSelectorText";
+
   public static final String COMMON_COMMAND_BUTTON_KEY = "CommonCommandButton";
   public static final String GO_BUTTON_KEY = "GoButton";
   public static final String CLEAR_BUTTON_KEY = "ClearButton";
@@ -61,6 +67,7 @@ public class SetupScreen {
   private Button myClear;
   private Button myStop;
   private Button myCommandJumper;
+  private Button myNewWindow;
   private HistoryCanvas myHistory = new HistoryCanvas(COMMAND_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING);
   private ListViewer myNewCommandViewer = new ListViewer(LIST_VIEW_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING);
   private ListViewer myVariableView = new ListViewer(LIST_VIEW_COLUMN, HEIGHT/2.0);
@@ -141,6 +148,8 @@ public class SetupScreen {
 
   public void setGoButton(EventHandler<ActionEvent> goAction) { myGo.setOnAction(goAction); }
 
+  public void setNewWindowButton(EventHandler<ActionEvent> newWindowAction) { myNewWindow.setOnAction(newWindowAction);}
+
   public Group getRoot() { return root; }
 
   public StringProperty getLanguageChoice() { return myLanguageSelector.getLanguageChoiceProperty(); }
@@ -176,6 +185,10 @@ public class SetupScreen {
     myStop.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
     belowCanvasButtons.getChildren().add(myStop);
 
+    myNewWindow = new Button("New Window");
+    myNewWindow.setLayoutX(WIDTH/2);
+    root.getChildren().add(myNewWindow);
+
   }
 
   private void setSelectors() {
@@ -191,9 +204,18 @@ public class SetupScreen {
     myGo.textProperty().bind(languageHelper.getStringProperty(GO_BUTTON_KEY));
     myClear.textProperty().bind(languageHelper.getStringProperty(CLEAR_BUTTON_KEY));
     myStop.textProperty().bind(languageHelper.getStringProperty(STOP_BUTTON_KEY));
-    myVariableView.textProperty().bind(languageHelper.getStringProperty(VARIABLE_TITLE_KEY));
-    myNewCommandViewer.textProperty().bind(languageHelper.getStringProperty(NEW_COMMAND_TITLE_KEY));
-    myHistory.textProperty().bind(languageHelper.getStringProperty(HISTORY_TITLE_KEY));
+
+
+    myVariableView.setTitleProperty(languageHelper.getStringProperty(VARIABLE_TITLE_KEY));
+    myNewCommandViewer.setTitleProperty(languageHelper.getStringProperty(NEW_COMMAND_TITLE_KEY));
+    myHistory.setTitleProperty(languageHelper.getStringProperty(HISTORY_TITLE_KEY));
+
+    myBackgroundSelector.setTitleProperty(languageHelper.getStringProperty(BACKGROUND_SELECTOR_TEXT_KEY));
+    myPenSelector.setTitleProperty(languageHelper.getStringProperty(PEN_SELECTOR_TEXT_KEY));
+    myCharacterSelector.setTitleProperty(languageHelper.getStringProperty(TURTLE_SELECTOR_TEXT_KEY));
+
+    myLanguageSelector.setTitleProperty(languageHelper.getStringProperty(LANGUAGE_SELECTOR_TEXT_KEY));
+
   }
 
 }

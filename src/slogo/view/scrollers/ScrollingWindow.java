@@ -29,7 +29,7 @@ abstract class ScrollingWindow {
   protected double myHeight = SetupScreen.HEIGHT/2.0 - SCROLLING_MIDDLE_PADDING - SCROLLING_TOP_PADDING;
   protected VBox myTextHolder = new VBox(TEXT_HOLDER_SPACING);
 
-  private StringProperty textProperty;
+  private Text myTitle = new Text();
 
 
   public ScrollingWindow(double elementWidthFactor, double topPadding) {
@@ -38,9 +38,6 @@ abstract class ScrollingWindow {
     myHolder.setFillWidth(true);
 
     ScrollPane myView = new ScrollPane();
-
-    textProperty = new SimpleStringProperty();
-    textProperty.addListener((o, oldVal, newVal) -> setTitle(newVal));
 
     myHolder.setMinHeight(myHeight);
     myHolder.setMaxHeight(myHeight);
@@ -61,22 +58,10 @@ abstract class ScrollingWindow {
     return myHolder;
   }
 
-  public void setTitle(String title)
-  {
-    Text myTitle = new Text(title);
-    if(myHolder.getChildren().size() > 1)
-    {
-      myHolder.getChildren().remove(0);
-    }
+  public void setTitleProperty(StringProperty  sp){
+    myTitle.textProperty().bind(sp);
     myHolder.getChildren().add(0, myTitle);
   }
-
-  public StringProperty textProperty()
-  {
-    return textProperty;
-  }
-
-
 
 
 }

@@ -17,13 +17,11 @@ public class TurtleFaceSelector extends ColorSelector {
   public static final List<String> IMAGES = new ArrayList<>(Arrays.asList("Turtle", "Airplane", "Car", "Dog"));
   public static final String RESOURCES = "resources";
   public static final String IMAGE_RESOURCE_PACKAGE = RESOURCES + ".commands.TurtleImages";
-  // TODO: hard coded text
-  public static final String TITLE = "Character types: ";
 
   private Turtle turtle;
 
   public TurtleFaceSelector(Turtle turtle, double x, double y) {
-    super(TITLE, x, y, IMAGES, IMAGE_RESOURCE_PACKAGE);
+    super(x, y, IMAGES, IMAGE_RESOURCE_PACKAGE);
     this.turtle = turtle;
     setColorButtons();
   }

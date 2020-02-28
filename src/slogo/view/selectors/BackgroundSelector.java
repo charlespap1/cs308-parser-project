@@ -16,12 +16,11 @@ public class BackgroundSelector extends ColorSelector{
   public static final List<String> BACKGROUND_COLORS = new ArrayList<>(Arrays.asList("White", "Red", "Magenta", "Blue", "Green", "Black"));
   private static final String RESOURCES_PATH = "resources.colors.BackgroundColors";
   //TODO: text hard coded
-  public static final String TITLE = "Background colors: ";
 
   private DrawingCanvas canvas;
 
   public BackgroundSelector(DrawingCanvas canvas, double x, double y) {
-    super(TITLE,  x,  y, BACKGROUND_COLORS,  RESOURCES_PATH);
+    super(x,  y, BACKGROUND_COLORS,  RESOURCES_PATH);
     this.canvas = canvas;
     setColorButtons();
   }

@@ -9,7 +9,6 @@ import javafx.beans.property.StringProperty;
 public class LanguageHelper {
   private ResourceBundle myResources;
   private static final String BASE_RESOURCES_PATH = "resources.labels.";
-  private StringProperty commonCommandText = new SimpleStringProperty();
   private HashMap<String, StringProperty> labelMap = new HashMap<>();
 
       public LanguageHelper(StringProperty language)
@@ -21,11 +20,6 @@ public class LanguageHelper {
 
       public StringProperty getStringProperty(String key){
         return labelMap.get(key);
-      }
-
-      public String getLanguageBasedString(String key)
-      {
-        return labelMap.get(key).getValue();
       }
 
       private void setupMap(){

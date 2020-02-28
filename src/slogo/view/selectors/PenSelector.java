@@ -22,7 +22,7 @@ public class PenSelector extends ColorSelector{
   private Turtle turtle;
 
   public PenSelector(Turtle turtle, double x, double y) {
-    super(TITLE,  x,  y, BACKGROUND_COLORS,  RESOURCES_PATH);
+    super(x,  y, BACKGROUND_COLORS,  RESOURCES_PATH);
     setColorButtons();
     this.turtle = turtle;
   }
