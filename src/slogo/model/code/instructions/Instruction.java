@@ -9,7 +9,6 @@ import java.util.List;
 import slogo.model.code.exceptions.CommandCannotDoListException;
 
 public abstract class Instruction implements Token {
-    // TODO: hard coded text
 
     protected List<Token> parameters = null;
     protected String instrName = "";

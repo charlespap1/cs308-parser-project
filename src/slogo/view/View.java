@@ -18,4 +18,5 @@ public interface View {
     void setGoButton(EventHandler<ActionEvent> goAction);
     void setViewLists(ObservableList<String> variableList, ObservableList<String> newCommandList);
     void setErrorMessage(StringProperty error);
+    ClearAction getClearAction();
 }
