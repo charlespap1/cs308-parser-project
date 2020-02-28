@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Ask extends Instruction {
 
-    private static final int numArgs = 1;
+    private static final int numArgs = 2;
 
     public Ask(String name){
         super(numArgs);

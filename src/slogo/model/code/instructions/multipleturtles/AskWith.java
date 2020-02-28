@@ -11,7 +11,7 @@ import java.util.List;
 
 public class AskWith extends Instruction {
 
-    private static final int numArgs = 1;
+    private static final int numArgs = 2;
 
     public AskWith(String name){
         super(numArgs);
