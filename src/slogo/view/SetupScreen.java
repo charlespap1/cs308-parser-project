@@ -58,6 +58,7 @@ public class SetupScreen {
   public static final String GO_BUTTON_KEY = "GoButton";
   public static final String CLEAR_BUTTON_KEY = "ClearButton";
   public static final String STOP_BUTTON_KEY = "StopButton";
+  public static final String NEW_WINDOW_BUTTON_KEY = "NewWindowButton";
 
   private UserCommandField myUserInput = new UserCommandField(WIDTH, HEIGHT);
   private Group root = new Group();
@@ -185,8 +186,9 @@ public class SetupScreen {
     myStop.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
     belowCanvasButtons.getChildren().add(myStop);
 
-    myNewWindow = new Button("New Window");
-    myNewWindow.setLayoutX(WIDTH/2);
+    myNewWindow = new Button();
+    myNewWindow.setLayoutY(COMMON_COMMAND_BUTTON_HEIGHT_OFFSET);
+    myNewWindow.setLayoutX(WIDTH/2 - BUTTON_HEIGHT_OFFSET);
     root.getChildren().add(myNewWindow);
 
   }
@@ -204,6 +206,7 @@ public class SetupScreen {
     myGo.textProperty().bind(languageHelper.getStringProperty(GO_BUTTON_KEY));
     myClear.textProperty().bind(languageHelper.getStringProperty(CLEAR_BUTTON_KEY));
     myStop.textProperty().bind(languageHelper.getStringProperty(STOP_BUTTON_KEY));
+    myNewWindow.textProperty().bind(languageHelper.getStringProperty(NEW_WINDOW_BUTTON_KEY));
 
 
     myVariableView.setTitleProperty(languageHelper.getStringProperty(VARIABLE_TITLE_KEY));

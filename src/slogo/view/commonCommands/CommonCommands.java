@@ -25,6 +25,7 @@ public class CommonCommands {
   // TODO: hard coded text
   public static final String COMMON_COMMAND_TITLE = "Common Commands";
   public static final String BACK_BUTTON_KEY = "CommonCommandBackButton";
+  public static final String HYPERLINK_TEXT_KEY = "HyperlinkText";
   public static final double BUTTON_PADDING = 10;
   public static final double TOP_PADDING = 30 + BUTTON_PADDING;
   private static final double HYPERLINK_PADDING = 150;
@@ -37,8 +38,9 @@ public class CommonCommands {
   private Paint background;
   private Button backButton = new Button();
   private StringProperty language = new SimpleStringProperty();
-  private Text myBackButtonText = new Text();
+  private Text myTitle = new Text();
   private LanguageHelper myLanguageHelper;
+  private Hyperlink myLink;
 
   public CommonCommands(Stage primaryStage, Scene previousScene, StringProperty languageProperty) {
     myStage = primaryStage;
@@ -92,8 +94,10 @@ public class CommonCommands {
     return new Scene(myRoot, width, height, background);
   }
 
-  private void setTitleProperty(StringProperty  sp){
-    myBackButtonText.textProperty().bind(sp);
+  public void setHyperlinkText(StringProperty  sp){
+    myTitle.textProperty().bind(sp);
+    myLink.setText(myTitle.textProperty().get());
+
   }
 
 
@@ -102,9 +106,9 @@ public class CommonCommands {
     HBox centerText = new HBox();
     centerText.setAlignment(Pos.CENTER);
 
-    Hyperlink link = new Hyperlink();
-    link.setText("Click Here For More Information on Commands");
-    link.setOnAction(new EventHandler<ActionEvent>() {
+    myLink = new Hyperlink();
+    setHyperlinkText(myLanguageHelper.getStringProperty(HYPERLINK_TEXT_KEY));
+    myLink.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent e) {
         String url_open ="https://www2.cs.duke.edu/courses/spring20/compsci308/assign/03_parser/commands.php";
@@ -116,8 +120,9 @@ public class CommonCommands {
       }
     });
 
-    centerText.getChildren().add(link);
+    centerText.getChildren().add(myLink);
     centerText.setLayoutX(width/2 - HYPERLINK_PADDING);
+    centerText.setLayoutY(BUTTON_PADDING);
     root.getChildren().add(centerText);
   }
 }
