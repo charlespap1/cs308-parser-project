@@ -12,7 +12,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Paint;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import slogo.view.LanguageHelper;
 
 /**
  * This holds the Scene of the Common Commands page as well as gives the ability to jump
@@ -22,7 +24,8 @@ import javafx.stage.Stage;
 public class CommonCommands {
   // TODO: hard coded text
   public static final String COMMON_COMMAND_TITLE = "Common Commands";
-  public static final String BACK_BUTTON_TEXT = "Back";
+  public static final String BACK_BUTTON_KEY = "CommonCommandBackButton";
+  public static final String HYPERLINK_TEXT_KEY = "HyperlinkText";
   public static final double BUTTON_PADDING = 10;
   public static final double TOP_PADDING = 30 + BUTTON_PADDING;
   private static final double HYPERLINK_PADDING = 150;
@@ -33,19 +36,24 @@ public class CommonCommands {
   private double width;
   private double height;
   private Paint background;
-  private Button backButton = new Button(BACK_BUTTON_TEXT);
+  private Button backButton = new Button();
   private StringProperty language = new SimpleStringProperty();
+  private Text myTitle = new Text();
+  private LanguageHelper myLanguageHelper;
+  private Hyperlink myLink;
 
   public CommonCommands(Stage primaryStage, Scene previousScene, StringProperty languageProperty) {
     myStage = primaryStage;
     myPrevious = previousScene;
     previousTitle = myStage.getTitle();
+    myLanguageHelper = new LanguageHelper(languageProperty);
 
     width = previousScene.getWidth();
     height = previousScene.getHeight();
     background = previousScene.getFill();
     language.bind(languageProperty);
 
+    backButton.textProperty().bind(myLanguageHelper.getStringProperty(BACK_BUTTON_KEY));
     backButton.setLayoutX(BUTTON_PADDING);
     backButton.setLayoutY(BUTTON_PADDING);
     backButton.setOnAction(e -> showPreviousScene());
@@ -86,15 +94,21 @@ public class CommonCommands {
     return new Scene(myRoot, width, height, background);
   }
 
+  public void setHyperlinkText(StringProperty  sp){
+    myTitle.textProperty().bind(sp);
+    myLink.setText(myTitle.textProperty().get());
+
+  }
+
 
   private void setHyperlink(Group root)
   {
     HBox centerText = new HBox();
     centerText.setAlignment(Pos.CENTER);
 
-    Hyperlink link = new Hyperlink();
-    link.setText("Click Here For More Information on Commands");
-    link.setOnAction(new EventHandler<ActionEvent>() {
+    myLink = new Hyperlink();
+    setHyperlinkText(myLanguageHelper.getStringProperty(HYPERLINK_TEXT_KEY));
+    myLink.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent e) {
         String url_open ="https://www2.cs.duke.edu/courses/spring20/compsci308/assign/03_parser/commands.php";
@@ -106,8 +120,9 @@ public class CommonCommands {
       }
     });
 
-    centerText.getChildren().add(link);
+    centerText.getChildren().add(myLink);
     centerText.setLayoutX(width/2 - HYPERLINK_PADDING);
+    centerText.setLayoutY(BUTTON_PADDING);
     root.getChildren().add(centerText);
   }
 }

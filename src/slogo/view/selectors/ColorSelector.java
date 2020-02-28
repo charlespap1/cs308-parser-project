@@ -2,6 +2,8 @@ package slogo.view.selectors;
 
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
@@ -21,10 +23,10 @@ public abstract class ColorSelector{
   private HBox myHolder = new HBox(HBOX_SPACING);
   private List<String> myIdentifiers;
   private ResourceBundle myResources;
+  private Text myTitle = new Text();
 
-  public ColorSelector(String intro, double x, double y, List<String> identifiers, String resourcePackage) {
-    Text title = new Text(intro);
-    myHolder.getChildren().add(title);
+  public ColorSelector(double x, double y, List<String> identifiers, String resourcePackage) {
+
     myHolder.setLayoutX(x);
     myHolder.setLayoutY(y);
 
@@ -62,6 +64,11 @@ public abstract class ColorSelector{
     }
   }
 
+  public void setTitleProperty(StringProperty  sp){
+    myTitle.textProperty().bind(sp);
+    myHolder.getChildren().add(0, myTitle);
+  }
+
   /**
    * Gets the style of the button from the resource given
    * @param newColor
@@ -71,4 +78,5 @@ public abstract class ColorSelector{
     newColor.setStyle(DEFAULT_BACKGROUND_SETTER + hex);
     newColor.setOnAction(e -> changeAppearance(hex));
   }
+
 }

@@ -19,7 +19,6 @@ import slogo.view.scrollers.HistoryCanvas;
 import slogo.view.scrollers.ListViewer;
 
 import java.util.Objects;
-import java.util.ResourceBundle;
 
 import slogo.view.selectors.BackgroundSelector;
 import slogo.view.selectors.LanguageSelector;
@@ -41,17 +40,25 @@ public class SetupScreen {
   public static final Paint BACKGROUND = Color.AZURE;
   public static final double BUTTON_HEIGHT_OFFSET = 40;
   public static final double COMMON_COMMAND_BUTTON_HEIGHT_OFFSET = 15;
-  public static final double COMMON_COMMAND_BUTTON_WIDTH_OFFSET = 185;
+  public static final double COMMON_COMMAND_BUTTON_WIDTH_OFFSET = 225;
   public static final int COMMAND_COLUMN = 1;
   public static final int LIST_VIEW_COLUMN = 2;
   public static final int ERROR_MESSAGE_PADDING = 250;
   //TODO: hard coded text
-  public static final String VARIABLE_TEXT = "Your variables: ";
-  public static final String COMMAND_TEXT = "Your new commands: ";
-  public static final String COMMON_COMMAND_BUTTON_TEXT = "See Common Commands";
-  public static final String GO_BUTTON_TEXT = "Go";
-  public static final String CLEAR_BUTTON_TEXT = "Clear Canvas";
-  public static final String STOP_BUTTON_TEXT = "Stop Turtle";
+  public static final String VARIABLE_TITLE_KEY = "VariableTitleText";
+  public static final String HISTORY_TITLE_KEY = "HistoryTitleText";
+  public static final String NEW_COMMAND_TITLE_KEY = "NewCommandTitleText";
+
+  private static final String BACKGROUND_SELECTOR_TEXT_KEY = "BackgroundSelectorText";
+  private static final String LANGUAGE_SELECTOR_TEXT_KEY = "LanguageSelectorText";
+  private static final String PEN_SELECTOR_TEXT_KEY = "PenSelectorText";
+  private static final String TURTLE_SELECTOR_TEXT_KEY = "TurtleSelectorText";
+
+  public static final String COMMON_COMMAND_BUTTON_KEY = "CommonCommandButton";
+  public static final String GO_BUTTON_KEY = "GoButton";
+  public static final String CLEAR_BUTTON_KEY = "ClearButton";
+  public static final String STOP_BUTTON_KEY = "StopButton";
+  public static final String NEW_WINDOW_BUTTON_KEY = "NewWindowButton";
 
   private UserCommandField myUserInput = new UserCommandField(WIDTH, HEIGHT);
   private Group root = new Group();
@@ -60,9 +67,11 @@ public class SetupScreen {
   private Button myGo;
   private Button myClear;
   private Button myStop;
+  private Button myCommandJumper;
+  private Button myNewWindow;
   private HistoryCanvas myHistory = new HistoryCanvas(COMMAND_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING);
-  private ListViewer myNewCommandViewer = new ListViewer(LIST_VIEW_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING, COMMAND_TEXT);
-  private ListViewer myVariableView = new ListViewer(LIST_VIEW_COLUMN, HEIGHT/2.0, VARIABLE_TEXT);
+  private ListViewer myNewCommandViewer = new ListViewer(LIST_VIEW_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING);
+  private ListViewer myVariableView = new ListViewer(LIST_VIEW_COLUMN, HEIGHT/2.0);
 
   private BackgroundSelector myBackgroundSelector;
   private TurtleFaceSelector myCharacterSelector;
@@ -73,12 +82,16 @@ public class SetupScreen {
   private VBox belowInputFieldItems = new VBox(BOX_SPACING);
   private HBox belowCanvasButtons = new HBox(BOX_SPACING);
 
+  private LanguageHelper languageHelper;
+
   /**
    * Sets up all of the visual elements so that
    * the Main class doesn't have to do as much work
    * @return
    */
   public Scene setupGame() {
+    //languageHelper = new LanguageHelper(language);
+
     //TODO: error handling if image not found
     Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(DEFAULT_TURTLE_IMAGE)));
     myTurtle = new Turtle(image, myDrawingCanvas.getWidth(), myDrawingCanvas.getHeight());
@@ -87,6 +100,7 @@ public class SetupScreen {
     setupBox(belowCanvasButtons, DrawingCanvas.CANVAS_SIDE_PADDING, DrawingCanvas.CANVAS_TOP_PADDING + myDrawingCanvas.getHeight() + BOX_SPACING, myDrawingCanvas.getWidth());
     setButtons();
     setSelectors();
+    setText();
 
     root.getChildren().addAll(myDrawingCanvas.getView(), myTurtle.getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myNewCommandViewer.getView(), myVariableView.getView());
     root.getChildren().addAll(myBackgroundSelector.getView(), myPenSelector.getView(), myCharacterSelector.getView(), myLanguageSelector.getView());
@@ -104,11 +118,12 @@ public class SetupScreen {
    * @param commonCommands
    */
   public void addCommonCommands(CommonCommands commonCommands) {
-    Button commandJumper = new Button(COMMON_COMMAND_BUTTON_TEXT);
-    commandJumper.setOnAction(e -> commonCommands.showCommonCommandScene());
-    commandJumper.setLayoutX(WIDTH - COMMON_COMMAND_BUTTON_WIDTH_OFFSET);
-    commandJumper.setLayoutY(COMMON_COMMAND_BUTTON_HEIGHT_OFFSET);
-    root.getChildren().add(commandJumper);
+    myCommandJumper = new Button();
+    myCommandJumper.textProperty().bind(languageHelper.getStringProperty(COMMON_COMMAND_BUTTON_KEY));
+    myCommandJumper.setOnAction(e -> commonCommands.showCommonCommandScene());
+    myCommandJumper.setLayoutX(WIDTH - COMMON_COMMAND_BUTTON_WIDTH_OFFSET);
+    myCommandJumper.setLayoutY(COMMON_COMMAND_BUTTON_HEIGHT_OFFSET);
+    root.getChildren().add(myCommandJumper);
   }
 
   /**
@@ -134,6 +149,8 @@ public class SetupScreen {
 
   public void setGoButton(EventHandler<ActionEvent> goAction) { myGo.setOnAction(goAction); }
 
+  public void setNewWindowButton(EventHandler<ActionEvent> newWindowAction) { myNewWindow.setOnAction(newWindowAction);}
+
   public Group getRoot() { return root; }
 
   public StringProperty getLanguageChoice() { return myLanguageSelector.getLanguageChoiceProperty(); }
@@ -157,17 +174,22 @@ public class SetupScreen {
   }
 
   private void setButtons() {
-    myGo = new Button(GO_BUTTON_TEXT);
+    myGo = new Button();
     myGo.setMinWidth(myUserInput.getWidth());
     belowInputFieldItems.getChildren().add(myGo);
 
-    myClear = new Button(CLEAR_BUTTON_TEXT);
+    myClear = new Button();
     myClear.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
     belowCanvasButtons.getChildren().add(myClear);
 
-    myStop = new Button(STOP_BUTTON_TEXT);
+    myStop = new Button();
     myStop.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
     belowCanvasButtons.getChildren().add(myStop);
+
+    myNewWindow = new Button();
+    myNewWindow.setLayoutY(COMMON_COMMAND_BUTTON_HEIGHT_OFFSET);
+    myNewWindow.setLayoutX(WIDTH/2 - BUTTON_HEIGHT_OFFSET);
+    root.getChildren().add(myNewWindow);
 
   }
 
@@ -177,4 +199,26 @@ public class SetupScreen {
     myPenSelector = new PenSelector(myTurtle, belowInputFieldItems.getLayoutX(), belowInputFieldItems.getLayoutY() + BUTTON_HEIGHT_OFFSET);
     myLanguageSelector = new LanguageSelector(DrawingCanvas.CANVAS_SIDE_PADDING, DrawingCanvas.CANVAS_TOP_PADDING/4);
   }
+
+  private void setText()
+  {
+    languageHelper = new LanguageHelper(myLanguageSelector.getLanguageChoiceProperty());
+    myGo.textProperty().bind(languageHelper.getStringProperty(GO_BUTTON_KEY));
+    myClear.textProperty().bind(languageHelper.getStringProperty(CLEAR_BUTTON_KEY));
+    myStop.textProperty().bind(languageHelper.getStringProperty(STOP_BUTTON_KEY));
+    myNewWindow.textProperty().bind(languageHelper.getStringProperty(NEW_WINDOW_BUTTON_KEY));
+
+
+    myVariableView.setTitleProperty(languageHelper.getStringProperty(VARIABLE_TITLE_KEY));
+    myNewCommandViewer.setTitleProperty(languageHelper.getStringProperty(NEW_COMMAND_TITLE_KEY));
+    myHistory.setTitleProperty(languageHelper.getStringProperty(HISTORY_TITLE_KEY));
+
+    myBackgroundSelector.setTitleProperty(languageHelper.getStringProperty(BACKGROUND_SELECTOR_TEXT_KEY));
+    myPenSelector.setTitleProperty(languageHelper.getStringProperty(PEN_SELECTOR_TEXT_KEY));
+    myCharacterSelector.setTitleProperty(languageHelper.getStringProperty(TURTLE_SELECTOR_TEXT_KEY));
+
+    myLanguageSelector.setTitleProperty(languageHelper.getStringProperty(LANGUAGE_SELECTOR_TEXT_KEY));
+
+  }
+
 }

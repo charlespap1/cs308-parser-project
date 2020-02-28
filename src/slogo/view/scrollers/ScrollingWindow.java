@@ -1,6 +1,8 @@
 package slogo.view.scrollers;
 
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
@@ -27,13 +29,14 @@ abstract class ScrollingWindow {
   protected double myHeight = SetupScreen.HEIGHT/2.0 - SCROLLING_MIDDLE_PADDING - SCROLLING_TOP_PADDING;
   protected VBox myTextHolder = new VBox(TEXT_HOLDER_SPACING);
 
+  private Text myTitle = new Text();
 
-  public ScrollingWindow(double elementWidthFactor, double topPadding, String title) {
+
+  public ScrollingWindow(double elementWidthFactor, double topPadding) {
     myHolder.setLayoutX(elementWidthFactor*SetupScreen.WIDTH/3 + SCROLLING_SIDE_PADDING);
     myHolder.setLayoutY(topPadding);
     myHolder.setFillWidth(true);
 
-    Text myTitle = new Text(title);
     ScrollPane myView = new ScrollPane();
 
     myHolder.setMinHeight(myHeight);
@@ -42,7 +45,7 @@ abstract class ScrollingWindow {
     myView.setMaxWidth(myWidth);
     myView.setMinWidth(myWidth);
 
-    myHolder.getChildren().addAll(myTitle, myView);
+    myHolder.getChildren().add(myView);
   }
 
   /**
@@ -53,6 +56,11 @@ abstract class ScrollingWindow {
   public Node getView()
   {
     return myHolder;
+  }
+
+  public void setTitleProperty(StringProperty  sp){
+    myTitle.textProperty().bind(sp);
+    myHolder.getChildren().add(0, myTitle);
   }
 
 

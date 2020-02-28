@@ -76,6 +76,8 @@ public class Interactions implements View {
    */
   public void setGoButton(EventHandler<ActionEvent> goAction){ mySetup.setGoButton(goAction); }
 
+  public void setNewWindowButton(EventHandler<ActionEvent> newWindowAction) { mySetup.setNewWindowButton(newWindowAction); }
+
   public void setErrorMessage(StringProperty error){ mySetup.bindErrorMessage(error); }
 
   public StringProperty getLanguageChoice() { return mySetup.getLanguageChoice(); }
