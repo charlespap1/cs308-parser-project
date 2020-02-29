@@ -95,6 +95,20 @@ public class Turtle {
     return line;
   }
 
+  public double getXPos() {
+    return x.getValue();
+  }
+
+  public void setLocation(double x, double y) {
+    this.x.setValue(x);
+    this.y.setValue(y);
+    coordinates.setValue(new Point2D.Double(x, y));
+  }
+
+  public double getYPos() {
+    return y.getValue();
+  }
+
   /**
    * Allows the Main class to get the image body of the turtle to display
    * @return
