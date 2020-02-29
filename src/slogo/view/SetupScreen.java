@@ -39,7 +39,7 @@ public class SetupScreen {
   public static final int HEIGHT = 700;
   public static final Paint BACKGROUND = Color.AZURE;
   public static final double BUTTON_HEIGHT_OFFSET = 40;
-  public static final double GRAPHICAL_VIEWER_HEIGHT_OFFSET = 20;
+  public static final double GRAPHICAL_VIEWER_HEIGHT_OFFSET = 30;
   public static final double CHARACTER_TYPE_OFFSET = 120;
   public static final double COMMON_COMMAND_BUTTON_HEIGHT_OFFSET = 15;
   public static final double COMMON_COMMAND_BUTTON_WIDTH_OFFSET = 225;
