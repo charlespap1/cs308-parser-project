@@ -4,6 +4,7 @@ import java.util.Objects;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -13,26 +14,41 @@ public class TurtleGraphicalMover {
 
   public static final int MOVEMENT_VALUE = 10;
   public static final int BOX_SPACING = 5;
+  public static final int MAJOR_BOX_SPACING = 15;
   public static final String ARROW_IMAGE_FILE = "arrow.png";
   public static final int BUTTON_WIDTH = 20;
 
   private Turtle myTurtle;
-  private VBox myHolder;
+  private VBox myButtonHolder;
   private HBox myMiddleButtons;
+  private VBox myPenElements;
+
+  private HBox myHolder;
+
   private Button up;
   private Button left;
   private Button right;
   private Button down;
+  private Slider increaseThickness;
+  private Button changePenUp;
+  private Button changePenDown;
 
   public TurtleGraphicalMover(Turtle t, double x, double y)
   {
     myTurtle = t;
-    myHolder = new VBox(BOX_SPACING);
+    myHolder = new HBox(MAJOR_BOX_SPACING);
+    myButtonHolder = new VBox(BOX_SPACING);
     myMiddleButtons = new HBox(BOX_SPACING);
+    myPenElements = new VBox(BOX_SPACING);
+
     myHolder.setLayoutX(x);
     myHolder.setLayoutY(y);
-    myHolder.setAlignment(Pos.CENTER);
-    setButtons();
+
+    myButtonHolder.setAlignment(Pos.CENTER);
+    setTurtleButtons();
+    setPenElements();
+
+    myHolder.getChildren().addAll(myButtonHolder, myPenElements);
   }
 
   public Node getView()
@@ -40,7 +56,30 @@ public class TurtleGraphicalMover {
     return myHolder;
   }
 
-  private void setButtons()
+  private void setPenElements()
+  {
+    increaseThickness = new Slider(1, 5, 1);
+    increaseThickness.setShowTickLabels(true);
+    increaseThickness.setShowTickMarks(true);
+    increaseThickness.setMajorTickUnit(5);
+    increaseThickness.setMinorTickCount(4);
+    increaseThickness.snapToTicksProperty().setValue(true);
+    increaseThickness.setOnMouseClicked(e -> setThickness((int) Math.round(increaseThickness.getValue())));
+
+    changePenUp = new Button("Pen Up");
+    changePenUp.setOnAction(e -> setPenUp(true));
+
+    changePenDown = new Button("Pen Down");
+    changePenDown.setOnAction(e -> setPenUp(false));
+
+    HBox buttonHolder = new HBox(BOX_SPACING);
+    buttonHolder.getChildren().addAll(changePenUp, changePenDown);
+
+    myPenElements.getChildren().addAll(increaseThickness, buttonHolder);
+  }
+
+
+  private void setTurtleButtons()
   {
 
     up = new Button();
@@ -67,7 +106,7 @@ public class TurtleGraphicalMover {
     right.setGraphic(rightImage);
 
     myMiddleButtons.getChildren().addAll(left, right);
-    myHolder.getChildren().addAll(up, myMiddleButtons, down);
+    myButtonHolder.getChildren().addAll(up, myMiddleButtons, down);
   }
 
   private ImageView getButtonPic()
@@ -78,6 +117,16 @@ public class TurtleGraphicalMover {
     iv.setFitHeight(BUTTON_WIDTH);
     iv.setPreserveRatio(true);
     return iv;
+  }
+
+  private void setPenUp(boolean isPenUp)
+  {
+    myTurtle.setPenUp(isPenUp);
+  }
+
+  private void setThickness(int thickness)
+  {
+    myTurtle.setThickness(thickness);
   }
 
 
