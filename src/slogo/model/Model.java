@@ -37,16 +37,13 @@ public class Model implements ModelAPI{
     private CodeFactory createFromString;
     private Stack<Stack<Token>> arguments = new Stack<>();
     private RegexHandler typeCheck = new RegexHandler();
-    private Turtle activeTurtle;
     private static Map<Integer, Turtle> turtleMap = new HashMap<>();
     private StringProperty errorMessage = new SimpleStringProperty();
 
     public Model(StringProperty language) {
         typeCheck.addPatterns(SYNTAX);
         setupLanguage(language);
-        int firstTurtleId = 1;
-        activeTurtle = new Turtle(firstTurtleId, 0, 0, false, 0);
-        turtleMap.put(firstTurtleId, activeTurtle);
+        turtleMap.put(1, new Turtle(1, 0, 0, false, 0));
     }
 
     public void executeCode(String rawString) {
@@ -64,7 +61,7 @@ public class Model implements ModelAPI{
         //TODO: convert file f into rawString, then call parseInstructions with rawString
     }
 
-    public Turtle getTurtle(){ return activeTurtle; }
+    //public Turtle getTurtle(){ return activeTurtle; }
 
     public ObservableList<String> getVariableList(){ return createFromString.getVariableList(); }
 
@@ -120,7 +117,7 @@ public class Model implements ModelAPI{
                 if (currInstr.numRequiredArgs() == 0) {
                     if (commands.isEmpty()) {
                         try {
-                            currInstr.execute(activeTurtle);
+                            for (Turtle activeTurtle : turtleMap.values()) currInstr.execute(activeTurtle);
                         } catch (Exception e) {
                             errorMessage.set(e.getMessage());
                         }
@@ -156,7 +153,7 @@ public class Model implements ModelAPI{
                 Instruction currInstr = createCompleteInstruction(arguments.pop());
                 if (commands.isEmpty()) {
                     try {
-                        currInstr.execute(activeTurtle);
+                        for (Turtle activeTurtle : turtleMap.values()) currInstr.execute(activeTurtle);
                     }
                     catch(Exception e) {
                         errorMessage.set(e.getMessage());
