@@ -14,7 +14,7 @@ public class SetXY extends Instruction {
         instrName = name;
     }
 
-    public void execute (Turtle t) {
+    public void performAction (Turtle t) {
         List<Double> paramsAsInts = getParamsAsVals(t);
         double xCord = paramsAsInts.get(0);
         double yCord = paramsAsInts.get(1);

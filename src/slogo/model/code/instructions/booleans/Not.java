@@ -14,7 +14,7 @@ public class Not extends Instruction {
         instrName = name;
     }
 
-    public void execute (Turtle t) {
+    public void performAction (Turtle t) {
         List<Double> paramsAsVals = this.getParamsAsVals(t);
         double val = paramsAsVals.get(0);
         valueOfExecution = (val == 0) ? 1 : 0;

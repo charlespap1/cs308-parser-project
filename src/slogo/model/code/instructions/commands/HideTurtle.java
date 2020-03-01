@@ -12,7 +12,7 @@ public class HideTurtle extends Instruction {
         instrName = name;
     }
 
-    public void execute (Turtle t) {
+    public void performAction (Turtle t) {
         System.out.println("exec");
         t.setVisible(false);
         valueOfExecution = 0;

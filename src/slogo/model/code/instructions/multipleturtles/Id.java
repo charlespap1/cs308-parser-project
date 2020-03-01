@@ -18,7 +18,7 @@ public class Id extends Instruction {
         instrName = name;
     }
 
-    public void execute (Turtle t) {
+    public void performAction (Turtle t) {
         valueOfExecution = t.getId();
         t.setCurrCommand(toString());
         t.setCurrCommand("");

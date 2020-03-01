@@ -14,7 +14,7 @@ public class Forward extends Instruction {
         instrName = name;
     }
 
-    public void execute (Turtle t) {
+    public void performAction (Turtle t) {
         List<Double> paramsAsVals = getParamsAsVals(t);
         double valueForExec = paramsAsVals.get(0);
         valueOfExecution = valueForExec;

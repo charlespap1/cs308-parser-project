@@ -12,7 +12,7 @@ public class Pi extends Instruction {
         instrName = name;
     }
 
-    public void execute (Turtle t) {
+    public void performAction (Turtle t) {
         valueOfExecution = Math.PI;
         t.setCurrCommand(toString());
         t.setCurrCommand("");

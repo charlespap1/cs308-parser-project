@@ -14,7 +14,7 @@ public class Tangent extends Instruction {
         instrName = name;
     }
 
-    public void execute (Turtle t) {
+    public void performAction (Turtle t) {
         List<Double> paramsAsVals = this.getParamsAsVals(t);
         double val = paramsAsVals.get(0);
         valueOfExecution = Math.tan(Math.toRadians(val));

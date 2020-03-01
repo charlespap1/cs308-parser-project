@@ -21,7 +21,7 @@ public class Ask extends Instruction {
         //this.addNewTurtle = addNewTurtle;
     }
 
-    public void execute (Turtle t) throws InvalidArgumentException, InvalidLoopConditionException {
+    public void performAction (Turtle t) throws InvalidArgumentException, InvalidLoopConditionException {
         Token list1 = parameters.get(0);
         Token list2 = parameters.get(1);
         if (!(list1 instanceof ListSyntax) || !(list2 instanceof ListSyntax)) {
@@ -36,7 +36,7 @@ public class Ask extends Instruction {
                 if (!(command instanceof Instruction)) {
                     throw new InvalidLoopConditionException();
                 }
-                ((Instruction) command).execute(tt);
+                ((Instruction) command).performAction(tt);
                 valueOfExecution = command.generateValue();
             }
         }

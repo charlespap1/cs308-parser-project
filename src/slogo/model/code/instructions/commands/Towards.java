@@ -14,7 +14,7 @@ public class Towards extends Instruction {
         instrName = name;
     }
 
-    public void execute (Turtle t) {
+    public void performAction (Turtle t) {
         List<Double> paramsAsVals = getParamsAsVals(t);
         double xCord = paramsAsVals.get(0);
         double yCord = paramsAsVals.get(1);

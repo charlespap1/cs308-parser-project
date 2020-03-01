@@ -19,7 +19,7 @@ public class Turtles extends Instruction {
         instrName = name;
     }
 
-    public void execute (Turtle t) throws InvalidArgumentException, InvalidLoopConditionException {
+    public void performAction (Turtle t) throws InvalidArgumentException, InvalidLoopConditionException {
         valueOfExecution = Model.getTurtleMap().size();
         t.setCurrCommand(toString());
         t.setCurrCommand("");

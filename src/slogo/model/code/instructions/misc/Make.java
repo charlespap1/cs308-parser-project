@@ -16,7 +16,7 @@ public class Make extends Instruction {
         this.instrName = name;
     }
 
-    public void execute (Turtle t) {
+    public void performAction (Turtle t) {
         Token var = this.parameters.get(0);
         Token expr = this.parameters.get(1);
         if (!(var instanceof Variable)) {

@@ -20,7 +20,13 @@ public abstract class Instruction implements Token {
         NUM_ARGS = numArgs;
     }
 
-    public abstract void execute(Turtle turtle);
+    public void execute(List<Turtle> activeTurtles) {
+        for (Turtle activeTurtle : activeTurtles) {
+            performAction(activeTurtle);
+        }
+    }
+
+    public abstract void performAction(Turtle turtle);
 
     public int numRequiredArgs() { return NUM_ARGS; }
 
@@ -48,7 +54,7 @@ public abstract class Instruction implements Token {
         if (currToken instanceof ListSyntax) {
             throw new CommandCannotDoListException();
         } else if (currToken instanceof Instruction){
-            ((Instruction) currToken).execute(t);
+            ((Instruction) currToken).performAction(t);
         }
         return currToken.generateValue();
     }

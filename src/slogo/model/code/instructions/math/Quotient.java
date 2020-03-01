@@ -15,7 +15,7 @@ public class Quotient extends Instruction {
         instrName = name;
     }
 
-    public void execute (Turtle t) throws DivideByZeroException {
+    public void performAction (Turtle t) throws DivideByZeroException {
         List<Double> paramsAsVals = this.getParamsAsVals(t);
         double val1 = paramsAsVals.get(0);
         double val2 = paramsAsVals.get(1);

@@ -21,7 +21,7 @@ public class Tell extends Instruction {
         }
     }
 
-    public void execute (Turtle t) throws InvalidArgumentException {
+    public void performAction (Turtle t) throws InvalidArgumentException {
         Token list = parameters.get(0);
         if (!(list instanceof ListSyntax)) {
             throw new InvalidArgumentException();

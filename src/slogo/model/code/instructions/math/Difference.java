@@ -14,7 +14,7 @@ public class Difference extends Instruction {
         instrName = name;
     }
 
-    public void execute (Turtle t) {
+    public void performAction (Turtle t) {
         List<Double> paramsAsVals = this.getParamsAsVals(t);
         double val1 = paramsAsVals.get(0);
         double val2 = paramsAsVals.get(1);

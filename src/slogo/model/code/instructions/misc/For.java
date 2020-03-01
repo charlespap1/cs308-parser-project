@@ -20,7 +20,7 @@ public class For extends Instruction {
         this.instrName = name;
     }
 
-    public void execute (Turtle t) throws InvalidLoopConditionException, CommandCannotDoListException {
+    public void performAction (Turtle t) throws InvalidLoopConditionException, CommandCannotDoListException {
         Token list1 = parameters.get(0);
         Token list2 = parameters.get(1);
         if (!(list1 instanceof ListSyntax) || !(list2 instanceof ListSyntax)) throw new InvalidArgumentException();
@@ -41,7 +41,7 @@ public class For extends Instruction {
             ((Variable) variable).setVariable(i);
             for (Token command: commands) {
                 if (!(command instanceof Instruction)) throw new InvalidLoopConditionException();
-                ((Instruction) command).execute(t);
+                ((Instruction) command).performAction(t);
                 valueOfExecution = command.generateValue();
             }
         }

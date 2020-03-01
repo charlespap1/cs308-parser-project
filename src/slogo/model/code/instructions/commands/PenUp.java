@@ -12,7 +12,7 @@ public class PenUp extends Instruction {
         instrName = name;
     }
 
-    public void execute (Turtle t) {
+    public void performAction (Turtle t) {
         t.setPenUp(true);
         valueOfExecution = 0;
         t.setCurrCommand(toString());

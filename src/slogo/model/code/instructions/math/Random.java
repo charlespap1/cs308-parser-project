@@ -14,7 +14,7 @@ public class Random extends Instruction {
         instrName = name;
     }
 
-    public void execute (Turtle t) {
+    public void performAction (Turtle t) {
         List<Double> paramsAsVals = this.getParamsAsVals(t);
         double max = paramsAsVals.get(0);
         valueOfExecution = Math.random() * max;
