@@ -42,11 +42,14 @@ public class Model implements ModelAPI{
     private RegexHandler typeCheck = new RegexHandler();
     private static Map<Integer, Turtle> turtleMap = new HashMap<>();
     private StringProperty errorMessage = new SimpleStringProperty();
+    private List<Turtle> activeTurtles = new ArrayList<>();
 
     public Model(StringProperty language) {
         typeCheck.addPatterns(SYNTAX);
         setupLanguage(language);
-        turtleMap.put(1, new Turtle(1, 0, 0, false, 0));
+        Turtle initialTurtle = new Turtle(1, 0, 0, false, 0);
+        turtleMap.put(1, initialTurtle);
+        activeTurtles.add(initialTurtle);
     }
 
     public void executeCode(String rawString) {
@@ -139,7 +142,7 @@ public class Model implements ModelAPI{
     private void addInstructionToStack(Instruction currInstr){
         if (currInstr.numRequiredArgs() == 0) {
             if (commands.isEmpty()) {
-                currInstr.execute(turtleMap.get(1));
+                currInstr.execute(activeTurtles);
             } else {
                 arguments.peek().push(currInstr);
                 attemptToCreateFullInstruction();
@@ -160,20 +163,7 @@ public class Model implements ModelAPI{
             } else {
                 Instruction currInstr = createCompleteInstruction(arguments.pop());
                 if (commands.isEmpty()) {
-                    try {
-                        if (!(currInstr instanceof Tell || currInstr instanceof Ask || currInstr instanceof AskWith)) {
-                            for (Turtle activeTurtle : turtleMap.values()) {
-                                if (activeTurtle.isActive()) {
-                                    currInstr.execute(activeTurtle);
-                                }
-                            }
-                        } else {
-                            currInstr.execute(turtleMap.get(1));
-                        }
-                    }
-                    catch(Exception e) {
-                        errorMessage.set(e.getMessage());
-                    }
+                    currInstr.execute(activeTurtles);
                 } else {
                     arguments.peek().push(currInstr);
                     attemptToCreateFullInstruction();
