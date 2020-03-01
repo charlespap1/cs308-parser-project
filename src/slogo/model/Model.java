@@ -126,7 +126,7 @@ public class Model implements ModelAPI{
                 addArgumentToStack(currItem);
             }
         }
-        catch (SyntaxException e) {
+        catch (Exception e) {
             errorMessage.set(e.getMessage());
         }
     }
