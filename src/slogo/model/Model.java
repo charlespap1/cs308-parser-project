@@ -16,6 +16,9 @@ import slogo.model.code.exceptions.CommandCannotDoListException;
 import slogo.model.code.exceptions.SyntaxException;
 import slogo.model.code.instructions.Instruction;
 import slogo.model.code.instructions.misc.To;
+import slogo.model.code.instructions.multipleturtles.Ask;
+import slogo.model.code.instructions.multipleturtles.AskWith;
+import slogo.model.code.instructions.multipleturtles.Tell;
 import slogo.model.parse.CodeFactory;
 import slogo.model.parse.RegexHandler;
 import slogo.view.ClearAction;
@@ -117,7 +120,15 @@ public class Model implements ModelAPI{
                 if (currInstr.numRequiredArgs() == 0) {
                     if (commands.isEmpty()) {
                         try {
-                            for (Turtle activeTurtle : turtleMap.values()) currInstr.execute(activeTurtle);
+                            if (!(currInstr instanceof Tell || currInstr instanceof Ask || currInstr instanceof AskWith)) {
+                                for (Turtle activeTurtle : turtleMap.values()) {
+                                    if (activeTurtle.isActive()) {
+                                        currInstr.execute(activeTurtle);
+                                    }
+                                }
+                            } else {
+                                currInstr.execute(turtleMap.get(1));
+                            }
                         } catch (Exception e) {
                             errorMessage.set(e.getMessage());
                         }
@@ -153,7 +164,15 @@ public class Model implements ModelAPI{
                 Instruction currInstr = createCompleteInstruction(arguments.pop());
                 if (commands.isEmpty()) {
                     try {
-                        for (Turtle activeTurtle : turtleMap.values()) currInstr.execute(activeTurtle);
+                        if (!(currInstr instanceof Tell || currInstr instanceof Ask || currInstr instanceof AskWith)) {
+                            for (Turtle activeTurtle : turtleMap.values()) {
+                                if (activeTurtle.isActive()) {
+                                    currInstr.execute(activeTurtle);
+                                }
+                            }
+                        } else {
+                            currInstr.execute(turtleMap.get(1));
+                        }
                     }
                     catch(Exception e) {
                         errorMessage.set(e.getMessage());

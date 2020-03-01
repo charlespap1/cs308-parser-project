@@ -16,6 +16,9 @@ public class Tell extends Instruction {
     public Tell(String name){
         super(numArgs);
         instrName = name;
+        for (Turtle t : Model.getTurtleMap().values()) {
+            t.setActive(false);
+        }
     }
 
     public void execute (Turtle t) throws InvalidArgumentException {
@@ -26,7 +29,8 @@ public class Tell extends Instruction {
         List<Token> turtles = ((ListSyntax) list).getContents();
         for (Token turtle : turtles) {
             int turtleId = (int) checkTokenNotListAndGetVal(turtle, t);
-            Model.createOrGetTurtle(turtleId);
+            Turtle tt = Model.createOrGetTurtle(turtleId);
+            tt.setActive(true);
             valueOfExecution = turtleId;
         }
         t.setCurrCommand(toString());
