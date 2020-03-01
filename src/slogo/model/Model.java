@@ -61,7 +61,8 @@ public class Model implements ModelAPI{
     }
 
     public void executeCode(File f){
-        //TODO: convert file f into rawString, then call parseInstructions with rawString
+        //TODO: convert file f into rawString, then call executeCode with rawString
+
     }
 
     //public Turtle getTurtle(){ return activeTurtle; }
@@ -117,39 +118,35 @@ public class Model implements ModelAPI{
                 throw new InvalidCommandException();
             } else if (currItem instanceof Instruction) {
                 Instruction currInstr = (Instruction) currItem;
-                if (currInstr.numRequiredArgs() == 0) {
-                    if (commands.isEmpty()) {
-                        try {
-                            if (!(currInstr instanceof Tell || currInstr instanceof Ask || currInstr instanceof AskWith)) {
-                                for (Turtle activeTurtle : turtleMap.values()) {
-                                    if (activeTurtle.isActive()) {
-                                        currInstr.execute(activeTurtle);
-                                    }
-                                }
-                            } else {
-                                currInstr.execute(turtleMap.get(1));
-                            }
-                        } catch (Exception e) {
-                            errorMessage.set(e.getMessage());
-                        }
-                    } else {
-                        arguments.peek().push(currItem);
-                        attemptToCreateFullInstruction();
-                    }
-                } else {
-                    commands.push(currInstr);
-                    arguments.push(new Stack<>());
-                }
+                addInstructionToStack(currInstr);
             } else {
-                if (arguments.isEmpty() && commands.isEmpty()) {
-                    throw new InvalidNumberArgumentsException();
-                }
-                arguments.peek().push(currItem);
-                attemptToCreateFullInstruction();
+                addArgumentToStack(currItem);
             }
         }
         catch (SyntaxException e) {
             errorMessage.set(e.getMessage());
+        }
+    }
+
+    private void addArgumentToStack(Token currItem) {
+        if (arguments.isEmpty() && commands.isEmpty()) {
+            throw new InvalidNumberArgumentsException();
+        }
+        arguments.peek().push(currItem);
+        attemptToCreateFullInstruction();
+    }
+
+    private void addInstructionToStack(Instruction currInstr){
+        if (currInstr.numRequiredArgs() == 0) {
+            if (commands.isEmpty()) {
+                currInstr.execute(turtleMap.get(1));
+            } else {
+                arguments.peek().push(currInstr);
+                attemptToCreateFullInstruction();
+            }
+        } else {
+            commands.push(currInstr);
+            arguments.push(new Stack<>());
         }
     }
 
