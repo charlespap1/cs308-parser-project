@@ -1,5 +1,6 @@
 package slogo.model.code.instructions.multipleturtles;
 
+import slogo.model.Model;
 import slogo.model.Turtle;
 import slogo.model.code.ListSyntax;
 import slogo.model.code.Token;
@@ -19,7 +20,7 @@ public class Turtles extends Instruction {
     }
 
     public void execute (Turtle t) throws InvalidArgumentException, InvalidLoopConditionException {
-        // valueOfExecution = turtleMap.keySet().size();
+        valueOfExecution = Model.getTurtleMap().size();
         t.setCurrCommand(toString());
         t.setCurrCommand("");
     }

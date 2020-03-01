@@ -1,6 +1,6 @@
 package slogo.model.code.instructions.multipleturtles;
 
-import slogo.model.AddNewTurtleFunction;
+import slogo.model.Model;
 import slogo.model.Turtle;
 import slogo.model.code.ListSyntax;
 import slogo.model.code.Token;
@@ -13,12 +13,12 @@ import java.util.List;
 public class Ask extends Instruction {
 
     private static final int numArgs = 2;
-    private AddNewTurtleFunction addNewTurtle;
+    //private AddNewTurtleFunction addNewTurtle;
 
-    public Ask(String name, AddNewTurtleFunction addNewTurtle){
+    public Ask(String name){
         super(numArgs);
         instrName = name;
-        this.addNewTurtle = addNewTurtle;
+        //this.addNewTurtle = addNewTurtle;
     }
 
     public void execute (Turtle t) throws InvalidArgumentException, InvalidLoopConditionException {
@@ -31,7 +31,7 @@ public class Ask extends Instruction {
         List<Token> commands = ((ListSyntax) list2).getContents();
         for (Token turtle : turtles) {
             int turtleId = (int) checkTokenNotListAndGetVal(turtle, t);
-            Turtle tt = addNewTurtle.addTurtle(turtleId);
+            Turtle tt = Model.createOrGetTurtle(turtleId);
             for (Token command : commands) {
                 if (!(command instanceof Instruction)) {
                     throw new InvalidLoopConditionException();

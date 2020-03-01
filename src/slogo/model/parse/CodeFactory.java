@@ -51,7 +51,7 @@ public class CodeFactory {
         if (objectType.equals(NEW_COMMAND_TYPE)) return getNewCommand(piece);
         if (objectType.equals(TO_TYPE)) return new To(piece, this::addNewCommand);
         if (objectType.equals(CLEAR_TYPE)) return new ClearScreen(piece, clearAction);
-        if (objectType.equals(ASK_TYPE)) return new Ask(piece, Model::getTurtle);
+        //if (objectType.equals(ASK_TYPE)) return new Ask(piece, Model::getTurtle);
         Token token;
         try {
             Class c = mappings.get(objectType);

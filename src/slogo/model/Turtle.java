@@ -14,8 +14,10 @@ public class Turtle {
     private BooleanProperty visible = new SimpleBooleanProperty(true);
     private StringProperty currCommand = new SimpleStringProperty();
     private ObjectProperty<Point2D> coordinates;
+    private int id;
 
-    public Turtle(int xPos, int yPos, boolean isPenUp, int angle) {
+    public Turtle(int id, int xPos, int yPos, boolean isPenUp, int angle) {
+        this.id = id;
         turtleX = new SimpleDoubleProperty(xPos);
         turtleY = new SimpleDoubleProperty(yPos);
         turtleAngle = new SimpleDoubleProperty(angle);
@@ -53,4 +55,5 @@ public class Turtle {
     }
     public double getAngle() { return turtleAngle.getValue(); }
     public boolean isVisible() { return visible.getValue(); }
+    public int getId() { return this.id; }
 }

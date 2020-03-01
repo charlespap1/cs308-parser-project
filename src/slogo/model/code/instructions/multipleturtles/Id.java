@@ -18,8 +18,8 @@ public class Id extends Instruction {
         instrName = name;
     }
 
-    public void execute (Turtle t) throws InvalidArgumentException, InvalidLoopConditionException {
-        // valueOfExecution = t.getId();
+    public void execute (Turtle t) {
+        valueOfExecution = t.getId();
         t.setCurrCommand(toString());
         t.setCurrCommand("");
     }

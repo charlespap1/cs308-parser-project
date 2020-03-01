@@ -1,9 +1,9 @@
 package slogo.model.code.instructions.multipleturtles;
 
+import slogo.model.Model;
 import slogo.model.Turtle;
 import slogo.model.code.ListSyntax;
 import slogo.model.code.Token;
-import slogo.model.code.exceptions.CommandCannotDoListException;
 import slogo.model.code.exceptions.InvalidArgumentException;
 import slogo.model.code.instructions.Instruction;
 
@@ -25,8 +25,8 @@ public class Tell extends Instruction {
         }
         List<Token> turtles = ((ListSyntax) list).getContents();
         for (Token turtle : turtles) {
-            double turtleId = checkTokenNotListAndGetVal(turtle, t);
-            // need to create new turtle with the given turtle id
+            int turtleId = (int) checkTokenNotListAndGetVal(turtle, t);
+            Model.createOrGetTurtle(turtleId);
             valueOfExecution = turtleId;
         }
         t.setCurrCommand(toString());

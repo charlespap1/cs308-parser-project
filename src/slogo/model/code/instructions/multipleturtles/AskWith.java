@@ -1,5 +1,6 @@
 package slogo.model.code.instructions.multipleturtles;
 
+import slogo.model.Model;
 import slogo.model.Turtle;
 import slogo.model.code.ListSyntax;
 import slogo.model.code.Token;
@@ -30,19 +31,19 @@ public class AskWith extends Instruction {
             throw new InvalidLoopConditionException();
         }
         List<Token> commands = ((ListSyntax) list2).getContents();
-//        for (Turtle tt : turtleMap.getValues()) {
-//            conditionToken.execute(tt);
-//            // condition is true
-//            if (conditionToken.generateValue() == 1) {
-//                for (Token command : commands) {
-//                    if (!(command instanceof Instruction)) {
-//                        throw new InvalidLoopConditionException();
-//                    }
-//                    ((Instruction) command).execute(tt);
-//                    valueOfExecution = command.generateValue();
-//                }
-//            }
-//        }
+        for (Turtle tt : Model.getTurtleMap().values()) {
+            ((Instruction) conditionToken).execute(tt);
+            // condition is true
+            if (conditionToken.generateValue() == 1) {
+                for (Token command : commands) {
+                    if (!(command instanceof Instruction)) {
+                        throw new InvalidLoopConditionException();
+                    }
+                    ((Instruction) command).execute(tt);
+                    valueOfExecution = command.generateValue();
+                }
+            }
+        }
         t.setCurrCommand(toString());
         t.setCurrCommand("");
     }

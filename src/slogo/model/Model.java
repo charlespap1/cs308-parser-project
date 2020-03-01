@@ -44,8 +44,9 @@ public class Model implements ModelAPI{
     public Model(StringProperty language) {
         typeCheck.addPatterns(SYNTAX);
         setupLanguage(language);
-        activeTurtle = new Turtle(0, 0, false, 0);
-        turtleMap.put(1, activeTurtle);
+        int firstTurtleId = 1;
+        activeTurtle = new Turtle(firstTurtleId, 0, 0, false, 0);
+        turtleMap.put(firstTurtleId, activeTurtle);
     }
 
     public void executeCode(String rawString) {
@@ -84,11 +85,15 @@ public class Model implements ModelAPI{
 
     }
 
-    public static Turtle getTurtle(int id) {
+    public static Turtle createOrGetTurtle(int id) {
         if (!turtleMap.containsKey(id)) {
-            turtleMap.put(id, new Turtle(0, 0, false, 0));
+            turtleMap.put(id, new Turtle(id, 0, 0, false, 0));
         }
         return turtleMap.get(id);
+    }
+
+    public static Map<Integer, Turtle> getTurtleMap() {
+        return turtleMap;
     }
 
     private void parseInstructions(String rawString){
