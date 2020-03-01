@@ -1,13 +1,17 @@
 package slogo.controller;
 
+import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import slogo.model.Model;
 import slogo.model.code.instructions.queries.YCor;
 import slogo.view.Interactions;
+import slogo.view.popup.LoadConfigPopup;
 
 /**
  * Main method where the GUI comes together
@@ -32,6 +36,18 @@ public class Controller extends Application {
         makeWindow(new Stage());
     }
 
+    private void showPopUp(Stage currentStage){
+        LoadConfigPopup popup = new LoadConfigPopup();
+        popup.getMyPopup().show(currentStage);
+        EventHandler<ActionEvent> e = new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent event) {
+                makeNewWindow();
+                popup.getMyPopup().hide();
+            }
+        };
+        popup.setLoadButton(e);
+    }
+
     private void makeWindow(Stage stage){
         Interactions myView = new Interactions(stage);
         Model myModel = new Model(myView.getLanguageChoice());
@@ -40,8 +56,11 @@ public class Controller extends Application {
         myView.setViewLists(myModel.getVariableList(), myModel.getNewCommandsList());
         myView.setErrorMessage(myModel.getErrorMessage());
         myView.setNewWindowButton(e -> makeNewWindow());
+        myView.setPopupButton(e -> showPopUp(stage));
         myModel.setClearAction(myView.getClearAction());
     }
+
+
 
 
     /**

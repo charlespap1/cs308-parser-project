@@ -105,4 +105,8 @@ public class Interactions implements View {
     mySetup.clearHistory();
     root.getChildren().removeAll(myCanvas.getLines());
   }
+
+  public void setPopupButton(EventHandler<ActionEvent> showPopup) {
+    mySetup.setPopupButton(showPopup);
+  }
 }

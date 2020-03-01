@@ -63,6 +63,7 @@ public class SetupScreen {
   public static final String NEW_WINDOW_BUTTON_KEY = "NewWindowButton";
   public static final String PEN_UP_BUTTON_KEY = "PenUpButton";
   public static final String PEN_DOWN_BUTTON_KEY = "PenDownButton";
+  private static final String NEW_CONFIG_BUTTON_KEY = "NewConfigButton";
 
 
   private UserCommandField myUserInput = new UserCommandField(WIDTH, HEIGHT);
@@ -74,6 +75,7 @@ public class SetupScreen {
   private Button myStop;
   private Button myCommandJumper;
   private Button myNewWindow;
+  private Button myNewConfig;
   private HistoryCanvas myHistory = new HistoryCanvas(COMMAND_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING);
   private ListViewer myNewCommandViewer = new ListViewer(LIST_VIEW_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING);
   private ListViewer myVariableView = new ListViewer(LIST_VIEW_COLUMN, HEIGHT/2.0);
@@ -195,10 +197,15 @@ public class SetupScreen {
     myStop.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
     belowCanvasButtons.getChildren().add(myStop);
 
+    HBox newWindowButtons = new HBox(BOX_SPACING);
+    myNewConfig = new Button();
+
     myNewWindow = new Button();
-    myNewWindow.setLayoutY(COMMON_COMMAND_BUTTON_HEIGHT_OFFSET);
-    myNewWindow.setLayoutX(WIDTH/2 - BUTTON_HEIGHT_OFFSET);
-    root.getChildren().add(myNewWindow);
+    newWindowButtons.setLayoutY(COMMON_COMMAND_BUTTON_HEIGHT_OFFSET);
+    newWindowButtons.setLayoutX(WIDTH/2 - BUTTON_HEIGHT_OFFSET*3);
+    newWindowButtons.getChildren().addAll(myNewWindow, myNewConfig);
+
+    root.getChildren().add(newWindowButtons);
 
   }
 
@@ -216,7 +223,7 @@ public class SetupScreen {
     myClear.textProperty().bind(languageHelper.getStringProperty(CLEAR_BUTTON_KEY));
     myStop.textProperty().bind(languageHelper.getStringProperty(STOP_BUTTON_KEY));
     myNewWindow.textProperty().bind(languageHelper.getStringProperty(NEW_WINDOW_BUTTON_KEY));
-
+    myNewConfig.textProperty().bind(languageHelper.getStringProperty(NEW_CONFIG_BUTTON_KEY));
 
     myVariableView.setTitleProperty(languageHelper.getStringProperty(VARIABLE_TITLE_KEY));
     myNewCommandViewer.setTitleProperty(languageHelper.getStringProperty(NEW_COMMAND_TITLE_KEY));
@@ -231,4 +238,7 @@ public class SetupScreen {
 
   }
 
+  public void setPopupButton(EventHandler<ActionEvent> showPopup) {
+    myNewConfig.setOnAction(showPopup);
+  }
 }
