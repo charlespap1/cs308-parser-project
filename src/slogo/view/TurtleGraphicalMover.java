@@ -1,10 +1,13 @@
 package slogo.view;
 
 import java.util.Objects;
+import javafx.beans.property.StringProperty;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -30,8 +33,8 @@ public class TurtleGraphicalMover {
   private Button right;
   private Button down;
   private Slider increaseThickness;
-  private Button changePenUp;
-  private Button changePenDown;
+  private RadioButton changePenUp;
+  private RadioButton changePenDown;
 
   public TurtleGraphicalMover(Turtle t, double x, double y)
   {
@@ -66,16 +69,40 @@ public class TurtleGraphicalMover {
     increaseThickness.snapToTicksProperty().setValue(true);
     increaseThickness.setOnMouseClicked(e -> setThickness((int) Math.round(increaseThickness.getValue())));
 
-    changePenUp = new Button("Pen Up");
-    changePenUp.setOnAction(e -> setPenUp(true));
-
-    changePenDown = new Button("Pen Down");
-    changePenDown.setOnAction(e -> setPenUp(false));
-
-    HBox buttonHolder = new HBox(BOX_SPACING);
+    setUpToggleViewer();
+    HBox buttonHolder = new HBox(MAJOR_BOX_SPACING);
     buttonHolder.getChildren().addAll(changePenUp, changePenDown);
 
     myPenElements.getChildren().addAll(increaseThickness, buttonHolder);
+  }
+
+  public void setPenLabelProperty(StringProperty penUp, StringProperty penDown){
+    changePenUp.textProperty().bind(penUp);
+    changePenDown.textProperty().bind(penDown);
+  }
+
+  private void setUpToggleViewer()
+  {
+    changePenUp = new RadioButton();
+    changePenUp.setOnAction(e -> setPenUp(true));
+
+    changePenDown = new RadioButton();
+    changePenDown.setOnAction(e -> setPenUp(false));
+
+    ToggleGroup radioGroup = new ToggleGroup();
+
+    changePenUp.setToggleGroup(radioGroup);
+    changePenDown.setToggleGroup(radioGroup);
+
+    if(myTurtle.getPenUp())
+    {
+      changePenUp.setSelected(true);
+    }
+    else
+    {
+      changePenDown.setSelected(true);
+    }
+
   }
 
 

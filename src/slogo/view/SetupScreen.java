@@ -61,6 +61,9 @@ public class SetupScreen {
   public static final String CLEAR_BUTTON_KEY = "ClearButton";
   public static final String STOP_BUTTON_KEY = "StopButton";
   public static final String NEW_WINDOW_BUTTON_KEY = "NewWindowButton";
+  public static final String PEN_UP_BUTTON_KEY = "PenUpButton";
+  public static final String PEN_DOWN_BUTTON_KEY = "PenDownButton";
+
 
   private UserCommandField myUserInput = new UserCommandField(WIDTH, HEIGHT);
   private Group root = new Group();
@@ -85,6 +88,7 @@ public class SetupScreen {
   private HBox belowCanvasButtons = new HBox(BOX_SPACING);
 
   private LanguageHelper languageHelper;
+  private TurtleGraphicalMover myGraphicalMover;
 
   /**
    * Sets up all of the visual elements so that
@@ -102,9 +106,10 @@ public class SetupScreen {
     setupBox(belowCanvasButtons, DrawingCanvas.CANVAS_SIDE_PADDING, DrawingCanvas.CANVAS_TOP_PADDING + myDrawingCanvas.getHeight() + BOX_SPACING, myDrawingCanvas.getWidth());
     setButtons();
     setSelectors();
-    setText();
 
-    TurtleGraphicalMover myGraphicalMover = new TurtleGraphicalMover(myTurtle, myBackgroundSelector.getView().getLayoutX(), myBackgroundSelector.getView().getLayoutY() + GRAPHICAL_VIEWER_HEIGHT_OFFSET);
+    myGraphicalMover = new TurtleGraphicalMover(myTurtle, myBackgroundSelector.getView().getLayoutX(), myBackgroundSelector.getView().getLayoutY() + GRAPHICAL_VIEWER_HEIGHT_OFFSET);
+
+    setText();
 
     root.getChildren().addAll(myDrawingCanvas.getView(), myTurtle.getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myNewCommandViewer.getView(), myVariableView.getView());
     root.getChildren().addAll(myBackgroundSelector.getView(), myPenSelector.getView(), myCharacterSelector.getView(), myLanguageSelector.getView(), myGraphicalMover.getView());
@@ -222,6 +227,7 @@ public class SetupScreen {
     myCharacterSelector.setTitleProperty(languageHelper.getStringProperty(TURTLE_SELECTOR_TEXT_KEY));
 
     myLanguageSelector.setTitleProperty(languageHelper.getStringProperty(LANGUAGE_SELECTOR_TEXT_KEY));
+    myGraphicalMover.setPenLabelProperty(languageHelper.getStringProperty(PEN_UP_BUTTON_KEY), languageHelper.getStringProperty(PEN_DOWN_BUTTON_KEY));
 
   }
 
