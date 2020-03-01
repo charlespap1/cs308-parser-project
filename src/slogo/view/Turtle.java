@@ -138,6 +138,11 @@ public class Turtle {
     penThickness = newThickness;
   }
 
+  public boolean getPenUp()
+  {
+    return this.penUp.get();
+  }
+
 
   private Line drawLine(){
     Line line = null;
