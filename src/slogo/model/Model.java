@@ -37,13 +37,15 @@ public class Model implements ModelAPI{
     private CodeFactory createFromString;
     private Stack<Stack<Token>> arguments = new Stack<>();
     private RegexHandler typeCheck = new RegexHandler();
-    private Turtle turtle;
+    private Turtle activeTurtle;
+    private static Map<Integer, Turtle> turtleMap = new HashMap<>();
     private StringProperty errorMessage = new SimpleStringProperty();
 
     public Model(StringProperty language) {
         typeCheck.addPatterns(SYNTAX);
         setupLanguage(language);
-        turtle = new Turtle(0, 0, false, 0);
+        activeTurtle = new Turtle(0, 0, false, 0);
+        turtleMap.put(1, activeTurtle);
     }
 
     public void executeCode(String rawString) {
@@ -61,7 +63,7 @@ public class Model implements ModelAPI{
         //TODO: convert file f into rawString, then call parseInstructions with rawString
     }
 
-    public Turtle getTurtle(){ return turtle; }
+    public Turtle getTurtle(){ return activeTurtle; }
 
     public ObservableList<String> getVariableList(){ return createFromString.getVariableList(); }
 
@@ -80,6 +82,13 @@ public class Model implements ModelAPI{
             errorMessage.set(e.getMessage());
         }
 
+    }
+
+    public static Turtle getTurtle(int id) {
+        if (!turtleMap.containsKey(id)) {
+            turtleMap.put(id, new Turtle(0, 0, false, 0));
+        }
+        return turtleMap.get(id);
     }
 
     private void parseInstructions(String rawString){
@@ -106,7 +115,7 @@ public class Model implements ModelAPI{
                 if (currInstr.numRequiredArgs() == 0) {
                     if (commands.isEmpty()) {
                         try {
-                            currInstr.execute(turtle);
+                            currInstr.execute(activeTurtle);
                         } catch (Exception e) {
                             errorMessage.set(e.getMessage());
                         }
@@ -142,7 +151,7 @@ public class Model implements ModelAPI{
                 Instruction currInstr = createCompleteInstruction(arguments.pop());
                 if (commands.isEmpty()) {
                     try {
-                        currInstr.execute(turtle);
+                        currInstr.execute(activeTurtle);
                     }
                     catch(Exception e) {
                         errorMessage.set(e.getMessage());
