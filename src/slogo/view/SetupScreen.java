@@ -34,6 +34,10 @@ import slogo.view.selectors.TurtleFaceSelector;
 public class SetupScreen {
 
   public static final String DEFAULT_TURTLE_IMAGE = "turtle.png";
+  public static final String RESOURCES = "resources";
+  public static final String DEFAULT_RESOURCE_FOLDER = "/" + RESOURCES + "/";
+  public static final String MAIN_STYLESHEET = "main.css";
+
   public static final double BOX_SPACING = 10;
   public static final int WIDTH = 1000;
   public static final int HEIGHT = 700;
@@ -121,7 +125,10 @@ public class SetupScreen {
 
     root.getChildren().add(myCurrentErrorMessage);
 
-    return new Scene(root, WIDTH, HEIGHT, BACKGROUND);
+    Scene scene = new Scene(root, WIDTH, HEIGHT, BACKGROUND);
+    scene.getStylesheets().add(getClass().getClassLoader().getResource(MAIN_STYLESHEET).toExternalForm());
+
+    return scene;
   }
 
   /**
