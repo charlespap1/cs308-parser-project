@@ -38,10 +38,6 @@ public abstract class Instruction implements Token {
         parameters = params;
     }
 
-    protected double distFrom(double x, double y, double x2, double y2){
-        return Math.sqrt(Math.pow(x2 - x,2) + Math.pow(y2 - y,2));
-    }
-
     protected List<Double> getParamsAsVals(Turtle t) throws CommandCannotDoListException {
         List<Double> paramsAsDoubles = new ArrayList<>();
         for (Token currToken: parameters) {

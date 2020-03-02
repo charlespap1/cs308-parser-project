@@ -7,10 +7,11 @@ import slogo.model.code.Token;
 import slogo.model.code.exceptions.InvalidArgumentException;
 import slogo.model.code.exceptions.InvalidLoopConditionException;
 import slogo.model.code.instructions.Instruction;
+import slogo.model.code.instructions.SingleRunInstruction;
 
 import java.util.List;
 
-public class Turtles extends Instruction {
+public class Turtles extends SingleRunInstruction {
 
     private static final int numArgs = 0;
 
