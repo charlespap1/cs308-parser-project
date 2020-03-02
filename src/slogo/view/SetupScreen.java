@@ -125,9 +125,12 @@ public class SetupScreen {
 
     setText();
 
+    myTurtleStateViewer.setHeight(DrawingCanvas.CANVAS_SIDE_PADDING);
+    belowInputFieldItems.getChildren().add(myTurtleStateViewer.getView());
+
 //    root.getChildren().addAll(myDrawingCanvas.getView(), myTurtle.getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myNewCommandViewer.getView(), myVariableView.getView());
     root.getChildren().addAll(myDrawingCanvas.getView(), myTurtles.get(0).getView(), myUserInput.getView(),
-            belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myNewCommandViewer.getView(), myTurtleStateViewer.getView(),
+            belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myNewCommandViewer.getView(),
             myVariableView.getView());
     root.getChildren().addAll(myBackgroundSelector.getView(), myPenSelector.getView(), myCharacterSelector.getView(),
             myLanguageSelector.getView(), myGraphicalMover.getView());

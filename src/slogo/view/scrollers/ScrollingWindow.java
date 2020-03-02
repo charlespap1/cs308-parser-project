@@ -25,6 +25,7 @@ abstract class ScrollingWindow {
   public static final double TEXT_HOLDER_SPACING =5;
 
   protected VBox myHolder = new VBox(VBOX_SPACING);
+
   protected double myWidth = SetupScreen.WIDTH/3.0 - 2*SCROLLING_SIDE_PADDING;
   protected double myHeight = SetupScreen.HEIGHT/2.0 - SCROLLING_MIDDLE_PADDING - SCROLLING_TOP_PADDING;
   protected VBox myTextHolder = new VBox(TEXT_HOLDER_SPACING);
@@ -58,9 +59,17 @@ abstract class ScrollingWindow {
     return myHolder;
   }
 
-  public void setTitleProperty(StringProperty  sp){
+  public void setTitleProperty(StringProperty  sp) {
     myTitle.textProperty().bind(sp);
     myHolder.getChildren().add(0, myTitle);
+  }
+
+  public void setWidth(double width) {
+    this.myWidth = width;
+  }
+
+  public void setHeight(double height) {
+    this.myHeight = height;
   }
 
 
