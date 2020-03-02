@@ -50,4 +50,6 @@ public class UserCommandField {
   {
     return myTextField.getMaxWidth();
   }
+
+  public void setUserInput(String command) { myTextField.setText(command); }
 }

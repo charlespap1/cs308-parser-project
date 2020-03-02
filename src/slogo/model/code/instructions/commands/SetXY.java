@@ -27,6 +27,6 @@ public class SetXY extends Instruction {
     }
 
     public String toString(double x, double y){
-        return instrName + " " + x + ", " + y;
+        return instrName + " " + x + " " + y;
     }
 }
