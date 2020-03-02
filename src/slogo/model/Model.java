@@ -70,6 +70,8 @@ public class Model implements ModelAPI{
 
     //public Turtle getTurtle(){ return activeTurtle; }
 
+    public List<Turtle> getTurtles(){ return activeTurtles; }
+
     public ObservableList<String> getVariableList(){ return createFromString.getVariableList(); }
 
     public ObservableList<String> getNewCommandsList(){ return createFromString.getNewCommandList(); }

@@ -11,6 +11,9 @@ public class BracketOpen extends Instruction {
 
     public void execute(Turtle turtle) {}
 
+    @Override
+    public void performAction(Turtle turtle) {}
+
     public double generateValue() {
         return -1;
     }

@@ -6,9 +6,13 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import slogo.view.commonCommands.CommonCommands;
+
+import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -16,11 +20,13 @@ import slogo.view.commonCommands.CommonCommands;
  * @author Juliet, Natalie
  */
 public class Interactions implements View {
+  public static final String DEFAULT_TURTLE_IMAGE = "turtle.png";
   public static final String TITLE = "SLogo";
 
   private SetupScreen mySetup;
   private Group root;
-  private Turtle myTurtle;
+  //private Turtle myTurtle;
+  private List<Turtle> myTurtles;
   private DrawingCanvas myCanvas;
 
   public Interactions(Stage primaryStage) {
@@ -29,7 +35,8 @@ public class Interactions implements View {
     CommonCommands myCommonCommands = new CommonCommands(primaryStage, myScene, getLanguageChoice());
     mySetup.addCommonCommands(myCommonCommands);
     mySetup.setBelowCanvasButtons(e -> returnToDefaultTurtle(), e -> clearCanvas());
-    myTurtle = mySetup.getTurtle();
+//    myTurtle = mySetup.getTurtle();
+    myTurtles = mySetup.getTurtles();
     root = mySetup.getRoot();
     myCanvas = mySetup.getDrawingCanvas();
 
@@ -49,15 +56,34 @@ public class Interactions implements View {
     return mySetup.getUserInput();
   }
 
-  /**
-   * Sets the frontend turtle whenever the location is changed
-   * in the backend
-   * @param turtle
-   */
+//  /**
+//   * Sets the frontend turtle whenever the location is changed
+//   * in the backend
+//   * @param turtle
+//   */
+//  public void setTurtle(slogo.model.Turtle turtle){
+//    myTurtle.setProperties(turtle);
+//    turtle.pointProperty().addListener((o, oldVal, newVal) -> update());
+//    turtle.currCommandProperty().addListener((o, oldVal, newVal) -> mySetup.addHistory(newVal));
+//  }
   public void setTurtle(slogo.model.Turtle turtle){
-    myTurtle.setProperties(turtle);
-    turtle.pointProperty().addListener((o, oldVal, newVal) -> update());
-    turtle.currCommandProperty().addListener((o, oldVal, newVal) -> mySetup.addHistory(newVal));
+    //does nothing; just here to satisfy requirements of view
+  }
+
+  /**
+   * Sets the list of frontend turtles whenever the location of a backend turtle is changed
+   * in the backend
+   * @param turtles: a list of turtles given from the backend
+   */
+  public void setTurtles(List<slogo.model.Turtle> turtles){
+    for (int i=0; i<turtles.size(); i++){
+      if(turtles.get(i) == null) continue;
+      Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(DEFAULT_TURTLE_IMAGE)));
+      if(i>=myTurtles.size()) myTurtles.add(new Turtle(image,0,0)); //besides the image, properties don't matter on this line
+      myTurtles.get(i).setProperties(turtles.get(i));
+      turtles.get(i).pointProperty().addListener((o, oldVal, newVal) -> update());
+      turtles.get(i).currCommandProperty().addListener((o, oldVal, newVal) -> mySetup.addHistory(newVal));
+    }
   }
 
   /**
@@ -84,20 +110,40 @@ public class Interactions implements View {
   
   public ClearAction getClearAction() { return this::clearCanvas; }
 
+//  /**
+//   * Updates the movement of the turtle according to new states
+//   */
+//  private void update() {
+//    Line newLine = myTurtle.drawLineAndBound();
+//    if (newLine!=null) {
+//      root.getChildren().add(newLine);
+//      myCanvas.addLine(newLine);
+//      myTurtle.getView().toFront();
+//    }
+//  }
+
   /**
-   * Updates the movement of the turtle according to new states
+   * Updates the movement of all of the turtles according to new states
    */
   private void update() {
-    Line newLine = myTurtle.drawLineAndBound();
-    if (newLine!=null) {
-      root.getChildren().add(newLine);
-      myCanvas.addLine(newLine);
-      myTurtle.getView().toFront();
+    for(Turtle t: myTurtles) {
+      Line newLine = t.drawLineAndBound();
+      if (newLine != null) {
+        root.getChildren().add(newLine);
+        myCanvas.addLine(newLine);
+        t.getView().toFront();
+      }
     }
   }
 
+//  private void returnToDefaultTurtle() {
+//    myTurtle.returnTurtleToDefault();
+//    clearCanvas();
+//  }
+
   private void returnToDefaultTurtle() {
-    myTurtle.returnTurtleToDefault();
+    for (int i=1; i<myTurtles.size(); i++) myTurtles.remove(i);
+    myTurtles.get(0).returnTurtleToDefault();
     clearCanvas();
   }
 

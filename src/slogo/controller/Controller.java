@@ -35,7 +35,8 @@ public class Controller extends Application {
     private void makeWindow(Stage stage){
         Interactions myView = new Interactions(stage);
         Model myModel = new Model(myView.getLanguageChoice());
-        myView.setTurtle(myModel.getTurtle());
+        //myView.setTurtle(myModel.getTurtle());
+        myView.setTurtles(myModel.getTurtles());
         myView.setGoButton(e -> getInstruction(myView, myModel));
         myView.setViewLists(myModel.getVariableList(), myModel.getNewCommandsList());
         myView.setErrorMessage(myModel.getErrorMessage());
