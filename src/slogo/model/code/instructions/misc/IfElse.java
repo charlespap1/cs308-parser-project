@@ -25,8 +25,6 @@ public class IfElse extends Instruction {
         Token list2 = this.parameters.get(2);
         checkTokenNotListAndGetVal(expr, t);
         this.valueOfExecution = 0;
-        t.setCurrCommand(toString());
-        t.setCurrCommand("");
         if (expr.generateValue() != 0)
             runCommandsInList(list1, t);
         else

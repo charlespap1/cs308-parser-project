@@ -33,7 +33,5 @@ public class Tell extends Instruction {
             tt.setActive(true);
             valueOfExecution = turtleId;
         }
-        t.setCurrCommand(toString());
-        t.setCurrCommand("");
     }
 }

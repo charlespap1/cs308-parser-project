@@ -20,8 +20,6 @@ public class SetXY extends Instruction {
         double yCord = paramsAsInts.get(1);
         valueOfExecution = distFrom(xCord,yCord,t.getXPos(),t.getYPos());
         t.setLocation(xCord, -yCord);
-        t.setCurrCommand(toString(xCord, -yCord));
-        t.setCurrCommand("");
     }
 
     public String toString(double x, double y){

@@ -15,8 +15,6 @@ public class PenUp extends Instruction {
     public void performAction (Turtle t) {
         t.setPenUp(true);
         valueOfExecution = 0;
-        t.setCurrCommand(toString());
-        t.setCurrCommand("");
     }
 
     @Override

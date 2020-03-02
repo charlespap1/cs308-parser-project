@@ -14,7 +14,5 @@ public class PenDownQuery extends Instruction {
 
     public void execute (Turtle t) {
         valueOfExecution = t.getIsPenUp() ? 0 : 1;
-        t.setCurrCommand(toString());
-        t.setCurrCommand("");
     }
 }

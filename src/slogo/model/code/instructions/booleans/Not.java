@@ -18,8 +18,6 @@ public class Not extends Instruction {
         List<Double> paramsAsVals = this.getParamsAsVals(t);
         double val = paramsAsVals.get(0);
         valueOfExecution = (val == 0) ? 1 : 0;
-        t.setCurrCommand(toString(val));
-        t.setCurrCommand("");
     }
 
     public String toString(double val){

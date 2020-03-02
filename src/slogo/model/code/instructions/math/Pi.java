@@ -14,7 +14,5 @@ public class Pi extends Instruction {
 
     public void performAction (Turtle t) {
         valueOfExecution = Math.PI;
-        t.setCurrCommand(toString());
-        t.setCurrCommand("");
     }
 }

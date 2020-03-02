@@ -40,7 +40,5 @@ public class Ask extends Instruction {
                 valueOfExecution = command.generateValue();
             }
         }
-        t.setCurrCommand(toString());
-        t.setCurrCommand("");
     }
 }

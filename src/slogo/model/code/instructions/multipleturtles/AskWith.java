@@ -44,7 +44,5 @@ public class AskWith extends Instruction {
                 }
             }
         }
-        t.setCurrCommand(toString());
-        t.setCurrCommand("");
     }
 }

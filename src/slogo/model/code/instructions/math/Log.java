@@ -18,8 +18,6 @@ public class Log extends Instruction {
         List<Double> paramsAsVals = this.getParamsAsVals(t);
         double val = paramsAsVals.get(0);
         valueOfExecution = Math.log(val);
-        t.setCurrCommand(toString(val));
-        t.setCurrCommand("");
     }
 
     public String toString(double val){

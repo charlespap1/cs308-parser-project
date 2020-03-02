@@ -21,7 +21,5 @@ public class Turtles extends Instruction {
 
     public void performAction (Turtle t) throws InvalidArgumentException, InvalidLoopConditionException {
         valueOfExecution = Model.getTurtleMap().size();
-        t.setCurrCommand(toString());
-        t.setCurrCommand("");
     }
 }
