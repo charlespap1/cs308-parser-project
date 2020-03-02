@@ -1,5 +1,7 @@
 package slogo.view;
 
+import java.util.ArrayList;
+import java.util.List;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -11,7 +13,6 @@ import javafx.stage.Stage;
 import slogo.view.commonCommands.CommonCommands;
 
 import java.lang.reflect.Method;
-import java.util.List;
 
 
 /**
@@ -20,10 +21,12 @@ import java.util.List;
  */
 public class Interactions implements View {
   public static final String TITLE = "SLogo";
+  public static final String DEFAULT_TURTLE_IMAGE = "turtle.png";
 
   private SetupScreen mySetup;
   private Group root;
-  private Turtle myTurtle;
+  private List<Turtle> myTurtles = new ArrayList<>();
+  private Turtle myInitialTurtle;
   private DrawingCanvas myCanvas;
 
   public Interactions(Stage primaryStage) {
@@ -31,7 +34,8 @@ public class Interactions implements View {
     Scene myScene = mySetup.setupGame();
     CommonCommands myCommonCommands = new CommonCommands(primaryStage, myScene, getLanguageChoice());
     mySetup.addCommonCommands(myCommonCommands);
-    myTurtle = mySetup.getTurtle();
+    myInitialTurtle = mySetup.getInitialTurtle();
+    myTurtles.add(myInitialTurtle);
     root = mySetup.getRoot();
     myCanvas = mySetup.getDrawingCanvas();
 
@@ -56,10 +60,18 @@ public class Interactions implements View {
    * in the backend
    * @param turtle
    */
-  public void setTurtle(slogo.model.Turtle turtle){
-    myTurtle.setProperties(turtle);
-    turtle.pointProperty().addListener((o, oldVal, newVal) -> update());
+  public void setInitialTurtle(slogo.model.Turtle turtle){
+    myInitialTurtle.setProperties(turtle);
+    turtle.pointProperty().addListener((o, oldVal, newVal) -> update(myInitialTurtle));
     turtle.currCommandProperty().addListener((o, oldVal, newVal) -> mySetup.addHistory(newVal));
+  }
+
+  public void addTurtle(slogo.model.Turtle turtle){
+    Turtle newTurtle = mySetup.addNewTurtle();
+    myTurtles.add(newTurtle);
+    newTurtle.setProperties(turtle);
+    turtle.pointProperty().addListener((o, oldVal, newVal) -> update(newTurtle));
+    //turtle.currCommandProperty().addListener((o, oldVal, newVal) -> mySetup.addHistory(newVal));
   }
 
   /**
@@ -95,12 +107,17 @@ public class Interactions implements View {
   /**
    * Updates the movement of the turtle according to new states
    */
-  private void update() {
-    Line newLine = myTurtle.drawLineAndBound();
+  private void update(Turtle newTurtle) {
+    Line newLine = newTurtle.drawLineAndBound();
     if (newLine!=null) {
       root.getChildren().add(newLine);
       myCanvas.addLine(newLine);
-      myTurtle.getView().toFront();
+      newTurtle.getView().toFront();
     }
   }
+
+  public void setPopupButton(EventHandler<ActionEvent> showPopup) {
+    mySetup.setPopupButton(showPopup);
+  }
+
 }

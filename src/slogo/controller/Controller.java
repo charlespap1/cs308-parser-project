@@ -2,11 +2,15 @@ package slogo.controller;
 
 import java.util.ResourceBundle;
 
+import java.io.File;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import slogo.model.Model;
 import slogo.view.Interactions;
 import slogo.view.DisplayAction;
+import slogo.view.popup.LoadConfigPopup;
 
 /**
  * Main method where the GUI comes together
@@ -32,16 +36,33 @@ public class Controller extends Application {
         makeWindow(new Stage());
     }
 
+    private void showPopUp(Stage currentStage, Model myModel){
+        LoadConfigPopup popup = new LoadConfigPopup();
+        popup.getMyPopup().show(currentStage);
+        EventHandler<ActionEvent> e = new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent event) {
+                executeTextFile(popup.getFile(), myModel);
+                popup.getMyPopup().hide();
+            }
+        };
+        popup.setPopupButton(e);
+    }
+
     private void makeWindow(Stage stage){
         Interactions myView = new Interactions(stage);
         Model myModel = new Model(myView.getLanguageChoice());
-        myView.setTurtle(myModel.getTurtle());
+        myView.setInitialTurtle(myModel.getTurtle());
         myView.setGoButton(e -> getInstruction(myView, myModel));
         myView.setViewLists(myModel.getVariableList(), myModel.getNewCommandsList());
         myView.setErrorMessage(myModel.getErrorMessage());
         myView.setNewWindowButton(e -> makeNewWindow());
         setupCommands(myView, myModel);
+        myView.setPopupButton(e -> showPopUp(stage, myModel));
+        //TODO: add listener for method tell command
+        //myView.add(turtle);
     }
+
+
 
 
     /**
@@ -55,12 +76,16 @@ public class Controller extends Application {
         model.executeCode(input);
     }
 
-    private void setupCommands(Interactions view, Model model){
+    private void setupCommands(Interactions view, Model model) {
         ResourceBundle rb = ResourceBundle.getBundle(RESOURCES_PATH);
-        for (String key:rb.keySet()){
+        for (String key : rb.keySet()) {
             String methodName = rb.getString(key);
             DisplayAction action = view.getAction(methodName);
             model.setAction(key, action);
         }
+    }
+
+    private void executeTextFile(File f, Model model) throws NullPointerException {
+        model.executeCode(f);
     }
 }

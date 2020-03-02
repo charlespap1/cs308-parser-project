@@ -1,5 +1,7 @@
 package slogo.view;
 
+import java.util.ArrayList;
+import java.util.List;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -35,13 +37,15 @@ import slogo.view.selectors.TurtleFaceSelector;
 public class SetupScreen {
 
   public static final String DEFAULT_TURTLE_IMAGE = "turtle.png";
+  public static final String MAIN_STYLESHEET = "main.css";
+
   public static final double BOX_SPACING = 10;
   public static final int WIDTH = 1000;
-  public static final int HEIGHT = 700;
+  public static final int HEIGHT = 720;
   public static final Paint BACKGROUND = Color.AZURE;
   public static final double BUTTON_HEIGHT_OFFSET = 40;
   public static final double GRAPHICAL_VIEWER_HEIGHT_OFFSET = 30;
-  public static final double CHARACTER_TYPE_OFFSET = 120;
+  public static final double CHARACTER_TYPE_OFFSET = 100;
   public static final double COMMON_COMMAND_BUTTON_HEIGHT_OFFSET = 15;
   public static final double COMMON_COMMAND_BUTTON_WIDTH_OFFSET = 225;
   public static final int COMMAND_COLUMN = 1;
@@ -63,17 +67,19 @@ public class SetupScreen {
   public static final String NEW_WINDOW_BUTTON_KEY = "NewWindowButton";
   public static final String PEN_UP_BUTTON_KEY = "PenUpButton";
   public static final String PEN_DOWN_BUTTON_KEY = "PenDownButton";
+  private static final String NEW_CONFIG_BUTTON_KEY = "NewConfigButton";
 
 
   private UserCommandField myUserInput = new UserCommandField(WIDTH, HEIGHT);
   private Group root = new Group();
-  private Turtle myTurtle;
+  private List<Turtle> myTurtles;
   private DrawingCanvas myDrawingCanvas = new DrawingCanvas(WIDTH, HEIGHT);
   private Button myGo;
   private Button myClear;
   private Button myStop;
   private Button myCommandJumper;
   private Button myNewWindow;
+  private Button myNewConfig;
   private HistoryCanvas myHistory = new HistoryCanvas(COMMAND_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING);
   private ListViewer myNewCommandViewer = new ListViewer(LIST_VIEW_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING, this::setInputText);
   private ListViewer myVariableView = new ListViewer(LIST_VIEW_COLUMN, HEIGHT/2.0, this::setInputText);
@@ -96,22 +102,23 @@ public class SetupScreen {
    * @return
    */
   public Scene setupGame() {
-    //languageHelper = new LanguageHelper(language);
 
     //TODO: error handling if image not found
     Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(DEFAULT_TURTLE_IMAGE)));
-    myTurtle = new Turtle(image, myDrawingCanvas.getWidth(), myDrawingCanvas.getHeight());
+    Turtle originalTurtle = new Turtle(image, myDrawingCanvas.getWidth(), myDrawingCanvas.getHeight());
+    myTurtles = new ArrayList<>();
+    myTurtles.add(originalTurtle);
 
-    setupBox(belowInputFieldItems, UserCommandField.FIELD_SIDE_PADDING*3 + myUserInput.getWidth(), DrawingCanvas.CANVAS_TOP_PADDING + myDrawingCanvas.getHeight() + BOX_SPACING, myDrawingCanvas.getWidth());
+    setupBox(belowInputFieldItems, UserCommandField.FIELD_SIDE_PADDING*3 + myUserInput.getWidth(), DrawingCanvas.CANVAS_TOP_PADDING + myDrawingCanvas.getHeight() + BOX_SPACING*5, myDrawingCanvas.getWidth());
     setupBox(belowCanvasButtons, DrawingCanvas.CANVAS_SIDE_PADDING, DrawingCanvas.CANVAS_TOP_PADDING + myDrawingCanvas.getHeight() + BOX_SPACING, myDrawingCanvas.getWidth());
     setButtons();
     setSelectors();
 
-    myGraphicalMover = new TurtleGraphicalMover(myTurtle, myBackgroundSelector.getView().getLayoutX(), myBackgroundSelector.getView().getLayoutY() + GRAPHICAL_VIEWER_HEIGHT_OFFSET);
+    myGraphicalMover = new TurtleGraphicalMover(myTurtles.get(0), myBackgroundSelector.getView().getLayoutX(), myBackgroundSelector.getView().getLayoutY() + GRAPHICAL_VIEWER_HEIGHT_OFFSET);
 
     setText();
 
-    root.getChildren().addAll(myDrawingCanvas.getView(), myTurtle.getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myNewCommandViewer.getView(), myVariableView.getView());
+    root.getChildren().addAll(myDrawingCanvas.getView(), myTurtles.get(0).getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myNewCommandViewer.getView(), myVariableView.getView());
     root.getChildren().addAll(myBackgroundSelector.getView(), myPenSelector.getView(), myCharacterSelector.getView(), myLanguageSelector.getView(), myGraphicalMover.getView());
 
     myCurrentErrorMessage.setLayoutX(myVariableView.getView().getLayoutX());
@@ -119,7 +126,10 @@ public class SetupScreen {
 
     root.getChildren().add(myCurrentErrorMessage);
 
-    return new Scene(root, WIDTH, HEIGHT, BACKGROUND);
+    Scene scene = new Scene(root, WIDTH, HEIGHT, BACKGROUND);
+    scene.getStylesheets().add(getClass().getClassLoader().getResource(MAIN_STYLESHEET).toExternalForm());
+
+    return scene;
   }
 
   /**
@@ -135,11 +145,21 @@ public class SetupScreen {
     root.getChildren().add(myCommandJumper);
   }
 
+  public Turtle addNewTurtle()
+  {
+    Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(DEFAULT_TURTLE_IMAGE)));
+    Turtle newTurtle = new Turtle(image, myDrawingCanvas.getWidth(), myDrawingCanvas.getHeight());
+    myTurtles = new ArrayList<>();
+    myTurtles.add(newTurtle);
+    root.getChildren().add(newTurtle.getView());
+    return newTurtle;
+  }
+
   /**
    * Getter methods necessary to access these elements in the Main class
    * @return a turtle
    */
-  public Turtle getTurtle() { return myTurtle; }
+  public Turtle getInitialTurtle() { return myTurtles.get(0); }
 
   public void setInputText(String command) { myUserInput.setUserInput(command); }
 
@@ -199,21 +219,29 @@ public class SetupScreen {
     myStop.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
     belowCanvasButtons.getChildren().add(myStop);
     myStop.setOnAction(e -> {
-      myTurtle.returnTurtleToDefault();
+      for(Turtle t : myTurtles)
+      {
+        t.returnTurtleToDefault();
+      }
       clearScreen(null);
     });
 
+    HBox newWindowButtons = new HBox(BOX_SPACING);
+    myNewConfig = new Button();
+
     myNewWindow = new Button();
-    myNewWindow.setLayoutY(COMMON_COMMAND_BUTTON_HEIGHT_OFFSET);
-    myNewWindow.setLayoutX(WIDTH/2 - BUTTON_HEIGHT_OFFSET);
-    root.getChildren().add(myNewWindow);
+    newWindowButtons.setLayoutY(COMMON_COMMAND_BUTTON_HEIGHT_OFFSET);
+    newWindowButtons.setLayoutX(WIDTH/2 - BUTTON_HEIGHT_OFFSET*3);
+    newWindowButtons.getChildren().addAll(myNewWindow, myNewConfig);
+
+    root.getChildren().add(newWindowButtons);
 
   }
 
   private void setSelectors() {
     myBackgroundSelector = new BackgroundSelector(myDrawingCanvas, belowCanvasButtons.getLayoutX(), belowCanvasButtons.getLayoutY()+ BUTTON_HEIGHT_OFFSET);
-    myCharacterSelector = new TurtleFaceSelector(myTurtle, myVariableView.getView().getLayoutX(), belowInputFieldItems.getLayoutY() + CHARACTER_TYPE_OFFSET);
-    myPenSelector = new PenSelector(myTurtle, belowInputFieldItems.getLayoutX(), belowInputFieldItems.getLayoutY() + BUTTON_HEIGHT_OFFSET);
+    myCharacterSelector = new TurtleFaceSelector(myTurtles.get(0), myVariableView.getView().getLayoutX(), belowInputFieldItems.getLayoutY() + CHARACTER_TYPE_OFFSET);
+    myPenSelector = new PenSelector(myTurtles.get(0), belowInputFieldItems.getLayoutX(), belowInputFieldItems.getLayoutY() + BUTTON_HEIGHT_OFFSET);
     myLanguageSelector = new LanguageSelector(DrawingCanvas.CANVAS_SIDE_PADDING, DrawingCanvas.CANVAS_TOP_PADDING/4);
   }
 
@@ -224,7 +252,7 @@ public class SetupScreen {
     myClear.textProperty().bind(languageHelper.getStringProperty(CLEAR_BUTTON_KEY));
     myStop.textProperty().bind(languageHelper.getStringProperty(STOP_BUTTON_KEY));
     myNewWindow.textProperty().bind(languageHelper.getStringProperty(NEW_WINDOW_BUTTON_KEY));
-
+    myNewConfig.textProperty().bind(languageHelper.getStringProperty(NEW_CONFIG_BUTTON_KEY));
 
     myVariableView.setTitleProperty(languageHelper.getStringProperty(VARIABLE_TITLE_KEY));
     myNewCommandViewer.setTitleProperty(languageHelper.getStringProperty(NEW_COMMAND_TITLE_KEY));
@@ -239,4 +267,7 @@ public class SetupScreen {
 
   }
 
+  public void setPopupButton(EventHandler<ActionEvent> showPopup) {
+    myNewConfig.setOnAction(showPopup);
+  }
 }
