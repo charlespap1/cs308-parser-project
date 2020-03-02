@@ -9,21 +9,17 @@ import slogo.model.code.ListSyntax;
 import slogo.model.code.NewCommandName;
 import slogo.model.code.Token;
 import slogo.model.code.exceptions.InvalidCommandException;
-import slogo.model.code.exceptions.InvalidLoopConditionException;
 import slogo.model.code.exceptions.InvalidNumberArgumentsException;
 import slogo.model.code.exceptions.LanguageFileNotFoundException;
-import slogo.model.code.exceptions.CommandCannotDoListException;
-import slogo.model.code.exceptions.SyntaxException;
 import slogo.model.code.instructions.Instruction;
 import slogo.model.code.instructions.misc.To;
-import slogo.model.code.instructions.multipleturtles.Ask;
-import slogo.model.code.instructions.multipleturtles.AskWith;
-import slogo.model.code.instructions.multipleturtles.Tell;
 import slogo.model.parse.CodeFactory;
 import slogo.model.parse.RegexHandler;
-import slogo.view.ClearAction;
+import slogo.view.CommandAction;
+import slogo.view.DisplayAction;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class Model implements ModelAPI{
@@ -68,15 +64,13 @@ public class Model implements ModelAPI{
 
     }
 
-    //public Turtle getTurtle(){ return activeTurtle; }
+    public Turtle getTurtle(){ return turtleMap.get(1); }
 
     public ObservableList<String> getVariableList(){ return createFromString.getVariableList(); }
 
     public ObservableList<String> getNewCommandsList(){ return createFromString.getNewCommandList(); }
 
     public StringProperty getErrorMessage(){ return errorMessage; }
-
-    public void setClearAction(ClearAction action){ createFromString.setClearAction(action); }
 
     private void setupLanguage(StringProperty language) {
         try {
@@ -102,6 +96,10 @@ public class Model implements ModelAPI{
 
     public static Map<Integer, Turtle> getTurtleMap() {
         return turtleMap;
+    }
+
+    public void setAction(String key, DisplayAction action){
+        createFromString.addAction(key, action);
     }
 
     private void parseInstructions(String rawString){
@@ -135,7 +133,7 @@ public class Model implements ModelAPI{
         }
     }
 
-    private void addArgumentToStack(Token currItem) {
+    private void addArgumentToStack(Token currItem) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         if (arguments.isEmpty() && commands.isEmpty()) {
             throw new InvalidNumberArgumentsException();
         }
@@ -143,7 +141,7 @@ public class Model implements ModelAPI{
         attemptToCreateFullInstruction();
     }
 
-    private void addInstructionToStack(Instruction currInstr){
+    private void addInstructionToStack(Instruction currInstr) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         if (currInstr.numRequiredArgs() == 0) {
             if (commands.isEmpty()) {
                 currInstr.execute(activeTurtles);
@@ -157,7 +155,7 @@ public class Model implements ModelAPI{
         }
     }
 
-    private void attemptToCreateFullInstruction() {
+    private void attemptToCreateFullInstruction() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         Instruction currCommand = (Instruction) commands.peek();
         if (enoughArgs(currCommand.numRequiredArgs())) {
             if (currCommand instanceof BracketOpen) {

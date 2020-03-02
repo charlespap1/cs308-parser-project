@@ -4,12 +4,12 @@ import slogo.model.Turtle;
 import slogo.model.code.ListSyntax;
 import slogo.model.code.Token;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import slogo.model.code.exceptions.CommandCannotDoListException;
 
 public abstract class Instruction implements Token {
-    // TODO: hard coded text
 
     protected List<Token> parameters = null;
     protected String instrName = "";

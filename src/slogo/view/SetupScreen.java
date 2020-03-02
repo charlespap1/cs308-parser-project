@@ -18,6 +18,7 @@ import slogo.view.commonCommands.CommonCommands;
 import slogo.view.scrollers.HistoryCanvas;
 import slogo.view.scrollers.ListViewer;
 
+import java.util.List;
 import java.util.Objects;
 
 import slogo.view.selectors.BackgroundSelector;
@@ -46,7 +47,6 @@ public class SetupScreen {
   public static final int COMMAND_COLUMN = 1;
   public static final int LIST_VIEW_COLUMN = 2;
   public static final int ERROR_MESSAGE_PADDING = 250;
-  //TODO: hard coded text
   public static final String VARIABLE_TITLE_KEY = "VariableTitleText";
   public static final String HISTORY_TITLE_KEY = "HistoryTitleText";
   public static final String NEW_COMMAND_TITLE_KEY = "NewCommandTitleText";
@@ -164,16 +164,17 @@ public class SetupScreen {
 
   public StringProperty getLanguageChoice() { return myLanguageSelector.getLanguageChoiceProperty(); }
 
-  public void clearHistory() { myHistory.clearHistory(); }
-
-  /**
-   * Gives all of the buttons below the canvas their functions
-   * @param stopAction
-   * @param clearAction
-   */
-  public void setBelowCanvasButtons(EventHandler<ActionEvent> stopAction, EventHandler<ActionEvent> clearAction) {
-    myStop.setOnAction(stopAction);
-    myClear.setOnAction(clearAction);
+  public int setPenColor(List<Integer> params){return 0;}
+  public int setBackground(List<Integer> params){return 0;}
+  public int setPenThickness(List<Integer> params){return 0;}
+  public int setTurtleImage(List<Integer> params){return 0;}
+  public int setPalette(List<Integer> params){return 0;}
+  public int getPenColor(List<Integer> params) { return 0;}
+  public int getShape(List<Integer> params) { return 0; }
+  public int clearScreen(List<Integer> params) {
+    myHistory.clearHistory();
+    root.getChildren().removeAll(myDrawingCanvas.getLines());
+    return 0;
   }
 
   private void setupBox(Pane box, double x, double y, double width){
@@ -190,10 +191,15 @@ public class SetupScreen {
     myClear = new Button();
     myClear.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
     belowCanvasButtons.getChildren().add(myClear);
+    myClear.setOnAction(e -> clearScreen(null));
 
     myStop = new Button();
     myStop.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
     belowCanvasButtons.getChildren().add(myStop);
+    myStop.setOnAction(e -> {
+      myTurtle.returnTurtleToDefault();
+      clearScreen(null);
+    });
 
     myNewWindow = new Button();
     myNewWindow.setLayoutY(COMMON_COMMAND_BUTTON_HEIGHT_OFFSET);
