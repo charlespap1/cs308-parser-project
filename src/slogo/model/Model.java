@@ -15,7 +15,6 @@ import slogo.model.code.instructions.Instruction;
 import slogo.model.code.instructions.misc.To;
 import slogo.model.parse.CodeFactory;
 import slogo.model.parse.RegexHandler;
-import slogo.view.CommandAction;
 import slogo.view.DisplayAction;
 
 import java.io.File;

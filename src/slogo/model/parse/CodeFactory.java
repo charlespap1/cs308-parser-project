@@ -8,10 +8,8 @@ import slogo.model.code.Variable;
 import slogo.model.code.exceptions.LanguageFileNotFoundException;
 import slogo.model.code.exceptions.SyntaxException;
 import slogo.model.code.instructions.*;
-import slogo.model.code.instructions.commands.ClearScreen;
 import slogo.model.code.instructions.display.DisplayCommand;
 import slogo.model.code.instructions.misc.To;
-import slogo.view.CommandAction;
 import slogo.view.DisplayAction;
 
 import java.lang.reflect.Constructor;

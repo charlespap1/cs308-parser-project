@@ -75,8 +75,8 @@ public class SetupScreen {
   private Button myCommandJumper;
   private Button myNewWindow;
   private HistoryCanvas myHistory = new HistoryCanvas(COMMAND_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING);
-  private ListViewer myNewCommandViewer = new ListViewer(LIST_VIEW_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING);
-  private ListViewer myVariableView = new ListViewer(LIST_VIEW_COLUMN, HEIGHT/2.0);
+  private ListViewer myNewCommandViewer = new ListViewer(LIST_VIEW_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING, this::setInputText);
+  private ListViewer myVariableView = new ListViewer(LIST_VIEW_COLUMN, HEIGHT/2.0, this::setInputText);
 
   private BackgroundSelector myBackgroundSelector;
   private TurtleFaceSelector myCharacterSelector;
@@ -137,9 +137,11 @@ public class SetupScreen {
 
   /**
    * Getter methods necessary to access these elements in the Main class
-   * @return
+   * @return a turtle
    */
   public Turtle getTurtle() { return myTurtle; }
+
+  public void setInputText(String command) { myUserInput.setUserInput(command); }
 
   public String getUserInput() { return myUserInput.getUserInput(); }
 
