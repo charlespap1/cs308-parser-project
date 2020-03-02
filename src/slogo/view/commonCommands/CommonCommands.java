@@ -29,6 +29,7 @@ public class CommonCommands {
   public static final double BUTTON_PADDING = 10;
   public static final double TOP_PADDING = 30 + BUTTON_PADDING;
   private static final double HYPERLINK_PADDING = 150;
+  public static final String MAIN_STYLESHEET = "main.css";
 
   private Scene myPrevious;
   private Stage myStage;
@@ -91,7 +92,11 @@ public class CommonCommands {
     setHyperlink(myRoot);
 
     myRoot.getChildren().addAll(turtleCommands.getView(), turtleQueries.getView(), mathOps.getView(), boolOps.getView(), backButton);
-    return new Scene(myRoot, width, height, background);
+
+    Scene scene = new Scene(myRoot, width, height, background);
+    scene.getStylesheets().add(getClass().getClassLoader().getResource(MAIN_STYLESHEET).toExternalForm());
+
+    return scene;
   }
 
   public void setHyperlinkText(StringProperty  sp){

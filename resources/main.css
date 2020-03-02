@@ -1,4 +1,95 @@
 .button {
-  -fx-text-fill: #002f2f;
-  -fx-background-color: #f7f9ee;
+  -fx-background-color: #dcecf9;
+  -fx-text-fill: black;
+  -fx-font-family: 'Comic Sans MS';
+  -fx-border-color: #ADD8E6;
+  -fx-border-width: 0 2 2 0;
 }
+
+.button:hover{
+  -fx-background-color: rgba(255, 159, 248, 0.12);
+}
+
+.root{
+  -fx-font-family: 'Comic Sans MS';
+  -fx-text-fill: #8bb6c4;
+}
+
+
+.slider .track{
+  -fx-background-color: #ADD8E6;
+  -fx-font-family: 'Comic Sans MS';
+}
+
+
+.slider .thumb{
+  -fx-background-color: #00008B;
+  -fx-font-family: 'Comic Sans MS';
+}
+
+.slider .axis{
+  -fx-tick-label-fill: #00008B;
+  -fx-tick-label-font-family: 'Comic Sans MS';
+}
+
+.slider .axis .axis-tick-mark, .slider .axis .axis-minor-tick-mark{
+  -fx-stroke: #00008B;
+}
+
+.list-view {
+  -fx-background-color: #dcecf9;
+  -fx-text-fill: #8bb6c4;
+}
+.scroll-bar {
+  -fx-background-color: #8bb6c4;
+}
+
+.scroll-bar .thumb{
+  -fx-background-color: #dcecf9;
+}
+
+.scroll-bar .thumb:hover{
+  -fx-background-color: rgba(255, 246, 254, 0.83);
+}
+
+.list-view {
+  -fx-background-color: #dcecf9;
+  -fx-font-family: 'Comic Sans MS';
+  -fx-text-fill: black;
+}
+
+
+.list-view .list-cell:odd {
+  -fx-background-color: #dcecf9;
+  -fx-font-family: 'Comic Sans MS';
+  -fx-text-fill: black;
+}
+.list-view .list-cell:even {
+  -fx-background-color: #b9d7ea;
+  -fx-text-fill: black;
+}
+
+.list-view .list-cell:hover {
+  -fx-background-color: rgba(255, 159, 248, 0.12);
+}
+
+
+.radio-button:selected .radio .dot {
+  -fx-background-color: #8bb6c4;
+  -fx-background-insets: 0;
+}
+
+.radio-button .radio {
+  -fx-background-color: #dcecf9;
+}
+
+.scroll-pane{
+   -fx-background-color: #dcecf9;
+ }
+
+.combo-box{
+  -fx-background-color: #dcecf9;
+}
+
+
+

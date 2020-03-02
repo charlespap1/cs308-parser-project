@@ -1,6 +1,8 @@
 package slogo.controller;
 
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.sql.SQLOutput;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -36,28 +38,29 @@ public class Controller extends Application {
         makeWindow(new Stage());
     }
 
-    private void showPopUp(Stage currentStage){
+    private void showPopUp(Stage currentStage, Model myModel){
         LoadConfigPopup popup = new LoadConfigPopup();
         popup.getMyPopup().show(currentStage);
         EventHandler<ActionEvent> e = new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent event) {
-                makeNewWindow();
+                getTextFile(popup.getFile(), myModel);
                 popup.getMyPopup().hide();
             }
         };
-        popup.setLoadButton(e);
+        popup.setPopupButton(e);
     }
 
     private void makeWindow(Stage stage){
         Interactions myView = new Interactions(stage);
         Model myModel = new Model(myView.getLanguageChoice());
-        myView.setTurtle(myModel.getTurtle());
+        myView.setInitialTurtle(myModel.getTurtle());
         myView.setGoButton(e -> getInstruction(myView, myModel));
         myView.setViewLists(myModel.getVariableList(), myModel.getNewCommandsList());
         myView.setErrorMessage(myModel.getErrorMessage());
         myView.setNewWindowButton(e -> makeNewWindow());
-        myView.setPopupButton(e -> showPopUp(stage));
+        myView.setPopupButton(e -> showPopUp(stage, myModel));
         myModel.setClearAction(myView.getClearAction());
+        //TODO: add listener for method tell command
     }
 
 
@@ -73,5 +76,10 @@ public class Controller extends Application {
         // TODO: error handling when receiving null pointer or if execute code throws error
         String input = view.getInstruction();
         model.executeCode(input);
+    }
+
+
+    private void getTextFile(File f, Model model) throws NullPointerException {
+        model.executeCode(f);
     }
 }

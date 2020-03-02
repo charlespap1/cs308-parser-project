@@ -1,5 +1,7 @@
 package slogo.view.popup;
 
+import java.awt.event.ActionListener;
+import java.io.File;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -60,7 +62,6 @@ public class LoadConfigPopup {
 
   private void setButton() {
     myLoad = new Button("Load");
-    //myLoad.setOnAction(e -> myPopup.hide());
   }
 
   /*public void setPromptProperty(StringProperty sp){
@@ -74,9 +75,17 @@ public class LoadConfigPopup {
     return myPopup;
   }
 
-  public void setLoadButton(EventHandler<ActionEvent> load)
+  public void setPopupButton(EventHandler<ActionEvent> e)
   {
-    myLoad.setOnAction(load);
+    myLoad.setOnAction(e);
   }
+
+  public File getFile()
+  {
+    //System.out.println((getClass().getClassLoader().getResource("textFile.txt").toExternalForm()));
+    String path = (getClass().getClassLoader().getResource("textFile.txt").toExternalForm());
+    return new File(path);
+  }
+
 
 }
