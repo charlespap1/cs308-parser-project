@@ -23,7 +23,7 @@ public class To extends Instruction {
         myFunction = function;
     }
 
-    public void execute(Turtle turtle) {
+    public void performAction(Turtle turtle) {
         String name = parameters.get(0).toString();
         Token list1 = parameters.get(1);
         Token list2 = parameters.get(2);

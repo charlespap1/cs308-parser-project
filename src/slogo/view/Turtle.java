@@ -33,6 +33,7 @@ public class Turtle {
   private BooleanProperty visible = new SimpleBooleanProperty();
   private double currX;
   private double currY;
+  private int penThickness = 1;
 
   private Color penColor = DEFAULT_PEN_COLOR;
 
@@ -63,7 +64,7 @@ public class Turtle {
     x.bindBidirectional(turtle.turtleXProperty());
     y.bindBidirectional(turtle.turtleYProperty());
     angle.bindBidirectional(turtle.turtleAngleProperty());
-    penUp.bind(turtle.penUpProperty());
+    penUp.bindBidirectional(turtle.penUpProperty());
     visible.bind(turtle.visibleProperty());
     coordinates.bindBidirectional(turtle.pointProperty());
     currX = x.getValue();
@@ -95,6 +96,20 @@ public class Turtle {
     return line;
   }
 
+  public double getXPos() {
+    return x.getValue();
+  }
+
+  public void setLocation(double x, double y) {
+    this.x.setValue(x);
+    this.y.setValue(y);
+    coordinates.setValue(new Point2D.Double(x, y));
+  }
+
+  public double getYPos() {
+    return y.getValue();
+  }
+
   /**
    * Allows the Main class to get the image body of the turtle to display
    * @return
@@ -113,10 +128,27 @@ public class Turtle {
    */
   public void changePenColor(Color color) { penColor = color; }
 
+  public void setPenUp(boolean isPenUp)
+  {
+    this.penUp.set(isPenUp);
+  }
+
+  public void setThickness(int newThickness)
+  {
+    penThickness = newThickness;
+  }
+
+  public boolean getPenUp()
+  {
+    return this.penUp.get();
+  }
+
+
   private Line drawLine(){
     Line line = null;
     if (!penUp.getValue()) {
       line = new Line(currX + centerX, currY + centerY, x.getValue() + centerX, y.getValue() + centerY);
+      line.setStrokeWidth(penThickness);
       line.setStroke(penColor);
     }
     currX = x.getValue();

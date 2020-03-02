@@ -18,7 +18,7 @@ public class Repeat extends Instruction {
         this.instrName = name;
     }
 
-    public void execute (Turtle t) {
+    public void performAction (Turtle t) {
         Token expr = this.parameters.get(0);
         double numRepeats = checkTokenNotListAndGetVal(expr, t);
         Token list = this.parameters.get(1);
@@ -34,7 +34,7 @@ public class Repeat extends Instruction {
                 if (!(command instanceof Instruction)) {
                     throw new InvalidLoopConditionException();
                 }
-                ((Instruction) command).execute(t);
+                ((Instruction) command).performAction(t);
                 this.valueOfExecution = command.generateValue();
             }
         }

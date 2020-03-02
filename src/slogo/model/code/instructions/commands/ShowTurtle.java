@@ -12,7 +12,7 @@ public class ShowTurtle extends Instruction {
         instrName = name;
     }
 
-    public void execute (Turtle t) {
+    public void performAction (Turtle t) {
         t.setVisible(true);
         valueOfExecution = 1;
         t.setCurrCommand(toString());

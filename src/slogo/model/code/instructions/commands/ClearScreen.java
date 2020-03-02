@@ -20,13 +20,17 @@ public class ClearScreen extends Instruction {
         clearAction = action;
     }
 
-    public void execute (Turtle t) {
+    public void performAction (Turtle t) {
         valueOfExecution = distFrom(t.getXPos(),t.getYPos(),HOME_X,HOME_Y);
         t.setLocation(HOME_X, HOME_Y);
         t.setAngle(DEFAULT_ROTATION);
         t.setCurrCommand(toString());
         t.setCurrCommand("");
         clearAction.execute();
+    }
+
+    private double distFrom(double x, double y, double x2, double y2){
+        return Math.sqrt(Math.pow(x2 - x,2) + Math.pow(y2 - y,2));
     }
 
     @Override

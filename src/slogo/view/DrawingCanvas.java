@@ -17,7 +17,7 @@ import javafx.util.Pair;
 public class DrawingCanvas {
 
   public static final double CANVAS_TOP_PADDING = 50;
-  public static final double CANVAS_BOTTOM_PADDING = 75;
+  public static final double CANVAS_BOTTOM_PADDING = 175;
   public static final double CANVAS_SIDE_PADDING = 10;
   public static final double ARC_RADIUS = 10;
   public static final Color BACKGROUND_COLOR = Color.WHITE;

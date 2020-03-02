@@ -2,10 +2,11 @@ package slogo.model.code.instructions.math;
 
 import slogo.model.Turtle;
 import slogo.model.code.instructions.Instruction;
+import slogo.model.code.instructions.SingleRunInstruction;
 
 import java.util.List;
 
-public class Random extends Instruction {
+public class Random extends SingleRunInstruction {
 
     private static final int numArgs = 1;
 
@@ -14,7 +15,7 @@ public class Random extends Instruction {
         instrName = name;
     }
 
-    public void execute (Turtle t) {
+    public void performAction (Turtle t) {
         List<Double> paramsAsVals = this.getParamsAsVals(t);
         double max = paramsAsVals.get(0);
         valueOfExecution = Math.random() * max;

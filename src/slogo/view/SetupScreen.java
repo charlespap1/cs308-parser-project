@@ -36,9 +36,11 @@ public class SetupScreen {
   public static final String DEFAULT_TURTLE_IMAGE = "turtle.png";
   public static final double BOX_SPACING = 10;
   public static final int WIDTH = 1000;
-  public static final int HEIGHT = 600;
+  public static final int HEIGHT = 700;
   public static final Paint BACKGROUND = Color.AZURE;
   public static final double BUTTON_HEIGHT_OFFSET = 40;
+  public static final double GRAPHICAL_VIEWER_HEIGHT_OFFSET = 30;
+  public static final double CHARACTER_TYPE_OFFSET = 120;
   public static final double COMMON_COMMAND_BUTTON_HEIGHT_OFFSET = 15;
   public static final double COMMON_COMMAND_BUTTON_WIDTH_OFFSET = 225;
   public static final int COMMAND_COLUMN = 1;
@@ -59,6 +61,9 @@ public class SetupScreen {
   public static final String CLEAR_BUTTON_KEY = "ClearButton";
   public static final String STOP_BUTTON_KEY = "StopButton";
   public static final String NEW_WINDOW_BUTTON_KEY = "NewWindowButton";
+  public static final String PEN_UP_BUTTON_KEY = "PenUpButton";
+  public static final String PEN_DOWN_BUTTON_KEY = "PenDownButton";
+
 
   private UserCommandField myUserInput = new UserCommandField(WIDTH, HEIGHT);
   private Group root = new Group();
@@ -83,6 +88,7 @@ public class SetupScreen {
   private HBox belowCanvasButtons = new HBox(BOX_SPACING);
 
   private LanguageHelper languageHelper;
+  private TurtleGraphicalMover myGraphicalMover;
 
   /**
    * Sets up all of the visual elements so that
@@ -100,10 +106,13 @@ public class SetupScreen {
     setupBox(belowCanvasButtons, DrawingCanvas.CANVAS_SIDE_PADDING, DrawingCanvas.CANVAS_TOP_PADDING + myDrawingCanvas.getHeight() + BOX_SPACING, myDrawingCanvas.getWidth());
     setButtons();
     setSelectors();
+
+    myGraphicalMover = new TurtleGraphicalMover(myTurtle, myBackgroundSelector.getView().getLayoutX(), myBackgroundSelector.getView().getLayoutY() + GRAPHICAL_VIEWER_HEIGHT_OFFSET);
+
     setText();
 
     root.getChildren().addAll(myDrawingCanvas.getView(), myTurtle.getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myNewCommandViewer.getView(), myVariableView.getView());
-    root.getChildren().addAll(myBackgroundSelector.getView(), myPenSelector.getView(), myCharacterSelector.getView(), myLanguageSelector.getView());
+    root.getChildren().addAll(myBackgroundSelector.getView(), myPenSelector.getView(), myCharacterSelector.getView(), myLanguageSelector.getView(), myGraphicalMover.getView());
 
     myCurrentErrorMessage.setLayoutX(myVariableView.getView().getLayoutX());
     myCurrentErrorMessage.setLayoutY(myVariableView.getView().getLayoutY() + ERROR_MESSAGE_PADDING);
@@ -195,7 +204,7 @@ public class SetupScreen {
 
   private void setSelectors() {
     myBackgroundSelector = new BackgroundSelector(myDrawingCanvas, belowCanvasButtons.getLayoutX(), belowCanvasButtons.getLayoutY()+ BUTTON_HEIGHT_OFFSET);
-    myCharacterSelector = new TurtleFaceSelector(myTurtle, myVariableView.getView().getLayoutX(), belowInputFieldItems.getLayoutY() + BUTTON_HEIGHT_OFFSET);
+    myCharacterSelector = new TurtleFaceSelector(myTurtle, myVariableView.getView().getLayoutX(), belowInputFieldItems.getLayoutY() + CHARACTER_TYPE_OFFSET);
     myPenSelector = new PenSelector(myTurtle, belowInputFieldItems.getLayoutX(), belowInputFieldItems.getLayoutY() + BUTTON_HEIGHT_OFFSET);
     myLanguageSelector = new LanguageSelector(DrawingCanvas.CANVAS_SIDE_PADDING, DrawingCanvas.CANVAS_TOP_PADDING/4);
   }
@@ -218,6 +227,7 @@ public class SetupScreen {
     myCharacterSelector.setTitleProperty(languageHelper.getStringProperty(TURTLE_SELECTOR_TEXT_KEY));
 
     myLanguageSelector.setTitleProperty(languageHelper.getStringProperty(LANGUAGE_SELECTOR_TEXT_KEY));
+    myGraphicalMover.setPenLabelProperty(languageHelper.getStringProperty(PEN_UP_BUTTON_KEY), languageHelper.getStringProperty(PEN_DOWN_BUTTON_KEY));
 
   }
 

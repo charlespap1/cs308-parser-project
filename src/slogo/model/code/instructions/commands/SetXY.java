@@ -14,7 +14,7 @@ public class SetXY extends Instruction {
         instrName = name;
     }
 
-    public void execute (Turtle t) {
+    public void performAction (Turtle t) {
         List<Double> paramsAsInts = getParamsAsVals(t);
         double xCord = paramsAsInts.get(0);
         double yCord = paramsAsInts.get(1);
@@ -22,6 +22,10 @@ public class SetXY extends Instruction {
         t.setLocation(xCord, -yCord);
         t.setCurrCommand(toString(xCord, -yCord));
         t.setCurrCommand("");
+    }
+
+    private double distFrom(double x, double y, double x2, double y2){
+        return Math.sqrt(Math.pow(x2 - x,2) + Math.pow(y2 - y,2));
     }
 
     public String toString(double x, double y){

@@ -2,6 +2,7 @@ package slogo.model.parse;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import slogo.model.Model;
 import slogo.model.code.NewCommandName;
 import slogo.model.code.Token;
 import slogo.model.code.Variable;
@@ -10,6 +11,7 @@ import slogo.model.code.exceptions.SyntaxException;
 import slogo.model.code.instructions.*;
 import slogo.model.code.instructions.commands.ClearScreen;
 import slogo.model.code.instructions.misc.To;
+import slogo.model.code.instructions.multipleturtles.Ask;
 import slogo.view.ClearAction;
 
 import java.lang.reflect.Constructor;
@@ -22,6 +24,7 @@ public class CodeFactory {
     public static String NEW_COMMAND_TYPE = "Command";
     public static String TO_TYPE = "MakeUserInstruction";
     public static String CLEAR_TYPE = "ClearScreen";
+    public static String ASK_TYPE = "Ask";
 
     private RegexHandler keyGrabber;
     private Map<String, Class> mappings = new HashMap<>();
@@ -48,6 +51,7 @@ public class CodeFactory {
         if (objectType.equals(NEW_COMMAND_TYPE)) return getNewCommand(piece);
         if (objectType.equals(TO_TYPE)) return new To(piece, this::addNewCommand);
         if (objectType.equals(CLEAR_TYPE)) return new ClearScreen(piece, clearAction);
+        //if (objectType.equals(ASK_TYPE)) return new Ask(piece, Model::getTurtle);
         Token token;
         try {
             Class c = mappings.get(objectType);

@@ -24,14 +24,14 @@ public class NewCommand extends Instruction {
         return myName;
     }
 
-    public void execute(Turtle turtle) {
+    public void performAction(Turtle turtle) {
         for (int i=0; i<parameters.size(); i++){
             if (myVariables.get(i) instanceof Variable)
                 ((Variable) myVariables.get(i)).setVariable(parameters.get(i).generateValue());
             else throw new InvalidArgumentException();
         }
         for (Token instruction:myInstructions){
-            if (instruction instanceof Instruction) ((Instruction) instruction).execute(turtle);
+            if (instruction instanceof Instruction) ((Instruction) instruction).performAction(turtle);
             else throw new InvalidCommandException();
         }
     }

@@ -19,7 +19,7 @@ public class DoTimes extends Instruction {
         this.instrName = name;
     }
 
-    public void execute (Turtle t) {
+    public void performAction (Turtle t) {
         Token list1 = this.parameters.get(0);
         Token list2 = this.parameters.get(1);
         if (!(list1 instanceof ListSyntax) || !(list2 instanceof ListSyntax)) {
@@ -43,7 +43,7 @@ public class DoTimes extends Instruction {
                 if (!(command instanceof Instruction)) {
                     throw new InvalidLoopConditionException();
                 }
-                ((Instruction) command).execute(t);
+                ((Instruction) command).performAction(t);
                 this.valueOfExecution = command.generateValue();
             }
         }

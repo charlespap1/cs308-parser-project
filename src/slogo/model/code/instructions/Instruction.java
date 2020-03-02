@@ -19,7 +19,13 @@ public abstract class Instruction implements Token {
         NUM_ARGS = numArgs;
     }
 
-    public abstract void execute(Turtle turtle);
+    public void execute(List<Turtle> activeTurtles) {
+        for (Turtle activeTurtle : activeTurtles) {
+            performAction(activeTurtle);
+        }
+    }
+
+    public abstract void performAction(Turtle turtle);
 
     public int numRequiredArgs() { return NUM_ARGS; }
 
@@ -29,10 +35,6 @@ public abstract class Instruction implements Token {
 
     public void setParameters(List<Token> params){
         parameters = params;
-    }
-
-    protected double distFrom(double x, double y, double x2, double y2){
-        return Math.sqrt(Math.pow(x2 - x,2) + Math.pow(y2 - y,2));
     }
 
     protected List<Double> getParamsAsVals(Turtle t) throws CommandCannotDoListException {
@@ -47,7 +49,7 @@ public abstract class Instruction implements Token {
         if (currToken instanceof ListSyntax) {
             throw new CommandCannotDoListException();
         } else if (currToken instanceof Instruction){
-            ((Instruction) currToken).execute(t);
+            ((Instruction) currToken).performAction(t);
         }
         return currToken.generateValue();
     }
