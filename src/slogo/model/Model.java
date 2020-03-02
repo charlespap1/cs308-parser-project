@@ -114,6 +114,7 @@ public class Model implements ModelAPI{
                 if(executed){
                     activeTurtles.get(0).setCurrCommand(currFullCommand);
                     activeTurtles.get(0).setCurrCommand("");
+                    currFullCommand = "";
                     executed = false;
                 }
             }
