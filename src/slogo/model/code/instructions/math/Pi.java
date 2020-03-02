@@ -15,7 +15,5 @@ public class Pi extends SingleRunInstruction {
 
     public void performAction (Turtle t) {
         valueOfExecution = Math.PI;
-        t.setCurrCommand(toString());
-        t.setCurrCommand("");
     }
 }

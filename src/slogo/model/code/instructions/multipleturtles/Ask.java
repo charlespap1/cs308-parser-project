@@ -41,7 +41,5 @@ public class Ask extends SingleRunInstruction {
                 valueOfExecution = command.generateValue();
             }
         }
-        t.setCurrCommand(toString());
-        t.setCurrCommand("");
     }
 }

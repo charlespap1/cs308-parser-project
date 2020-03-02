@@ -22,8 +22,6 @@ public class ClearScreen extends DisplayCommand {
         valueOfExecution = Point2D.distance(t.getXPos(), t.getYPos(), HOME_X, HOME_Y);
         t.setLocation(HOME_X, HOME_Y);
         t.setAngle(DEFAULT_ROTATION);
-        t.setCurrCommand(toString());
-        t.setCurrCommand("");
         try{
             myAction.execute(null);
         } catch (Exception e){

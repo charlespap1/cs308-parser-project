@@ -27,8 +27,6 @@ public class If extends Instruction {
             throw new InvalidArgumentException();
         }
         valueOfExecution = 0;
-        t.setCurrCommand(toString());
-        t.setCurrCommand("");
         if (expr.generateValue() != 0) {
             List<Token> commands = ((ListSyntax) list).getContents();
             for (Token command: commands) {

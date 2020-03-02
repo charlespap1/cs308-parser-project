@@ -25,8 +25,6 @@ public class Make extends Instruction {
         double val = checkTokenNotListAndGetVal(expr, t);
         ((Variable) var).setVariable(val);
         this.valueOfExecution = val;
-        t.setCurrCommand(toString(var.toString()));
-        t.setCurrCommand("");
     }
 
     public String toString(String var){ return instrName +" " + var; }

@@ -18,8 +18,6 @@ public class SetHome extends Instruction {
     public void performAction (Turtle t) {
         valueOfExecution = Point2D.distance(t.getXPos(),t.getYPos(),HOME_X,HOME_Y);
         t.setLocation(HOME_X, HOME_Y);
-        t.setCurrCommand(toString());
-        t.setCurrCommand("");
     }
 
     @Override

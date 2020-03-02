@@ -33,8 +33,6 @@ public class DoTimes extends Instruction {
             throw new InvalidLoopConditionException();
         }
         double limit = checkTokenNotListAndGetVal(loopParameters.get(1), t);
-        t.setCurrCommand(toString());
-        t.setCurrCommand("");
 
         List<Token> commands = ((ListSyntax) list2).getContents();
         for (int i = 1; i <= limit; i++) {

@@ -44,8 +44,6 @@ public class To extends Instruction {
         }
         myCommand = new NewCommand(name, variables, instructions);
         myFunction.addToList(myCommand);
-        turtle.setCurrCommand(toString(name));
-        turtle.setCurrCommand("");
     }
 
     public double generateValue() {

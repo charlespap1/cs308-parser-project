@@ -32,7 +32,5 @@ public class Tell extends SingleRunInstruction {
             Model.getActiveTurtles().add(tt);
             valueOfExecution = turtleId;
         }
-        t.setCurrCommand(toString());
-        t.setCurrCommand("");
     }
 }

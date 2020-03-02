@@ -37,7 +37,9 @@ public class Model implements ModelAPI{
     private RegexHandler typeCheck = new RegexHandler();
     private static Map<Integer, Turtle> turtleMap = new HashMap<>();
     private StringProperty errorMessage = new SimpleStringProperty();
-    private static List<Turtle> activeTurtles = new ArrayList<>();
+    private List<Turtle> activeTurtles = new ArrayList<>();
+    private String currFullCommand = "";
+    private boolean executed = false;
 
     public Model(StringProperty language) {
         typeCheck.addPatterns(SYNTAX);
@@ -89,7 +91,7 @@ public class Model implements ModelAPI{
         return turtleMap.get(id);
     }
 
-    public static List<Turtle> getActiveTurtles() {
+    public List<Turtle> getActiveTurtles() {
         return activeTurtles;
     }
 
@@ -107,6 +109,12 @@ public class Model implements ModelAPI{
             for (String piece: inputPieces) {
                 if (piece.trim().length() > 0) {
                     addToAppropriateStack(piece);
+                    currFullCommand += piece + " ";
+                }
+                if(executed){
+                    activeTurtles.get(0).setCurrCommand(currFullCommand);
+                    activeTurtles.get(0).setCurrCommand("");
+                    executed = false;
                 }
             }
         }
@@ -165,6 +173,7 @@ public class Model implements ModelAPI{
                 Instruction currInstr = createCompleteInstruction(arguments.pop());
                 if (commands.isEmpty()) {
                     currInstr.execute(activeTurtles);
+                    executed = true;
                 } else {
                     arguments.peek().push(currInstr);
                     attemptToCreateFullInstruction();
