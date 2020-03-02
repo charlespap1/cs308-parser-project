@@ -90,6 +90,9 @@ public class SetupScreen {
   private VBox belowInputFieldItems = new VBox(BOX_SPACING);
   private HBox belowCanvasButtons = new HBox(BOX_SPACING);
 
+  private ListViewer myTurtleStateViewer = new ListViewer(COMMAND_COLUMN,
+          myCurrentErrorMessage.getLayoutY());
+
   private LanguageHelper languageHelper;
   private TurtleGraphicalMover myGraphicalMover;
 
@@ -108,20 +111,26 @@ public class SetupScreen {
     myTurtles.add(new Turtle(image, myDrawingCanvas.getWidth(), myDrawingCanvas.getHeight()));
 
 
-    setupBox(belowInputFieldItems, UserCommandField.FIELD_SIDE_PADDING*3 + myUserInput.getWidth(), DrawingCanvas.CANVAS_TOP_PADDING + myDrawingCanvas.getHeight() + BOX_SPACING, myDrawingCanvas.getWidth());
-    setupBox(belowCanvasButtons, DrawingCanvas.CANVAS_SIDE_PADDING, DrawingCanvas.CANVAS_TOP_PADDING + myDrawingCanvas.getHeight() + BOX_SPACING, myDrawingCanvas.getWidth());
+    setupBox(belowInputFieldItems, UserCommandField.FIELD_SIDE_PADDING*3 + myUserInput.getWidth(),
+            DrawingCanvas.CANVAS_TOP_PADDING + myDrawingCanvas.getHeight() + BOX_SPACING, myDrawingCanvas.getWidth());
+    setupBox(belowCanvasButtons, DrawingCanvas.CANVAS_SIDE_PADDING, DrawingCanvas.CANVAS_TOP_PADDING +
+            myDrawingCanvas.getHeight() + BOX_SPACING, myDrawingCanvas.getWidth());
     setButtons();
     setSelectors();
 
 //    myGraphicalMover = new TurtleGraphicalMover(myTurtle, myBackgroundSelector.getView().getLayoutX(), myBackgroundSelector.getView().getLayoutY() + GRAPHICAL_VIEWER_HEIGHT_OFFSET);
-    myGraphicalMover = new TurtleGraphicalMover(myTurtles.get(0), myBackgroundSelector.getView().getLayoutX(), myBackgroundSelector.getView().getLayoutY() + GRAPHICAL_VIEWER_HEIGHT_OFFSET);
+    myGraphicalMover = new TurtleGraphicalMover(myTurtles.get(0), myBackgroundSelector.getView().getLayoutX(),
+            myBackgroundSelector.getView().getLayoutY() + GRAPHICAL_VIEWER_HEIGHT_OFFSET);
 
 
     setText();
 
 //    root.getChildren().addAll(myDrawingCanvas.getView(), myTurtle.getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myNewCommandViewer.getView(), myVariableView.getView());
-    root.getChildren().addAll(myDrawingCanvas.getView(), myTurtles.get(0).getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myNewCommandViewer.getView(), myVariableView.getView());
-    root.getChildren().addAll(myBackgroundSelector.getView(), myPenSelector.getView(), myCharacterSelector.getView(), myLanguageSelector.getView(), myGraphicalMover.getView());
+    root.getChildren().addAll(myDrawingCanvas.getView(), myTurtles.get(0).getView(), myUserInput.getView(),
+            belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myNewCommandViewer.getView(), myTurtleStateViewer.getView(),
+            myVariableView.getView());
+    root.getChildren().addAll(myBackgroundSelector.getView(), myPenSelector.getView(), myCharacterSelector.getView(),
+            myLanguageSelector.getView(), myGraphicalMover.getView());
 
     myCurrentErrorMessage.setLayoutX(myVariableView.getView().getLayoutX());
     myCurrentErrorMessage.setLayoutY(myVariableView.getView().getLayoutY() + ERROR_MESSAGE_PADDING);
@@ -237,6 +246,7 @@ public class SetupScreen {
 
     myVariableView.setTitleProperty(languageHelper.getStringProperty(VARIABLE_TITLE_KEY));
     myNewCommandViewer.setTitleProperty(languageHelper.getStringProperty(NEW_COMMAND_TITLE_KEY));
+    myTurtleStateViewer.setTitleProperty(languageHelper.getStringProperty(VARIABLE_TITLE_KEY));
     myHistory.setTitleProperty(languageHelper.getStringProperty(HISTORY_TITLE_KEY));
 
     myBackgroundSelector.setTitleProperty(languageHelper.getStringProperty(BACKGROUND_SELECTOR_TEXT_KEY));

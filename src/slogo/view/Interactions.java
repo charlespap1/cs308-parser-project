@@ -67,7 +67,7 @@ public class Interactions implements View {
 //    turtle.currCommandProperty().addListener((o, oldVal, newVal) -> mySetup.addHistory(newVal));
 //  }
   public void setTurtle(slogo.model.Turtle turtle){
-    //does nothing; just here to satisfy requirements of view
+    //does nothing; just here to satisfy requirements of 'view' interface
   }
 
   /**
