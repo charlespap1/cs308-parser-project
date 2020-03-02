@@ -15,7 +15,6 @@ public class Turtle {
     private StringProperty currCommand = new SimpleStringProperty();
     private ObjectProperty<Point2D> coordinates;
     private int id;
-    private boolean isActive;
 
     public Turtle(int id, int xPos, int yPos, boolean isPenUp, int angle) {
         this.id = id;
@@ -24,7 +23,6 @@ public class Turtle {
         turtleAngle = new SimpleDoubleProperty(angle);
         penUp = new SimpleBooleanProperty(isPenUp);
         coordinates = new SimpleObjectProperty<>(new Point2D.Double(xPos, yPos));
-        isActive = true;
     }
 
     public DoubleProperty turtleXProperty(){ return turtleX; }
@@ -45,7 +43,6 @@ public class Turtle {
     public void setAngle(double angle) { turtleAngle.setValue(angle); }
     public void setPenUp(boolean isPenUp) { penUp.setValue(isPenUp);}
     public void setCurrCommand(String command) { currCommand.setValue(command); }
-    public void setActive(boolean isActive) { this.isActive = isActive; }
 
     public double getXPos() {
         return turtleX.getValue();
@@ -59,5 +56,4 @@ public class Turtle {
     public double getAngle() { return turtleAngle.getValue(); }
     public boolean isVisible() { return visible.getValue(); }
     public int getId() { return id; }
-    public boolean isActive() { return isActive; }
 }

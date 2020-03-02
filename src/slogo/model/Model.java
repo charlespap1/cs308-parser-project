@@ -42,7 +42,7 @@ public class Model implements ModelAPI{
     private RegexHandler typeCheck = new RegexHandler();
     private static Map<Integer, Turtle> turtleMap = new HashMap<>();
     private StringProperty errorMessage = new SimpleStringProperty();
-    private List<Turtle> activeTurtles = new ArrayList<>();
+    private static List<Turtle> activeTurtles = new ArrayList<>();
 
     public Model(StringProperty language) {
         typeCheck.addPatterns(SYNTAX);
@@ -94,6 +94,10 @@ public class Model implements ModelAPI{
             turtleMap.put(id, new Turtle(id, 0, 0, false, 0));
         }
         return turtleMap.get(id);
+    }
+
+    public static List<Turtle> getActiveTurtles() {
+        return activeTurtles;
     }
 
     public static Map<Integer, Turtle> getTurtleMap() {

@@ -16,9 +16,7 @@ public class Tell extends Instruction {
     public Tell(String name){
         super(numArgs);
         instrName = name;
-        for (Turtle t : Model.getTurtleMap().values()) {
-            t.setActive(false);
-        }
+        Model.getActiveTurtles().clear();
     }
 
     public void performAction (Turtle t) throws InvalidArgumentException {
@@ -30,7 +28,7 @@ public class Tell extends Instruction {
         for (Token turtle : turtles) {
             int turtleId = (int) checkTokenNotListAndGetVal(turtle, t);
             Turtle tt = Model.createOrGetTurtle(turtleId);
-            tt.setActive(true);
+            Model.getActiveTurtles().add(tt);
             valueOfExecution = turtleId;
         }
         t.setCurrCommand(toString());
