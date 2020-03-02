@@ -12,7 +12,7 @@ public class Heading extends Instruction {
         instrName = name;
     }
 
-    public void execute (Turtle t) {
+    public void performAction (Turtle t) {
         valueOfExecution = t.getAngle();
     }
 }

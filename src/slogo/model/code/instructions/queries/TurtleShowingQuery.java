@@ -12,7 +12,7 @@ public class TurtleShowingQuery extends Instruction {
         instrName = name;
     }
 
-    public void execute (Turtle t) {
+    public void performAction (Turtle t) {
         valueOfExecution = t.isVisible() ? 1 : 0;
     }
 }

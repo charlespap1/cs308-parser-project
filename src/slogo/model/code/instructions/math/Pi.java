@@ -2,8 +2,9 @@ package slogo.model.code.instructions.math;
 
 import slogo.model.Turtle;
 import slogo.model.code.instructions.Instruction;
+import slogo.model.code.instructions.SingleRunInstruction;
 
-public class Pi extends Instruction {
+public class Pi extends SingleRunInstruction {
 
     private static final int numArgs = 0;
 

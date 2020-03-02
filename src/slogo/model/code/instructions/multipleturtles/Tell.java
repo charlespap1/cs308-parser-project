@@ -6,19 +6,18 @@ import slogo.model.code.ListSyntax;
 import slogo.model.code.Token;
 import slogo.model.code.exceptions.InvalidArgumentException;
 import slogo.model.code.instructions.Instruction;
+import slogo.model.code.instructions.SingleRunInstruction;
 
 import java.util.List;
 
-public class Tell extends Instruction {
+public class Tell extends SingleRunInstruction {
 
     private static final int numArgs = 1;
 
     public Tell(String name){
         super(numArgs);
         instrName = name;
-        for (Turtle t : Model.getTurtleMap().values()) {
-            t.setActive(false);
-        }
+        Model.getActiveTurtles().clear();
     }
 
     public void performAction (Turtle t) throws InvalidArgumentException {
@@ -30,7 +29,7 @@ public class Tell extends Instruction {
         for (Token turtle : turtles) {
             int turtleId = (int) checkTokenNotListAndGetVal(turtle, t);
             Turtle tt = Model.createOrGetTurtle(turtleId);
-            tt.setActive(true);
+            Model.getActiveTurtles().add(tt);
             valueOfExecution = turtleId;
         }
     }

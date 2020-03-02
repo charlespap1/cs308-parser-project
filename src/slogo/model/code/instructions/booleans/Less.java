@@ -2,10 +2,11 @@ package slogo.model.code.instructions.booleans;
 
 import slogo.model.Turtle;
 import slogo.model.code.instructions.Instruction;
+import slogo.model.code.instructions.SingleRunInstruction;
 
 import java.util.List;
 
-public class Less extends Instruction {
+public class Less extends SingleRunInstruction {
 
     private static final int numArgs = 2;
 

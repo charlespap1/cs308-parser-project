@@ -3,10 +3,11 @@ package slogo.model.code.instructions.math;
 import slogo.model.Turtle;
 import slogo.model.code.exceptions.DivideByZeroException;
 import slogo.model.code.instructions.Instruction;
+import slogo.model.code.instructions.SingleRunInstruction;
 
 import java.util.List;
 
-public class Quotient extends Instruction {
+public class Quotient extends SingleRunInstruction {
 
     private static final int numArgs = 2;
 

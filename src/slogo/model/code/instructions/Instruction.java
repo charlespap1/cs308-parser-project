@@ -4,12 +4,12 @@ import slogo.model.Turtle;
 import slogo.model.code.ListSyntax;
 import slogo.model.code.Token;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import slogo.model.code.exceptions.CommandCannotDoListException;
 
 public abstract class Instruction implements Token {
-    // TODO: hard coded text
 
     protected List<Token> parameters = null;
     protected String instrName = "";
@@ -36,10 +36,6 @@ public abstract class Instruction implements Token {
 
     public void setParameters(List<Token> params){
         parameters = params;
-    }
-
-    protected double distFrom(double x, double y, double x2, double y2){
-        return Math.sqrt(Math.pow(x2 - x,2) + Math.pow(y2 - y,2));
     }
 
     protected List<Double> getParamsAsVals(Turtle t) throws CommandCannotDoListException {

@@ -12,7 +12,7 @@ public class XCor extends Instruction {
         this.instrName = name;
     }
 
-    public void execute(Turtle t) {
+    public void performAction(Turtle t) {
         valueOfExecution = t.getXPos();
     }
 }

@@ -17,6 +17,6 @@ public class Variable implements Token {
     }
 
     public String toString(){
-        return name + ": " + value;
+        return name + " " + value;
     }
 }

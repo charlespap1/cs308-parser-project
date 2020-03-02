@@ -2,10 +2,11 @@ package slogo.model.code.instructions.math;
 
 import slogo.model.Turtle;
 import slogo.model.code.instructions.Instruction;
+import slogo.model.code.instructions.SingleRunInstruction;
 
 import java.util.List;
 
-public class Difference extends Instruction {
+public class Difference extends SingleRunInstruction {
 
     private static final int numArgs = 2;
 

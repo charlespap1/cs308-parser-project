@@ -27,5 +27,5 @@ public class Make extends Instruction {
         this.valueOfExecution = val;
     }
 
-    public String toString(String var, double val){ return instrName + ": " + var + " " + val; }
+    public String toString(String var){ return instrName +" " + var; }
 }

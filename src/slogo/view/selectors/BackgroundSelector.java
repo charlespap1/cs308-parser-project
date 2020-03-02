@@ -15,7 +15,6 @@ public class BackgroundSelector extends ColorSelector{
 
   public static final List<String> BACKGROUND_COLORS = new ArrayList<>(Arrays.asList("White", "Red", "Magenta", "Blue", "Green", "Black"));
   private static final String RESOURCES_PATH = "resources.colors.BackgroundColors";
-  //TODO: text hard coded
 
   private DrawingCanvas canvas;
 
