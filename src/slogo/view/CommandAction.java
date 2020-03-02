@@ -1,6 +1,6 @@
 package slogo.view;
 
 @FunctionalInterface
-public interface ClearAction {
+public interface CommandAction {
     void execute();
 }

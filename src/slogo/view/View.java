@@ -14,9 +14,9 @@ import javafx.event.EventHandler;
 public interface View {
     String getInstruction() throws NullPointerException;
     StringProperty getLanguageChoice();
+    DisplayAction getAction(String method);
     void setTurtle(slogo.model.Turtle turtle);
     void setGoButton(EventHandler<ActionEvent> goAction);
     void setViewLists(ObservableList<String> variableList, ObservableList<String> newCommandList);
     void setErrorMessage(StringProperty error);
-    ClearAction getClearAction();
 }

@@ -10,6 +10,9 @@ import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import slogo.view.commonCommands.CommonCommands;
 
+import java.lang.reflect.Method;
+import java.util.List;
+
 
 /**
  * This class holds all of the interactions between the UI objects
@@ -28,7 +31,6 @@ public class Interactions implements View {
     Scene myScene = mySetup.setupGame();
     CommonCommands myCommonCommands = new CommonCommands(primaryStage, myScene, getLanguageChoice());
     mySetup.addCommonCommands(myCommonCommands);
-    mySetup.setBelowCanvasButtons(e -> returnToDefaultTurtle(), e -> clearCanvas());
     myTurtle = mySetup.getTurtle();
     root = mySetup.getRoot();
     myCanvas = mySetup.getDrawingCanvas();
@@ -81,8 +83,14 @@ public class Interactions implements View {
   public void setErrorMessage(StringProperty error){ mySetup.bindErrorMessage(error); }
 
   public StringProperty getLanguageChoice() { return mySetup.getLanguageChoice(); }
-  
-  public ClearAction getClearAction() { return this::clearCanvas; }
+
+  public DisplayAction getAction(String methodName) {
+    return params -> {
+      Method m = SetupScreen.class.getDeclaredMethod(methodName, List.class);
+      Object value = m.invoke(this.mySetup, params);
+      return (Integer) value;
+    };
+  }
 
   /**
    * Updates the movement of the turtle according to new states
@@ -94,15 +102,5 @@ public class Interactions implements View {
       myCanvas.addLine(newLine);
       myTurtle.getView().toFront();
     }
-  }
-
-  private void returnToDefaultTurtle() {
-    myTurtle.returnTurtleToDefault();
-    clearCanvas();
-  }
-
-  private void clearCanvas() {
-    mySetup.clearHistory();
-    root.getChildren().removeAll(myCanvas.getLines());
   }
 }

@@ -1,23 +1,19 @@
 package slogo.model.code.instructions.commands;
 
 import slogo.model.Turtle;
-import slogo.model.code.instructions.Instruction;
-import slogo.view.ClearAction;
+import slogo.model.code.instructions.display.DisplayCommand;
 
 
-public class ClearScreen extends Instruction {
+public class ClearScreen extends DisplayCommand {
 
     public static final int HOME_X = 0;
     public static final int HOME_Y = 0;
     public static final int DEFAULT_ROTATION = 90;
     private static final int numArgs = 0;
 
-    private ClearAction clearAction;
-
-    public ClearScreen(String name, ClearAction action){
+    public ClearScreen(String name){
         super(numArgs);
         instrName = name;
-        clearAction = action;
     }
 
     public void performAction (Turtle t) {
@@ -26,7 +22,11 @@ public class ClearScreen extends Instruction {
         t.setAngle(DEFAULT_ROTATION);
         t.setCurrCommand(toString());
         t.setCurrCommand("");
-        clearAction.execute();
+        try{
+            myAction.execute(null);
+        } catch (Exception e){
+            System.out.println("bad method");
+        }
     }
 
     private double distFrom(double x, double y, double x2, double y2){

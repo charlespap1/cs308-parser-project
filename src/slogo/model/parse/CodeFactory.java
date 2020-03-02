@@ -2,7 +2,6 @@ package slogo.model.parse;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import slogo.model.Model;
 import slogo.model.code.NewCommandName;
 import slogo.model.code.Token;
 import slogo.model.code.Variable;
@@ -10,9 +9,10 @@ import slogo.model.code.exceptions.LanguageFileNotFoundException;
 import slogo.model.code.exceptions.SyntaxException;
 import slogo.model.code.instructions.*;
 import slogo.model.code.instructions.commands.ClearScreen;
+import slogo.model.code.instructions.display.DisplayCommand;
 import slogo.model.code.instructions.misc.To;
-import slogo.model.code.instructions.multipleturtles.Ask;
-import slogo.view.ClearAction;
+import slogo.view.CommandAction;
+import slogo.view.DisplayAction;
 
 import java.lang.reflect.Constructor;
 import java.util.*;
@@ -23,7 +23,6 @@ public class CodeFactory {
     public static String VARIABLE_TYPE = "Variable";
     public static String NEW_COMMAND_TYPE = "Command";
     public static String TO_TYPE = "MakeUserInstruction";
-    public static String CLEAR_TYPE = "ClearScreen";
     public static String ASK_TYPE = "Ask";
 
     private RegexHandler keyGrabber;
@@ -32,7 +31,7 @@ public class CodeFactory {
     private Map<String, Variable> variableMap = new HashMap<>();
     private ObservableList<String> vars = FXCollections.observableArrayList();
     private ObservableList<String> newCommands = FXCollections.observableArrayList();
-    private ClearAction clearAction;
+    private Map<String, DisplayAction> setActionMap = new HashMap<>();
 
     public CodeFactory(String language) throws LanguageFileNotFoundException {
         setLanguage(language);
@@ -50,7 +49,6 @@ public class CodeFactory {
         if (objectType.equals(VARIABLE_TYPE)) return getVariable(piece);
         if (objectType.equals(NEW_COMMAND_TYPE)) return getNewCommand(piece);
         if (objectType.equals(TO_TYPE)) return new To(piece, this::addNewCommand);
-        if (objectType.equals(CLEAR_TYPE)) return new ClearScreen(piece, clearAction);
         //if (objectType.equals(ASK_TYPE)) return new Ask(piece, Model::getTurtle);
         Token token;
         try {
@@ -58,6 +56,7 @@ public class CodeFactory {
             Constructor objConstruct = c.getDeclaredConstructor(String.class);
             objConstruct.setAccessible(true);
             token = (Token) objConstruct.newInstance(piece);
+            if (token instanceof DisplayCommand) ((DisplayCommand) token).setMyAction(setActionMap.get(objectType));
         } catch (Exception e) {
             throw new SyntaxException(e);
         }
@@ -68,7 +67,7 @@ public class CodeFactory {
 
     public ObservableList<String> getNewCommandList(){ return newCommands; }
 
-    public void setClearAction(ClearAction action) { clearAction = action; }
+    public void addAction(String key, DisplayAction action) { setActionMap.put(key, action); }
 
     private void generateMappings() {
         List<String> keys = keyGrabber.getKeys();
