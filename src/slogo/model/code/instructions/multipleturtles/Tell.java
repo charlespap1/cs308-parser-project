@@ -17,7 +17,7 @@ public class Tell extends SingleRunInstruction {
     public Tell(String name){
         super(numArgs);
         instrName = name;
-        Model.getActiveTurtles().clear();
+        //Model.getActiveTurtles().clear();
     }
 
     public void performAction (Turtle t) throws InvalidArgumentException {
@@ -29,7 +29,7 @@ public class Tell extends SingleRunInstruction {
         for (Token turtle : turtles) {
             int turtleId = (int) checkTokenNotListAndGetVal(turtle, t);
             Turtle tt = Model.createOrGetTurtle(turtleId);
-            Model.getActiveTurtles().add(tt);
+            //Model.getActiveTurtles().add(tt);
             valueOfExecution = turtleId;
         }
     }
