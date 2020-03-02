@@ -31,14 +31,13 @@ abstract class ScrollingWindow {
   protected VBox myTextHolder = new VBox(TEXT_HOLDER_SPACING);
 
   private Text myTitle = new Text();
+  private ScrollPane myView = new ScrollPane();
 
 
   public ScrollingWindow(double elementWidthFactor, double topPadding) {
     myHolder.setLayoutX(elementWidthFactor*SetupScreen.WIDTH/3 + SCROLLING_SIDE_PADDING);
     myHolder.setLayoutY(topPadding);
     myHolder.setFillWidth(true);
-
-    ScrollPane myView = new ScrollPane();
 
     myHolder.setMinHeight(myHeight);
     myHolder.setMaxHeight(myHeight);
@@ -66,10 +65,14 @@ abstract class ScrollingWindow {
 
   public void setWidth(double width) {
     this.myWidth = width;
+    myView.setMaxWidth(myWidth);
+    myView.setMinWidth(myWidth);
   }
 
   public void setHeight(double height) {
     this.myHeight = height;
+    myHolder.setMinHeight(myHeight);
+    myHolder.setMaxHeight(myHeight);
   }
 
 
