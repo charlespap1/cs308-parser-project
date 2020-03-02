@@ -102,7 +102,6 @@ public class SetupScreen {
    * @return
    */
   public Scene setupGame() {
-    //languageHelper = new LanguageHelper(language);
 
     //TODO: error handling if image not found
     Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(DEFAULT_TURTLE_IMAGE)));
@@ -161,8 +160,6 @@ public class SetupScreen {
    * @return
    */
   public Turtle getInitialTurtle() { return myTurtles.get(0); }
-
-
 
   public String getUserInput() { return myUserInput.getUserInput(); }
 

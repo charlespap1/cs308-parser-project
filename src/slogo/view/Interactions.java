@@ -70,10 +70,9 @@ public class Interactions implements View {
   public void addTurtle(slogo.model.Turtle turtle){
     Turtle newTurtle = mySetup.addNewTurtle();
     myTurtles.add(newTurtle);
-    //Turtle newTurtle = new Turtle(image, mySetup.getDrawingCanvas().getWidth(), mySetup.getDrawingCanvas().getHeight());
     newTurtle.setProperties(turtle);
     turtle.pointProperty().addListener((o, oldVal, newVal) -> update(newTurtle));
-    turtle.currCommandProperty().addListener((o, oldVal, newVal) -> mySetup.addHistory(newVal));
+    //turtle.currCommandProperty().addListener((o, oldVal, newVal) -> mySetup.addHistory(newVal));
   }
 
   /**

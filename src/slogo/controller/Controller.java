@@ -43,7 +43,7 @@ public class Controller extends Application {
         popup.getMyPopup().show(currentStage);
         EventHandler<ActionEvent> e = new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent event) {
-                getTextFile(popup.getFile(), myModel);
+                executeTextFile(popup.getFile(), myModel);
                 popup.getMyPopup().hide();
             }
         };
@@ -61,6 +61,7 @@ public class Controller extends Application {
         myView.setPopupButton(e -> showPopUp(stage, myModel));
         myModel.setClearAction(myView.getClearAction());
         //TODO: add listener for method tell command
+        //myView.add(turtle);
     }
 
 
@@ -79,7 +80,7 @@ public class Controller extends Application {
     }
 
 
-    private void getTextFile(File f, Model model) throws NullPointerException {
+    private void executeTextFile(File f, Model model) throws NullPointerException {
         model.executeCode(f);
     }
 }
