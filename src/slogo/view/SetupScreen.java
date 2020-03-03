@@ -2,6 +2,7 @@ package slogo.view;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -125,6 +126,8 @@ public class SetupScreen {
     myCurrentErrorMessage.setLayoutY(myVariableView.getView().getLayoutY() + ERROR_MESSAGE_PADDING);
 
     root.getChildren().add(myCurrentErrorMessage);
+
+    setPreferences();
 
     Scene scene = new Scene(root, WIDTH, HEIGHT, BACKGROUND);
     scene.getStylesheets().add(getClass().getClassLoader().getResource(MAIN_STYLESHEET).toExternalForm());
@@ -266,6 +269,19 @@ public class SetupScreen {
     myGraphicalMover.setPenLabelProperty(languageHelper.getStringProperty(PEN_UP_BUTTON_KEY), languageHelper.getStringProperty(PEN_DOWN_BUTTON_KEY));
 
   }
+
+  public void setPreferences()
+  {
+    PreferenceSelector myPreferences = new PreferenceSelector("PreferencesOne");
+
+    for(Turtle t : myTurtles)
+    {
+      myPreferences.setTurtle(t);
+    }
+
+    myPreferences.changeBackground(myDrawingCanvas);
+  }
+
 
   public void setPopupButton(EventHandler<ActionEvent> showPopup) {
     myNewConfig.setOnAction(showPopup);
