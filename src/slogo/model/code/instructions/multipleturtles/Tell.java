@@ -27,7 +27,8 @@ public class Tell extends MultiTurtleCommand {
         for (Token turtle : turtles) {
             int turtleId = (int) checkTokenNotListAndGetVal(turtle);
             if (!turtleMap.containsKey(turtleId)) addNewTurtleFunction.addTurtle(turtleId);
-            activeTurtles.add(turtleMap.get(turtleId));
+            Turtle t = turtleMap.get(turtleId);
+            if (!activeTurtles.contains(t)) activeTurtles.add(t);
             valueOfExecution = turtleId;
         }
     }
