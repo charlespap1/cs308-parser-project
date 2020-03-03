@@ -5,7 +5,7 @@ import slogo.model.code.instructions.Instruction;
 
 import java.util.List;
 
-public class SetXY extends Instruction {
+public class SetXY extends TurtleCommand {
 
     private static final int numArgs = 2;
 
@@ -14,8 +14,8 @@ public class SetXY extends Instruction {
         instrName = name;
     }
 
-    public void performAction (Turtle t) {
-        List<Double> paramsAsInts = getParamsAsVals(t);
+    protected void performAction (Turtle t) {
+        List<Double> paramsAsInts = getParamsAsVals();
         double xCord = paramsAsInts.get(0);
         double yCord = paramsAsInts.get(1);
         valueOfExecution = distFrom(xCord,yCord,t.getXPos(),t.getYPos());

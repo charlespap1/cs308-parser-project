@@ -4,7 +4,7 @@ import slogo.model.Turtle;
 import slogo.model.code.instructions.Instruction;
 import slogo.model.code.instructions.SingleRunInstruction;
 
-public class Pi extends SingleRunInstruction {
+public class Pi extends Instruction {
 
     private static final int numArgs = 0;
 
@@ -13,7 +13,7 @@ public class Pi extends SingleRunInstruction {
         instrName = name;
     }
 
-    public void performAction (Turtle t) {
+    public void execute () {
         valueOfExecution = Math.PI;
     }
 }

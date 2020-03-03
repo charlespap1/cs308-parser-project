@@ -19,7 +19,7 @@ public class DoTimes extends Instruction {
         this.instrName = name;
     }
 
-    public void performAction (Turtle t) {
+    public void execute () {
         Token list1 = this.parameters.get(0);
         Token list2 = this.parameters.get(1);
         if (!(list1 instanceof ListSyntax) || !(list2 instanceof ListSyntax)) {
@@ -32,7 +32,7 @@ public class DoTimes extends Instruction {
         if (!(variable instanceof Variable)) {
             throw new InvalidLoopConditionException();
         }
-        double limit = checkTokenNotListAndGetVal(loopParameters.get(1), t);
+        double limit = checkTokenNotListAndGetVal(loopParameters.get(1));
 
         List<Token> commands = ((ListSyntax) list2).getContents();
         for (int i = 1; i <= limit; i++) {
@@ -41,7 +41,7 @@ public class DoTimes extends Instruction {
                 if (!(command instanceof Instruction)) {
                     throw new InvalidLoopConditionException();
                 }
-                ((Instruction) command).performAction(t);
+                ((Instruction) command).execute();
                 this.valueOfExecution = command.generateValue();
             }
         }

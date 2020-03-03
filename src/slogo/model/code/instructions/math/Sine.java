@@ -6,7 +6,7 @@ import slogo.model.code.instructions.SingleRunInstruction;
 
 import java.util.List;
 
-public class Sine extends SingleRunInstruction {
+public class Sine extends Instruction {
 
     private static final int numArgs = 1;
 
@@ -15,8 +15,8 @@ public class Sine extends SingleRunInstruction {
         instrName = name;
     }
 
-    public void performAction (Turtle t) {
-        List<Double> paramsAsVals = this.getParamsAsVals(t);
+    public void execute () {
+        List<Double> paramsAsVals = this.getParamsAsVals();
         double val = paramsAsVals.get(0);;
         valueOfExecution = Math.sin(Math.toRadians(val));
     }

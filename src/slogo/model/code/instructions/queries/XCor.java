@@ -4,7 +4,7 @@ import slogo.model.Turtle;
 import slogo.model.code.Token;
 import slogo.model.code.instructions.Instruction;
 
-public class XCor extends Instruction {
+public class XCor extends QueryCommand {
     private static final int numArgs = 0;
 
     public XCor(String name) {
@@ -12,7 +12,6 @@ public class XCor extends Instruction {
         this.instrName = name;
     }
 
-    public void performAction(Turtle t) {
-        valueOfExecution = t.getXPos();
-    }
+    public void execute() { valueOfExecution = turtle.getXPos(); }
+
 }

@@ -3,7 +3,7 @@ package slogo.model.code.instructions.commands;
 import slogo.model.Turtle;
 import slogo.model.code.instructions.Instruction;
 
-public class PenUp extends Instruction {
+public class PenUp extends TurtleCommand {
 
     private static final int numArgs = 0;
 
@@ -12,7 +12,7 @@ public class PenUp extends Instruction {
         instrName = name;
     }
 
-    public void performAction (Turtle t) {
+    protected void performAction (Turtle t) {
         t.setPenUp(true);
         valueOfExecution = 0;
     }

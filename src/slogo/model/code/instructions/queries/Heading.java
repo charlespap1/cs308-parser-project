@@ -3,7 +3,7 @@ package slogo.model.code.instructions.queries;
 import slogo.model.Turtle;
 import slogo.model.code.instructions.Instruction;
 
-public class Heading extends Instruction {
+public class Heading extends QueryCommand {
 
     private static final int numArgs = 0;
 
@@ -12,7 +12,5 @@ public class Heading extends Instruction {
         instrName = name;
     }
 
-    public void performAction (Turtle t) {
-        valueOfExecution = t.getAngle();
-    }
+    public void execute() { valueOfExecution = turtle.getAngle(); }
 }

@@ -3,7 +3,7 @@ package slogo.model.code.instructions.queries;
 import slogo.model.Turtle;
 import slogo.model.code.instructions.Instruction;
 
-public class TurtleShowingQuery extends Instruction {
+public class TurtleShowingQuery extends QueryCommand {
 
     private static final int numArgs = 0;
 
@@ -12,7 +12,7 @@ public class TurtleShowingQuery extends Instruction {
         instrName = name;
     }
 
-    public void performAction (Turtle t) {
-        valueOfExecution = t.isVisible() ? 1 : 0;
-    }
+
+    public void execute() { valueOfExecution = turtle.isVisible() ? 1 : 0; }
+
 }

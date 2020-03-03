@@ -20,7 +20,7 @@ public class For extends Instruction {
         this.instrName = name;
     }
 
-    public void performAction (Turtle t) throws InvalidLoopConditionException, CommandCannotDoListException {
+    public void execute () throws InvalidLoopConditionException, CommandCannotDoListException {
         Token list1 = parameters.get(0);
         Token list2 = parameters.get(1);
         if (!(list1 instanceof ListSyntax) || !(list2 instanceof ListSyntax)) throw new InvalidArgumentException();
@@ -30,16 +30,16 @@ public class For extends Instruction {
         Token variable = loopParameters.get(0);
         if (!(variable instanceof Variable)) throw new InvalidLoopConditionException();
 
-        double start = checkTokenNotListAndGetVal(loopParameters.get(1), t);
-        double end = checkTokenNotListAndGetVal(loopParameters.get(2), t);
-        double increment = checkTokenNotListAndGetVal(loopParameters.get(3), t);
+        double start = checkTokenNotListAndGetVal(loopParameters.get(1));
+        double end = checkTokenNotListAndGetVal(loopParameters.get(2));
+        double increment = checkTokenNotListAndGetVal(loopParameters.get(3));
 
         List<Token> commands = ((ListSyntax) list2).getContents();
         for (double i = start; i <= end; i += increment) {
             ((Variable) variable).setVariable(i);
             for (Token command: commands) {
                 if (!(command instanceof Instruction)) throw new InvalidLoopConditionException();
-                ((Instruction) command).performAction(t);
+                ((Instruction) command).execute();
                 valueOfExecution = command.generateValue();
             }
         }

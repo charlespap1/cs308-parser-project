@@ -23,7 +23,7 @@ public class To extends Instruction {
         myFunction = function;
     }
 
-    public void performAction(Turtle turtle) {
+    public void execute () {
         String name = parameters.get(0).toString();
         Token list1 = parameters.get(1);
         Token list2 = parameters.get(2);
@@ -47,8 +47,8 @@ public class To extends Instruction {
     }
 
     public double generateValue() {
-        if (myCommand != null) return 1;
-        return 0;
+        return myCommand == null ? 0 : 1;
+
     }
 
     public String toString(String name){ return instrName + ": " + name; }

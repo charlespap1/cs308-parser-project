@@ -6,6 +6,7 @@ import slogo.model.code.Constant;
 import slogo.model.code.Variable;
 import slogo.model.code.instructions.booleans.*;
 import slogo.model.code.instructions.commands.*;
+import slogo.model.code.instructions.commands.ClearScreen;
 import slogo.model.code.instructions.math.*;
 import slogo.model.code.instructions.misc.*;
 import slogo.model.code.instructions.queries.*;

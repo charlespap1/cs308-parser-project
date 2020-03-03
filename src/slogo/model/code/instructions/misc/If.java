@@ -19,10 +19,10 @@ public class If extends Instruction {
         this.instrName = name;
     }
 
-    public void performAction (Turtle t) {
+    public void execute () {
         Token expr = this.parameters.get(0);
         Token list = this.parameters.get(1);
-        checkTokenNotListAndGetVal(expr, t);
+        checkTokenNotListAndGetVal(expr);
         if (!(list instanceof ListSyntax)) {
             throw new InvalidArgumentException();
         }
@@ -33,7 +33,7 @@ public class If extends Instruction {
                 if (!(command instanceof Instruction)) {
                     throw new InvalidLoopConditionException();
                 }
-                ((Instruction) command).performAction(t);
+                ((Instruction) command).execute();
                 valueOfExecution = command.generateValue();
             }
         }

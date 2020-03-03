@@ -19,19 +19,19 @@ public class IfElse extends Instruction {
         this.instrName = name;
     }
 
-    public void performAction (Turtle t) {
+    public void execute () {
         Token expr = this.parameters.get(0);
         Token list1 = this.parameters.get(1);
         Token list2 = this.parameters.get(2);
-        checkTokenNotListAndGetVal(expr, t);
+        checkTokenNotListAndGetVal(expr);
         this.valueOfExecution = 0;
         if (expr.generateValue() != 0)
-            runCommandsInList(list1, t);
+            runCommandsInList(list1);
         else
-            runCommandsInList(list2, t);
+            runCommandsInList(list2);
     }
 
-    private void runCommandsInList (Token list, Turtle t) {
+    private void runCommandsInList (Token list) {
         if (!(list instanceof ListSyntax)) {
             throw new InvalidArgumentException();
         }
@@ -40,7 +40,7 @@ public class IfElse extends Instruction {
             if (!(command instanceof Instruction)) {
                 throw new InvalidLoopConditionException();
             }
-            ((Instruction) command).performAction(t);
+            ((Instruction) command).execute();
             this.valueOfExecution = command.generateValue();
         }
     }

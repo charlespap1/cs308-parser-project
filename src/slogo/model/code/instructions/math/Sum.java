@@ -15,8 +15,8 @@ public class Sum extends SingleRunInstruction {
         instrName = name;
     }
 
-    public void performAction (Turtle t) {
-        List<Double> paramsAsVals = this.getParamsAsVals(t);
+    public void execute () {
+        List<Double> paramsAsVals = this.getParamsAsVals();
         double val1 = paramsAsVals.get(0);
         double val2 = paramsAsVals.get(1);
         valueOfExecution = val1 + val2;

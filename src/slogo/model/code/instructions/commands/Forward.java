@@ -5,7 +5,7 @@ import slogo.model.code.instructions.Instruction;
 
 import java.util.List;
 
-public class Forward extends Instruction {
+public class Forward extends TurtleCommand {
 
     private static final int numArgs = 1;
 
@@ -14,8 +14,8 @@ public class Forward extends Instruction {
         instrName = name;
     }
 
-    public void performAction (Turtle t) {
-        List<Double> paramsAsVals = getParamsAsVals(t);
+    protected void performAction (Turtle t) {
+        List<Double> paramsAsVals = getParamsAsVals();
         double valueForExec = paramsAsVals.get(0);
         valueOfExecution = valueForExec;
         double x = t.getXPos() - valueForExec * Math.cos(Math.toRadians(t.getAngle()));

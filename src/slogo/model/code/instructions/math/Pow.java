@@ -6,7 +6,7 @@ import slogo.model.code.instructions.SingleRunInstruction;
 
 import java.util.List;
 
-public class Pow extends SingleRunInstruction {
+public class Pow extends Instruction {
 
     private static final int numArgs = 2;
 
@@ -15,8 +15,8 @@ public class Pow extends SingleRunInstruction {
         instrName = name;
     }
 
-    public void performAction (Turtle t) {
-        List<Double> paramsAsVals = this.getParamsAsVals(t);
+    public void execute () {
+        List<Double> paramsAsVals = this.getParamsAsVals();
         double base = paramsAsVals.get(0);
         double exponent = paramsAsVals.get(1);
         valueOfExecution = Math.pow(base, exponent);

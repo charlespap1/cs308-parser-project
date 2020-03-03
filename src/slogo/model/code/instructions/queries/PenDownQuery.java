@@ -3,7 +3,7 @@ package slogo.model.code.instructions.queries;
 import slogo.model.Turtle;
 import slogo.model.code.instructions.Instruction;
 
-public class PenDownQuery extends Instruction {
+public class PenDownQuery extends QueryCommand {
 
     private static final int numArgs = 0;
 
@@ -12,7 +12,7 @@ public class PenDownQuery extends Instruction {
         instrName = name;
     }
 
-    public void performAction (Turtle t) {
-        valueOfExecution = t.getIsPenUp() ? 0 : 1;
-    }
+
+    public void execute() { valueOfExecution = turtle.getIsPenUp() ? 0 : 1; }
+
 }

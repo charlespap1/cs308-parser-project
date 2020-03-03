@@ -5,7 +5,7 @@ import slogo.model.code.instructions.Instruction;
 
 import java.util.List;
 
-public class Towards extends Instruction {
+public class Towards extends TurtleCommand {
     public static final int ANGLE_OFFSET = 90;
     private static final int numArgs = 2;
 
@@ -14,8 +14,8 @@ public class Towards extends Instruction {
         instrName = name;
     }
 
-    public void performAction (Turtle t) {
-        List<Double> paramsAsVals = getParamsAsVals(t);
+    protected void performAction (Turtle t) {
+        List<Double> paramsAsVals = getParamsAsVals();
         double xCord = paramsAsVals.get(0);
         double yCord = paramsAsVals.get(1);
         double angle = Math.atan2(xCord - t.getXPos(), yCord - t.getYPos());

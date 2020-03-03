@@ -16,13 +16,13 @@ public class Make extends Instruction {
         this.instrName = name;
     }
 
-    public void performAction (Turtle t) {
+    public void execute () {
         Token var = this.parameters.get(0);
         Token expr = this.parameters.get(1);
         if (!(var instanceof Variable)) {
             throw new InvalidArgumentException();
         }
-        double val = checkTokenNotListAndGetVal(expr, t);
+        double val = checkTokenNotListAndGetVal(expr);
         ((Variable) var).setVariable(val);
         this.valueOfExecution = val;
     }
