@@ -14,6 +14,8 @@ public class Turtle {
     private BooleanProperty visible = new SimpleBooleanProperty(true);
     private StringProperty currCommand = new SimpleStringProperty();
     private ObjectProperty<Point2D> coordinates;
+    private DoubleProperty penColor;
+    private DoubleProperty shape;
     private int id;
 
     public Turtle(int id, int xPos, int yPos, boolean isPenUp, int angle) {
@@ -32,6 +34,8 @@ public class Turtle {
     public BooleanProperty visibleProperty(){ return visible; }
     public StringProperty currCommandProperty(){ return currCommand; }
     public ObjectProperty<Point2D> pointProperty() { return coordinates; }
+    public DoubleProperty penColorProperty() { return penColor; }
+    public DoubleProperty shapeProperty() { return shape; }
 
     public void setLocation(double x, double y) {
         turtleX.setValue(x);
@@ -43,6 +47,8 @@ public class Turtle {
     public void setAngle(double angle) { turtleAngle.setValue(angle); }
     public void setPenUp(boolean isPenUp) { penUp.setValue(isPenUp);}
     public void setCurrCommand(String command) { currCommand.setValue(command); }
+    public void setPenColor(double penColor) { this.penColor.setValue(penColor); }
+    public void setShape(double shape) { this.shape.setValue(shape); }
 
     public double getXPos() {
         return turtleX.getValue();
@@ -56,4 +62,6 @@ public class Turtle {
     public double getAngle() { return turtleAngle.getValue(); }
     public boolean isVisible() { return visible.getValue(); }
     public int getId() { return id; }
+    public double getPenColor() { return penColor.getValue(); }
+    public double getShape() { return shape.getValue(); }
 }

@@ -22,5 +22,5 @@ public abstract class TurtleCommand extends Instruction {
         }
     }
 
-    abstract void performAction(Turtle t);
+    protected abstract void performAction(Turtle t);
 }
