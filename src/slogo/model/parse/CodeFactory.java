@@ -26,7 +26,6 @@ public class CodeFactory {
     public static String VARIABLE_TYPE = "Variable";
     public static String NEW_COMMAND_TYPE = "Command";
     public static String TO_TYPE = "MakeUserInstruction";
-    public static String ASK_TYPE = "Ask";
 
     private RegexHandler keyGrabber;
     private Map<String, Class> mappings = new HashMap<>();
@@ -51,20 +50,20 @@ public class CodeFactory {
     }
 
     public Turtle addTurtle(int id) {
+        System.out.println("adding");
         Turtle newTurtle = new Turtle(id, 0, 0, false, 0);
         turtleMap.put(id, newTurtle);
-        activeTurtles.add(newTurtle);
         return newTurtle;
     }
 
     public void setAddTurtleFunction(AddNewTurtleFunction function) { addTurtleFunction = function; }
 
     public Token getSymbolAsObj(String piece) throws SyntaxException{
+        if (activeTurtles.size()<1) activeTurtles.add(turtleMap.get(0));
         String objectType = keyGrabber.getSymbol(piece);
         if (objectType.equals(VARIABLE_TYPE)) return getVariable(piece);
         if (objectType.equals(NEW_COMMAND_TYPE)) return getNewCommand(piece);
         if (objectType.equals(TO_TYPE)) return new To(piece, this::addNewCommand);
-        //if (objectType.equals(ASK_TYPE)) return new Ask(piece, Model::getTurtle);
         Token token;
         try {
             Class c = mappings.get(objectType);
@@ -74,7 +73,11 @@ public class CodeFactory {
             if (token instanceof DisplayCommand) ((DisplayCommand) token).setMyAction(setActionMap.get(objectType));
             if (token instanceof TurtleCommand) ((TurtleCommand) token).setActiveTurtles(activeTurtles);
             if (token instanceof QueryCommand) ((QueryCommand) token).setTurtle(activeTurtles.get(activeTurtles.size()-1));
-            if (token instanceof MultiTurtleCommand) ((MultiTurtleCommand) token).setAddNewTurtleFunction(addTurtleFunction);
+            if (token instanceof MultiTurtleCommand) {
+                ((MultiTurtleCommand) token).setAddNewTurtleFunction(addTurtleFunction);
+                ((MultiTurtleCommand) token).setTurtleMap(turtleMap);
+                ((MultiTurtleCommand) token).setActiveTurtles(activeTurtles);
+            }
         } catch (Exception e) {
             throw new SyntaxException(e);
         }

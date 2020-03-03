@@ -1,9 +1,7 @@
 package slogo.model.code.instructions.math;
 
-import slogo.model.Turtle;
 import slogo.model.code.exceptions.DivideByZeroException;
 import slogo.model.code.instructions.Instruction;
-import slogo.model.code.instructions.SingleRunInstruction;
 
 import java.util.List;
 

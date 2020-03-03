@@ -58,10 +58,11 @@ public class Controller extends Application {
         myView.setErrorMessage(myModel.getErrorMessage());
         myView.setNewWindowButton(e -> makeNewWindow());
         setupCommands(myView, myModel);
-        myModel.setAddTurtleFunction(id -> myView.addTurtle(myModel.addTurtle(id)));
+        myModel.setAddTurtleFunction(id -> {
+            System.out.println(id);
+            myView.addTurtle(myModel.addTurtle(id));
+        });
         myView.setPopupButton(e -> showPopUp(stage, myModel));
-        //TODO: add listener for method tell command
-        //myView.add(turtle);
     }
 
 

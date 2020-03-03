@@ -9,6 +9,7 @@ import slogo.model.code.instructions.commands.*;
 import slogo.model.code.instructions.commands.ClearScreen;
 import slogo.model.code.instructions.math.*;
 import slogo.model.code.instructions.misc.*;
+import slogo.model.code.instructions.multipleturtles.*;
 import slogo.model.code.instructions.queries.*;
 
 public enum CodeType {
@@ -41,7 +42,7 @@ public enum CodeType {
     ARCTANGENT(Arctan.class),
     NOT(Not.class),
     AND(And.class),
-    TURTLES(null),
+    TURTLES(Turtles.class),
     DOTIMES(DoTimes.class),
     XCOORDINATE(XCor.class),
     SETTOWARDS(Towards.class),
@@ -66,7 +67,7 @@ public enum CodeType {
     MAKEUSERINSTRUCTION(To.class),
     SETSHAPE(null),
     GETSHAPE(null),
-    TELL(null),
+    TELL(Tell.class),
     FORWARD(Forward.class),
     SHOWTURTLE(ShowTurtle.class),
     CLEARSTAMPS(null),
