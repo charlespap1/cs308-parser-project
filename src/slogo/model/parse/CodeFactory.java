@@ -50,7 +50,6 @@ public class CodeFactory {
     }
 
     public Turtle addTurtle(int id) {
-        System.out.println("adding");
         Turtle newTurtle = new Turtle(id, 0, 0, false, 0);
         turtleMap.put(id, newTurtle);
         return newTurtle;

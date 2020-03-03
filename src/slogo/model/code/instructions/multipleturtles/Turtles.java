@@ -7,7 +7,6 @@ public class Turtles extends MultiTurtleCommand {
     public Turtles(String name){
         super(numArgs);
         instrName = name;
-        System.out.println("hi");
     }
 
     @Override
