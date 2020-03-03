@@ -19,7 +19,7 @@ public class PenColor extends TurtleCommand implements DisplayCommand {
     }
 
     protected void performAction(Turtle t) {
-        valueOfExecution = t.getPenColor();
+        //valueOfExecution = t.getPenColor();
     }
 
     @Override

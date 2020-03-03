@@ -19,7 +19,7 @@ public class Shape extends TurtleCommand implements DisplayCommand {
     }
 
     protected void performAction(Turtle t) {
-        valueOfExecution = t.getShape();
+        //valueOfExecution = t.getShape();
     }
 
     @Override
