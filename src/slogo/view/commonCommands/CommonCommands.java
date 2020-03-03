@@ -30,6 +30,7 @@ public class CommonCommands {
   public static final double TOP_PADDING = 30 + BUTTON_PADDING;
   private static final double HYPERLINK_PADDING = 150;
   public static final String MAIN_STYLESHEET = "main.css";
+  public static final String LINK_TO_ALL_COMMANDS = "https://www2.cs.duke.edu/courses/spring20/compsci308/assign/03_parser/commands.php";
 
   private Scene myPrevious;
   private Stage myStage;
@@ -116,7 +117,7 @@ public class CommonCommands {
     myLink.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent e) {
-        String url_open ="https://www2.cs.duke.edu/courses/spring20/compsci308/assign/03_parser/commands.php";
+        String url_open = LINK_TO_ALL_COMMANDS;
         try {
           java.awt.Desktop.getDesktop().browse(java.net.URI.create(url_open));
         } catch (IOException ex) {

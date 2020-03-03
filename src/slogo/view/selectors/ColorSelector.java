@@ -2,12 +2,12 @@ package slogo.view.selectors;
 
 import java.util.List;
 import java.util.ResourceBundle;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
+import slogo.view.StaticViewElement;
 
 /**
  * This class allows us to remove duplicated constructor
@@ -15,7 +15,7 @@ import javafx.scene.text.Text;
  * @author Juliet
  */
 
-public abstract class ColorSelector{
+public abstract class ColorSelector implements StaticViewElement {
   public static final int HBOX_SPACING = 10;
   public static final double COLOR_SELECTOR_HEIGHT = 17;
   public static final String DEFAULT_BACKGROUND_SETTER = "-fx-background-color: ";

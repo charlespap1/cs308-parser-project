@@ -12,8 +12,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
-public class TurtleGraphicalMover {
+public class TurtleGraphicalMover implements StaticViewElement{
 
   public static final int MOVEMENT_VALUE = 10;
   public static final int BOX_SPACING = 5;
@@ -35,6 +36,7 @@ public class TurtleGraphicalMover {
   private Slider increaseThickness;
   private RadioButton changePenUp;
   private RadioButton changePenDown;
+  private Text myThicknessText = new Text();
 
   public TurtleGraphicalMover(Turtle t, double x, double y)
   {
@@ -48,6 +50,7 @@ public class TurtleGraphicalMover {
     myHolder.setLayoutY(y);
 
     myButtonHolder.setAlignment(Pos.CENTER);
+    myPenElements.setAlignment(Pos.CENTER);
     setTurtleButtons();
     setPenElements();
 
@@ -57,6 +60,12 @@ public class TurtleGraphicalMover {
   public Node getView()
   {
     return myHolder;
+  }
+
+  @Override
+  public void setTitleProperty(StringProperty sp) {
+    myThicknessText.textProperty().bind(sp);
+    myPenElements.getChildren().add(0, myThicknessText);
   }
 
   private void setPenElements()
@@ -104,7 +113,6 @@ public class TurtleGraphicalMover {
     }
 
   }
-
 
   private void setTurtleButtons()
   {

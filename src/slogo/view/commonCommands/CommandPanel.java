@@ -2,16 +2,18 @@ package slogo.view.commonCommands;
 
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.beans.property.StringProperty;
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import slogo.view.SetupScreen;
+import slogo.view.StaticViewElement;
 
 /**
  * Provides generic way to put common phrases into boxes for displaying
  * @author Juliet
  */
-public abstract class CommandPanel {
+public abstract class CommandPanel implements StaticViewElement {
   public static final int HOLDER_PADDING = 10;
   public static final String RESOURCES = "resources";
   public static final String RESOURCE_PACKAGE = RESOURCES + ".commands.";
@@ -37,6 +39,13 @@ public abstract class CommandPanel {
   {
     return myHolder;
   }
+
+  public void setTitleProperty(StringProperty sp)
+  {
+    
+  }
+
+
 
   private void setHolderLayout(double x, double y) {
     myHolder.setMinWidth(SetupScreen.WIDTH/4.0);

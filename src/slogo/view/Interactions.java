@@ -28,8 +28,9 @@ public class Interactions implements View {
   private List<Turtle> myTurtles = new ArrayList<>();
   private Turtle myInitialTurtle;
   private DrawingCanvas myCanvas;
+  private String myPreferences;
 
-  public Interactions(Stage primaryStage) {
+  public Interactions(Stage primaryStage, String preferences) {
     mySetup = new SetupScreen();
     Scene myScene = mySetup.setupGame();
     CommonCommands myCommonCommands = new CommonCommands(primaryStage, myScene, getLanguageChoice());
@@ -38,10 +39,12 @@ public class Interactions implements View {
     myTurtles.add(myInitialTurtle);
     root = mySetup.getRoot();
     myCanvas = mySetup.getDrawingCanvas();
+    myPreferences = preferences;
 
     primaryStage.setScene(myScene);
     primaryStage.setTitle(TITLE);
     primaryStage.show();
+    setPreferences();
   }
 
   /**
@@ -115,6 +118,12 @@ public class Interactions implements View {
       newTurtle.getView().toFront();
     }
   }
+
+  public void setPreferences()
+  {
+    mySetup.setPreferences(myPreferences);
+  }
+
 
   public void setPopupButton(EventHandler<ActionEvent> showPopup) {
     mySetup.setPopupButton(showPopup);

@@ -11,6 +11,11 @@ public class PreferenceSelector {
   public static final String BACKGROUND_COLORS_PACKAGE = "resources.colors.BackgroundColors";
   public static final String PEN_COLORS_PACKAGE = "resources.colors.PenColors";
 
+  public static final String DEFAULT_TURTLE_IMAGE = "turtle.png";
+  public static final boolean DEFAULT_PEN_UP = false;
+  public static final String DEFAULT_PEN_COLOR = "#000000";
+  public static final String DEFAULT_BACKGROUND_COLOR = "#ffffff";
+
   public static final String FILE_PATH = "resources.preferences.";
 
   private ResourceBundle myPreferences;
@@ -27,14 +32,14 @@ public class PreferenceSelector {
 
   public void setTurtle(Turtle t)
   {
-    String penHex = getValueFromPackage(myPreferences.getString("PenColor"),PEN_COLORS_PACKAGE, "#000000");
+    String penHex = getStringValueFromPackage(myPreferences.getString("PenColor"),PEN_COLORS_PACKAGE, DEFAULT_PEN_COLOR);
 
     Color penColor = Color.web(penHex);
 
-    String imageFileName = myPreferences.getString("TurtleImage");
+    String imageFileName = getImageFilenameFromPackage(myPreferences.getString("TurtleImage"));
     Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(imageFileName)));
 
-    boolean penUp = Boolean.parseBoolean(myPreferences.getString("PenUp"));
+    boolean penUp = getStringBooleanFromPackage(myPreferences.getString("PenUp"), DEFAULT_PEN_UP);
 
     t.changePenColor(penColor);
     t.changeImage(image);
@@ -43,13 +48,13 @@ public class PreferenceSelector {
 
   public void changeBackground(DrawingCanvas dc)
   {
-    String backgroundHex = getValueFromPackage(myPreferences.getString("Background"),BACKGROUND_COLORS_PACKAGE, "#ffffff");
+    String backgroundHex = getStringValueFromPackage(myPreferences.getString("Background"),BACKGROUND_COLORS_PACKAGE, DEFAULT_BACKGROUND_COLOR);
     Color backgroundColor = Color.web(backgroundHex);
 
     dc.changeBackground(backgroundColor);
   }
 
-  public String getValueFromPackage(String key, String filePackage, String defaultValue)
+  private String getStringValueFromPackage(String key, String filePackage, String defaultValue)
   {
     ResourceBundle resource = ResourceBundle.getBundle(filePackage);
 
@@ -58,9 +63,31 @@ public class PreferenceSelector {
     }
     catch(Exception e){
       return defaultValue;
-  }
+    }
 
   }
+
+  private boolean getStringBooleanFromPackage(String key, boolean defaultValue)
+  {
+    try {
+      return Boolean.parseBoolean(myPreferences.getString(key));
+    }
+    catch(Exception e){
+      return defaultValue;
+    }
+  }
+
+  private String getImageFilenameFromPackage(String key)
+  {
+    try {
+      return myPreferences.getString(key);
+    }
+    catch(Exception e){
+      return DEFAULT_TURTLE_IMAGE;
+    }
+  }
+
+
 
 }
 

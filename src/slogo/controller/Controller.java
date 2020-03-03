@@ -18,7 +18,7 @@ import slogo.view.popup.LoadConfigPopup;
  */
 public class Controller extends Application {
     public static final String RESOURCES_PATH = "resources.commands.Methods";
-
+    public static final String DEFAULT_PREFERENCES = "DefaultPreferences";
     public static void main (String[] args) {
         launch(args);
     }
@@ -29,11 +29,11 @@ public class Controller extends Application {
      */
     @Override
     public void start(Stage primaryStage) {
-        makeWindow(primaryStage);
+        makeWindow(primaryStage, DEFAULT_PREFERENCES);
     }
 
     private void makeNewWindow() {
-        makeWindow(new Stage());
+        makeWindow(new Stage(), "PreferencesOne");
     }
 
     private void showPopUp(Stage currentStage, Model myModel){
@@ -48,8 +48,8 @@ public class Controller extends Application {
         popup.setPopupButton(e);
     }
 
-    private void makeWindow(Stage stage){
-        Interactions myView = new Interactions(stage);
+    private void makeWindow(Stage stage, String preferences){
+        Interactions myView = new Interactions(stage, preferences);
         Model myModel = new Model(myView.getLanguageChoice());
         myView.setInitialTurtle(myModel.getTurtle());
         myView.setGoButton(e -> getInstruction(myView, myModel));
