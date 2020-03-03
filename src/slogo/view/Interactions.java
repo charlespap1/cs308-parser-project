@@ -1,5 +1,6 @@
 package slogo.view;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.beans.property.StringProperty;
@@ -97,10 +98,13 @@ public class Interactions implements View {
   public StringProperty getLanguageChoice() { return mySetup.getLanguageChoice(); }
 
   public DisplayAction getAction(String methodName) {
-    return params -> {
-      Method m = SetupScreen.class.getDeclaredMethod(methodName, List.class);
-      Object value = m.invoke(this.mySetup, params);
-      return (Integer) value;
+    return new DisplayAction() {
+      @Override
+      public int execute(List<Double> params) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Method m = SetupScreen.class.getDeclaredMethod(methodName, List.class);
+        Object value = m.invoke(mySetup, params);
+        return (Integer) value;
+      }
     };
   }
 
