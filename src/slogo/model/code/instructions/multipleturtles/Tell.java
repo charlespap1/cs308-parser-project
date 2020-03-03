@@ -10,7 +10,7 @@ import slogo.model.code.instructions.SingleRunInstruction;
 
 import java.util.List;
 
-public class Tell extends SingleRunInstruction {
+public class Tell extends MultiTurtleCommand {
 
     private static final int numArgs = 1;
 
@@ -32,5 +32,10 @@ public class Tell extends SingleRunInstruction {
             //Model.getActiveTurtles().add(tt);
             valueOfExecution = turtleId;
         }
+    }
+
+    @Override
+    public void execute() {
+
     }
 }

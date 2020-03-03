@@ -11,7 +11,7 @@ import slogo.model.code.instructions.SingleRunInstruction;
 
 import java.util.List;
 
-public class Ask extends SingleRunInstruction {
+public class Ask extends MultiTurtleCommand {
 
     private static final int numArgs = 2;
     //private AddNewTurtleFunction addNewTurtle;
@@ -41,5 +41,10 @@ public class Ask extends SingleRunInstruction {
                 valueOfExecution = command.generateValue();
             }
         }
+    }
+
+    @Override
+    public void execute() {
+
     }
 }

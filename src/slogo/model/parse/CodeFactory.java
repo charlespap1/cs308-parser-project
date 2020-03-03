@@ -2,14 +2,19 @@ package slogo.model.parse;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import slogo.controller.AddNewTurtleFunction;
+import slogo.model.Turtle;
 import slogo.model.code.NewCommandName;
 import slogo.model.code.Token;
 import slogo.model.code.Variable;
 import slogo.model.code.exceptions.LanguageFileNotFoundException;
 import slogo.model.code.exceptions.SyntaxException;
 import slogo.model.code.instructions.*;
+import slogo.model.code.instructions.commands.TurtleCommand;
 import slogo.model.code.instructions.display.DisplayCommand;
 import slogo.model.code.instructions.misc.To;
+import slogo.model.code.instructions.multipleturtles.MultiTurtleCommand;
+import slogo.model.code.instructions.queries.QueryCommand;
 import slogo.view.DisplayAction;
 
 import java.lang.reflect.Constructor;
@@ -30,6 +35,9 @@ public class CodeFactory {
     private ObservableList<String> vars = FXCollections.observableArrayList();
     private ObservableList<String> newCommands = FXCollections.observableArrayList();
     private Map<String, DisplayAction> setActionMap = new HashMap<>();
+    private Map<Integer, Turtle> turtleMap = new HashMap<>();
+    private List<Turtle> activeTurtles = new ArrayList<>();
+    private AddNewTurtleFunction addTurtleFunction;
 
     public CodeFactory(String language) throws LanguageFileNotFoundException {
         setLanguage(language);
@@ -41,6 +49,15 @@ public class CodeFactory {
         keyGrabber.addPatterns("Syntax");
         generateMappings();
     }
+
+    public Turtle addTurtle(int id) {
+        Turtle newTurtle = new Turtle(id, 0, 0, false, 0);
+        turtleMap.put(id, newTurtle);
+        activeTurtles.add(newTurtle);
+        return newTurtle;
+    }
+
+    public void setAddTurtleFunction(AddNewTurtleFunction function) { addTurtleFunction = function; }
 
     public Token getSymbolAsObj(String piece) throws SyntaxException{
         String objectType = keyGrabber.getSymbol(piece);
@@ -55,6 +72,9 @@ public class CodeFactory {
             objConstruct.setAccessible(true);
             token = (Token) objConstruct.newInstance(piece);
             if (token instanceof DisplayCommand) ((DisplayCommand) token).setMyAction(setActionMap.get(objectType));
+            if (token instanceof TurtleCommand) ((TurtleCommand) token).setActiveTurtles(activeTurtles);
+            if (token instanceof QueryCommand) ((QueryCommand) token).setTurtle(activeTurtles.get(activeTurtles.size()-1));
+            if (token instanceof MultiTurtleCommand) ((MultiTurtleCommand) token).setAddNewTurtleFunction(addTurtleFunction);
         } catch (Exception e) {
             throw new SyntaxException(e);
         }

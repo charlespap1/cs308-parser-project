@@ -11,7 +11,7 @@ import slogo.model.code.instructions.SingleRunInstruction;
 
 import java.util.List;
 
-public class Turtles extends SingleRunInstruction {
+public class Turtles extends Instruction {
 
     private static final int numArgs = 0;
 
@@ -22,5 +22,10 @@ public class Turtles extends SingleRunInstruction {
 
     public void performAction (Turtle t) throws InvalidArgumentException, InvalidLoopConditionException {
         valueOfExecution = Model.getTurtleMap().size();
+    }
+
+    @Override
+    public void execute() {
+
     }
 }

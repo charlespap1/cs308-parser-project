@@ -15,6 +15,7 @@ public class Forward extends TurtleCommand {
     }
 
     protected void performAction (Turtle t) {
+        // TODO: change active turtle for query params
         List<Double> paramsAsVals = getParamsAsVals();
         double valueForExec = paramsAsVals.get(0);
         valueOfExecution = valueForExec;

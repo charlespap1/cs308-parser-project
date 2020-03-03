@@ -16,6 +16,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Line;
 import slogo.view.commonCommands.CommonCommands;
 import slogo.view.scrollers.HistoryCanvas;
 import slogo.view.scrollers.ListViewer;
@@ -72,7 +73,7 @@ public class SetupScreen {
 
   private UserCommandField myUserInput = new UserCommandField(WIDTH, HEIGHT);
   private Group root = new Group();
-  private List<Turtle> myTurtles;
+  private List<Turtle> myTurtles = new ArrayList<>();
   private DrawingCanvas myDrawingCanvas = new DrawingCanvas(WIDTH, HEIGHT);
   private Button myGo;
   private Button myClear;
@@ -127,7 +128,7 @@ public class SetupScreen {
     root.getChildren().add(myCurrentErrorMessage);
 
     Scene scene = new Scene(root, WIDTH, HEIGHT, BACKGROUND);
-    scene.getStylesheets().add(getClass().getClassLoader().getResource(MAIN_STYLESHEET).toExternalForm());
+    scene.getStylesheets().add(Objects.requireNonNull(getClass().getClassLoader().getResource(MAIN_STYLESHEET)).toExternalForm());
 
     return scene;
   }
@@ -145,14 +146,14 @@ public class SetupScreen {
     root.getChildren().add(myCommandJumper);
   }
 
-  public Turtle addNewTurtle()
-  {
+  public void addNewTurtle(slogo.model.Turtle turtle) {
     Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(DEFAULT_TURTLE_IMAGE)));
     Turtle newTurtle = new Turtle(image, myDrawingCanvas.getWidth(), myDrawingCanvas.getHeight());
-    myTurtles = new ArrayList<>();
     myTurtles.add(newTurtle);
     root.getChildren().add(newTurtle.getView());
-    return newTurtle;
+    newTurtle.setProperties(turtle);
+    turtle.pointProperty().addListener((o, oldVal, newVal) -> update(newTurtle));
+    turtle.currCommandProperty().addListener((o, oldVal, newVal) -> addHistory(newVal));
   }
 
   /**
@@ -193,10 +194,23 @@ public class SetupScreen {
   public int setPalette(List<Integer> params){return 0;}
   public int getPenColor(List<Integer> params) { return 0;}
   public int getShape(List<Integer> params) { return 0; }
+
   public int clearScreen(List<Integer> params) {
     myHistory.clearHistory();
     root.getChildren().removeAll(myDrawingCanvas.getLines());
     return 0;
+  }
+
+  /**
+   * Updates the movement of the turtle according to new states
+   */
+  private void update(Turtle newTurtle) {
+    Line newLine = newTurtle.drawLineAndBound();
+    if (newLine!=null) {
+      root.getChildren().add(newLine);
+      myDrawingCanvas.addLine(newLine);
+      newTurtle.getView().toFront();
+    }
   }
 
   private void setupBox(Pane box, double x, double y, double width){

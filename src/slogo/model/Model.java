@@ -3,6 +3,7 @@ package slogo.model;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
+import slogo.controller.AddNewTurtleFunction;
 import slogo.model.code.BracketClose;
 import slogo.model.code.BracketOpen;
 import slogo.model.code.ListSyntax;
@@ -35,18 +36,13 @@ public class Model implements ModelAPI{
     private CodeFactory createFromString;
     private Stack<Stack<Token>> arguments = new Stack<>();
     private RegexHandler typeCheck = new RegexHandler();
-    private static Map<Integer, Turtle> turtleMap = new HashMap<>();
     private StringProperty errorMessage = new SimpleStringProperty();
-    private List<Turtle> activeTurtles = new ArrayList<>();
     private String currFullCommand = "";
     private boolean executed = false;
 
     public Model(StringProperty language) {
         typeCheck.addPatterns(SYNTAX);
         setupLanguage(language);
-        Turtle initialTurtle = new Turtle(1, 0, 0, false, 0);
-        turtleMap.put(1, initialTurtle);
-        activeTurtles.add(initialTurtle);
     }
 
     public void executeCode(String rawString) {
@@ -65,7 +61,9 @@ public class Model implements ModelAPI{
 
     }
 
-    public Turtle getTurtle(){ return turtleMap.get(1); }
+    public Turtle addTurtle(int id){
+        return createFromString.addTurtle(id);
+    }
 
     public ObservableList<String> getVariableList(){ return createFromString.getVariableList(); }
 
@@ -84,24 +82,11 @@ public class Model implements ModelAPI{
 
     }
 
-    public static Turtle createOrGetTurtle(int id) {
-        if (!turtleMap.containsKey(id)) {
-            turtleMap.put(id, new Turtle(id, 0, 0, false, 0));
-        }
-        return turtleMap.get(id);
-    }
-
-    public List<Turtle> getActiveTurtles() {
-        return activeTurtles;
-    }
-
-    public static Map<Integer, Turtle> getTurtleMap() {
-        return turtleMap;
-    }
-
     public void setAction(String key, DisplayAction action){
         createFromString.addAction(key, action);
     }
+
+    public void setAddTurtleFunction(AddNewTurtleFunction function){ createFromString.setAddTurtleFunction(function); }
 
     private void parseInstructions(String rawString){
         try {
@@ -112,8 +97,9 @@ public class Model implements ModelAPI{
                     currFullCommand += piece + " ";
                 }
                 if(executed){
-                    activeTurtles.get(0).setCurrCommand(currFullCommand);
-                    activeTurtles.get(0).setCurrCommand("");
+                    // TODO: write to history
+//                    activeTurtles.get(0).setCurrCommand(currFullCommand);
+//                    activeTurtles.get(0).setCurrCommand("");
                     currFullCommand = "";
                     executed = false;
                 }
@@ -149,10 +135,10 @@ public class Model implements ModelAPI{
         attemptToCreateFullInstruction();
     }
 
-    private void addInstructionToStack(Instruction currInstr) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    private void addInstructionToStack(Instruction currInstr) {
         if (currInstr.numRequiredArgs() == 0) {
             if (commands.isEmpty()) {
-                currInstr.execute(activeTurtles);
+                currInstr.execute();
             } else {
                 arguments.peek().push(currInstr);
                 attemptToCreateFullInstruction();
@@ -163,7 +149,7 @@ public class Model implements ModelAPI{
         }
     }
 
-    private void attemptToCreateFullInstruction() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    private void attemptToCreateFullInstruction() {
         Instruction currCommand = (Instruction) commands.peek();
         if (enoughArgs(currCommand.numRequiredArgs())) {
             if (currCommand instanceof BracketOpen) {
@@ -173,7 +159,7 @@ public class Model implements ModelAPI{
             } else {
                 Instruction currInstr = createCompleteInstruction(arguments.pop());
                 if (commands.isEmpty()) {
-                    currInstr.execute(activeTurtles);
+                    currInstr.execute();
                     executed = true;
                 } else {
                     arguments.peek().push(currInstr);

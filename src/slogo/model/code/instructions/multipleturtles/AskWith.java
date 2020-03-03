@@ -11,7 +11,7 @@ import slogo.model.code.instructions.SingleRunInstruction;
 
 import java.util.List;
 
-public class AskWith extends SingleRunInstruction {
+public class AskWith extends MultiTurtleCommand {
 
     private static final int numArgs = 2;
 
