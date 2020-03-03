@@ -62,11 +62,6 @@ public class LoadConfigPopup {
     myLoad = new Button("Load");
   }
 
-  /*public void setPromptProperty(StringProperty sp){
-    myPrompt.textProperty().bind(sp);
-    myPrompt.textProperty().setValue("Enter a filename");
-    myHolder.getChildren().add(0, myPrompt);
-  }*/
 
   public Popup getMyPopup()
   {

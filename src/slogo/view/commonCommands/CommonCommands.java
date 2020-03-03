@@ -26,6 +26,11 @@ public class CommonCommands {
   public static final String COMMON_COMMAND_TITLE = "Common Commands";
   public static final String BACK_BUTTON_KEY = "CommonCommandBackButton";
   public static final String HYPERLINK_TEXT_KEY = "HyperlinkText";
+  public static final String MATH_OPS_KEY = "MathOperationsText";
+  public static final String BOOLEAN_OPS_KEY = "BooleanOperationsText";
+  public static final String QUERIES_KEY = "TurtleQueriesText";
+  public static final String COMMANDS_KEY = "TurtleCommandsText";
+
   public static final double BUTTON_PADDING = 10;
   public static final double TOP_PADDING = 30 + BUTTON_PADDING;
   private static final double HYPERLINK_PADDING = 150;
@@ -86,9 +91,16 @@ public class CommonCommands {
   private Scene setupCommandScene() {
     Group myRoot = new Group();
     TurtleCommandPanel turtleCommands = new TurtleCommandPanel(language.get(), 0);
+    turtleCommands.setTitleProperty(myLanguageHelper.getStringProperty(COMMANDS_KEY));
+
     TurtleQueriesPanel turtleQueries = new TurtleQueriesPanel(language.get(), width/4);
+    turtleQueries.setTitleProperty(myLanguageHelper.getStringProperty(QUERIES_KEY));
+
     MathOperationsPanel mathOps = new MathOperationsPanel(language.get(), width/2);
+    mathOps.setTitleProperty(myLanguageHelper.getStringProperty(MATH_OPS_KEY));
+
     BooleanOperationsPanel boolOps = new BooleanOperationsPanel(language.get(), 3*width/4);
+    boolOps.setTitleProperty(myLanguageHelper.getStringProperty(BOOLEAN_OPS_KEY));
 
     setHyperlink(myRoot);
 

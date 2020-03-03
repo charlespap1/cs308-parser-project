@@ -22,15 +22,14 @@ public abstract class CommandPanel implements StaticViewElement {
   private ResourceBundle myResources;
   private VBox myHolder;
   private List<String> myIdentifiers;
+  private Text myTitle = new Text();
 
-  public CommandPanel(String resourceTextFile, List<String> identifiers, String title, double x, double y) {
+  public CommandPanel(String resourceTextFile, List<String> identifiers, double x, double y) {
     String myPackage = RESOURCE_PACKAGE + resourceTextFile;
-    Text myTitle = new Text(title);
     myResources = ResourceBundle.getBundle(myPackage);
     myIdentifiers = identifiers;
 
     myHolder = new VBox(VBOX_SPACING);
-    myHolder.getChildren().add(myTitle);
     setHolderLayout(x, y);
     fillCommands();
   }
@@ -42,10 +41,9 @@ public abstract class CommandPanel implements StaticViewElement {
 
   public void setTitleProperty(StringProperty sp)
   {
-    
+    myTitle.textProperty().bind(sp);
+    myHolder.getChildren().add(0, myTitle);
   }
-
-
 
   private void setHolderLayout(double x, double y) {
     myHolder.setMinWidth(SetupScreen.WIDTH/4.0);
