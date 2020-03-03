@@ -5,5 +5,5 @@ import java.util.List;
 
 @FunctionalInterface
 public interface DisplayAction {
-    int execute(List<Integer> params) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException;
+    int execute(List<Double> params) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException;
 }
