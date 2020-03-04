@@ -17,6 +17,6 @@ public interface View {
     DisplayAction getAction(String method);
     void setInitialTurtle(slogo.model.Turtle turtle);
     void setGoButton(EventHandler<ActionEvent> goAction);
-    void setViewLists(ObservableList<String> variableList, ObservableList<String> newCommandList);
+    //void setViewLists(ObservableList<String> variableList, ObservableList<String> newCommandList);
     void setErrorMessage(StringProperty error);
 }
