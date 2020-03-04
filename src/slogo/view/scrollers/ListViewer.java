@@ -15,7 +15,7 @@ import slogo.model.code.Variable;
  * @author Natalie
  */
 
-public class ListViewer extends ScrollingWindow {
+public abstract class ListViewer extends ScrollingWindow {
   protected ListView<Token> myList = new ListView<>();
 
   public ListViewer(double elementWidthFactor, double topPadding) {
@@ -32,4 +32,6 @@ public class ListViewer extends ScrollingWindow {
   public void bindList(ObservableList<Token> list) {
     myList.setItems(list);
   }
+
+  protected abstract void onSelectedItem(Token t);
 }
