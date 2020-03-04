@@ -3,11 +3,7 @@ package slogo.model;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
-import slogo.model.code.BracketClose;
-import slogo.model.code.BracketOpen;
-import slogo.model.code.ListSyntax;
-import slogo.model.code.NewCommandName;
-import slogo.model.code.Token;
+import slogo.model.code.*;
 import slogo.model.code.exceptions.InvalidCommandException;
 import slogo.model.code.exceptions.InvalidNumberArgumentsException;
 import slogo.model.code.exceptions.LanguageFileNotFoundException;
@@ -41,6 +37,8 @@ public class Model implements ModelAPI{
     private String currFullCommand = "";
     private boolean executed = false;
 
+    private History history = new History();
+
     public Model(StringProperty language) {
         typeCheck.addPatterns(SYNTAX);
         setupLanguage(language);
@@ -52,6 +50,7 @@ public class Model implements ModelAPI{
     public void executeCode(String rawString) {
         errorMessage.set("");
         clearStacks();
+        history.addNewProgram(new Program(generateStateMap(turtleMap)));
         parseInstructions(rawString);
         if(!commands.isEmpty() || !arguments.isEmpty()){
             InvalidNumberArgumentsException e = new InvalidNumberArgumentsException();
@@ -63,6 +62,14 @@ public class Model implements ModelAPI{
     public void executeCode(File f){
         //TODO: convert file f into rawString, then call executeCode with rawString
 
+    }
+
+    public Map<Integer, State> generateStateMap(Map<Integer, Turtle> turtleMap) {
+        Map<Integer, State> stateMap = new HashMap<>();
+        for (int id : turtleMap.keySet()) {
+            stateMap.put(id, new State(turtleMap.get(id)));
+        }
+        return stateMap;
     }
 
     public Turtle getTurtle(){ return turtleMap.get(1); }
@@ -112,8 +119,9 @@ public class Model implements ModelAPI{
                     currFullCommand += piece + " ";
                 }
                 if(executed){
-                    activeTurtles.get(0).setCurrCommand(currFullCommand);
-                    activeTurtles.get(0).setCurrCommand("");
+//                    activeTurtles.get(0).setCurrCommand(currFullCommand);
+////                    activeTurtles.get(0).setCurrCommand("");
+                    history.getProgram(-1).addNewCommand(currFullCommand);
                     currFullCommand = "";
                     executed = false;
                 }
