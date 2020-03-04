@@ -11,6 +11,8 @@ import slogo.model.Model;
 import slogo.view.Interactions;
 import slogo.view.DisplayAction;
 import slogo.view.popup.LoadConfigPopup;
+import slogo.view.popup.SetPreferencesPopup;
+import slogo.view.popup.ViewPopup;
 
 /**
  * Main method where the GUI comes together
@@ -32,8 +34,8 @@ public class Controller extends Application {
         makeWindow(primaryStage, DEFAULT_PREFERENCES);
     }
 
-    private void makeNewWindow() {
-        makeWindow(new Stage(), "PreferencesOne");
+    private void makeNewWindow(String preference) {
+        makeWindow(new Stage(), preference);
     }
 
     private void showPopUp(Stage currentStage, Model myModel){
@@ -55,12 +57,27 @@ public class Controller extends Application {
         myView.setGoButton(e -> getInstruction(myView, myModel));
         myView.setViewLists(myModel.getVariableList(), myModel.getNewCommandsList());
         myView.setErrorMessage(myModel.getErrorMessage());
-        myView.setNewWindowButton(e -> makeNewWindow());
+        myView.setNewWindowButton(e -> getNewPreferences(stage));
         setupCommands(myView, myModel);
         myView.setPopupButton(e -> showPopUp(stage, myModel));
         //TODO: add listener for method tell command
         //myView.add(turtle);
     }
+
+    private void getNewPreferences(Stage currentStage)
+    {
+        SetPreferencesPopup prefPopup = new SetPreferencesPopup();
+        prefPopup.getMyPopup().show(currentStage);
+
+        EventHandler<ActionEvent> e = new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent event) {
+                makeNewWindow(prefPopup.getPreference());
+                prefPopup.getMyPopup().hide();
+            }
+        };
+        prefPopup.setPopupButton(e);
+    }
+
 
 
 

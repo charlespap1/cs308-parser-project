@@ -94,6 +94,7 @@ public class Interactions implements View {
   public void setGoButton(EventHandler<ActionEvent> goAction){ mySetup.setGoButton(goAction); }
 
   public void setNewWindowButton(EventHandler<ActionEvent> newWindowAction) { mySetup.setNewWindowButton(newWindowAction); }
+  public void setNewConfigButton(EventHandler<ActionEvent> newWindowAction) { mySetup.setNewConfigButton(newWindowAction); }
 
   public void setErrorMessage(StringProperty error){ mySetup.bindErrorMessage(error); }
 
@@ -126,7 +127,7 @@ public class Interactions implements View {
 
 
   public void setPopupButton(EventHandler<ActionEvent> showPopup) {
-    mySetup.setPopupButton(showPopup);
+    mySetup.setNewConfigButton(showPopup);
   }
 
 }

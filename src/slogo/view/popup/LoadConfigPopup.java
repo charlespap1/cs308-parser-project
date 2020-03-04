@@ -20,7 +20,7 @@ import javafx.stage.Popup;
 public class LoadConfigPopup {
 
   public static final int HOLDER_SPACING = 10;
-  public static final int WINDOW_WIDTH = 300;
+  public static final int WINDOW_WIDTH = 325;
   public static final int WINDOW_HEIGHT = 50;
   public static final int TEXT_FIELD_WIDTH = 125;
   public static final Color HOLDER_BACKGROUND_COLOR = Color.LAVENDER;

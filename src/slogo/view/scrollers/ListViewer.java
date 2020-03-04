@@ -1,10 +1,7 @@
 package slogo.view.scrollers;
 
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
-import javafx.scene.input.MouseEvent;
 import slogo.view.SetInputAction;
 
 import java.lang.reflect.Method;
