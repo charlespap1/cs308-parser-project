@@ -23,11 +23,12 @@ public class TurtleMaster {
     public void setAddTurtleFunction(AddNewTurtleFunction function) { }//addTurtleFunction = function; }
 
     public double executeTurtleCommand(TurtleAction action){
+        double executionValue=-1;
         for (Turtle t: activeTurtles){
             currentActiveTurtle = t;
-            action.actOnTurtle(t);
+            executionValue = action.actOnTurtle(t);
         }
-        return 0;
+        return executionValue;
     }
 
     public double executeTurtleQuery(TurtleAction action){
