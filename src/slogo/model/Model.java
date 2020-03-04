@@ -103,6 +103,12 @@ public class Model implements ModelAPI{
         createFromString.addAction(key, action);
     }
 
+    public void setErrorMessage(String error)
+    {
+        errorMessage.setValue(error);
+    }
+
+
     private void parseInstructions(String rawString){
         try {
             String[] inputPieces = rawString.split(WHITESPACE);

@@ -1,8 +1,10 @@
 package slogo.controller;
 
+import java.io.FileNotFoundException;
 import java.util.ResourceBundle;
 
 import java.io.File;
+import java.util.Scanner;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -10,6 +12,7 @@ import javafx.stage.Stage;
 import slogo.model.Model;
 import slogo.view.Interactions;
 import slogo.view.DisplayAction;
+import slogo.view.popup.FileDoesNotExistException;
 import slogo.view.popup.LoadConfigPopup;
 import slogo.view.popup.SetPreferencesPopup;
 
@@ -41,8 +44,14 @@ public class Controller extends Application {
         LoadConfigPopup popup = new LoadConfigPopup();
         popup.getMyPopup().show(currentStage);
         EventHandler<ActionEvent> e = event -> {
-                executeTextFile(popup.getFile(), myModel);
-                popup.getMyPopup().hide();
+            try{
+                File commandFile = popup.getFile();
+                executeTextFile(commandFile, myModel);
+            }catch(FileDoesNotExistException err)
+            {
+                myModel.setErrorMessage(err.getMessage());
+            }
+            popup.getMyPopup().hide();
         };
         popup.setPopupButton(e);
     }
@@ -74,9 +83,6 @@ public class Controller extends Application {
     }
 
 
-
-
-
     /**
      * Method which can be called by any instance of a Visual object
      * and allows the caller to get the user input from the command input field
@@ -99,7 +105,7 @@ public class Controller extends Application {
 
     private void executeTextFile(File f, Model model) throws NullPointerException {
         // print to see if working
-        /*try {
+        try {
             Scanner myReader = new Scanner(f);
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
@@ -109,8 +115,7 @@ public class Controller extends Application {
         } catch (FileNotFoundException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
-        }*/
-
+        }
         model.executeCode(f);
     }
 }

@@ -54,7 +54,7 @@ public class SetupScreen {
   public static final double COMMON_COMMAND_BUTTON_WIDTH_OFFSET = 225;
   public static final int COMMAND_COLUMN = 1;
   public static final int LIST_VIEW_COLUMN = 2;
-  public static final int ERROR_MESSAGE_PADDING = 250;
+  public static final int ERROR_MESSAGE_PADDING = 285;
   public static final String VARIABLE_TITLE_KEY = "VariableTitleText";
   public static final String HISTORY_TITLE_KEY = "HistoryTitleText";
   public static final String NEW_COMMAND_TITLE_KEY = "NewCommandTitleText";
@@ -127,7 +127,7 @@ public class SetupScreen {
     root.getChildren().addAll(myDrawingCanvas.getView(), myTurtles.get(0).getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myNewCommandViewer.getView(), myVariableView.getView());
     root.getChildren().addAll(myBackgroundSelector.getView(), myPenSelector.getView(), myCharacterSelector.getView(), myLanguageSelector.getView(), myGraphicalMover.getView());
 
-    myCurrentErrorMessage.setLayoutX(myVariableView.getView().getLayoutX());
+    myCurrentErrorMessage.setLayoutX(myHistory.getView().getLayoutX());
     myCurrentErrorMessage.setLayoutY(myVariableView.getView().getLayoutY() + ERROR_MESSAGE_PADDING);
 
     root.getChildren().add(myCurrentErrorMessage);
