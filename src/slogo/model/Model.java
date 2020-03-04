@@ -67,9 +67,9 @@ public class Model implements ModelAPI{
 
     public Turtle getTurtle(){ return turtleMap.get(1); }
 
-    public ObservableList<String> getVariableList(){ return createFromString.getVariableList(); }
+    public ObservableList<Token> getVariableList(){ return createFromString.getVariableList(); }
 
-    public ObservableList<String> getNewCommandsList(){ return createFromString.getNewCommandList(); }
+    public ObservableList<Token> getNewCommandsList(){ return createFromString.getNewCommandList(); }
 
     public StringProperty getErrorMessage(){ return errorMessage; }
 

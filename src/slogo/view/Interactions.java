@@ -11,6 +11,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
+import slogo.model.code.Token;
 import slogo.view.commonCommands.CommonCommands;
 
 import java.lang.reflect.Method;
@@ -80,7 +81,7 @@ public class Interactions implements View {
    * @param variableList
    * @param newCommandList
    */
-  public void setViewLists(ObservableList<String> variableList, ObservableList<String> newCommandList){
+  public void setViewLists(ObservableList<Token> variableList, ObservableList<Token> newCommandList){
     mySetup.setVariableList(variableList);
     mySetup.setNewCommandList(newCommandList);
   }

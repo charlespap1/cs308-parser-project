@@ -16,13 +16,16 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import slogo.model.code.Token;
 import slogo.view.commonCommands.CommonCommands;
+import slogo.view.scrollers.CommandViewer;
 import slogo.view.scrollers.HistoryCanvas;
 import slogo.view.scrollers.ListViewer;
 
 import java.util.List;
 import java.util.Objects;
 
+import slogo.view.scrollers.VariableViewer;
 import slogo.view.selectors.BackgroundSelector;
 import slogo.view.selectors.LanguageSelector;
 import slogo.view.selectors.PenSelector;
@@ -81,8 +84,8 @@ public class SetupScreen {
   private Button myNewWindow;
   private Button myNewConfig;
   private HistoryCanvas myHistory = new HistoryCanvas(COMMAND_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING);
-  private ListViewer myNewCommandViewer = new ListViewer(LIST_VIEW_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING, this::setInputText);
-  private ListViewer myVariableView = new ListViewer(LIST_VIEW_COLUMN, HEIGHT/2.0, this::setInputText);
+  private ListViewer myNewCommandViewer = new CommandViewer(LIST_VIEW_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING, this::setInputText);
+  private ListViewer myVariableView = new VariableViewer(LIST_VIEW_COLUMN, HEIGHT/2.0);
 
   private BackgroundSelector myBackgroundSelector;
   private TurtleFaceSelector myCharacterSelector;
@@ -167,9 +170,9 @@ public class SetupScreen {
 
   public DrawingCanvas getDrawingCanvas() { return myDrawingCanvas; }
 
-  public void setVariableList(ObservableList<String> variableList) { myVariableView.bindList(variableList); }
+  public void setVariableList(ObservableList<Token> variableList) { myVariableView.bindList(variableList); }
 
-  public void setNewCommandList(ObservableList<String> newCommandList) { myNewCommandViewer.bindList(newCommandList); }
+  public void setNewCommandList(ObservableList<Token> newCommandList) { myNewCommandViewer.bindList(newCommandList); }
 
   public void addHistory(String command) { myHistory.addHistory(command);}
 
@@ -245,10 +248,7 @@ public class SetupScreen {
     myStop.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
     belowCanvasButtons.getChildren().add(myStop);
     myStop.setOnAction(e -> {
-      for(Turtle t : myTurtles)
-      {
-        t.returnTurtleToDefault();
-      }
+      for(Turtle t : myTurtles) t.returnTurtleToDefault();
       clearScreen(null);
     });
 

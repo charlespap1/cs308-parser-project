@@ -1,13 +1,13 @@
 package slogo.view.scrollers;
 
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
-import javafx.scene.input.MouseEvent;
-import slogo.view.SetInputAction;
-
-import java.lang.reflect.Method;
+import javafx.scene.layout.HBox;
+import slogo.model.code.Token;
+import slogo.model.code.Variable;
 
 /**
  * Allows us to condense variables and new commands into one
@@ -16,13 +16,12 @@ import java.lang.reflect.Method;
  */
 
 public class ListViewer extends ScrollingWindow {
-  private ListView<String> myList = new ListView<>();
+  protected ListView<Token> myList = new ListView<>();
 
-  public ListViewer(double elementWidthFactor, double topPadding, SetInputAction inputSetter) {
+  public ListViewer(double elementWidthFactor, double topPadding) {
     super(elementWidthFactor, topPadding);
     myList.setPrefSize(myWidth-2*VBOX_SPACING, myHeight);
-    myTextHolder.getChildren().add(myList);
-    myList.setOnMouseClicked(e -> inputSetter.setInput(myList.getSelectionModel().getSelectedItem()));
+    myTextHolder.getChildren().addAll(myList);
   }
 
   /**
@@ -30,5 +29,7 @@ public class ListViewer extends ScrollingWindow {
    * variables in backend
    * @param list
    */
-  public void bindList(ObservableList<String> list){ myList.setItems(list); }
+  public void bindList(ObservableList<Token> list) {
+    myList.setItems(list);
+  }
 }
