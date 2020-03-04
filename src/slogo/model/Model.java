@@ -219,6 +219,7 @@ public class Model implements ModelAPI{
                 Instruction currInstr = createCompleteInstruction(arguments.pop());
                 if (commands.isEmpty()) {
                     currInstr.execute(activeTurtles);
+                    //move pointer to end
                     executed = true;
                 } else {
                     arguments.peek().push(currInstr);
