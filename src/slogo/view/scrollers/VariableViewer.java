@@ -18,7 +18,7 @@ public class VariableViewer extends ListViewer {
         super(elementWidthFactor, topPadding);
         buildHBox();
         myList.setOnMouseClicked(e -> {
-            setBoxToVariable(myList.getSelectionModel().getSelectedItem());
+            onSelectedItem(myList.getSelectionModel().getSelectedItem());
         });
     }
 
@@ -29,7 +29,7 @@ public class VariableViewer extends ListViewer {
         box.getChildren().addAll(label, text, button);
     }
 
-    private void setBoxToVariable(Token t){
+    protected void onSelectedItem(Token t){
         label.setText(t.toString());
         button.setOnAction(e -> {
             ((Variable) t).setVariable(Double.parseDouble(text.getText()));

@@ -40,5 +40,5 @@ public class NewCommand extends Instruction {
         return 0;
     }
 
-    public String toString() { return myName + " [ ] "; }
+    public String toString() { return myName; }
 }
