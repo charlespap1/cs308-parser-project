@@ -189,7 +189,7 @@ public class SetupScreen {
   public void setGoButton(EventHandler<ActionEvent> goAction) { myGo.setOnAction(goAction); }
 
   public void setNewWindowButton(EventHandler<ActionEvent> newWindowAction) { myNewWindow.setOnAction(newWindowAction);}
-  public void setNewConfigButton(EventHandler<ActionEvent> newConfigAction) {myNewConfig.setOnAction(newConfigAction);}
+  public void setNewConfigButton(EventHandler<ActionEvent> newConfigAction) { myNewConfig.setOnAction(newConfigAction); }
 
   public Group getRoot() { return root; }
 

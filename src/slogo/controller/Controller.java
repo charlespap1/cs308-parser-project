@@ -12,7 +12,6 @@ import slogo.view.Interactions;
 import slogo.view.DisplayAction;
 import slogo.view.popup.LoadConfigPopup;
 import slogo.view.popup.SetPreferencesPopup;
-import slogo.view.popup.ViewPopup;
 
 /**
  * Main method where the GUI comes together
@@ -41,11 +40,9 @@ public class Controller extends Application {
     private void showPopUp(Stage currentStage, Model myModel){
         LoadConfigPopup popup = new LoadConfigPopup();
         popup.getMyPopup().show(currentStage);
-        EventHandler<ActionEvent> e = new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent event) {
+        EventHandler<ActionEvent> e = event -> {
                 executeTextFile(popup.getFile(), myModel);
                 popup.getMyPopup().hide();
-            }
         };
         popup.setPopupButton(e);
     }
@@ -69,11 +66,9 @@ public class Controller extends Application {
         SetPreferencesPopup prefPopup = new SetPreferencesPopup();
         prefPopup.getMyPopup().show(currentStage);
 
-        EventHandler<ActionEvent> e = new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent event) {
-                makeNewWindow(prefPopup.getPreference());
-                prefPopup.getMyPopup().hide();
-            }
+        EventHandler<ActionEvent> e = event -> {
+            makeNewWindow(prefPopup.getPreference());
+            prefPopup.getMyPopup().hide();
         };
         prefPopup.setPopupButton(e);
     }
@@ -103,6 +98,19 @@ public class Controller extends Application {
     }
 
     private void executeTextFile(File f, Model model) throws NullPointerException {
+        // print to see if working
+        /*try {
+            Scanner myReader = new Scanner(f);
+            while (myReader.hasNextLine()) {
+                String data = myReader.nextLine();
+                System.out.println(data);
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }*/
+
         model.executeCode(f);
     }
 }

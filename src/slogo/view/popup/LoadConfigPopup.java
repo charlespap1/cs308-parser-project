@@ -25,6 +25,7 @@ public class LoadConfigPopup {
   public static final int TEXT_FIELD_WIDTH = 125;
   public static final Color HOLDER_BACKGROUND_COLOR = Color.LAVENDER;
   public static final int HOLDER_PADDING = 10;
+  public static final String PACKAGE = "resources/%s.txt";
 
   private Popup myPopup;
 
@@ -73,25 +74,17 @@ public class LoadConfigPopup {
     myLoad.setOnAction(e);
   }
 
-  public File getFile()
+  public File getFile() throws FileDoesNotExistException
   {
-    //System.out.println((getClass().getClassLoader().getResource("textFile.txt").toExternalForm()));
-    String path = (getClass().getClassLoader().getResource("textFile.txt").toExternalForm());
-    //File f = new File (path);
+    String path = String.format(PACKAGE, myInput.getText());
     try {
-      System.out.println(path);
-      File myObj = new File(path);
-      Scanner myReader = new Scanner(myObj);
-      while (myReader.hasNextLine()) {
-        String data = myReader.nextLine();
-        System.out.println(data);
-      }
-      myReader.close();
-    } catch (FileNotFoundException e) {
+      File f = new File(path);
+      return f;
+
+    } catch (Exception e) {
       System.out.println("An error occurred.");
-      e.printStackTrace();
+      throw new FileDoesNotExistException(e);
     }
-    return new File(path);
   }
 
 
