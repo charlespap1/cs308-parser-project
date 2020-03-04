@@ -8,25 +8,34 @@ import slogo.model.code.Token;
 import slogo.model.code.Variable;
 
 public class VariableViewer extends ListViewer {
+    private HBox box =  new HBox();
+    private Button b;
+    private Label label = new Label();
+    private TextArea text;
+
     public VariableViewer(double elementWidthFactor, double topPadding) {
         super(elementWidthFactor, topPadding);
+        buildHBox();
         myList.setOnMouseClicked(e -> {
-            createInputBox(myList.getSelectionModel().getSelectedItem());
+            setBoxToVariable(myList.getSelectionModel().getSelectedItem());
         });
     }
 
-    private void createInputBox(Token t){
-        HBox box = new HBox();
-        Label label = new Label(t.toString());
-        TextArea text = new TextArea();
+    private void buildHBox(){
+        text = new TextArea();
         text.setMaxWidth(myWidth/2);
         text.setMaxHeight(20);
-        Button b = new Button("set");
+        b = new Button("set");
+        box.getChildren().addAll(label, text, b);
+        myHolder.getChildren().add(box);
+    }
+
+    private void setBoxToVariable(Token t){
+        label.setText(t.toString());
         b.setOnAction(e -> {
             ((Variable) t).setVariable(Double.parseDouble(text.getText()));
             myHolder.getChildren().remove(box);
         });
-        box.getChildren().addAll(label, text, b);
-        myHolder.getChildren().add(box);
+        if (!myHolder.getChildren().contains(box)) myHolder.getChildren().add(box);
     }
 }
