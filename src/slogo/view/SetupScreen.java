@@ -2,6 +2,7 @@ package slogo.view;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -61,7 +62,9 @@ public class SetupScreen {
   private static final String BACKGROUND_SELECTOR_TEXT_KEY = "BackgroundSelectorText";
   private static final String LANGUAGE_SELECTOR_TEXT_KEY = "LanguageSelectorText";
   private static final String PEN_SELECTOR_TEXT_KEY = "PenSelectorText";
+  private static final String PEN_THICKNESS_TEXT_KEY = "PenThicknessText";
   private static final String TURTLE_SELECTOR_TEXT_KEY = "TurtleSelectorText";
+
 
   public static final String COMMON_COMMAND_BUTTON_KEY = "CommonCommandButton";
   public static final String GO_BUTTON_KEY = "GoButton";
@@ -129,6 +132,8 @@ public class SetupScreen {
 
     root.getChildren().add(myCurrentErrorMessage);
 
+    //setPreferences();
+
     Scene scene = new Scene(root, WIDTH, HEIGHT, BACKGROUND);
     scene.getStylesheets().add(getClass().getClassLoader().getResource(MAIN_STYLESHEET).toExternalForm());
 
@@ -184,6 +189,7 @@ public class SetupScreen {
   public void setGoButton(EventHandler<ActionEvent> goAction) { myGo.setOnAction(goAction); }
 
   public void setNewWindowButton(EventHandler<ActionEvent> newWindowAction) { myNewWindow.setOnAction(newWindowAction);}
+  public void setNewConfigButton(EventHandler<ActionEvent> newConfigAction) {myNewConfig.setOnAction(newConfigAction);}
 
   public Group getRoot() { return root; }
 
@@ -289,11 +295,20 @@ public class SetupScreen {
     myCharacterSelector.setTitleProperty(languageHelper.getStringProperty(TURTLE_SELECTOR_TEXT_KEY));
 
     myLanguageSelector.setTitleProperty(languageHelper.getStringProperty(LANGUAGE_SELECTOR_TEXT_KEY));
+    myGraphicalMover.setTitleProperty(languageHelper.getStringProperty(PEN_THICKNESS_TEXT_KEY));
     myGraphicalMover.setPenLabelProperty(languageHelper.getStringProperty(PEN_UP_BUTTON_KEY), languageHelper.getStringProperty(PEN_DOWN_BUTTON_KEY));
 
   }
 
-  public void setPopupButton(EventHandler<ActionEvent> showPopup) {
-    myNewConfig.setOnAction(showPopup);
+  public void setPreferences(String preferenceTitle)
+  {
+    PreferenceSelector myPreferences = new PreferenceSelector(preferenceTitle);
+
+    for(Turtle t : myTurtles)
+    {
+      myPreferences.setTurtle(t);
+    }
+    myPreferences.changeBackground(myDrawingCanvas);
   }
+
 }
