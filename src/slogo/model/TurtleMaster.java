@@ -1,6 +1,7 @@
 package slogo.model;
 
 import slogo.controller.AddNewTurtleFunction;
+import slogo.model.code.instructions.Instruction;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,6 +13,7 @@ public class TurtleMaster {
     private Map<Integer, Turtle> turtleMap = new HashMap<>();
     private List<Turtle> activeTurtles = new ArrayList<>();
     private Turtle currentActiveTurtle;
+    private boolean inLoop = false;
 
     public Turtle addTurtle(int id) {
         Turtle newTurtle = new Turtle(id, 0, 0, false, 0);
@@ -24,9 +26,19 @@ public class TurtleMaster {
 
     public double executeTurtleCommand(TurtleAction action){
         double executionValue=-1;
-        for (Turtle t: activeTurtles){
-            currentActiveTurtle = t;
-            executionValue = action.actOnTurtle(t);
+        if (inLoop){
+            //TODO: think about whether this will always have the right turtle
+            System.out.println("inloop already");
+            executionValue = action.actOnTurtle(currentActiveTurtle);
+        } else {
+            inLoop = true;
+            System.out.println("starting loop");
+            for (Turtle t: activeTurtles) {
+                currentActiveTurtle = t;
+                executionValue = action.actOnTurtle(t);
+            }
+            System.out.println("ending loop");
+            inLoop = false;
         }
         return executionValue;
     }

@@ -1,10 +1,8 @@
 package slogo.model.code.instructions;
 
-import slogo.model.Turtle;
 import slogo.model.code.ListSyntax;
 import slogo.model.code.Token;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import slogo.model.code.exceptions.CommandCannotDoListException;
@@ -14,7 +12,6 @@ public abstract class Instruction implements Token {
 
     protected List<Token> parameters = null;
     protected String instrName = "";
-//    protected double valueOfExecution = 0;
     private int NUM_ARGS;
     protected TurtleMasterAccessor myAccessor;
 
@@ -27,10 +24,6 @@ public abstract class Instruction implements Token {
     public int numRequiredArgs() { return NUM_ARGS; }
 
     public void setAccessor(TurtleMasterAccessor accessor) { myAccessor = accessor; }
-
-//    public double generateValue() {
-//        return valueOfExecution;
-//    }
 
     public void setParameters(List<Token> params){
         parameters = params;
@@ -47,13 +40,10 @@ public abstract class Instruction implements Token {
     protected double checkTokenNotListAndGetVal(Token currToken) throws CommandCannotDoListException {
         if (currToken instanceof ListSyntax)
             throw new CommandCannotDoListException();
-//        } else if (currToken instanceof Instruction){
-//            ((Instruction) currToken).execute();
-//        }
         return currToken.execute();
     }
 
-//    public String toString(){
-//        return instrName + " " + valueOfExecution;
-//    }
+    public String toString(){
+        return instrName;
+    }
 }

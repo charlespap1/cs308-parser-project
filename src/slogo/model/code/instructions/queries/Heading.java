@@ -16,4 +16,5 @@ public class Heading extends Instruction {
 
     @Override
     public double execute(){ return myAccessor.turtleQueryToMaster(myAction); }
+
 }
