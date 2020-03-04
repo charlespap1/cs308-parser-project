@@ -50,7 +50,7 @@ public enum CodeType {
     MINUS(null),// Minus.class),
     HIDETURTLE(HideTurtle.class),
     COSINE(null),// Cosine.class),
-    PENDOWN(null),// PenDown.class),
+    PENDOWN(PenDown.class),
     SETPENSIZE(null),
     HEADING(null),// Heading.class),
     SETPENCOLOR(null),
