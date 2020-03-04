@@ -8,10 +8,11 @@ import slogo.model.code.Token;
 import slogo.model.code.Variable;
 
 public class VariableViewer extends ListViewer {
+    public static String BUTTON_TEXT = "set";
     private HBox box =  new HBox();
-    private Button b;
+    private Button button = new Button(BUTTON_TEXT);
     private Label label = new Label();
-    private TextArea text;
+    private TextArea text = new TextArea();
 
     public VariableViewer(double elementWidthFactor, double topPadding) {
         super(elementWidthFactor, topPadding);
@@ -22,17 +23,15 @@ public class VariableViewer extends ListViewer {
     }
 
     private void buildHBox(){
-        text = new TextArea();
+        // TODO: make less ugly :)
         text.setMaxWidth(myWidth/2);
         text.setMaxHeight(20);
-        b = new Button("set");
-        box.getChildren().addAll(label, text, b);
-        myHolder.getChildren().add(box);
+        box.getChildren().addAll(label, text, button);
     }
 
     private void setBoxToVariable(Token t){
         label.setText(t.toString());
-        b.setOnAction(e -> {
+        button.setOnAction(e -> {
             ((Variable) t).setVariable(Double.parseDouble(text.getText()));
             myHolder.getChildren().remove(box);
         });
