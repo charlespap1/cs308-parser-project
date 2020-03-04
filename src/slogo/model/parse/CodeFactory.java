@@ -27,8 +27,8 @@ public class CodeFactory {
     private Map<String, Class> mappings = new HashMap<>();
     private Map<String, NewCommand> newCommandMap = new HashMap<>();
     private Map<String, Variable> variableMap = new HashMap<>();
-    private ObservableList<String> vars = FXCollections.observableArrayList();
-    private ObservableList<String> newCommands = FXCollections.observableArrayList();
+    private ObservableList<Token> vars = FXCollections.observableArrayList();
+    private ObservableList<Token> newCommands = FXCollections.observableArrayList();
     private Map<String, DisplayAction> setActionMap = new HashMap<>();
 
     public CodeFactory(String language) throws LanguageFileNotFoundException {
@@ -61,9 +61,9 @@ public class CodeFactory {
         return token;
     }
 
-    public ObservableList<String> getVariableList(){ return vars; }
+    public ObservableList<Token> getVariableList(){ return vars; }
 
-    public ObservableList<String> getNewCommandList(){ return newCommands; }
+    public ObservableList<Token> getNewCommandList(){ return newCommands; }
 
     public void addAction(String key, DisplayAction action) { setActionMap.put(key, action); }
 
@@ -78,14 +78,19 @@ public class CodeFactory {
     private void addNewCommand(Token token){
         NewCommand command = (NewCommand) token;
         newCommandMap.put(command.getName(), command);
-        newCommands.add(command.getName());
+        newCommands.add(command);
+    }
+
+    public void updateVariableList(Token t){
+        vars.remove(t);
+        vars.add(t);
     }
 
     private Token getVariable(String piece) {
         if (!variableMap.containsKey(piece)) {
-            Variable variable = new Variable(piece);
+            Variable variable = new Variable(piece, this::updateVariableList);
             variableMap.put(piece, variable);
-            vars.add(piece);
+            vars.add(variable);
         }
         return variableMap.get(piece);
     }

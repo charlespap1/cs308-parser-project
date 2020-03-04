@@ -1,8 +1,8 @@
 package slogo.view.popup;
 
-import java.awt.event.ActionListener;
 import java.io.File;
-import javafx.beans.property.StringProperty;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -14,15 +14,13 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.stage.Popup;
-import javafx.stage.Stage;
 
 public class LoadConfigPopup {
 
   public static final int HOLDER_SPACING = 10;
-  public static final int WINDOW_WIDTH = 300;
+  public static final int WINDOW_WIDTH = 325;
   public static final int WINDOW_HEIGHT = 50;
   public static final int TEXT_FIELD_WIDTH = 125;
   public static final Color HOLDER_BACKGROUND_COLOR = Color.LAVENDER;
@@ -64,11 +62,6 @@ public class LoadConfigPopup {
     myLoad = new Button("Load");
   }
 
-  /*public void setPromptProperty(StringProperty sp){
-    myPrompt.textProperty().bind(sp);
-    myPrompt.textProperty().setValue("Enter a filename");
-    myHolder.getChildren().add(0, myPrompt);
-  }*/
 
   public Popup getMyPopup()
   {
@@ -84,6 +77,20 @@ public class LoadConfigPopup {
   {
     //System.out.println((getClass().getClassLoader().getResource("textFile.txt").toExternalForm()));
     String path = (getClass().getClassLoader().getResource("textFile.txt").toExternalForm());
+    //File f = new File (path);
+    try {
+      System.out.println(path);
+      File myObj = new File(path);
+      Scanner myReader = new Scanner(myObj);
+      while (myReader.hasNextLine()) {
+        String data = myReader.nextLine();
+        System.out.println(data);
+      }
+      myReader.close();
+    } catch (FileNotFoundException e) {
+      System.out.println("An error occurred.");
+      e.printStackTrace();
+    }
     return new File(path);
   }
 

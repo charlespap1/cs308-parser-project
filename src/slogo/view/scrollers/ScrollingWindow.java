@@ -7,6 +7,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import slogo.view.DrawingCanvas;
 import slogo.view.SetupScreen;
+import slogo.view.StaticViewElement;
 
 /**
  * Class allows us to create a scrolling box for any element that needs scrolling
@@ -14,7 +15,7 @@ import slogo.view.SetupScreen;
  * them to list viewers. As such, only one class, HistoryCanvas, extends this class
  * @author Juliet
  */
-abstract class ScrollingWindow {
+abstract class ScrollingWindow implements StaticViewElement {
 
   public static final double SCROLLING_SIDE_PADDING = DrawingCanvas.CANVAS_SIDE_PADDING;
   public static final double SCROLLING_TOP_PADDING = DrawingCanvas.CANVAS_TOP_PADDING;
@@ -60,6 +61,5 @@ abstract class ScrollingWindow {
     myTitle.textProperty().bind(sp);
     myHolder.getChildren().add(0, myTitle);
   }
-
 
 }

@@ -13,7 +13,7 @@ import slogo.view.DrawingCanvas;
 
 public class BackgroundSelector extends ColorSelector{
 
-  public static final List<String> BACKGROUND_COLORS = new ArrayList<>(Arrays.asList("White", "Red", "Magenta", "Blue", "Green", "Black"));
+  public static final List<String> BACKGROUND_COLORS = new ArrayList<>(Arrays.asList("1", "2", "3", "4", "5", "6"));
   private static final String RESOURCES_PATH = "resources.colors.BackgroundColors";
 
   private DrawingCanvas canvas;

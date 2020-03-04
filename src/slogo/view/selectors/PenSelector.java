@@ -14,7 +14,7 @@ import slogo.view.Turtle;
 public class PenSelector extends ColorSelector{
 
   public static final List<String> BACKGROUND_COLORS = new ArrayList<>(
-      Arrays.asList("Blue", "Green", "White", "Red", "Black", "Magenta"));
+      Arrays.asList("1", "2", "3", "4", "5", "6"));
   private static final String RESOURCES_PATH = "resources.colors.PenColors";
   //TODO: text hard coded
   public static final String TITLE = "Pen colors: ";
