@@ -72,6 +72,43 @@ public class Model implements ModelAPI{
         return stateMap;
     }
 
+    public void undo() {
+        try {
+            Map<Integer, State> prevTurtleStates = history.undo();
+            updateTurtlesWithStates(prevTurtleStates);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void redo() {
+        try {
+            Map<Integer, State> nextTurtleStates = history.redo();
+            updateTurtlesWithStates(nextTurtleStates);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void updateTurtlesWithStates(Map<Integer, State> turtleStates) {
+        //update turtles that existed before undo/redo
+        for (int id : turtleMap.keySet()) {
+            if (!turtleStates.containsKey(id)) {
+                // for undo, when a tell command was executed
+                turtleMap.get(id).setVisible(false);
+            } else {
+                updateSingleTurtle(turtleMap.get(id), turtleStates.get(id));
+            }
+        }
+    }
+
+    private void updateSingleTurtle(Turtle turtle, State state) {
+        turtle.setLocation(state.getxPos(), state.getyPos());
+        turtle.setAngle(state.getAngle());
+        turtle.setPenUp(state.getIsPenUp());
+        turtle.setVisible(true);
+    }
+
     public Turtle getTurtle(){ return turtleMap.get(1); }
 
     public ObservableList<String> getVariableList(){ return createFromString.getVariableList(); }

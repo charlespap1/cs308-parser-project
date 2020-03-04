@@ -17,6 +17,10 @@ public class Program {
         listOfCommands.add(command);
     }
 
+    public Map<Integer, State> getInitialTurtleStates () {
+        return initialTurtleStates;
+    }
+
     public void execute() {
         //lambda.executeCode(listOfCommands);
     }

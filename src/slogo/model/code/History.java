@@ -2,6 +2,7 @@ package slogo.model.code;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class History {
 
@@ -25,8 +26,16 @@ public class History {
 //        programPointer++;
 //    }
 
-    public void undo() {
-        programPointer--;
-        // set turtle states to programHistory.get(programPointer).
+    public Map<Integer, State> undo() throws IndexOutOfBoundsException {
+        if (programPointer <= 0) throw new IndexOutOfBoundsException();
+        return programHistory.get(--programPointer).getInitialTurtleStates();
+        // set turtle states to programHistory.get(programCounter)
+    }
+
+    public Map<Integer, State> redo() throws IndexOutOfBoundsException {
+        if (programPointer >= programHistory.size()) throw new IndexOutOfBoundsException();
+        return programHistory.get(++programPointer).getInitialTurtleStates();
+        // either set turtle states to programHistory.get(programCounter) or execute everything in the program (before programPointer is incremented)
+
     }
 }

@@ -24,4 +24,24 @@ public class State {
         isPenUp = t.getIsPenUp();
         angle = t.getAngle();
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public double getxPos() {
+        return xPos;
+    }
+
+    public double getyPos() {
+        return yPos;
+    }
+
+    public boolean getIsPenUp() {
+        return isPenUp;
+    }
+
+    public double getAngle() {
+        return angle;
+    }
 }
