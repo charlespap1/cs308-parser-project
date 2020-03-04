@@ -12,7 +12,7 @@ public class Variable implements Token {
         value = var;
     }
 
-    public double generateValue(){
+    public double execute(){
         return value;
     }
 

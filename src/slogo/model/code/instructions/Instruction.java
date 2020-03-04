@@ -8,25 +8,29 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import slogo.model.code.exceptions.CommandCannotDoListException;
+import slogo.model.parse.TurtleMasterAccessor;
 
 public abstract class Instruction implements Token {
 
     protected List<Token> parameters = null;
     protected String instrName = "";
-    protected double valueOfExecution = 0;
+//    protected double valueOfExecution = 0;
     private int NUM_ARGS;
+    protected TurtleMasterAccessor myAccessor;
 
     public Instruction(int numArgs){
         NUM_ARGS = numArgs;
     }
 
-    public abstract void execute();
+    public abstract double execute();
 
     public int numRequiredArgs() { return NUM_ARGS; }
 
-    public double generateValue() {
-        return valueOfExecution;
-    }
+    public void setAccessor(TurtleMasterAccessor accessor) { myAccessor = accessor; }
+
+//    public double generateValue() {
+//        return valueOfExecution;
+//    }
 
     public void setParameters(List<Token> params){
         parameters = params;
@@ -41,15 +45,15 @@ public abstract class Instruction implements Token {
     }
 
     protected double checkTokenNotListAndGetVal(Token currToken) throws CommandCannotDoListException {
-        if (currToken instanceof ListSyntax) {
+        if (currToken instanceof ListSyntax)
             throw new CommandCannotDoListException();
-        } else if (currToken instanceof Instruction){
-            ((Instruction) currToken).execute();
-        }
-        return currToken.generateValue();
+//        } else if (currToken instanceof Instruction){
+//            ((Instruction) currToken).execute();
+//        }
+        return currToken.execute();
     }
 
-    public String toString(){
-        return instrName + " " + valueOfExecution;
-    }
+//    public String toString(){
+//        return instrName + " " + valueOfExecution;
+//    }
 }

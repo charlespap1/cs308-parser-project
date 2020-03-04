@@ -4,18 +4,19 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import slogo.controller.AddNewTurtleFunction;
-import slogo.model.code.BracketClose;
-import slogo.model.code.BracketOpen;
+//import slogo.model.code.BracketClose;
+//import slogo.model.code.BracketOpen;
 import slogo.model.code.ListSyntax;
-import slogo.model.code.NewCommandName;
+//import slogo.model.code.NewCommandName;
 import slogo.model.code.Token;
 import slogo.model.code.exceptions.InvalidCommandException;
 import slogo.model.code.exceptions.InvalidNumberArgumentsException;
 import slogo.model.code.exceptions.LanguageFileNotFoundException;
 import slogo.model.code.instructions.Instruction;
-import slogo.model.code.instructions.misc.To;
+//import slogo.model.code.instructions.misc.*;
 import slogo.model.parse.CodeFactory;
 import slogo.model.parse.RegexHandler;
+import slogo.model.parse.TurtleMasterAccessor;
 import slogo.view.DisplayAction;
 
 import java.io.File;
@@ -39,6 +40,17 @@ public class Model implements ModelAPI{
     private StringProperty errorMessage = new SimpleStringProperty();
     private String currFullCommand = "";
     private boolean executed = false;
+    private TurtleMaster turtleMaster = new TurtleMaster();
+    private TurtleMasterAccessor accessor = new TurtleMasterAccessor() {
+        @Override
+        public double turtleCommandToMaster(TurtleAction action) {
+            return turtleMaster.executeTurtleCommand(action);
+        }
+        @Override
+        public double turtleQueryToMaster(TurtleAction action) {
+            return turtleMaster.executeTurtleQuery(action);
+        }
+    };
 
     public Model(StringProperty language) {
         typeCheck.addPatterns(SYNTAX);
@@ -62,7 +74,7 @@ public class Model implements ModelAPI{
     }
 
     public Turtle addTurtle(int id){
-        return createFromString.addTurtle(id);
+        return turtleMaster.addTurtle(id);
     }
 
     public ObservableList<String> getVariableList(){ return createFromString.getVariableList(); }
@@ -86,7 +98,7 @@ public class Model implements ModelAPI{
         createFromString.addAction(key, action);
     }
 
-    public void setAddTurtleFunction(AddNewTurtleFunction function){ createFromString.setAddTurtleFunction(function); }
+    public void setAddTurtleFunction(AddNewTurtleFunction function){ turtleMaster.setAddTurtleFunction(function); }
 
     private void parseInstructions(String rawString){
         try {
@@ -113,10 +125,12 @@ public class Model implements ModelAPI{
     private void addToAppropriateStack(String piece) throws InvalidCommandException, InvalidNumberArgumentsException {
         try {
             Token currItem = createFromString.getSymbolAsObj(piece);
-            if (currItem instanceof NewCommandName && (commands.isEmpty() || !(commands.peek() instanceof To))) {
-                throw new InvalidCommandException();
-            } else if (currItem instanceof Instruction) {
+//            if (currItem instanceof NewCommandName && (commands.isEmpty() || !(commands.peek() instanceof To))) {
+//                throw new InvalidCommandException();
+//            } else
+            if (currItem instanceof Instruction) {
                 Instruction currInstr = (Instruction) currItem;
+                ((Instruction) currItem).setAccessor(accessor);
                 addInstructionToStack(currInstr);
             } else {
                 addArgumentToStack(currItem);
@@ -152,11 +166,11 @@ public class Model implements ModelAPI{
     private void attemptToCreateFullInstruction() {
         Instruction currCommand = (Instruction) commands.peek();
         if (enoughArgs(currCommand.numRequiredArgs())) {
-            if (currCommand instanceof BracketOpen) {
-                ListSyntax completeList = grabList(arguments.pop());
-                arguments.peek().push(completeList);
-                attemptToCreateFullInstruction();
-            } else {
+//            if (currCommand instanceof BracketOpen) {
+//                ListSyntax completeList = grabList(arguments.pop());
+//                arguments.peek().push(completeList);
+//                attemptToCreateFullInstruction();
+//            } else {
                 Instruction currInstr = createCompleteInstruction(arguments.pop());
                 if (commands.isEmpty()) {
                     currInstr.execute();
@@ -167,7 +181,7 @@ public class Model implements ModelAPI{
                 }
             }
         }
-    }
+    //}
 
     private ListSyntax grabList(Stack<Token> args) {
         commands.pop();
@@ -190,9 +204,10 @@ public class Model implements ModelAPI{
     }
 
     private boolean enoughArgs(int numNeeded) {
-        boolean isCompleteList = commands.peek() instanceof BracketOpen && arguments.peek().peek() instanceof BracketClose;
+        //boolean isCompleteList = commands.peek() instanceof BracketOpen && arguments.peek().peek() instanceof BracketClose;
         boolean enoughCommandParameters = arguments.peek().size() >= numNeeded && numNeeded != -1;
-        return isCompleteList || enoughCommandParameters;
+        //return isCompleteList || enoughCommandParameters;
+        return enoughCommandParameters;
     }
 
     private void clearStacks() {
