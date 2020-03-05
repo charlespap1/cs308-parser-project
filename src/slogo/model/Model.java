@@ -4,23 +4,22 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import slogo.controller.AddNewTurtleFunction;
-//import slogo.model.code.BracketClose;
-//import slogo.model.code.BracketOpen;
+import slogo.model.code.BracketClose;
+import slogo.model.code.BracketOpen;
 import slogo.model.code.ListSyntax;
-//import slogo.model.code.NewCommandName;
+import slogo.model.code.NewCommandName;
 import slogo.model.code.Token;
 import slogo.model.code.exceptions.InvalidCommandException;
 import slogo.model.code.exceptions.InvalidNumberArgumentsException;
 import slogo.model.code.exceptions.LanguageFileNotFoundException;
 import slogo.model.code.instructions.Instruction;
-//import slogo.model.code.instructions.misc.*;
+import slogo.model.code.instructions.TurtleAction;
+import slogo.model.code.instructions.misc.*;
 import slogo.model.parse.CodeFactory;
 import slogo.model.parse.RegexHandler;
-import slogo.model.parse.TurtleMasterAccessor;
 import slogo.view.DisplayAction;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class Model implements ModelAPI{
@@ -43,13 +42,11 @@ public class Model implements ModelAPI{
     private TurtleMaster turtleMaster = new TurtleMaster();
     private TurtleMasterAccessor accessor = new TurtleMasterAccessor() {
         @Override
-        public double turtleCommandToMaster(TurtleAction action) {
-            return turtleMaster.executeTurtleCommand(action);
-        }
+        public double turtleCommandToMaster(TurtleAction action) { return turtleMaster.executeTurtleCommand(action); }
         @Override
-        public double turtleQueryToMaster(TurtleAction action) {
-            return turtleMaster.executeTurtleQuery(action);
-        }
+        public double turtleQueryToMaster(TurtleAction action) { return turtleMaster.executeTurtleQuery(action); }
+        @Override
+        public double multiTurtleCommandToMaster(TurtleAction action, List<Double> turtles) { return turtleMaster.executeMultiTurtleCommand(action, turtles); }
     };
 
     public Model(StringProperty language) {
@@ -71,10 +68,6 @@ public class Model implements ModelAPI{
     public void executeCode(File f){
         //TODO: convert file f into rawString, then call executeCode with rawString
 
-    }
-
-    public Turtle addTurtle(int id){
-        return turtleMaster.addTurtle(id);
     }
 
     public ObservableList<String> getVariableList(){ return createFromString.getVariableList(); }
@@ -109,9 +102,6 @@ public class Model implements ModelAPI{
                     currFullCommand += piece + " ";
                 }
                 if(executed){
-                    // TODO: write to history
-//                    activeTurtles.get(0).setCurrCommand(currFullCommand);
-//                    activeTurtles.get(0).setCurrCommand("");
                     currFullCommand = "";
                     executed = false;
                 }
@@ -125,9 +115,9 @@ public class Model implements ModelAPI{
     private void addToAppropriateStack(String piece) throws InvalidCommandException, InvalidNumberArgumentsException {
         try {
             Token currItem = createFromString.getSymbolAsObj(piece);
-//            if (currItem instanceof NewCommandName && (commands.isEmpty() || !(commands.peek() instanceof To))) {
-//                throw new InvalidCommandException();
-//            } else
+            if (currItem instanceof NewCommandName && (commands.isEmpty() || !(commands.peek() instanceof To))) {
+                throw new InvalidCommandException();
+            } else
             if (currItem instanceof Instruction) {
                 Instruction currInstr = (Instruction) currItem;
                 ((Instruction) currItem).setAccessor(accessor);
@@ -141,7 +131,7 @@ public class Model implements ModelAPI{
         }
     }
 
-    private void addArgumentToStack(Token currItem) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    private void addArgumentToStack(Token currItem) {
         if (arguments.isEmpty() && commands.isEmpty()) {
             throw new InvalidNumberArgumentsException();
         }
@@ -166,11 +156,11 @@ public class Model implements ModelAPI{
     private void attemptToCreateFullInstruction() {
         Instruction currCommand = (Instruction) commands.peek();
         if (enoughArgs(currCommand.numRequiredArgs())) {
-//            if (currCommand instanceof BracketOpen) {
-//                ListSyntax completeList = grabList(arguments.pop());
-//                arguments.peek().push(completeList);
-//                attemptToCreateFullInstruction();
-//            } else {
+            if (currCommand instanceof BracketOpen) {
+                ListSyntax completeList = grabList(arguments.pop());
+                arguments.peek().push(completeList);
+                attemptToCreateFullInstruction();
+            } else {
                 Instruction currInstr = createCompleteInstruction(arguments.pop());
                 if (commands.isEmpty()) {
                     currInstr.execute();
@@ -181,7 +171,7 @@ public class Model implements ModelAPI{
                 }
             }
         }
-    //}
+    }
 
     private ListSyntax grabList(Stack<Token> args) {
         commands.pop();
@@ -204,10 +194,9 @@ public class Model implements ModelAPI{
     }
 
     private boolean enoughArgs(int numNeeded) {
-        //boolean isCompleteList = commands.peek() instanceof BracketOpen && arguments.peek().peek() instanceof BracketClose;
+        boolean isCompleteList = commands.peek() instanceof BracketOpen && arguments.peek().peek() instanceof BracketClose;
         boolean enoughCommandParameters = arguments.peek().size() >= numNeeded && numNeeded != -1;
-        //return isCompleteList || enoughCommandParameters;
-        return enoughCommandParameters;
+        return isCompleteList || enoughCommandParameters;
     }
 
     private void clearStacks() {

@@ -1,4 +1,6 @@
-package slogo.model;
+package slogo.model.code.instructions;
+
+import slogo.model.Turtle;
 
 @FunctionalInterface
 public interface TurtleAction {

@@ -1,6 +1,6 @@
 package slogo.model.code.instructions.commands;
 
-import slogo.model.TurtleAction;
+import slogo.model.code.instructions.TurtleAction;
 import slogo.model.code.instructions.Instruction;
 
 import java.util.List;
@@ -11,11 +11,11 @@ public class Forward extends Instruction {
 
     private TurtleAction myAction = t -> {
         List<Double> paramsAsVals = getParamsAsVals();
-        double valueForExec = paramsAsVals.get(0);
-        double x = t.getXPos() - valueForExec * Math.cos(Math.toRadians(t.getAngle()));
-        double y = t.getYPos() - valueForExec * Math.sin(Math.toRadians(t.getAngle()));
+        double returnValue = paramsAsVals.get(0);
+        double x = t.getXPos() - returnValue * Math.cos(Math.toRadians(t.getAngle()));
+        double y = t.getYPos() - returnValue * Math.sin(Math.toRadians(t.getAngle()));
         t.setLocation(x, y);
-        return valueForExec;
+        return returnValue;
     };
 
     public Forward(String name){

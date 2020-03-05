@@ -1,6 +1,6 @@
 package slogo.model.code.instructions.queries;
 
-import slogo.model.TurtleAction;
+import slogo.model.code.instructions.TurtleAction;
 import slogo.model.code.instructions.Instruction;
 
 public class TurtleShowingQuery extends Instruction {

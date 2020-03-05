@@ -1,6 +1,6 @@
 package slogo.model.code.instructions.commands;
 
-import slogo.model.TurtleAction;
+import slogo.model.code.instructions.TurtleAction;
 import slogo.model.code.instructions.Instruction;
 
 public class PenUp extends Instruction {

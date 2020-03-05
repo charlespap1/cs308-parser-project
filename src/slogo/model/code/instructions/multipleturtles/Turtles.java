@@ -1,16 +1,26 @@
-//package slogo.model.code.instructions.multipleturtles;
-//
-//public class Turtles extends MultiTurtleCommand {
-//
-//    private static final int numArgs = 0;
-//
-//    public Turtles(String name){
-//        super(numArgs);
-//        instrName = name;
-//    }
-//
-//    @Override
-//    public void execute() {
-//        valueOfExecution = turtleMap.size();
-//    }
-//}
+package slogo.model.code.instructions.multipleturtles;
+
+import slogo.model.code.instructions.TurtleAction;
+import slogo.model.code.instructions.Instruction;
+
+public class Turtles extends Instruction {
+
+    private static final int numArgs = 0;
+    private int numTurtles;
+    private TurtleAction myAction = t -> {
+        numTurtles ++;
+        return numTurtles;
+    };
+
+    public Turtles(String name){
+        super(numArgs);
+        instrName = name;
+    }
+
+    @Override
+    public double execute() {
+        numTurtles = 0;
+        myAccessor.multiTurtleCommandToMaster(myAction, null);
+        return numTurtles;
+    }
+}

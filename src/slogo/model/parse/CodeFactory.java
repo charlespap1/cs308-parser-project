@@ -3,20 +3,14 @@ package slogo.model.parse;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import slogo.controller.AddNewTurtleFunction;
-import slogo.model.Turtle;
-//import slogo.model.TurtleAction;
-//import slogo.model.TurtleMaster;
-//import slogo.model.code.NewCommandName;
+import slogo.model.code.NewCommandName;
 import slogo.model.code.Token;
 import slogo.model.code.Variable;
 import slogo.model.code.exceptions.LanguageFileNotFoundException;
 import slogo.model.code.exceptions.SyntaxException;
-//import slogo.model.code.instructions.*;
-//import slogo.model.code.instructions.commands.TurtleCommand;
-//import slogo.model.code.instructions.display.DisplayCommand;
-//import slogo.model.code.instructions.misc.*;
-//import slogo.model.code.instructions.multipleturtles.MultiTurtleCommand;
-//import slogo.model.code.instructions.queries.QueryCommand;
+import slogo.model.code.instructions.*;
+import slogo.model.code.instructions.display.DisplayCommand;
+import slogo.model.code.instructions.misc.*;
 import slogo.view.DisplayAction;
 
 import java.lang.reflect.Constructor;
@@ -31,12 +25,11 @@ public class CodeFactory {
 
     private RegexHandler keyGrabber;
     private Map<String, Class> mappings = new HashMap<>();
-    //private Map<String, NewCommand> newCommandMap = new HashMap<>();
+    private Map<String, NewCommand> newCommandMap = new HashMap<>();
     private Map<String, Variable> variableMap = new HashMap<>();
     private ObservableList<String> vars = FXCollections.observableArrayList();
     private ObservableList<String> newCommands = FXCollections.observableArrayList();
     private Map<String, DisplayAction> setActionMap = new HashMap<>();
-    //private AddNewTurtleFunction addTurtleFunction;
 
     public CodeFactory(String language) throws LanguageFileNotFoundException {
         setLanguage(language);
@@ -48,29 +41,19 @@ public class CodeFactory {
         keyGrabber.addPatterns("Syntax");
         generateMappings();
     }
-//
-//    public void setAddTurtleFunction(AddNewTurtleFunction function) { addTurtleFunction = function; }
 
     public Token getSymbolAsObj(String piece) throws SyntaxException{
-        //if (activeTurtles.size()<1) activeTurtles.add(turtleMap.get(1));
         String objectType = keyGrabber.getSymbol(piece);
         if (objectType.equals(VARIABLE_TYPE)) return getVariable(piece);
-//        if (objectType.equals(NEW_COMMAND_TYPE)) return getNewCommand(piece);
-//        if (objectType.equals(TO_TYPE)) return new To(piece, this::addNewCommand);
+        if (objectType.equals(NEW_COMMAND_TYPE)) return getNewCommand(piece);
+        if (objectType.equals(TO_TYPE)) return new To(piece, this::addNewCommand);
         Token token;
         try {
             Class c = mappings.get(objectType);
             Constructor objConstruct = c.getDeclaredConstructor(String.class);
             objConstruct.setAccessible(true);
             token = (Token) objConstruct.newInstance(piece);
-//            if (token instanceof DisplayCommand) ((DisplayCommand) token).setMyAction(setActionMap.get(objectType));
-//            if (token instanceof TurtleCommand) ((TurtleCommand) token).setActiveTurtles(activeTurtles);
-//            if (token instanceof QueryCommand) ((QueryCommand) token).setTurtle(activeTurtles.get(activeTurtles.size()-1));
-//            if (token instanceof MultiTurtleCommand) {
-//                ((MultiTurtleCommand) token).setAddNewTurtleFunction(addTurtleFunction);
-//                ((MultiTurtleCommand) token).setTurtleMap(turtleMap);
-//                ((MultiTurtleCommand) token).setActiveTurtles(activeTurtles);
-//            }
+            if (token instanceof DisplayCommand) ((DisplayCommand) token).setMyAction(setActionMap.get(objectType));
         } catch (Exception e) {
             throw new SyntaxException(e);
         }
@@ -91,11 +74,11 @@ public class CodeFactory {
         }
     }
 
-//    private void addNewCommand(Token token){
-//        NewCommand command = (NewCommand) token;
-//        newCommandMap.put(command.getName(), command);
-//        newCommands.add(command.getName());
-//    }
+    private void addNewCommand(Token token){
+        NewCommand command = (NewCommand) token;
+        newCommandMap.put(command.getName(), command);
+        newCommands.add(command.getName());
+    }
 
     private Token getVariable(String piece) {
         if (!variableMap.containsKey(piece)) {
@@ -106,8 +89,8 @@ public class CodeFactory {
         return variableMap.get(piece);
     }
 
-//    private Token getNewCommand(String piece) {
-//        if (newCommandMap.containsKey(piece)) return newCommandMap.get(piece);
-//        return new NewCommandName(piece);
-//    }
+    private Token getNewCommand(String piece) {
+        if (newCommandMap.containsKey(piece)) return newCommandMap.get(piece);
+        return new NewCommandName(piece);
+    }
 }

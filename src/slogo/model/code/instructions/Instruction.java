@@ -6,7 +6,7 @@ import slogo.model.code.Token;
 import java.util.ArrayList;
 import java.util.List;
 import slogo.model.code.exceptions.CommandCannotDoListException;
-import slogo.model.parse.TurtleMasterAccessor;
+import slogo.model.TurtleMasterAccessor;
 
 public abstract class Instruction implements Token {
 
@@ -29,9 +29,13 @@ public abstract class Instruction implements Token {
         parameters = params;
     }
 
-    protected List<Double> getParamsAsVals() throws CommandCannotDoListException {
+    protected List<Double> getParamsAsVals() {
+        return getParamsAsVals(parameters);
+    }
+
+    protected List<Double> getParamsAsVals(List<Token> tokens) throws CommandCannotDoListException {
         List<Double> paramsAsDoubles = new ArrayList<>();
-        for (Token currToken: parameters) {
+        for (Token currToken: tokens) {
             paramsAsDoubles.add(checkTokenNotListAndGetVal(currToken));
         }
         return paramsAsDoubles;

@@ -52,13 +52,12 @@ public class Controller extends Application {
     private void makeWindow(Stage stage){
         Interactions myView = new Interactions(stage);
         Model myModel = new Model(myView.getLanguageChoice());
-        myView.addTurtle(myModel.addTurtle(1));
         myView.setGoButton(e -> getInstruction(myView, myModel));
         myView.setViewLists(myModel.getVariableList(), myModel.getNewCommandsList());
         myView.setErrorMessage(myModel.getErrorMessage());
         myView.setNewWindowButton(e -> makeNewWindow());
         setupCommands(myView, myModel);
-        myModel.setAddTurtleFunction(id -> myView.addTurtle(myModel.addTurtle(id)));
+        myModel.setAddTurtleFunction(myView::addTurtle);
         myView.setPopupButton(e -> showPopUp(stage, myModel));
     }
 
