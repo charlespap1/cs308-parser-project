@@ -1,10 +1,12 @@
 package slogo.model.code.instructions.display;
+
+import java.util.ArrayList;
 import java.util.List;
 
-public class SetPenColor extends DisplayCommand {
+public class SetPenSize extends DisplayCommand {
     private static final int numArgs = 1;
 
-    public SetPenColor(String name) {
+    public SetPenSize(String name) {
         super(numArgs);
         instrName = name;
     }
@@ -13,7 +15,7 @@ public class SetPenColor extends DisplayCommand {
     public double execute() {
         List<Double> paramsAsVals = getParamsAsVals();
         try {
-            myAction.execute(getParamsAsVals());
+            myAction.execute(paramsAsVals);
         } catch (Exception e) {
             System.out.println("Bad input");
         }

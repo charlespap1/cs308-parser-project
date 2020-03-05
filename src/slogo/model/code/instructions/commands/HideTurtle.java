@@ -1,22 +1,24 @@
 package slogo.model.code.instructions.commands;
 
-import slogo.model.Turtle;
+import slogo.model.code.instructions.TurtleAction;
 import slogo.model.code.instructions.Instruction;
+
 
 public class HideTurtle extends Instruction {
 
     private static final int numArgs = 0;
+    private TurtleAction myAction = t -> {
+        t.setVisible(false);
+        return 0;
+    };
 
     public HideTurtle(String name){
         super(numArgs);
         instrName = name;
     }
 
-    public void performAction (Turtle t) {
-        System.out.println("exec");
-        t.setVisible(false);
-        valueOfExecution = 0;
-    }
+    @Override
+    public double execute() { return myAccessor.turtleCommandToMaster(myAction); }
 
     @Override
     public String toString(){

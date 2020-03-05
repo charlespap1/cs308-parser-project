@@ -17,7 +17,7 @@ public class Variable implements Token {
         function.addToList(this);
     }
 
-    public double generateValue(){
+    public double execute(){
         return value;
     }
 

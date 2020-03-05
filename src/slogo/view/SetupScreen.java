@@ -16,6 +16,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Line;
 import slogo.model.code.Token;
 import slogo.view.commonCommands.CommonCommands;
 import slogo.view.scrollers.CommandViewer;
@@ -78,7 +79,7 @@ public class SetupScreen {
 
   private UserCommandField myUserInput = new UserCommandField(WIDTH, HEIGHT);
   private Group root = new Group();
-  private List<Turtle> myTurtles;
+  private List<Turtle> myTurtles = new ArrayList<>();
   private DrawingCanvas myDrawingCanvas = new DrawingCanvas(WIDTH, HEIGHT);
   private Button myGo;
   private Button myClear;
@@ -108,24 +109,16 @@ public class SetupScreen {
    * @return
    */
   public Scene setupGame() {
-
-    //TODO: error handling if image not found
-    Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(DEFAULT_TURTLE_IMAGE)));
-
-    Turtle originalTurtle = new Turtle(image, myDrawingCanvas.getWidth(), myDrawingCanvas.getHeight());
-    myTurtles = new ArrayList<>();
-    myTurtles.add(originalTurtle);
-
     setupBox(belowInputFieldItems, UserCommandField.FIELD_SIDE_PADDING*3 + myUserInput.getWidth(), DrawingCanvas.CANVAS_TOP_PADDING + myDrawingCanvas.getHeight() + BOX_SPACING*5, myDrawingCanvas.getWidth());
     setupBox(belowCanvasButtons, DrawingCanvas.CANVAS_SIDE_PADDING, DrawingCanvas.CANVAS_TOP_PADDING + myDrawingCanvas.getHeight() + BOX_SPACING, myDrawingCanvas.getWidth());
     setButtons();
     setSelectors();
 
-    myGraphicalMover = new TurtleGraphicalMover(myTurtles.get(0), myBackgroundSelector.getView().getLayoutX(), myBackgroundSelector.getView().getLayoutY() + GRAPHICAL_VIEWER_HEIGHT_OFFSET);
+    myGraphicalMover = new TurtleGraphicalMover(myBackgroundSelector.getView().getLayoutX(), myBackgroundSelector.getView().getLayoutY() + GRAPHICAL_VIEWER_HEIGHT_OFFSET);
 
     setText();
 
-    root.getChildren().addAll(myDrawingCanvas.getView(), myTurtles.get(0).getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myNewCommandViewer.getView(), myVariableView.getView());
+    root.getChildren().addAll(myDrawingCanvas.getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myNewCommandViewer.getView(), myVariableView.getView());
     root.getChildren().addAll(myBackgroundSelector.getView(), myPenSelector.getView(), myCharacterSelector.getView(), myLanguageSelector.getView(), myGraphicalMover.getView());
 
     myCurrentErrorMessage.setLayoutX(myHistory.getView().getLayoutX());
@@ -136,7 +129,7 @@ public class SetupScreen {
     //setPreferences();
 
     Scene scene = new Scene(root, WIDTH, HEIGHT, BACKGROUND);
-    scene.getStylesheets().add(getClass().getClassLoader().getResource(MAIN_STYLESHEET).toExternalForm());
+    scene.getStylesheets().add(Objects.requireNonNull(getClass().getClassLoader().getResource(MAIN_STYLESHEET)).toExternalForm());
 
     return scene;
   }
@@ -154,19 +147,15 @@ public class SetupScreen {
     root.getChildren().add(myCommandJumper);
   }
 
-
-  public Turtle addNewTurtle()
-  {
+  public void addNewTurtle(slogo.model.Turtle turtle) {
     Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(DEFAULT_TURTLE_IMAGE)));
     Turtle newTurtle = new Turtle(image, myDrawingCanvas.getWidth(), myDrawingCanvas.getHeight());
-    myTurtles = new ArrayList<>();
     myTurtles.add(newTurtle);
     root.getChildren().add(newTurtle.getView());
-    return newTurtle;
+    newTurtle.setProperties(turtle);
+    turtle.pointProperty().addListener((o, oldVal, newVal) -> update(newTurtle));
+    turtle.currCommandProperty().addListener((o, oldVal, newVal) -> addHistory(newVal));
   }
-
-
-  public Turtle getInitialTurtle() { return myTurtles.get(0); }
 
   public void setInputText(String command) { myUserInput.setUserInput(command); }
 
@@ -239,6 +228,18 @@ public class SetupScreen {
     return 0;
   }
 
+  /**
+   * Updates the movement of the turtle according to new states
+   */
+  private void update(Turtle newTurtle) {
+    Line newLine = newTurtle.drawLineAndBound();
+    if (newLine!=null) {
+      root.getChildren().add(newLine);
+      myDrawingCanvas.addLine(newLine);
+      newTurtle.getView().toFront();
+    }
+  }
+
   private void setupBox(Pane box, double x, double y, double width){
     box.setLayoutX(x);
     box.setLayoutY(y);
@@ -277,13 +278,12 @@ public class SetupScreen {
 
   private void setSelectors() {
     myBackgroundSelector = new BackgroundSelector(myDrawingCanvas, belowCanvasButtons.getLayoutX(), belowCanvasButtons.getLayoutY()+ BUTTON_HEIGHT_OFFSET);
-    myCharacterSelector = new TurtleFaceSelector(myTurtles.get(0), myVariableView.getView().getLayoutX(), belowInputFieldItems.getLayoutY() + CHARACTER_TYPE_OFFSET);
-    myPenSelector = new PenSelector(myTurtles.get(0), belowInputFieldItems.getLayoutX(), belowInputFieldItems.getLayoutY() + BUTTON_HEIGHT_OFFSET);
+    myCharacterSelector = new TurtleFaceSelector(myVariableView.getView().getLayoutX(), belowInputFieldItems.getLayoutY() + CHARACTER_TYPE_OFFSET);
+    myPenSelector = new PenSelector(belowInputFieldItems.getLayoutX(), belowInputFieldItems.getLayoutY() + BUTTON_HEIGHT_OFFSET);
     myLanguageSelector = new LanguageSelector(DrawingCanvas.CANVAS_SIDE_PADDING, DrawingCanvas.CANVAS_TOP_PADDING/4);
   }
 
-  private void setText()
-  {
+  private void setText() {
     languageHelper = new LanguageHelper(myLanguageSelector.getLanguageChoiceProperty());
     myGo.textProperty().bind(languageHelper.getStringProperty(GO_BUTTON_KEY));
     myClear.textProperty().bind(languageHelper.getStringProperty(CLEAR_BUTTON_KEY));

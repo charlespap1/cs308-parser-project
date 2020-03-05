@@ -26,13 +26,10 @@ import java.lang.reflect.Method;
  * @author Juliet, Natalie
  */
 public class Interactions implements View {
-  public static final String DEFAULT_TURTLE_IMAGE = "turtle.png";
   public static final String TITLE = "SLogo";
 
   private SetupScreen mySetup;
   private Group root;
-  private List<Turtle> myTurtles = new ArrayList<>();
-  private Turtle myInitialTurtle;
   private DrawingCanvas myCanvas;
   private String myPreferences;
 
@@ -41,9 +38,6 @@ public class Interactions implements View {
     Scene myScene = mySetup.setupGame();
     CommonCommands myCommonCommands = new CommonCommands(primaryStage, myScene, getLanguageChoice());
     mySetup.addCommonCommands(myCommonCommands);
-    myInitialTurtle = mySetup.getInitialTurtle();
-    myTurtles.add(myInitialTurtle);
-
     root = mySetup.getRoot();
     myCanvas = mySetup.getDrawingCanvas();
     myPreferences = preferences;
@@ -61,26 +55,15 @@ public class Interactions implements View {
    * @throws NullPointerException
    */
   public String getInstruction() throws NullPointerException {
-    //TODO: is this all the error handling we need for this?
     return mySetup.getUserInput();
   }
 
-
-
-  public void setInitialTurtle(slogo.model.Turtle turtle){
-    myInitialTurtle.setProperties(turtle);
-    turtle.pointProperty().addListener((o, oldVal, newVal) -> update(myInitialTurtle));
-    turtle.currCommandProperty().addListener((o, oldVal, newVal) -> mySetup.addHistory(newVal));
-
-  }
-
-  public void addTurtle(slogo.model.Turtle turtle){
-    Turtle newTurtle = mySetup.addNewTurtle();
-    myTurtles.add(newTurtle);
-    newTurtle.setProperties(turtle);
-    turtle.pointProperty().addListener((o, oldVal, newVal) -> update(newTurtle));
-    //turtle.currCommandProperty().addListener((o, oldVal, newVal) -> mySetup.addHistory(newVal));
-  }
+  /**
+   * Sets the frontend turtle whenever the location is changed
+   * in the backend
+   * @param turtle
+   */
+  public void addTurtle(slogo.model.Turtle turtle){ mySetup.addNewTurtle(turtle); }
 
   /**
    * Gives the ListViewers their updated list values (binding)
@@ -106,34 +89,18 @@ public class Interactions implements View {
   public StringProperty getLanguageChoice() { return mySetup.getLanguageChoice(); }
 
   public DisplayAction getAction(String methodName) {
-    return new DisplayAction() {
-      @Override
-      public int execute(List<Double> params) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        Method m = SetupScreen.class.getDeclaredMethod(methodName, List.class);
-        Object value = m.invoke(mySetup, params);
-        return (Integer) value;
-      }
+    return params -> {
+      Method m = SetupScreen.class.getDeclaredMethod(methodName, List.class);
+      Object value = m.invoke(mySetup, params);
+      return (Integer) value;
     };
   }
 
-
-  /**
-   * Updates the movement of all of the turtles according to new states
-   */
-  private void update(Turtle newTurtle) {
-    Line newLine = newTurtle.drawLineAndBound();
-    if (newLine!=null) {
-      root.getChildren().add(newLine);
-      myCanvas.addLine(newLine);
-      newTurtle.getView().toFront();
-    }
-  }
 
   public void setPreferences()
   {
     mySetup.setPreferences(myPreferences);
   }
-
 
   public void setPopupButton(EventHandler<ActionEvent> showPopup) {
     mySetup.setNewConfigButton(showPopup);

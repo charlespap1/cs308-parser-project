@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import slogo.model.Model;
+import slogo.model.Turtle;
 import slogo.view.Interactions;
 import slogo.view.DisplayAction;
 import slogo.view.popup.FileDoesNotExistException;
@@ -59,15 +60,13 @@ public class Controller extends Application {
     private void makeWindow(Stage stage, String preferences){
         Interactions myView = new Interactions(stage, preferences);
         Model myModel = new Model(myView.getLanguageChoice());
-        myView.setInitialTurtle(myModel.getTurtle());
         myView.setGoButton(e -> getInstruction(myView, myModel));
         myView.setViewLists(myModel.getVariableList(), myModel.getNewCommandsList());
         myView.setErrorMessage(myModel.getErrorMessage());
         myView.setNewWindowButton(e -> getNewPreferences(stage));
         setupCommands(myView, myModel);
+        myModel.setAddTurtleFunction(myView::addTurtle);
         myView.setPopupButton(e -> showPopUp(stage, myModel));
-        //TODO: add listener for method tell command
-        //myView.add(turtle);
     }
 
     private void getNewPreferences(Stage currentStage)

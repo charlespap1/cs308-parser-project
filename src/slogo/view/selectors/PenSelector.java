@@ -26,10 +26,9 @@ public class PenSelector extends ColorSelector{
 
   private Turtle turtle;
 
-  public PenSelector(Turtle turtle, double x, double y) {
+  public PenSelector(double x, double y) {
     super(x,  y, BACKGROUND_COLORS,  RESOURCES_PATH);
     setColorButtons();
-    this.turtle = turtle;
   }
 
   public void tryColorPicker()
@@ -48,6 +47,6 @@ public class PenSelector extends ColorSelector{
   @Override
   protected void changeAppearance(String rgb) {
     RGBHelper rgbHelper = new RGBHelper();
-    turtle.changePenColor(rgbHelper.getColor(rgb));
+    //turtle.changePenColor(rgbHelper.getColor(rgb));
   }
 }
