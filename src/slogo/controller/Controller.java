@@ -75,6 +75,7 @@ public class Controller extends Application {
     }
 
     private void showActiveTurtles(Interactions myView, Stage currentStage) {
+
         myView.myTurtleStatePopup.show(currentStage);
     }
 

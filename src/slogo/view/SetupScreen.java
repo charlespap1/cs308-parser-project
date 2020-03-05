@@ -97,7 +97,7 @@ public class SetupScreen {
   //~~~~~~~~~~~~~ vvv for testing and troubleshooting vvv ~~~~~~~~~~~~~~~~
   private Button myTestButton;
   private Button myTurtlesStatesButton;
-  private TurtleStatePopup myTurtleStatePopup = new TurtleStatePopup();
+  private TurtleStatePopup myTurtleStatePopup = new TurtleStatePopup(myTurtles);
   //~~~~~~~~~~~~~ ^^^ for testing and troubleshooting ^^^ ~~~~~~~~~~~~~~~~
 
   private BackgroundSelector myBackgroundSelector;
@@ -162,6 +162,7 @@ public class SetupScreen {
     myTurtles.add(newTurtle);
     root.getChildren().add(newTurtle.getView());
     newTurtle.setProperties(turtle);
+    myTurtleStatePopup.addTurtle(newTurtle);
     turtle.pointProperty().addListener((o, oldVal, newVal) -> update(newTurtle));
     turtle.currCommandProperty().addListener((o, oldVal, newVal) -> addHistory(newVal));
   }
