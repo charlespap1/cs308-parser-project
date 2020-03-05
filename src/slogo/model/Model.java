@@ -51,8 +51,8 @@ public class Model implements ModelAPI{
     public Model(StringProperty language) {
         typeCheck.addPatterns(SYNTAX);
         setupLanguage(language);
-        Turtle initialTurtle = new Turtle(1, 0, 0, false, 0);
-        turtleMap.put(1.0, initialTurtle);
+        Turtle initialTurtle = new Turtle(0, 0, 0, false, 90);
+        turtleMap.put(0.0, initialTurtle);
         //activeTurtles.add(initialTurtle);
         history.addNewProgram(new Program(generateStateMap(turtleMap)));
     }
@@ -104,6 +104,8 @@ public class Model implements ModelAPI{
 
     private void updateTurtlesWithStates(Map<Double, State> turtleStates) {
         //update turtles that existed before undo/redo
+        System.out.println(turtleMap);
+        System.out.println(turtleStates);
         for (double id : turtleMap.keySet()) {
             if (!turtleStates.containsKey(id)) {
                 // for undo, when a tell command was executed
@@ -159,7 +161,7 @@ public class Model implements ModelAPI{
                 if(executed){
 //                    activeTurtles.get(0).setCurrCommand(currFullCommand);
 ////                    activeTurtles.get(0).setCurrCommand("");
-                    history.getProgram(-1).addNewCommand(currFullCommand);
+                    history.getProgram(history.getProgramHistory().size() - 1).addNewCommand(currFullCommand);
                     currFullCommand = "";
                     executed = false;
                 }
@@ -201,6 +203,7 @@ public class Model implements ModelAPI{
         if (currInstr.numRequiredArgs() == 0) {
             if (commands.isEmpty()) {
                 currInstr.execute();
+                executed = true;
             } else {
                 arguments.peek().push(currInstr);
                 attemptToCreateFullInstruction();
