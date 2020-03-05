@@ -57,6 +57,7 @@ public class DisplayCustomizer {
   public DisplayCustomizer(double x, double y) {
     myHolder.setLayoutX(x);
     myHolder.setLayoutY(y);
+    myHolder.setAlignment(Pos.CENTER);
 
     colorKeys = Collections.list(myColorResource.getKeys());
     imageKeys = Collections.list(myImageResource.getKeys());
@@ -67,6 +68,12 @@ public class DisplayCustomizer {
     penButtons = createButtons(colorKeys, myPenHolder);
     imageButtons = createButtons(imageKeys, myCharacterHolder);
     buildLists();
+
+    myBackgroundHolder.setAlignment(Pos.CENTER_RIGHT);
+    myCharacterHolder.setAlignment(Pos.CENTER_RIGHT);
+    myPenHolder.setAlignment(Pos.CENTER_RIGHT);
+
+
   }
 
   public int getPenIndex(){ return penIndex; }
@@ -129,11 +136,11 @@ public class DisplayCustomizer {
 
     Text penLabel = new Text();
     penLabel.textProperty().bind(pen);
-    myBackgroundHolder.getChildren().add(0, penLabel);
+    myPenHolder.getChildren().add(0, penLabel);
 
     Text imageLabel = new Text();
     imageLabel.textProperty().bind(character);
-    myBackgroundHolder.getChildren().add(0, imageLabel);
+    myCharacterHolder.getChildren().add(0, imageLabel);
   }
 
 
