@@ -1,5 +1,6 @@
 package slogo.view;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,6 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -22,6 +22,8 @@ import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import slogo.model.tokens.Token;
 import slogo.view.commonCommands.CommonCommands;
+import slogo.view.popup.FileDoesNotExistException;
+import slogo.view.popup.LoadConfigPopup;
 import slogo.view.scrollers.CommandViewer;
 import slogo.view.scrollers.HistoryViewer;
 
@@ -50,7 +52,7 @@ public class SetupScreen {
   public static final int HEIGHT = 720;
   public static final Paint BACKGROUND = Color.AZURE;
   public static final double BUTTON_HEIGHT_OFFSET = 40;
-  public static final double GRAPHICAL_VIEWER_HEIGHT_OFFSET = 35;
+  public static final double GRAPHICAL_VIEWER_HEIGHT_OFFSET = 255;
   public static final double CHARACTER_TYPE_OFFSET = 100;
   public static final double COMMON_COMMAND_BUTTON_HEIGHT_OFFSET = 15;
   public static final double COMMON_COMMAND_BUTTON_WIDTH_OFFSET = 225;
@@ -88,7 +90,6 @@ public class SetupScreen {
   private Button myNewWindow;
   private Button myNewConfig;
 
-  private RGBHelper rgbHelper = new RGBHelper();
   private Button undoButton;
   private Button redoButton;
   private ScrollingWindow myHistory = new HistoryViewer(COMMAND_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING);
@@ -96,9 +97,6 @@ public class SetupScreen {
   private ScrollingWindow myVariableView = new VariableViewer(LIST_VIEW_COLUMN, HEIGHT/2.0);
   private LineManager myLineManager = new LineManager(root);
 
-  private BackgroundSelector myBackgroundSelector;
-  private TurtleFaceSelector myCharacterSelector;
-  private PenSelector myPenSelector;
   private LanguageSelector myLanguageSelector;
 
   private Label myCurrentErrorMessage = new Label();
@@ -121,13 +119,13 @@ public class SetupScreen {
     setButtons();
     setSelectors();
 
-    myGraphicalMover = new TurtleGraphicalMover(myBackgroundSelector.getView().getLayoutX(), myBackgroundSelector.getView().getLayoutY() + GRAPHICAL_VIEWER_HEIGHT_OFFSET);
+    myGraphicalMover = new TurtleGraphicalMover(myUserInput.getView().getLayoutX(), myUserInput.getView().getLayoutY() + GRAPHICAL_VIEWER_HEIGHT_OFFSET);
     myCustomizer = new DisplayCustomizer(belowCanvasButtons.getLayoutX(), belowCanvasButtons.getLayoutY()+ BUTTON_HEIGHT_OFFSET + 10);
 
     setText();
 
     root.getChildren().addAll(myDrawingCanvas.getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myNewCommandViewer.getView(), myVariableView.getView());
-    root.getChildren().addAll(myCustomizer.getView(), myPenSelector.getView(), myCharacterSelector.getView(), myLanguageSelector.getView());
+    root.getChildren().addAll(myGraphicalMover.getView(), myCustomizer.getView(), myLanguageSelector.getView());
 
     myCurrentErrorMessage.setLayoutX(myHistory.getView().getLayoutX());
     myCurrentErrorMessage.setLayoutY(myVariableView.getView().getLayoutY() + ERROR_MESSAGE_PADDING);
@@ -163,7 +161,13 @@ public class SetupScreen {
 
   public void setGoButton(EventHandler<ActionEvent> goAction) { myGo.setOnAction(goAction); }
   public void setNewWindowButton(EventHandler<ActionEvent> newWindowAction) { myNewWindow.setOnAction(newWindowAction);}
-  public void setNewConfigButton(EventHandler<ActionEvent> newConfigAction) { myNewConfig.setOnAction(newConfigAction); }
+
+
+  public void setNewConfigButton(EventHandler<ActionEvent> newConfigAction) {
+
+    myNewConfig.addEventHandler(ActionEvent.ACTION, newConfigAction);
+    
+  }
 
   public Group getRoot() { return root; }
 
@@ -235,9 +239,6 @@ public class SetupScreen {
   }
 
   private void setSelectors() {
-    myBackgroundSelector = new BackgroundSelector(myDrawingCanvas, belowCanvasButtons.getLayoutX(), belowCanvasButtons.getLayoutY()+ BUTTON_HEIGHT_OFFSET);
-    myCharacterSelector = new TurtleFaceSelector(myTurtles, myVariableView.getView().getLayoutX(), belowInputFieldItems.getLayoutY() + CHARACTER_TYPE_OFFSET);
-    myPenSelector = new PenSelector(myTurtles, belowInputFieldItems.getLayoutX(), belowInputFieldItems.getLayoutY() + BUTTON_HEIGHT_OFFSET);
     myLanguageSelector = new LanguageSelector(DrawingCanvas.CANVAS_SIDE_PADDING, DrawingCanvas.CANVAS_TOP_PADDING/4);
   }
 
@@ -254,10 +255,6 @@ public class SetupScreen {
     myHistory.setTitleProperty(languageHelper.getStringProperty(HISTORY_TITLE_KEY));
 
     myCustomizer.setTitleProperty(languageHelper.getStringProperty(BACKGROUND_SELECTOR_TEXT_KEY), languageHelper.getStringProperty(PEN_SELECTOR_TEXT_KEY),languageHelper.getStringProperty(TURTLE_SELECTOR_TEXT_KEY));
-
-    myBackgroundSelector.setTitleProperty(languageHelper.getStringProperty(BACKGROUND_SELECTOR_TEXT_KEY));
-    myPenSelector.setTitleProperty(languageHelper.getStringProperty(PEN_SELECTOR_TEXT_KEY));
-    myCharacterSelector.setTitleProperty(languageHelper.getStringProperty(TURTLE_SELECTOR_TEXT_KEY));
 
     myLanguageSelector.setTitleProperty(languageHelper.getStringProperty(LANGUAGE_SELECTOR_TEXT_KEY));
     myGraphicalMover.setTitleProperty(languageHelper.getStringProperty(PEN_THICKNESS_TEXT_KEY));
