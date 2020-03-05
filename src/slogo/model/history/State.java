@@ -8,7 +8,8 @@ public class State {
     private double yPos;
     private boolean isPenUp;
     private double angle;
-    private boolean active;
+    private boolean isActive;
+    private boolean isVisible;
 
     public State(Turtle t) {
         id = t.getId();
@@ -16,7 +17,8 @@ public class State {
         yPos = t.getYPos();
         isPenUp = t.getIsPenUp();
         angle = t.getAngle();
-        active = t.isActive();
+        isActive = t.isActive();
+        isVisible = t.isVisible();
     }
 
     public double getId() {
@@ -39,5 +41,7 @@ public class State {
         return angle;
     }
 
-    public boolean getIsActive() { return active; }
+    public boolean getIsActive() { return isActive; }
+
+    public boolean getIsVisible() { return isVisible; }
 }

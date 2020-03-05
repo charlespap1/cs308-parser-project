@@ -14,8 +14,11 @@ public class Tell extends Instruction {
     private static final int numArgs = 1;
     private List<Double> activeTurtles = new ArrayList<>();
     private TurtleAction myAction = t -> {
-        if (activeTurtles.contains(t.getId())) t.active(true);
-        else t.active(false);
+        if (activeTurtles.contains(t.getId())) {
+            t.setActive(true);
+            t.setVisible(true);
+        }
+        else t.setActive(false);
         return t.getId();
     };
 

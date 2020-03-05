@@ -24,6 +24,14 @@ public class Turtle {
         coordinates = new SimpleObjectProperty<>(new Point2D.Double(xPos, yPos));
     }
 
+    public void setDefault() {
+        setLocation(0, 0);
+        setPenUp(false);
+        setAngle(90);
+        setVisible(true);
+        setActive(true);
+    }
+
     public DoubleProperty turtleXProperty(){ return turtleX; }
     public DoubleProperty turtleYProperty(){ return turtleY; }
     public DoubleProperty turtleAngleProperty(){ return turtleAngle; }
@@ -41,7 +49,7 @@ public class Turtle {
     public void setVisible(boolean isVisible) { visible.set(isVisible); }
     public void setAngle(double angle) { turtleAngle.setValue(angle); }
     public void setPenUp(boolean isPenUp) { penUp.setValue(isPenUp);}
-    public void active(boolean isActive) { active.setValue(isActive);}
+    public void setActive(boolean isActive) { active.setValue(isActive);}
 
     public double getXPos() {
         return turtleX.getValue();

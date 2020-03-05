@@ -71,7 +71,11 @@ public class TurtleMaster {
         for (double id : turtleMap.keySet()) {
             if (!turtleStates.containsKey(id)) {
                 // for undo, when a tell command was executed
-                turtleMap.get(id).setVisible(false);
+                // move turtle to origin, set to invisible, set to inactive
+                Turtle t = turtleMap.get(id);
+                t.setDefault();
+                t.setVisible(false);
+                t.setActive(false);
             } else {
                 updateSingleTurtle(turtleMap.get(id), turtleStates.get(id));
             }
@@ -84,8 +88,8 @@ public class TurtleMaster {
         turtle.setLocation(state.getxPos(), state.getyPos());
         turtle.setAngle(state.getAngle());
         turtle.setPenUp(state.getIsPenUp());
-        turtle.setVisible(true);
-        turtle.active(state.getIsActive());
+        turtle.setVisible(state.getIsVisible());
+        turtle.setActive(state.getIsActive());
         turtle.setPenUp(tempPenStatus);
     }
 
