@@ -6,6 +6,7 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -169,11 +170,11 @@ public class SetupScreen {
     myGo.setMinWidth(myUserInput.getWidth());
     belowInputFieldItems.getChildren().add(myGo);
     myClear = new Button();
-    myClear.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
+    //myClear.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
     belowCanvasButtons.getChildren().add(myClear);
     myClear.setOnAction(e -> { root.getChildren().removeAll(myDrawingCanvas.getLines()); });
     myStop = new Button();
-    myStop.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
+    //myStop.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
     belowCanvasButtons.getChildren().add(myStop);
     myStop.setOnAction(e -> { for(Turtle t : myTurtles) t.returnTurtleToDefault(); });
     myNewConfig = new Button();
@@ -186,6 +187,9 @@ public class SetupScreen {
     undoButton.setText("Undo");
     redoButton = new Button();
     redoButton.setText("Redo");
+    belowCanvasButtons.setMaxWidth(myDrawingCanvas.getWidth());
+    belowCanvasButtons.setMinWidth(myDrawingCanvas.getWidth());
+    belowCanvasButtons.setAlignment(Pos.CENTER);
     belowCanvasButtons.getChildren().addAll(undoButton, redoButton);
 
     root.getChildren().add(newWindowButtons);
