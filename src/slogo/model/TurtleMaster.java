@@ -85,6 +85,7 @@ public class TurtleMaster {
         turtle.setAngle(state.getAngle());
         turtle.setPenUp(state.getIsPenUp());
         turtle.setVisible(true);
+        turtle.active(state.getIsActive());
         turtle.setPenUp(tempPenStatus);
     }
 

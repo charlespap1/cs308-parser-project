@@ -11,7 +11,6 @@ public class Turtle {
     private DoubleProperty turtleAngle;
     private BooleanProperty penUp;
     private BooleanProperty visible = new SimpleBooleanProperty(true);
-    private StringProperty currCommand = new SimpleStringProperty();
     private ObjectProperty<Point2D> coordinates;
     private BooleanProperty active = new SimpleBooleanProperty(true);
     private double id;
@@ -30,7 +29,6 @@ public class Turtle {
     public DoubleProperty turtleAngleProperty(){ return turtleAngle; }
     public BooleanProperty penUpProperty(){ return penUp; }
     public BooleanProperty visibleProperty(){ return visible; }
-    public StringProperty currCommandProperty(){ return currCommand; }
     public ObjectProperty<Point2D> pointProperty() { return coordinates; }
     public BooleanProperty activeProperty() { return active; }
 
