@@ -6,6 +6,7 @@ import java.util.List;
 
 public class SetPalette extends DisplayCommand {
     private static final int numArgs = 4;
+    private static final int RGB_MAX_VALUE = 256;
 
     public SetPalette(String name) {
         super(numArgs);
@@ -15,7 +16,7 @@ public class SetPalette extends DisplayCommand {
     @Override
     public double execute() throws InvalidArgumentException {
         List<Double> paramsAsVals = getParamsAsVals();
-        for (int i=1; i<=3; i++) if (!(rgbValueIsValid(paramsAsVals.get(i)))) throw new InvalidArgumentException();
+        for (int i = 1; i < paramsAsVals.size(); i++) if (!(rgbValueIsValid(paramsAsVals.get(i)))) throw new InvalidArgumentException();
 
         try {
             myAction.execute(paramsAsVals);
@@ -26,6 +27,6 @@ public class SetPalette extends DisplayCommand {
     }
 
     private boolean rgbValueIsValid (double value) {
-        return value >= 0 && value < 256;
+        return value >= 0 && value < RGB_MAX_VALUE;
     }
 }

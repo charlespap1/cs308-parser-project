@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -55,6 +56,7 @@ public class DisplayCustomizer {
   public DisplayCustomizer(double x, double y) {
     myHolder.setLayoutX(x);
     myHolder.setLayoutY(y);
+    myHolder.setAlignment(Pos.CENTER);
 
     colorKeys = Collections.list(myColorResource.getKeys());
     imageKeys = Collections.list(myImageResource.getKeys());
@@ -65,6 +67,12 @@ public class DisplayCustomizer {
     penButtons = createButtons(colorKeys, myPenHolder);
     imageButtons = createButtons(imageKeys, myCharacterHolder);
     buildLists();
+
+    myBackgroundHolder.setAlignment(Pos.CENTER_RIGHT);
+    myCharacterHolder.setAlignment(Pos.CENTER_RIGHT);
+    myPenHolder.setAlignment(Pos.CENTER_RIGHT);
+
+
   }
 
   public int getPenIndex(){ return penColorIndex; }
@@ -123,7 +131,23 @@ public class DisplayCustomizer {
     }
   }
 
-  private Color getColor(String rgb) {
+  public void setTitleProperty(StringProperty background, StringProperty pen, StringProperty character){
+    Text backgroundLabel = new Text();
+    backgroundLabel.textProperty().bind(background);
+    myBackgroundHolder.getChildren().add(0, backgroundLabel);
+
+    Text penLabel = new Text();
+    penLabel.textProperty().bind(pen);
+    myPenHolder.getChildren().add(0, penLabel);
+
+    Text imageLabel = new Text();
+    imageLabel.textProperty().bind(character);
+    myCharacterHolder.getChildren().add(0, imageLabel);
+  }
+
+
+  private Color getColor(String rgb)
+  {
     String [] rgbVals = rgb.split(",");
     int r = Integer.parseInt(rgbVals[0]);
     int g = Integer.parseInt(rgbVals[1]);

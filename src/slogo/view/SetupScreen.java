@@ -105,7 +105,7 @@ public class SetupScreen {
   private VBox belowInputFieldItems = new VBox(BOX_SPACING);
   private HBox belowCanvasButtons = new HBox(BOX_SPACING);
 
-  private DisplayCustomizer cust = new DisplayCustomizer(belowCanvasButtons.getLayoutX(), belowCanvasButtons.getLayoutY()+ BUTTON_HEIGHT_OFFSET);
+  private DisplayCustomizer myCustomizer;
 
   private LanguageHelper languageHelper;
   private TurtleGraphicalMover myGraphicalMover;
@@ -122,10 +122,12 @@ public class SetupScreen {
     setSelectors();
 
     myGraphicalMover = new TurtleGraphicalMover(myBackgroundSelector.getView().getLayoutX(), myBackgroundSelector.getView().getLayoutY() + GRAPHICAL_VIEWER_HEIGHT_OFFSET);
+    myCustomizer = new DisplayCustomizer(belowCanvasButtons.getLayoutX(), belowCanvasButtons.getLayoutY()+ BUTTON_HEIGHT_OFFSET + 10);
+
     setText();
 
     root.getChildren().addAll(myDrawingCanvas.getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myNewCommandViewer.getView(), myVariableView.getView());
-    root.getChildren().addAll(cust.getView(), myPenSelector.getView(), myCharacterSelector.getView(), myLanguageSelector.getView());
+    root.getChildren().addAll(myCustomizer.getView(), myPenSelector.getView(), myCharacterSelector.getView(), myLanguageSelector.getView());
 
     myCurrentErrorMessage.setLayoutX(myHistory.getView().getLayoutX());
     myCurrentErrorMessage.setLayoutY(myVariableView.getView().getLayoutY() + ERROR_MESSAGE_PADDING);
@@ -177,8 +179,7 @@ public class SetupScreen {
   }
 
   public ScreenManager getScreenManager(){
-    return new ScreenManager(root, myUserInput, myTurtles, myDrawingCanvas, myLanguageSelector, myLineManager, cust, myGraphicalMover);
-
+    return new ScreenManager(root, myUserInput, myTurtles, myDrawingCanvas, myLanguageSelector, myLineManager, myCustomizer, myGraphicalMover);
   }
 
   private void setupBox(Pane box, double x, double y, double width){
@@ -250,6 +251,8 @@ public class SetupScreen {
     myVariableView.setTitleProperty(languageHelper.getStringProperty(VARIABLE_TITLE_KEY));
     myNewCommandViewer.setTitleProperty(languageHelper.getStringProperty(NEW_COMMAND_TITLE_KEY));
     myHistory.setTitleProperty(languageHelper.getStringProperty(HISTORY_TITLE_KEY));
+
+    myCustomizer.setTitleProperty(languageHelper.getStringProperty(BACKGROUND_SELECTOR_TEXT_KEY), languageHelper.getStringProperty(PEN_SELECTOR_TEXT_KEY),languageHelper.getStringProperty(TURTLE_SELECTOR_TEXT_KEY));
 
     myBackgroundSelector.setTitleProperty(languageHelper.getStringProperty(BACKGROUND_SELECTOR_TEXT_KEY));
     myPenSelector.setTitleProperty(languageHelper.getStringProperty(PEN_SELECTOR_TEXT_KEY));
