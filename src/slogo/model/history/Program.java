@@ -26,4 +26,6 @@ public class Program {
         return initialTurtleStates;
     }
 
+    public void clear(){ myInstructions.clear(); }
+
 }
