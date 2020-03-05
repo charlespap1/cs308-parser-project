@@ -25,7 +25,7 @@ public class TurtleStatePopup {
     public static final int HOLDER_PADDING = 5;
 
     private Popup myPopup;
-    private List<Turtle> myTurtles;
+    private List<slogo.model.Turtle> myTurtles;
 
     private HBox myHolder;
     private VBox myTurtleStates;
@@ -33,7 +33,7 @@ public class TurtleStatePopup {
     private Button exit;
     private Button myGo;
 
-    public TurtleStatePopup(List<Turtle> initTurtles){
+    public TurtleStatePopup(List<slogo.model.Turtle> initTurtles){
         myTurtles = initTurtles;
         myPopup = new Popup();
 
@@ -45,11 +45,7 @@ public class TurtleStatePopup {
 
         myTurtleStates = new VBox(HOLDER_SPACING);
 
-        for(Turtle t : myTurtles){
-            Label label = new Label(String.format("X: %f  Y: %f  PenUp: %b",
-                    t.getXPos(), t.getYPos(), t.getPenUp()));
-            myTurtleStates.getChildren().add(label);
-        }
+        updateView();
 
         exit = new Button("Exit");
         exit.setOnAction(event -> myPopup.hide());
@@ -60,6 +56,12 @@ public class TurtleStatePopup {
         myHolder.getChildren().addAll(exit, myGo, myTurtleStates);
 
         myPopup.getContent().add(myHolder);
+    }
+
+
+    public TurtleStatePopup(){
+        List<slogo.model.Turtle> initTurtles = new ArrayList<>();
+        new TurtleStatePopup(initTurtles);
     }
 
 
@@ -76,16 +78,16 @@ public class TurtleStatePopup {
      * Called whenever the frontend calls AddNewTurtle; updates the internal list of turtles and the visuals
      * @param newTurtle: new turtle to be added to the list
      */
-    public void addTurtle(Turtle newTurtle) {
+    public void addTurtle(slogo.model.Turtle newTurtle) {
         myTurtles.add(newTurtle);
         updateView();
     }
 
     private void updateView(){
         myTurtleStates.getChildren().clear();
-        for(Turtle t : myTurtles){
-            Label label = new Label(String.format("X: %f  Y: %f  PenUp: %b",
-                    t.getXPos(), t.getYPos(), t.getPenUp()));
+        for(slogo.model.Turtle t : myTurtles){
+            Label label = new Label(String.format("X: %f  Y: %f  Angle: %f  Visible: %b  PenUp: %b",
+                    t.getXPos(), t.getYPos(), t.getAngle(), t.isVisible() ,t.getIsPenUp()));
             myTurtleStates.getChildren().add(label);
         }
     }

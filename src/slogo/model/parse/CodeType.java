@@ -1,16 +1,16 @@
 package slogo.model.parse;
 
-import slogo.model.code.BracketClose;
-import slogo.model.code.BracketOpen;
-import slogo.model.code.Constant;
-import slogo.model.code.Variable;
-import slogo.model.code.instructions.booleans.*;
-import slogo.model.code.instructions.commands.*;
-import slogo.model.code.instructions.display.*;
-import slogo.model.code.instructions.math.*;
-import slogo.model.code.instructions.misc.*;
-import slogo.model.code.instructions.multipleturtles.*;
-import slogo.model.code.instructions.queries.*;
+import slogo.model.tokens.BracketClose;
+import slogo.model.tokens.BracketOpen;
+import slogo.model.tokens.Constant;
+import slogo.model.tokens.Variable;
+import slogo.model.tokens.instructions.booleans.*;
+import slogo.model.tokens.instructions.commands.*;
+import slogo.model.tokens.instructions.display.*;
+import slogo.model.tokens.instructions.math.*;
+import slogo.model.tokens.instructions.misc.*;
+import slogo.model.tokens.instructions.multipleturtles.*;
+import slogo.model.tokens.instructions.queries.*;
 
 public enum CodeType {
     CLEARSCREEN(ClearScreen.class),

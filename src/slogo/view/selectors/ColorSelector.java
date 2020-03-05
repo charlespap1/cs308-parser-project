@@ -1,8 +1,11 @@
 package slogo.view.selectors;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.beans.property.StringProperty;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
@@ -27,8 +30,9 @@ public abstract class ColorSelector implements StaticViewElement {
   private ResourceBundle myResources;
   private Text myTitle = new Text();
 
-  public ColorSelector(double x, double y, List<String> identifiers, String resourcePackage) {
+  protected Map colorMap = new HashMap<Integer, String>();
 
+  public ColorSelector(double x, double y, List<String> identifiers, String resourcePackage) {
     myHolder.setLayoutX(x);
     myHolder.setLayoutY(y);
     myHolder.getChildren().addAll(myTopElements);
@@ -40,9 +44,9 @@ public abstract class ColorSelector implements StaticViewElement {
   /**
    * Performs the action of changing whatever element
    * of the selector is clicked
-   * @param rgb
+   * @param
    */
-  protected abstract void changeAppearance(String rgb);
+  public abstract void changeAppearance(int index);
 
   /**
    * Allows for adding the selector to the root
@@ -63,10 +67,12 @@ public abstract class ColorSelector implements StaticViewElement {
       newColor.setMaxHeight(COLOR_SELECTOR_HEIGHT);
       newColor.setMinHeight(COLOR_SELECTOR_HEIGHT);
       String rgb = myResources.getString(identifier);
-      setButtonFromResourceResult(newColor, rgb);
+      //int idIntVal = Integer.parseInt(identifier);
+      //setButtonFromResourceResult(idIntVal, newColor, rgb);
+      setButtonFromResourceResult(newColor, 3, rgb);
       Text index = new Text(identifier);
-      index.setTranslateX(5);
       buttonHold.getChildren().addAll(newColor, index);
+      buttonHold.setAlignment(Pos.CENTER);
       myTopElements.getChildren().add(buttonHold);
     }
   }
@@ -76,15 +82,28 @@ public abstract class ColorSelector implements StaticViewElement {
     myTopElements.getChildren().add(0, myTitle);
   }
 
+  public Map<String, String> map()
+  {
+    return colorMap;
+  }
+
+
   /**
    * Gets the style of the button from the resource given
    * @param newColor
    * @param rgb
    */
-  protected void setButtonFromResourceResult(Button newColor, String rgb) {
+/*
+  protected void setButtonFromResourceResult(int id, Button newColor, String rgb) {
 
+    colorMap.put(id, rgb);
     newColor.setStyle(String.format(DEFAULT_BACKGROUND_SETTER,rgb));
-    newColor.setOnAction(e -> changeAppearance(rgb));
+    newColor.setOnAction(e -> changeAppearance(rgb));*/
+
+  protected void setButtonFromResourceResult(Button newColor, int index, String rgb) {
+    //TODO get rgb from index
+    newColor.setStyle(String.format(DEFAULT_BACKGROUND_SETTER, rgb));
+    newColor.setOnAction(e -> changeAppearance(index));
   }
 
 }

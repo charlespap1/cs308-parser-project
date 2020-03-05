@@ -32,9 +32,11 @@ public class Turtle {
   private DoubleProperty angle = new SimpleDoubleProperty();
   private BooleanProperty penUp = new SimpleBooleanProperty();
   private BooleanProperty visible = new SimpleBooleanProperty();
+  private BooleanProperty active = new SimpleBooleanProperty();
   private double currX;
   private double currY;
   private int penThickness = 1;
+  private String filename;
 
   private Color penColor = DEFAULT_PEN_COLOR;
 
@@ -70,7 +72,13 @@ public class Turtle {
     coordinates.bindBidirectional(turtle.pointProperty());
     currX = x.getValue();
     currY = y.getValue();
+    active.bindBidirectional(turtle.activeProperty());
+    active.addListener(e -> {
+      if (active.getValue()) myTurtleView.setOpacity(1);
+      else myTurtleView.setOpacity(0.5);
+    });
     returnTurtleToDefault();
+    myTurtleView.setOnMouseClicked(e -> active.setValue(!active.getValue()));
   }
 
 
@@ -129,6 +137,8 @@ public class Turtle {
    * @param color
    */
   public void changePenColor(Color color) { penColor = color; }
+
+
 
   public void setPenUp(boolean isPenUp)
   {

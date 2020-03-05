@@ -4,10 +4,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
-import slogo.model.code.Token;
-import slogo.model.code.Variable;
+import slogo.model.tokens.Token;
+import slogo.model.tokens.Variable;
 
-public class VariableViewer extends ListViewer {
+public class VariableViewer extends ScrollingWindow {
     public static String BUTTON_TEXT = "set";
     private HBox box =  new HBox();
     private Button button = new Button(BUTTON_TEXT);
@@ -17,9 +17,6 @@ public class VariableViewer extends ListViewer {
     public VariableViewer(double elementWidthFactor, double topPadding) {
         super(elementWidthFactor, topPadding);
         buildHBox();
-        myList.setOnMouseClicked(e -> {
-            onSelectedItem(myList.getSelectionModel().getSelectedItem());
-        });
     }
 
     private void buildHBox(){
@@ -29,6 +26,7 @@ public class VariableViewer extends ListViewer {
         box.getChildren().addAll(label, text, button);
     }
 
+    @Override
     protected void onSelectedItem(Token t){
         label.setText(t.toString());
         button.setOnAction(e -> {

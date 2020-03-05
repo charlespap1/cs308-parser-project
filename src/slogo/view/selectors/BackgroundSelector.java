@@ -3,9 +3,8 @@ package slogo.view.selectors;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import javafx.scene.paint.Color;
+
 import slogo.view.DrawingCanvas;
-import slogo.view.RGBHelper;
 
 /**
  * Allows user to choose a background color for their drawing canvas
@@ -14,7 +13,7 @@ import slogo.view.RGBHelper;
 
 public class BackgroundSelector extends ColorSelector{
 
-  public static final List<String> BACKGROUND_COLORS = new ArrayList<>(Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8"));
+  public static final List<String> BACKGROUND_COLORS = new ArrayList<>(Arrays.asList("1", "2", "3", "4", "5", "6", "7"));
   private static final String RESOURCES_PATH = "resources.colors.BackgroundColors";
 
   private DrawingCanvas canvas;
@@ -27,10 +26,12 @@ public class BackgroundSelector extends ColorSelector{
 
   /**
    * When user clicks a new color, the color of the drawing canvas is changed
-   * @param rgb
+   * @param
    */
   @Override
-  protected void changeAppearance(String rgb) {
+  public void changeAppearance(int index) {
+    // TODO load rgb from index
+    String rgb = "10,10,10";
     RGBHelper rgbHelper = new RGBHelper();
     canvas.changeBackground(rgbHelper.getColor(rgb));
   }

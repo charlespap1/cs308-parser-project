@@ -1,16 +1,20 @@
 package slogo.model;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import slogo.controller.AddNewTurtleFunction;
-import slogo.model.code.*;
-import slogo.model.code.exceptions.InvalidCommandException;
-import slogo.model.code.exceptions.InvalidNumberArgumentsException;
-import slogo.model.code.exceptions.LanguageFileNotFoundException;
-import slogo.model.code.instructions.Instruction;
-import slogo.model.code.instructions.TurtleAction;
-import slogo.model.code.instructions.misc.*;
+import slogo.model.tokens.*;
+import slogo.model.exceptions.InvalidCommandException;
+import slogo.model.exceptions.InvalidNumberArgumentsException;
+import slogo.model.exceptions.LanguageFileNotFoundException;
+import slogo.model.tokens.instructions.Instruction;
+import slogo.model.tokens.instructions.TurtleAction;
+import slogo.model.tokens.instructions.misc.*;
+import slogo.model.history.History;
+import slogo.model.history.Program;
+import slogo.model.history.State;
 import slogo.model.parse.CodeFactory;
 import slogo.model.parse.RegexHandler;
 import slogo.view.DisplayAction;
@@ -33,10 +37,8 @@ public class Model implements ModelAPI{
     private Stack<Stack<Token>> arguments = new Stack<>();
     private RegexHandler typeCheck = new RegexHandler();
     private StringProperty errorMessage = new SimpleStringProperty();
-    private String currFullCommand = "";
-    private boolean executed = false;
     private TurtleMaster turtleMaster = new TurtleMaster();
-    private Map<Double, Turtle> turtleMap = turtleMaster.getTurtleMap();
+    private History history = new History();
     private TurtleMasterAccessor accessor = new TurtleMasterAccessor() {
         @Override
         public double turtleCommandToMaster(TurtleAction action) { return turtleMaster.executeTurtleCommand(action); }
@@ -46,24 +48,16 @@ public class Model implements ModelAPI{
         public double multiTurtleCommandToMaster(TurtleAction action, List<Double> turtles) { return turtleMaster.executeMultiTurtleCommand(action, turtles); }
     };
 
-    private History history = new History();
-
     public Model(StringProperty language) {
         typeCheck.addPatterns(SYNTAX);
         setupLanguage(language);
-        Turtle initialTurtle = new Turtle(0, 0, 0, false, 90);
-        turtleMap.put(0.0, initialTurtle);
-        //activeTurtles.add(initialTurtle);
-        history.addNewProgram(new Program(generateStateMap(turtleMap)));
     }
 
     public void executeCode(String rawString) {
         errorMessage.set("");
         clearStacks();
         parseInstructions(rawString);
-        // add next state?
-        history.addNewProgram(new Program(generateStateMap(turtleMap)));
-        history.setPointerToEnd();
+        history.addNewProgram(new Program(turtleMaster.generateStateMap()));
         if(!commands.isEmpty() || !arguments.isEmpty()){
             InvalidNumberArgumentsException e = new InvalidNumberArgumentsException();
             errorMessage.setValue(e.getMessage());
@@ -76,18 +70,10 @@ public class Model implements ModelAPI{
 
     }
 
-    public Map<Double, State> generateStateMap(Map<Double, Turtle> turtleMap) {
-        Map<Double, State> stateMap = new HashMap<>();
-        for (double id : turtleMap.keySet()) {
-            stateMap.put(id, new State(turtleMap.get(id)));
-        }
-        return stateMap;
-    }
-
     public void undo() {
         try {
             Map<Double, State> prevTurtleStates = history.undo();
-            updateTurtlesWithStates(prevTurtleStates);
+            turtleMaster.updateTurtlesWithStates(prevTurtleStates);
         } catch (IndexOutOfBoundsException e) {
             System.out.println(e.getMessage());
         }
@@ -96,39 +82,18 @@ public class Model implements ModelAPI{
     public void redo() {
         try {
             Map<Double, State> nextTurtleStates = history.redo();
-            updateTurtlesWithStates(nextTurtleStates);
+            turtleMaster.updateTurtlesWithStates(nextTurtleStates);
         } catch (IndexOutOfBoundsException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    private void updateTurtlesWithStates(Map<Double, State> turtleStates) {
-        //update turtles that existed before undo/redo
-        System.out.println(turtleMap);
-        System.out.println(turtleStates);
-        for (double id : turtleMap.keySet()) {
-            if (!turtleStates.containsKey(id)) {
-                // for undo, when a tell command was executed
-                turtleMap.get(id).setVisible(false);
-            } else {
-                updateSingleTurtle(turtleMap.get(id), turtleStates.get(id));
-            }
-        }
-    }
-
-    private void updateSingleTurtle(Turtle turtle, State state) {
-        turtle.setLocation(state.getxPos(), state.getyPos());
-        turtle.setAngle(state.getAngle());
-        turtle.setPenUp(state.getIsPenUp());
-        turtle.setVisible(true);
-    }
-
-    public Turtle getTurtle(){ return turtleMap.get(1); }
-
     public ObservableList<Token> getVariableList(){ return createFromString.getVariableList(); }
 
-
+    public ObservableList<Token> getHistoryList(){ return history.getHistoryList(); }
     public ObservableList<Token> getNewCommandsList(){ return createFromString.getNewCommandList(); }
+    public BooleanProperty getUndoDisabled() { return history.getUndoDisabled(); }
+    public BooleanProperty getRedoDisabled() { return history.getRedoDisabled(); }
 
     public StringProperty getErrorMessage(){ return errorMessage; }
 
@@ -147,7 +112,10 @@ public class Model implements ModelAPI{
         createFromString.addAction(key, action);
     }
 
-    public void setAddTurtleFunction(AddNewTurtleFunction function){ turtleMaster.setAddTurtleFunction(function); }
+    public void setAddTurtleFunction(AddNewTurtleFunction function){
+        turtleMaster.setAddTurtleFunction(function);
+        history.addNewProgram(new Program(turtleMaster.generateStateMap()));
+    }
 
     public void setErrorMessage(String error) { errorMessage.setValue(error); }
 
@@ -157,20 +125,10 @@ public class Model implements ModelAPI{
             for (String piece: inputPieces) {
                 if (piece.trim().length() > 0) {
                     addToAppropriateStack(piece);
-                    currFullCommand += piece + " ";
-                }
-                if(executed){
-//                    activeTurtles.get(0).setCurrCommand(currFullCommand);
-////                    activeTurtles.get(0).setCurrCommand("");
-                    history.getProgram(history.getProgramHistory().size() - 1).addNewCommand(currFullCommand);
-                    currFullCommand = "";
-                    executed = false;
                 }
             }
         }
-        catch (Exception e) {
-            errorMessage.set(e.getMessage());
-        }
+        catch (Exception e) { errorMessage.set(e.getMessage()); }
     }
 
     private void addToAppropriateStack(String piece) throws InvalidCommandException, InvalidNumberArgumentsException {
@@ -178,8 +136,7 @@ public class Model implements ModelAPI{
             Token currItem = createFromString.getSymbolAsObj(piece);
             if (currItem instanceof NewCommandName && (commands.isEmpty() || !(commands.peek() instanceof To))) {
                 throw new InvalidCommandException();
-            } else
-            if (currItem instanceof Instruction) {
+            } else if (currItem instanceof Instruction) {
                 Instruction currInstr = (Instruction) currItem;
                 ((Instruction) currItem).setAccessor(accessor);
                 addInstructionToStack(currInstr);
@@ -187,9 +144,7 @@ public class Model implements ModelAPI{
                 addArgumentToStack(currItem);
             }
         }
-        catch (Exception e) {
-            errorMessage.set(e.getMessage());
-        }
+        catch (Exception e) { errorMessage.set(e.getMessage()); }
     }
 
     private void addArgumentToStack(Token currItem) {
@@ -204,7 +159,7 @@ public class Model implements ModelAPI{
         if (currInstr.numRequiredArgs() == 0) {
             if (commands.isEmpty()) {
                 currInstr.execute();
-                executed = true;
+                history.addCommand(currInstr);
             } else {
                 arguments.peek().push(currInstr);
                 attemptToCreateFullInstruction();
@@ -226,7 +181,7 @@ public class Model implements ModelAPI{
                 Instruction currInstr = createCompleteInstruction(arguments.pop());
                 if (commands.isEmpty()) {
                     currInstr.execute();
-                    executed = true;
+                    history.addCommand(currInstr);
                 } else {
                     arguments.peek().push(currInstr);
                     attemptToCreateFullInstruction();

@@ -5,6 +5,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import slogo.view.Turtle;
 
+import java.security.cert.TrustAnchor;
 import java.util.*;
 
 /**
@@ -14,30 +15,41 @@ import java.util.*;
  * @author Braeden
  */
 public class TurtleFaceSelector extends ColorSelector {
-  public static final List<String> IMAGES = new ArrayList<>(Arrays.asList("Turtle", "Plane", "Car", "Dog"));
+  public static final List<String> IMAGES = new ArrayList<>(Arrays.asList("1", "2", "3", "4"));
   public static final String RESOURCES = "resources";
   public static final String IMAGE_RESOURCE_PACKAGE = RESOURCES + ".commands.TurtleImages";
 
-  private Turtle turtle;
+  private List<Turtle> turtles;
 
-  public TurtleFaceSelector(double x, double y) {
+  public TurtleFaceSelector(List<Turtle> turtleList, double x, double y) {
     super(x, y, IMAGES, IMAGE_RESOURCE_PACKAGE);
     setColorButtons();
+    turtles = turtleList;
   }
 
   @Override
-  protected void setButtonFromResourceResult(Button newImageButton, String imageFileName) {
+
+  //protected void setButtonFromResourceResult(int id, Button newImageButton, String imageFileName) {
+    //colorMap.put(id, imageFileName);
+
+  protected void setButtonFromResourceResult(Button newImageButton, int index, String imageFileName) {
+    //TODO get filename from index
     Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(imageFileName)));
     ImageView iv = new ImageView(image);
     iv.setPreserveRatio(true);
     iv.setFitHeight(COLOR_SELECTOR_HEIGHT);
     newImageButton.setGraphic(iv);
-    newImageButton.setOnAction(e -> changeAppearance(imageFileName));
+    newImageButton.setOnAction(e -> changeAppearance(index));
   }
 
   @Override
-  protected void changeAppearance(String imageFileName) {
-    Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(imageFileName)));
-    //turtle.changeImage(image);
+  public void changeAppearance(int index) {
+    //TODO: get filename - index mappings
+    setImage("car.png");
+  }
+
+  private void setImage(String filename){
+    Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(filename)));
+    for (Turtle t:turtles) t.changeImage(image);
   }
 }

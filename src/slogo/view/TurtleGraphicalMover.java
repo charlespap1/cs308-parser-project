@@ -62,6 +62,11 @@ public class TurtleGraphicalMover implements StaticViewElement{
     return myHolder;
   }
 
+  public void setSlider(double val)
+  {
+    increaseThickness.setValue(val);
+  }
+
   @Override
   public void setTitleProperty(StringProperty sp) {
     myThicknessText.textProperty().bind(sp);

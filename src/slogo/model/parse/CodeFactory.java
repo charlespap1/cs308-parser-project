@@ -2,14 +2,14 @@ package slogo.model.parse;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import slogo.model.code.NewCommandName;
-import slogo.model.code.Token;
-import slogo.model.code.Variable;
-import slogo.model.code.exceptions.LanguageFileNotFoundException;
-import slogo.model.code.exceptions.SyntaxException;
-import slogo.model.code.instructions.*;
-import slogo.model.code.instructions.display.DisplayCommand;
-import slogo.model.code.instructions.misc.*;
+import slogo.model.tokens.NewCommandName;
+import slogo.model.tokens.Token;
+import slogo.model.tokens.Variable;
+import slogo.model.exceptions.LanguageFileNotFoundException;
+import slogo.model.exceptions.SyntaxException;
+import slogo.model.tokens.instructions.*;
+import slogo.model.tokens.instructions.display.DisplayCommand;
+import slogo.model.tokens.instructions.misc.*;
 import slogo.view.DisplayAction;
 
 import java.lang.reflect.Constructor;

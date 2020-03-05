@@ -3,21 +3,19 @@ package slogo.view;
 import java.util.List;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
-import slogo.view.scrollers.HistoryCanvas;
+
 
 public class PreferenceBackendSetter {
 
   private List<Turtle> myTurtles;
   private DrawingCanvas myDrawingCanvas;
   private Group myRoot;
-  private HistoryCanvas myHistory;
 
-  public PreferenceBackendSetter(List<Turtle> allTurtles, DrawingCanvas dc, Group root, HistoryCanvas hist)
+  public PreferenceBackendSetter(List<Turtle> allTurtles, DrawingCanvas dc, Group root)
   {
     myTurtles = allTurtles;
     myDrawingCanvas = dc;
     myRoot = root;
-    myHistory = hist;
   }
 
   public int setPenColor(List<Double> params) {
@@ -55,12 +53,13 @@ public class PreferenceBackendSetter {
   public int getShape(List<Double> params) { return 0; }
 
   public int clearScreen(List<Double> params) {
-    myHistory.clearHistory();
     for(Turtle t: myTurtles)
     {
       t.returnTurtleToDefault();
     }
-    myRoot.getChildren().removeAll(myDrawingCanvas.getLines());
+
+    // use line manager to clear lines instead.
+    // myRoot.getChildren().removeAll(myDrawingCanvas.getLines());
     return 0;
   }
 
