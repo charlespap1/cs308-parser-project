@@ -29,11 +29,7 @@ import java.util.Objects;
 
 import slogo.view.scrollers.ScrollingWindow;
 import slogo.view.scrollers.VariableViewer;
-import slogo.view.selectors.BackgroundSelector;
-import slogo.view.selectors.LanguageSelector;
-import slogo.view.selectors.PenSelector;
-import slogo.view.selectors.RGBHelper;
-import slogo.view.selectors.TurtleFaceSelector;
+import slogo.view.selectors.*;
 
 /**
  * This class allows us to make our main class less fat
@@ -133,6 +129,7 @@ public class SetupScreen {
     Scene scene = new Scene(root, WIDTH, HEIGHT, BACKGROUND);
     scene.getStylesheets().add(Objects.requireNonNull(getClass().getClassLoader().getResource(MAIN_STYLESHEET)).toExternalForm());
 
+    DisplayCustomizer dc  = new DisplayCustomizer(0, 0);
     return scene;
   }
 
@@ -164,74 +161,6 @@ public class SetupScreen {
   public Group getRoot() { return root; }
 
   public StringProperty getLanguageChoice() { return myLanguageSelector.getLanguageChoiceProperty(); }
-
-  public int setPenColor(List<Double> params) {
-    int index = params.get(0).intValue();
-    //TODO: implement with palette
-    String rgb = myPenSelector.map().get(index);
-    //for (Turtle turtle : myTurtles) turtle.changePenColor(rgbHelper.getColor(rgb));
-    return index;
-  }
-
-  public int setBackground(List<Double> params){
-    int index = params.get(0).intValue();
-    //TODO: implement with palette
-    String rgb = myBackgroundSelector.map().get(index);
-    myDrawingCanvas.changeBackground(rgbHelper.getColor(rgb));
-    return index;
-  }
-
-  public int setPenThickness(List<Double> params){
-    int thickness = params.get(0).intValue();
-    if(thickness > 5)
-    {
-      thickness = 5;
-    }
-    else if (thickness < 1)
-    {
-      thickness = 1;
-    }
-    //TODO: implement with palette ? unsure
-    for (Turtle turtle : myTurtles) turtle.setThickness(thickness);
-    myGraphicalMover.setSlider(thickness);
-    return thickness;
-  }
-
-  public int setTurtleImage(List<Double> params){
-    int index = params.get(0).intValue();
-    //TODO: implement with palette
-    String filename = myCharacterSelector.map().get(index);
-    Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(filename)));
-    for (Turtle turtle : myTurtles) turtle.changeImage(image);
-    return index;
-  }
-
-  public int setPalette(List<Double> params){
-    int index = params.get(0).intValue();
-    String r = String.valueOf(params.get(1).intValue());
-    String g = String.valueOf(params.get(2).intValue());
-    String b = String.valueOf(params.get(3).intValue());
-
-    myBackgroundSelector.map().put(String.valueOf(index), String.format(RGB_COFFIN, r,b,g));
-    myPenSelector.map().put(String.valueOf(index), String.format(RGB_COFFIN, r,b,g));
-    return 0;
-  }
-
-  public int getPenColor(List<Double> params) { return 0;}
-
-  public int getShape(List<Double> params) {
-    myTurtles.get(0);
-    return 0;
-  }
-
-  public int clearScreen(List<Double> params) {
-    //myHistory.clearHistory();
-    for (Turtle t : myTurtles) {
-      t.returnTurtleToDefault();
-    }
-    //root.getChildren().removeAll(myDrawingCanvas.getLines());
-    return 0;
-  }
 
   public void setInputText(String command) { myUserInput.setUserInput(command); }
   public void setVariableList(ObservableList<Token> variableList) { myVariableView.bindList(variableList); }
