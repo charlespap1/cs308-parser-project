@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -72,6 +73,7 @@ public class SetupScreen {
   public static final String PEN_UP_BUTTON_KEY = "PenUpButton";
   public static final String PEN_DOWN_BUTTON_KEY = "PenDownButton";
   private static final String NEW_CONFIG_BUTTON_KEY = "NewConfigButton";
+  private static final String RGB_COFFIN = "%s,%s,%s";
 
 
   private UserCommandField myUserInput = new UserCommandField(WIDTH, HEIGHT);
@@ -205,28 +207,53 @@ public class SetupScreen {
   public int setBackground(List<Double> params){
     int index = params.get(0).intValue();
     //TODO: implement with palette
-    myDrawingCanvas.changeBackground(Color.RED);
+    String rgb = myBackgroundSelector.map().get(index);
+    myDrawingCanvas.changeBackground(rgbHelper.getColor(rgb));
     return index;
   }
 
   public int setPenThickness(List<Double> params){
-    int index = params.get(0).intValue();
+    int thickness = params.get(0).intValue();
+    if(thickness > 5)
+    {
+      thickness = 5;
+    }
+    else if (thickness < 1)
+    {
+      thickness = 1;
+    }
     //TODO: implement with palette ? unsure
-    for (Turtle turtle : myTurtles) turtle.setThickness(index);
-    return index;
+    for (Turtle turtle : myTurtles) turtle.setThickness(thickness);
+    myGraphicalMover.setSlider(thickness);
+    return thickness;
   }
 
   public int setTurtleImage(List<Double> params){
     int index = params.get(0).intValue();
     //TODO: implement with palette
-    for (Turtle turtle : myTurtles) turtle.changeImage(null);
+    String filename = myCharacterSelector.map().get(index);
+    Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(filename)));
+    for (Turtle turtle : myTurtles) turtle.changeImage(image);
     return index;
   }
 
-  public int setPalette(List<Double> params){return 0;}
+  public int setPalette(List<Double> params){
+    int index = params.get(0).intValue();
+    String r = String.valueOf(params.get(1).intValue());
+    String g = String.valueOf(params.get(2).intValue());
+    String b = String.valueOf(params.get(3).intValue());
+
+    myBackgroundSelector.map().put(String.valueOf(index), String.format(RGB_COFFIN, r,b,g));
+    myPenSelector.map().put(String.valueOf(index), String.format(RGB_COFFIN, r,b,g));
+    return 0;
+  }
 
   public int getPenColor(List<Double> params) { return 0;}
-  public int getShape(List<Double> params) { return 0; }
+
+  public int getShape(List<Double> params) {
+    myTurtles.get(0);
+    return 0;
+  }
 
   public int clearScreen(List<Double> params) {
     myHistory.clearHistory();

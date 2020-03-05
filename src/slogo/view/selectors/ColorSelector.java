@@ -70,7 +70,6 @@ public abstract class ColorSelector implements StaticViewElement {
       String rgb = myResources.getString(identifier);
       int idIntVal = Integer.parseInt(identifier);
       setButtonFromResourceResult(idIntVal, newColor, rgb);
-
       Text index = new Text(identifier);
       buttonHold.getChildren().addAll(newColor, index);
       buttonHold.setAlignment(Pos.CENTER);
