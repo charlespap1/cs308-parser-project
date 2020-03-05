@@ -4,11 +4,11 @@ import slogo.model.tokens.instructions.Instruction;
 
 import java.util.List;
 
-public class Log extends Instruction {
+public class Power extends Instruction {
 
-    private static final int numArgs = 1;
+    private static final int numArgs = 2;
 
-    public Log(String name) {
+    public Power(String name) {
         super(numArgs);
         instrName = name;
     }
@@ -16,7 +16,8 @@ public class Log extends Instruction {
     @Override
     public double execute() {
         List<Double> paramsAsVals = this.getParamsAsVals();
-        double val = paramsAsVals.get(0);
-        return Math.log(val);
+        double base = paramsAsVals.get(0);
+        double exponent = paramsAsVals.get(1);
+        return Math.pow(base, exponent);
     }
 }

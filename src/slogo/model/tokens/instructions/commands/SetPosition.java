@@ -6,7 +6,7 @@ import slogo.model.tokens.instructions.Instruction;
 import java.awt.geom.Point2D;
 import java.util.List;
 
-public class SetXY extends Instruction {
+public class SetPosition extends Instruction {
 
     private static final int numArgs = 2;private TurtleAction myAction = t -> {
         List<Double> paramsAsInts = getParamsAsVals();
@@ -18,7 +18,7 @@ public class SetXY extends Instruction {
     };
 
 
-    public SetXY(String name){
+    public SetPosition(String name){
         super(numArgs);
         instrName = name;
     }

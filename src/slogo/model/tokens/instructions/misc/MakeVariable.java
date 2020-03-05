@@ -5,11 +5,11 @@ import slogo.model.tokens.Variable;
 import slogo.model.exceptions.InvalidArgumentException;
 import slogo.model.tokens.instructions.Instruction;
 
-public class Make extends Instruction {
+public class MakeVariable extends Instruction {
 
     private static final int numArgs = 2;
 
-    public Make(String name){
+    public MakeVariable(String name){
         super(numArgs);
         this.instrName = name;
     }

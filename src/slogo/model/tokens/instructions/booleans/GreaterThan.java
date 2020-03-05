@@ -4,11 +4,11 @@ import slogo.model.tokens.instructions.Instruction;
 
 import java.util.List;
 
-public class Greater extends Instruction {
+public class GreaterThan extends Instruction {
 
     private static final int numArgs = 2;
 
-    public Greater(String name) {
+    public GreaterThan(String name) {
         super(numArgs);
         instrName = name;
     }

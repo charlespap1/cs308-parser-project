@@ -11,12 +11,12 @@ import slogo.model.parse.AddToListFunction;
 
 import java.util.List;
 
-public class To extends Instruction {
+public class MakeUserInstruction extends Instruction {
     private static final int numArgs = 3;
     private NewCommand myCommand;
     private AddToListFunction myFunction;
 
-    public To(String name, AddToListFunction function){
+    public MakeUserInstruction(String name, AddToListFunction function){
         super(numArgs);
         instrName = name;
         myFunction = function;

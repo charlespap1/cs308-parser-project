@@ -4,11 +4,11 @@ import slogo.model.tokens.instructions.Instruction;
 
 import java.util.List;
 
-public class Arctan extends Instruction {
+public class ArcTangent extends Instruction {
 
     private static final int numArgs = 1;
 
-    public Arctan(String name) {
+    public ArcTangent(String name) {
         super(numArgs);
         instrName = name;
     }

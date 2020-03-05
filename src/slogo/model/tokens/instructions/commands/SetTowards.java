@@ -5,7 +5,7 @@ import slogo.model.tokens.instructions.Instruction;
 
 import java.util.List;
 
-public class Towards extends Instruction {
+public class SetTowards extends Instruction {
     public static final int ANGLE_OFFSET = 90;
     private static final int numArgs = 2;
     private TurtleAction myAction = t -> {
@@ -19,7 +19,7 @@ public class Towards extends Instruction {
         return returnValue;
     };
 
-    public Towards(String name){
+    public SetTowards(String name){
         super(numArgs);
         instrName = name;
     }

@@ -1,9 +1,9 @@
 package slogo.model.tokens.instructions.display;
 
-public class PenColor extends DisplayCommand {
+public class GetPenColor extends DisplayCommand {
     private static final int numArgs = 0;
 
-    public PenColor(String name) {
+    public GetPenColor(String name) {
         super(numArgs);
         instrName = name;
     }

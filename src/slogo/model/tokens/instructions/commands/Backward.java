@@ -5,7 +5,7 @@ import slogo.model.tokens.instructions.Instruction;
 
 import java.util.List;
 
-public class Back extends Instruction {
+public class Backward extends Instruction {
 
     private static final int numArgs = 1;
     private TurtleAction myAction = t -> {
@@ -17,7 +17,7 @@ public class Back extends Instruction {
         return valueForExec;
     };
 
-    public Back(String name){
+    public Backward(String name){
         super(numArgs);
         instrName = name;
     }

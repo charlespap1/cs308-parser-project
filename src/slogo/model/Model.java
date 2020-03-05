@@ -133,7 +133,7 @@ public class Model implements ModelAPI{
     private void addToAppropriateStack(String piece) throws InvalidCommandException, InvalidNumberArgumentsException {
         try {
             Token currItem = createFromString.getSymbolAsObj(piece);
-            if (currItem instanceof NewCommandName && (commands.isEmpty() || !(commands.peek() instanceof To))) {
+            if (currItem instanceof NewCommandName && (commands.isEmpty() || !(commands.peek() instanceof MakeUserInstruction))) {
                 throw new InvalidCommandException();
             } else if (currItem instanceof Instruction) {
                 Instruction currInstr = (Instruction) currItem;
@@ -172,7 +172,7 @@ public class Model implements ModelAPI{
     private void attemptToCreateFullInstruction() {
         Instruction currCommand = (Instruction) commands.peek();
         if (enoughArgs(currCommand.numRequiredArgs())) {
-            if (currCommand instanceof BracketOpen) {
+            if (currCommand instanceof ListStart) {
                 ListSyntax completeList = grabList(arguments.pop());
                 arguments.peek().push(completeList);
                 attemptToCreateFullInstruction();
@@ -210,7 +210,7 @@ public class Model implements ModelAPI{
     }
 
     private boolean enoughArgs(int numNeeded) {
-        boolean isCompleteList = commands.peek() instanceof BracketOpen && arguments.peek().peek() instanceof BracketClose;
+        boolean isCompleteList = commands.peek() instanceof ListStart && arguments.peek().peek() instanceof ListEnd;
         boolean enoughCommandParameters = arguments.peek().size() >= numNeeded && numNeeded != -1;
         return isCompleteList || enoughCommandParameters;
     }

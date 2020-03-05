@@ -5,7 +5,7 @@ import slogo.model.tokens.instructions.Instruction;
 
 import java.awt.geom.Point2D;
 
-public class SetHome extends Instruction {
+public class Home extends Instruction {
     public static final int HOME_X = 0;
     public static final int HOME_Y = 0;
     private static final int numArgs = 0;
@@ -15,7 +15,7 @@ public class SetHome extends Instruction {
         return returnValue;
     };
 
-    public SetHome(String name){
+    public Home(String name){
         super(numArgs);
         instrName = name;
     }

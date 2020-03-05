@@ -1,14 +1,14 @@
-package slogo.model.tokens.instructions.math;
+package slogo.model.tokens.instructions.booleans;
 
 import slogo.model.tokens.instructions.Instruction;
 
 import java.util.List;
 
-public class Pow extends Instruction {
+public class LessThan extends Instruction {
 
     private static final int numArgs = 2;
 
-    public Pow(String name) {
+    public LessThan(String name) {
         super(numArgs);
         instrName = name;
     }
@@ -16,8 +16,8 @@ public class Pow extends Instruction {
     @Override
     public double execute() {
         List<Double> paramsAsVals = this.getParamsAsVals();
-        double base = paramsAsVals.get(0);
-        double exponent = paramsAsVals.get(1);
-        return Math.pow(base, exponent);
+        double val1 = paramsAsVals.get(0);
+        double val2 = paramsAsVals.get(1);
+        return val1 < val2 ? 1 : 0;
     }
 }

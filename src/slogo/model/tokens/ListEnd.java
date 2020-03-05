@@ -1,7 +1,7 @@
 package slogo.model.tokens;
 
-public class BracketClose implements Token {
-    public BracketClose(String name){
+public class ListEnd implements Token {
+    public ListEnd(String name){
         super();
     }
 

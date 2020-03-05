@@ -1,9 +1,9 @@
 package slogo.model.tokens.instructions.display;
 
-public class Shape extends DisplayCommand {
+public class GetShape extends DisplayCommand {
     private static final int numArgs = 0;
 
-    public Shape(String name) {
+    public GetShape(String name) {
         super(numArgs);
         instrName = name;
     }
