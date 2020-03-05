@@ -33,8 +33,6 @@ public class Model implements ModelAPI{
     private Stack<Stack<Token>> arguments = new Stack<>();
     private RegexHandler typeCheck = new RegexHandler();
     private StringProperty errorMessage = new SimpleStringProperty();
-    private String currFullCommand = "";
-    private boolean executed = false;
     private TurtleMaster turtleMaster = new TurtleMaster();
     private History history = new History();
     private TurtleMasterAccessor accessor = new TurtleMasterAccessor() {
@@ -49,8 +47,6 @@ public class Model implements ModelAPI{
     public Model(StringProperty language) {
         typeCheck.addPatterns(SYNTAX);
         setupLanguage(language);
-
-        history.addNewProgram(new Program(turtleMaster.generateStateMap()));
     }
 
     public void executeCode(String rawString) {
@@ -90,7 +86,7 @@ public class Model implements ModelAPI{
     }
 
     public ObservableList<Token> getVariableList(){ return createFromString.getVariableList(); }
-
+    public ObservableList<Token> getHistoryList(){ return history.getHistoryList(); }
     public ObservableList<Token> getNewCommandsList(){ return createFromString.getNewCommandList(); }
 
     public StringProperty getErrorMessage(){ return errorMessage; }
@@ -110,7 +106,10 @@ public class Model implements ModelAPI{
         createFromString.addAction(key, action);
     }
 
-    public void setAddTurtleFunction(AddNewTurtleFunction function){ turtleMaster.setAddTurtleFunction(function); }
+    public void setAddTurtleFunction(AddNewTurtleFunction function){
+        turtleMaster.setAddTurtleFunction(function);
+        history.addNewProgram(new Program(turtleMaster.generateStateMap()));
+    }
 
     public void setErrorMessage(String error) { errorMessage.setValue(error); }
 
@@ -120,18 +119,10 @@ public class Model implements ModelAPI{
             for (String piece: inputPieces) {
                 if (piece.trim().length() > 0) {
                     addToAppropriateStack(piece);
-                    currFullCommand += piece + " ";
-                }
-                if(executed){
-                    history.getProgram(history.getProgramHistory().size() - 1).addNewCommand(currFullCommand);
-                    currFullCommand = "";
-                    executed = false;
                 }
             }
         }
-        catch (Exception e) {
-            errorMessage.set(e.getMessage());
-        }
+        catch (Exception e) { errorMessage.set(e.getMessage()); }
     }
 
     private void addToAppropriateStack(String piece) throws InvalidCommandException, InvalidNumberArgumentsException {
@@ -139,8 +130,7 @@ public class Model implements ModelAPI{
             Token currItem = createFromString.getSymbolAsObj(piece);
             if (currItem instanceof NewCommandName && (commands.isEmpty() || !(commands.peek() instanceof To))) {
                 throw new InvalidCommandException();
-            } else
-            if (currItem instanceof Instruction) {
+            } else if (currItem instanceof Instruction) {
                 Instruction currInstr = (Instruction) currItem;
                 ((Instruction) currItem).setAccessor(accessor);
                 addInstructionToStack(currInstr);
@@ -148,9 +138,7 @@ public class Model implements ModelAPI{
                 addArgumentToStack(currItem);
             }
         }
-        catch (Exception e) {
-            errorMessage.set(e.getMessage());
-        }
+        catch (Exception e) { errorMessage.set(e.getMessage()); }
     }
 
     private void addArgumentToStack(Token currItem) {
@@ -165,7 +153,7 @@ public class Model implements ModelAPI{
         if (currInstr.numRequiredArgs() == 0) {
             if (commands.isEmpty()) {
                 currInstr.execute();
-                executed = true;
+                history.addCommand(currInstr);
             } else {
                 arguments.peek().push(currInstr);
                 attemptToCreateFullInstruction();
@@ -187,7 +175,7 @@ public class Model implements ModelAPI{
                 Instruction currInstr = createCompleteInstruction(arguments.pop());
                 if (commands.isEmpty()) {
                     currInstr.execute();
-                    executed = true;
+                    history.addCommand(currInstr);
                 } else {
                     arguments.peek().push(currInstr);
                     attemptToCreateFullInstruction();

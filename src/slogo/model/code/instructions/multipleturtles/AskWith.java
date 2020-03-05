@@ -43,7 +43,6 @@ public class AskWith extends Instruction {
 
         List<Token> condition = ((ListSyntax) list1).getContents();
         Token conditionToken = condition.get(0);
-        System.out.println(conditionToken);
         if (!(conditionToken instanceof Instruction)) { throw new InvalidLoopConditionException(); }
         myCondition = (Instruction) conditionToken;
         commands = ((ListSyntax) list2).getContents();
