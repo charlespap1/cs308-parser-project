@@ -42,23 +42,6 @@ public class Controller extends Application {
         makeWindow(new Stage(), preference);
     }
 
-    private void showPopUp(Stage currentStage, Model myModel){
-        //TODO: put front end back in front end
-        LoadConfigPopup popup = new LoadConfigPopup();
-        popup.getMyPopup().show(currentStage);
-        EventHandler<ActionEvent> e = event -> {
-            try{
-                File commandFile = popup.getFile();
-                executeTextFile(commandFile, myModel);
-            }catch(FileDoesNotExistException err)
-            {
-                myModel.setErrorMessage(err.getMessage());
-            }
-            popup.getMyPopup().hide();
-        };
-        popup.setPopupButton(e);
-    }
-
     private void makeWindow(Stage stage, String preferences){
         Interactions myView = new Interactions(stage, preferences);
         Model myModel = new Model(myView.getLanguageChoice());
@@ -69,16 +52,11 @@ public class Controller extends Application {
         myView.setNewWindowButton(e -> getNewPreferences(stage));
         setupCommands(myView, myModel);
         myModel.setAddTurtleFunction(myView::addTurtle);
-        myView.setPopupButton(e -> showPopUp(stage, myModel));
         myView.setUndoAction(e -> myModel.undo());
         myView.setRedoAction(e -> myModel.redo());
-        //myView.setPopUpAction(e -> getFile(myView, myModel));
+        myView.setNewConfigButton(e -> executeTextFile(myView.getFile(), myModel), stage);
     }
 
-    private void getFile(Interactions myView, Model myModel){
-        //File f = myView.getFile();
-        //myModel.executeCode(f);
-    }
 
     private void getNewPreferences(Stage currentStage) {
         SetPreferencesPopup prefPopup = new SetPreferencesPopup();
