@@ -319,6 +319,7 @@ public class SetupScreen {
     myVariableView.setTitleProperty(languageHelper.getStringProperty(VARIABLE_TITLE_KEY));
     myNewCommandViewer.setTitleProperty(languageHelper.getStringProperty(NEW_COMMAND_TITLE_KEY));
     myHistory.setTitleProperty(languageHelper.getStringProperty(HISTORY_TITLE_KEY));
+    
 
     myBackgroundSelector.setTitleProperty(languageHelper.getStringProperty(BACKGROUND_SELECTOR_TEXT_KEY));
     myPenSelector.setTitleProperty(languageHelper.getStringProperty(PEN_SELECTOR_TEXT_KEY));

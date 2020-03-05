@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -111,6 +112,20 @@ public class DisplayCustomizer {
       imageButtons.get(index).setGraphic(iv);
     }
 
+  }
+
+  public void setTitleProperty(StringProperty background, StringProperty pen, StringProperty character){
+    Text backgroundLabel = new Text();
+    backgroundLabel.textProperty().bind(background);
+    myBackgroundHolder.getChildren().add(0, backgroundLabel);
+
+    Text penLabel = new Text();
+    penLabel.textProperty().bind(pen);
+    myBackgroundHolder.getChildren().add(0, penLabel);
+
+    Text imageLabel = new Text();
+    imageLabel.textProperty().bind(character);
+    myBackgroundHolder.getChildren().add(0, imageLabel);
   }
 
 
