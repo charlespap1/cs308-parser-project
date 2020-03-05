@@ -52,6 +52,11 @@ public class History {
         myHistory.add(instruction);
     }
 
+    public void clearCurrentProgram(){
+        Program currProgram = programHistory.get(programPointer);
+        currProgram.clear();
+    }
+
     public ObservableList<Token> getHistoryList() { return myHistory; }
     public BooleanProperty getUndoDisabled() { return undoDisabled; }
     public BooleanProperty getRedoDisabled() { return redoDisabled; }

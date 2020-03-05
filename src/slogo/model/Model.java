@@ -55,6 +55,7 @@ public class Model implements ModelAPI{
     public void executeCode(String rawString) {
         errorMessage.set("");
         clearStacks();
+        history.clearCurrentProgram();
         parseInstructions(rawString);
         history.addNewProgram(new Program(turtleMaster.generateStateMap()));
         if(!commands.isEmpty() || !arguments.isEmpty()){

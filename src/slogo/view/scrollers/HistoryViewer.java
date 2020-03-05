@@ -16,6 +16,6 @@ public class HistoryViewer extends ScrollingWindow {
 
   @Override
   protected void onSelectedItem(Token t) {
-    t.execute();
+    if (t!=null) t.execute();
   }
 }
