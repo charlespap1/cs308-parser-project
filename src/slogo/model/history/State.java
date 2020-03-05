@@ -8,14 +8,7 @@ public class State {
     private double yPos;
     private boolean isPenUp;
     private double angle;
-
-    public State(double id, double xPos, double yPos, boolean isPenUp, double angle) {
-        this.id = id;
-        this.xPos = xPos;
-        this.yPos = yPos;
-        this.isPenUp = isPenUp;
-        this.angle = angle;
-    }
+    private boolean active;
 
     public State(Turtle t) {
         id = t.getId();
@@ -23,6 +16,7 @@ public class State {
         yPos = t.getYPos();
         isPenUp = t.getIsPenUp();
         angle = t.getAngle();
+        active = t.isActive();
     }
 
     public double getId() {
@@ -44,4 +38,6 @@ public class State {
     public double getAngle() {
         return angle;
     }
+
+    public boolean getIsActive() { return active; }
 }
