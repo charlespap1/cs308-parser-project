@@ -4,7 +4,11 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import slogo.controller.AddNewTurtleFunction;
-import slogo.model.code.*;
+import slogo.model.code.BracketClose;
+import slogo.model.code.BracketOpen;
+import slogo.model.code.ListSyntax;
+import slogo.model.code.NewCommandName;
+import slogo.model.code.Token;
 import slogo.model.code.exceptions.InvalidCommandException;
 import slogo.model.code.exceptions.InvalidNumberArgumentsException;
 import slogo.model.code.exceptions.LanguageFileNotFoundException;
@@ -45,21 +49,15 @@ public class Model implements ModelAPI{
         public double multiTurtleCommandToMaster(TurtleAction action, List<Double> turtles) { return turtleMaster.executeMultiTurtleCommand(action, turtles); }
     };
 
-    private History history = new History();
-
     public Model(StringProperty language) {
         typeCheck.addPatterns(SYNTAX);
         setupLanguage(language);
-        history.addNewProgram(new Program(turtleMaster.generateStateMap()));
     }
 
     public void executeCode(String rawString) {
         errorMessage.set("");
         clearStacks();
         parseInstructions(rawString);
-        // add next state?
-        history.addNewProgram(new Program(turtleMaster.generateStateMap()));
-        history.setPointerToEnd();
         if(!commands.isEmpty() || !arguments.isEmpty()){
             InvalidNumberArgumentsException e = new InvalidNumberArgumentsException();
             errorMessage.setValue(e.getMessage());
@@ -70,24 +68,6 @@ public class Model implements ModelAPI{
     public void executeCode(File f){
         //TODO: convert file f into rawString, then call executeCode with rawString
 
-    }
-
-    public void undo() {
-        try {
-            Map<Double, State> prevTurtleStates = history.undo();
-            turtleMaster.updateTurtlesWithStates(prevTurtleStates);
-        } catch (IndexOutOfBoundsException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    public void redo() {
-        try {
-            Map<Double, State> nextTurtleStates = history.redo();
-            turtleMaster.updateTurtlesWithStates(nextTurtleStates);
-        } catch (IndexOutOfBoundsException e) {
-            System.out.println(e.getMessage());
-        }
     }
 
     public ObservableList<Token> getVariableList(){ return createFromString.getVariableList(); }
@@ -124,7 +104,6 @@ public class Model implements ModelAPI{
                     currFullCommand += piece + " ";
                 }
                 if(executed){
-                    history.getProgram(-1).addNewCommand(currFullCommand);
                     currFullCommand = "";
                     executed = false;
                 }
