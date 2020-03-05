@@ -76,7 +76,7 @@ public class TurtleStatePopup {
 
     /**
      * Called whenever the frontend calls AddNewTurtle; updates the internal list of turtles and the visuals
-     * @param newTurtle: new turtle to be added to the list
+     * @param newTurtle: new backend turtle to be added to the list
      */
     public void addTurtle(slogo.model.Turtle newTurtle) {
         myTurtles.add(newTurtle);
