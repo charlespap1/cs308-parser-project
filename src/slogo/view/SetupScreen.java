@@ -170,6 +170,7 @@ public class SetupScreen {
   public File getFile()
   {
     try{
+      myLineManager.newProgram();
       return myCurrentPopup.getFile();
     }
     catch(FileDoesNotExistException err)
