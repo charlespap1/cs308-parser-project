@@ -1,6 +1,6 @@
-#API Changes
+# API Changes
 
-## Names + netids
+## Charles Papandreou (cnp20), Braeden Ward (bmw54), Juliet Yznaga (jay18), Michael Xue (myx2), Natalie Novitsky (nen4) 
 
 ### Backend
 
