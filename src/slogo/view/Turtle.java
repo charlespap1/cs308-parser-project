@@ -129,10 +129,7 @@ public class Turtle {
    */
   public void changeImage(Image image) { myTurtleView.setImage(image); }
 
-  public void setPenUp(boolean isPenUp)
-  {
-    this.penUp.set(isPenUp);
-  }
+  public void setPenUp(boolean isPenUp) { this.penUp.set(isPenUp); }
 
   public void setThickness(int newThickness)
   {

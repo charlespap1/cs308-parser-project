@@ -1,5 +1,6 @@
 package slogo.view;
 
+import java.io.File;
 import java.util.List;
 
 import javafx.beans.property.BooleanProperty;
@@ -49,6 +50,15 @@ public class Interactions implements View {
     return myScreen.getUserInput();
   }
 
+  public void setPopupAction(EventHandler<ActionEvent> e){
+    //mySetup.setPopupAction(e);
+  }
+
+  public File getFile(){
+    return null;
+    //return mySetup.getFile();
+  }
+
   /**
    * Sets the frontend turtle whenever the location is changed
    * in the backend
@@ -89,7 +99,7 @@ public class Interactions implements View {
 
   public DisplayAction getAction(String methodName) {
     return params -> {
-      Method m = SetupScreen.class.getDeclaredMethod(methodName, List.class);
+      Method m = ScreenManager.class.getDeclaredMethod(methodName, List.class);
       Object value = m.invoke(myScreen, params);
       return (Integer) value;
     };

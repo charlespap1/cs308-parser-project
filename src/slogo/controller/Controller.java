@@ -72,6 +72,12 @@ public class Controller extends Application {
         myView.setPopupButton(e -> showPopUp(stage, myModel));
         myView.setUndoAction(e -> myModel.undo());
         myView.setRedoAction(e -> myModel.redo());
+        //myView.setPopUpAction(e -> getFile(myView, myModel));
+    }
+
+    private void getFile(Interactions myView, Model myModel){
+        //File f = myView.getFile();
+        //myModel.executeCode(f);
     }
 
     private void getNewPreferences(Stage currentStage) {

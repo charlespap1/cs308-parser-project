@@ -160,6 +160,10 @@ public class SetupScreen {
   }
 
   public void setGoButton(EventHandler<ActionEvent> goAction) { myGo.setOnAction(goAction); }
+  public void setPopupButton(EventHandler<ActionEvent> popupAction) {
+    //myPopup.addEventHandler(ActionEvent.ACTION, popupAction);
+    //myPopup.addEventHandler(ActionEvent.ACTION, e -> myLineManager.newProgram());
+  }
   public void setNewWindowButton(EventHandler<ActionEvent> newWindowAction) { myNewWindow.setOnAction(newWindowAction);}
 
 
@@ -183,8 +187,7 @@ public class SetupScreen {
   }
 
   public ScreenManager getScreenManager(){
-    return new ScreenManager(root, myUserInput, myTurtles, myDrawingCanvas, myLanguageSelector, myLineManager, myCustomizer);
-
+    return new ScreenManager(root, myUserInput, myTurtles, myDrawingCanvas, myLanguageSelector, myLineManager, myCustomizer, myGraphicalMover);
   }
 
   private void setupBox(Pane box, double x, double y, double width){
