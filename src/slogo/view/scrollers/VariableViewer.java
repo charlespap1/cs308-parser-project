@@ -8,7 +8,7 @@ import slogo.model.tokens.Token;
 import slogo.model.tokens.Variable;
 
 public class VariableViewer extends ScrollingWindow {
-    public static String BUTTON_TEXT = "set";
+    private static final String BUTTON_TEXT = "set";
     private HBox box =  new HBox();
     private Button button = new Button(BUTTON_TEXT);
     private Label label = new Label();
