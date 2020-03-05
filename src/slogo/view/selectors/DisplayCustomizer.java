@@ -10,6 +10,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -29,8 +30,8 @@ public class DisplayCustomizer {
   private static final String COLOR_PATH = "resources.colors.BackgroundColors";
   private static final String IMAGE_PATH = "resources.commands.TurtleImages";
 
-  public static final ResourceBundle myImageResource = ResourceBundle.getBundle(COLOR_PATH);
-  public static final ResourceBundle myColorResource = ResourceBundle.getBundle(IMAGE_PATH);
+  public static final ResourceBundle myImageResource = ResourceBundle.getBundle(IMAGE_PATH);
+  public static final ResourceBundle myColorResource = ResourceBundle.getBundle(COLOR_PATH);
 
   private List<Button> backgroundButtons;
   private List<Button> penButtons;
@@ -57,13 +58,13 @@ public class DisplayCustomizer {
 
     myHolder.getChildren().addAll(myBackgroundHolder, myCharacterHolder, myPenHolder);
 
-    backgroundButtons = createButtons(colorKeys);
-    penButtons = createButtons(colorKeys);
-    imageButtons = createButtons(imageKeys);
+    backgroundButtons = createButtons(colorKeys, myBackgroundHolder);
+    penButtons = createButtons(colorKeys, myPenHolder);
+    imageButtons = createButtons(imageKeys, myCharacterHolder);
     buildLists();
   }
 
-  private List<Button> createButtons(List<String> ids)
+  private List<Button> createButtons(List<String> ids, HBox holder)
   {
     List<Button> buttons = new ArrayList<>();
     for(String id : ids)
@@ -77,11 +78,16 @@ public class DisplayCustomizer {
 
       buttonHold.getChildren().addAll(newColor, index);
       buttonHold.setAlignment(Pos.CENTER);
-      myBackgroundHolder.getChildren().add(buttonHold);
-      myPenHolder.getChildren().add(buttonHold);
+      holder.getChildren().add(buttonHold);
     }
     return buttons;
   }
+
+  public Node getView()
+  {
+    return myHolder;
+  }
+
 
   private void buildLists(){
 
@@ -97,17 +103,18 @@ public class DisplayCustomizer {
     {
       String filename = myImageResource.getString(key);
       turtleFaces.add(filename);
-      turtleFaces.add(filename);
       int index = Integer.parseInt(key);
       Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(filename)));
       ImageView iv = new ImageView(image);
+      iv.setPreserveRatio(true);
+      iv.setFitHeight(COLOR_SELECTOR_HEIGHT);
       imageButtons.get(index).setGraphic(iv);
     }
 
   }
 
 
-  public Color getColor(String rgb)
+  private Color getColor(String rgb)
   {
     String [] rgbVals = rgb.split(",");
     int r = Integer.parseInt(rgbVals[0]);
