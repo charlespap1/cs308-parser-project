@@ -30,6 +30,7 @@ public class Controller extends Application {
 
     /**
      * Allows us to set up the initial stage and animation
+     *
      * @param primaryStage
      */
     @Override
