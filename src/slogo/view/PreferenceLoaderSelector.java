@@ -5,36 +5,37 @@ import java.util.ResourceBundle;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
-public class PreferenceSelector {
+public class PreferenceLoaderSelector {
 
   public static final String DEFAULT_PREFERENCE = "resources.preferences.PreferencesOne";
   public static final String BACKGROUND_COLORS_PACKAGE = "resources.colors.BackgroundColors";
-  public static final String PEN_COLORS_PACKAGE = "resources.colors.PenColors";
 
   public static final String DEFAULT_TURTLE_IMAGE = "turtle.png";
   public static final boolean DEFAULT_PEN_UP = false;
-  public static final String DEFAULT_PEN_COLOR = "#000000";
-  public static final String DEFAULT_BACKGROUND_COLOR = "#ffffff";
+  public static final String DEFAULT_PEN_COLOR = "0,0,0";
+  public static final String DEFAULT_BACKGROUND_COLOR = "255,255,255";
 
   public static final String FILE_PATH = "resources.preferences.";
 
   private ResourceBundle myPreferences;
 
-  public PreferenceSelector(String preferenceFile)
+  public PreferenceLoaderSelector(String preferenceFile)
   {
     myPreferences = ResourceBundle.getBundle(FILE_PATH + preferenceFile);
   }
 
-  public PreferenceSelector()
+  public PreferenceLoaderSelector()
   {
     myPreferences = ResourceBundle.getBundle(DEFAULT_PREFERENCE);
   }
 
   public void setTurtle(Turtle t)
   {
-    String penHex = getStringValueFromPackage(myPreferences.getString("PenColor"),PEN_COLORS_PACKAGE, DEFAULT_PEN_COLOR);
+    String penRGB = getStringValueFromPackage(myPreferences.getString("PenColor"), BACKGROUND_COLORS_PACKAGE, DEFAULT_PEN_COLOR);
 
-    Color penColor = Color.web(penHex);
+    RGBHelper rgbHelper = new RGBHelper();
+    Color penColor = rgbHelper.getColor(penRGB);
+
 
     String imageFileName = getImageFilenameFromPackage(myPreferences.getString("TurtleImage"));
     Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(imageFileName)));
@@ -48,8 +49,9 @@ public class PreferenceSelector {
 
   public void changeBackground(DrawingCanvas dc)
   {
-    String backgroundHex = getStringValueFromPackage(myPreferences.getString("Background"),BACKGROUND_COLORS_PACKAGE, DEFAULT_BACKGROUND_COLOR);
-    Color backgroundColor = Color.web(backgroundHex);
+    String backgroundRGB = getStringValueFromPackage(myPreferences.getString("Background"),BACKGROUND_COLORS_PACKAGE, DEFAULT_BACKGROUND_COLOR);
+    RGBHelper rgbHelper = new RGBHelper();
+    Color backgroundColor = rgbHelper.getColor(backgroundRGB);
 
     dc.changeBackground(backgroundColor);
   }

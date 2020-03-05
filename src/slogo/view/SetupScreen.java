@@ -2,7 +2,6 @@ package slogo.view;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,7 +22,6 @@ import slogo.view.scrollers.CommandViewer;
 import slogo.view.scrollers.HistoryCanvas;
 import slogo.view.scrollers.ListViewer;
 
-import java.util.List;
 import java.util.Objects;
 
 import slogo.view.scrollers.VariableViewer;
@@ -48,7 +46,7 @@ public class SetupScreen {
   public static final int HEIGHT = 720;
   public static final Paint BACKGROUND = Color.AZURE;
   public static final double BUTTON_HEIGHT_OFFSET = 40;
-  public static final double GRAPHICAL_VIEWER_HEIGHT_OFFSET = 30;
+  public static final double GRAPHICAL_VIEWER_HEIGHT_OFFSET = 35;
   public static final double CHARACTER_TYPE_OFFSET = 100;
   public static final double COMMON_COMMAND_BUTTON_HEIGHT_OFFSET = 15;
   public static final double COMMON_COMMAND_BUTTON_WIDTH_OFFSET = 225;
@@ -198,6 +196,7 @@ public class SetupScreen {
   public int setPenColor(List<Double> params) {
     int index = params.get(0).intValue();
     //TODO: implement with palette
+
     for (Turtle turtle : myTurtles) turtle.changePenColor(Color.RED);
     return index;
   }
@@ -230,6 +229,10 @@ public class SetupScreen {
 
   public int clearScreen(List<Double> params) {
     myHistory.clearHistory();
+    for(Turtle t: myTurtles)
+    {
+      t.returnTurtleToDefault();
+    }
     root.getChildren().removeAll(myDrawingCanvas.getLines());
     return 0;
   }
@@ -302,7 +305,7 @@ public class SetupScreen {
 
   public void setPreferences(String preferenceTitle)
   {
-    PreferenceSelector myPreferences = new PreferenceSelector(preferenceTitle);
+    PreferenceLoaderSelector myPreferences = new PreferenceLoaderSelector(preferenceTitle);
 
     for(Turtle t : myTurtles)
     {
