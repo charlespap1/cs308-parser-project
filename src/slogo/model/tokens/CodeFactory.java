@@ -12,9 +12,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CodeFactory {
-    public static String VARIABLE_TYPE = "Variable";
-    public static String NEW_COMMAND_TYPE = "Command";
-    public static String TO_TYPE = "MakeUserInstruction";
+
+    private static final String VARIABLE_TYPE = "Variable";
+    private static final String NEW_COMMAND_TYPE = "Command";
+    private static final String TO_TYPE = "MakeUserInstruction";
+
     public static String PACKAGE_NAME = "slogo.model.tokens.";
 
     private RegexHandler keyGrabber;

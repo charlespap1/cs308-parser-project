@@ -30,6 +30,7 @@ import java.util.Objects;
 import slogo.view.scrollers.ScrollingWindow;
 import slogo.view.scrollers.VariableViewer;
 import slogo.view.selectors.BackgroundSelector;
+import slogo.view.selectors.DisplayCustomizer;
 import slogo.view.selectors.LanguageSelector;
 import slogo.view.selectors.PenSelector;
 import slogo.view.selectors.RGBHelper;
@@ -120,10 +121,12 @@ public class SetupScreen {
 
     myGraphicalMover = new TurtleGraphicalMover(myBackgroundSelector.getView().getLayoutX(), myBackgroundSelector.getView().getLayoutY() + GRAPHICAL_VIEWER_HEIGHT_OFFSET);
 
+    DisplayCustomizer cust = new DisplayCustomizer(belowCanvasButtons.getLayoutX(), belowCanvasButtons.getLayoutY()+ BUTTON_HEIGHT_OFFSET);
+
     setText();
 
     root.getChildren().addAll(myDrawingCanvas.getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myNewCommandViewer.getView(), myVariableView.getView());
-    root.getChildren().addAll(myBackgroundSelector.getView(), myPenSelector.getView(), myCharacterSelector.getView(), myLanguageSelector.getView(), myGraphicalMover.getView());
+    root.getChildren().addAll(cust.getView(), myPenSelector.getView(), myCharacterSelector.getView(), myLanguageSelector.getView());
 
     myCurrentErrorMessage.setLayoutX(myHistory.getView().getLayoutX());
     myCurrentErrorMessage.setLayoutY(myVariableView.getView().getLayoutY() + ERROR_MESSAGE_PADDING);

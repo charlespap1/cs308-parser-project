@@ -1,7 +1,7 @@
 package slogo.view.scrollers;
 
-import slogo.model.tokens.Token;
 import slogo.model.tokens.Instruction;
+import slogo.model.tokens.Token;
 import slogo.view.SetInputAction;
 
 public class CommandViewer extends ScrollingWindow {

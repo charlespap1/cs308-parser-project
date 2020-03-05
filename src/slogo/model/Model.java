@@ -22,7 +22,7 @@ import java.io.File;
 import java.util.*;
 
 public class Model implements ModelAPI{
-    
+
     // regular expression representing any whitespace characters (space, tab, or newline)
     public static final String WHITESPACE = "\\s+";
     public static final String SYNTAX = "Syntax";

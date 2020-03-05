@@ -116,7 +116,6 @@ public class Controller extends Application {
             myReader.close();
         } catch (FileNotFoundException e) {
             System.out.println("An error occurred.");
-            e.printStackTrace();
         }
         model.executeCode(f);
     }
