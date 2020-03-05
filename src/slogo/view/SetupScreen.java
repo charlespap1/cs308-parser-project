@@ -162,6 +162,10 @@ public class SetupScreen {
   }
 
   public void setGoButton(EventHandler<ActionEvent> goAction) { myGo.setOnAction(goAction); }
+  public void setPopupButton(EventHandler<ActionEvent> popupAction) {
+    //myPopup.addEventHandler(ActionEvent.ACTION, popupAction);
+    //myPopup.addEventHandler(ActionEvent.ACTION, e -> myLineManager.newProgram());
+  }
   public void setNewWindowButton(EventHandler<ActionEvent> newWindowAction) { myNewWindow.setOnAction(newWindowAction);}
   public void setNewConfigButton(EventHandler<ActionEvent> newConfigAction) { myNewConfig.setOnAction(newConfigAction); }
 
