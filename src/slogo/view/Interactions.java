@@ -7,7 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import slogo.model.code.Token;
+import slogo.model.tokens.Token;
 
 import java.lang.reflect.Method;
 

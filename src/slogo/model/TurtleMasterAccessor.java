@@ -1,6 +1,6 @@
 package slogo.model;
 
-import slogo.model.code.instructions.TurtleAction;
+import slogo.model.tokens.instructions.TurtleAction;
 import java.util.List;
 
 public interface TurtleMasterAccessor {

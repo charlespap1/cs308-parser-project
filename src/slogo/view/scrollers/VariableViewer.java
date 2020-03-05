@@ -4,8 +4,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
-import slogo.model.code.Token;
-import slogo.model.code.Variable;
+import slogo.model.tokens.Token;
+import slogo.model.tokens.Variable;
 
 public class VariableViewer extends ScrollingWindow {
     public static String BUTTON_TEXT = "set";

@@ -7,7 +7,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import slogo.model.code.Token;
+import slogo.model.tokens.Token;
 import slogo.view.DrawingCanvas;
 import slogo.view.SetupScreen;
 import slogo.view.StaticViewElement;
