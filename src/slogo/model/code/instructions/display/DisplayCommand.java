@@ -10,7 +10,7 @@ public abstract class DisplayCommand extends Instruction {
         super(numArgs);
     }
 
-    public void setMyAction(DisplayAction action){
+    public void setMyAction(DisplayAction action) {
         myAction = action;
     }
 }

@@ -23,32 +23,22 @@ public class To extends Instruction {
         myFunction = function;
     }
 
-    public void performAction(Turtle turtle) {
+    @Override
+    public double execute () {
         String name = parameters.get(0).toString();
         Token list1 = parameters.get(1);
         Token list2 = parameters.get(2);
-        if (!(list1 instanceof ListSyntax) || !(list2 instanceof ListSyntax)) {
-            throw new InvalidArgumentException();
-        }
+        if (!(list1 instanceof ListSyntax) || !(list2 instanceof ListSyntax)) throw new InvalidArgumentException();
+
         List<Token> variables = ((ListSyntax) list1).getContents();
-        for (Token variable : variables) {
-            if (!(variable instanceof Variable)) {
-                throw new InvalidLoopConditionException();
-            }
-        }
+        for (Token variable : variables) if (!(variable instanceof Variable)) throw new InvalidLoopConditionException();
+
         List<Token> instructions = ((ListSyntax) list2).getContents();
-        for (Token instruction : instructions) {
-            if (!(instruction instanceof Instruction)) {
-                throw new InvalidLoopConditionException();
-            }
-        }
+        for (Token instruction : instructions) if (!(instruction instanceof Instruction)) throw new InvalidLoopConditionException();
+
         myCommand = new NewCommand(name, variables, instructions);
         myFunction.addToList(myCommand);
-    }
-
-    public double generateValue() {
-        if (myCommand != null) return 1;
-        return 0;
+        return myCommand == null ? 0 : 1;
     }
 
     public String toString(String name){ return instrName + ": " + name; }

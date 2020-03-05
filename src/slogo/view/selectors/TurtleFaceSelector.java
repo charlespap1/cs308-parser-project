@@ -14,15 +14,14 @@ import java.util.*;
  * @author Braeden
  */
 public class TurtleFaceSelector extends ColorSelector {
-  public static final List<String> IMAGES = new ArrayList<>(Arrays.asList("Turtle", "Airplane", "Car", "Dog"));
+  public static final List<String> IMAGES = new ArrayList<>(Arrays.asList("Turtle", "Plane", "Car", "Dog"));
   public static final String RESOURCES = "resources";
   public static final String IMAGE_RESOURCE_PACKAGE = RESOURCES + ".commands.TurtleImages";
 
   private Turtle turtle;
 
-  public TurtleFaceSelector(Turtle turtle, double x, double y) {
+  public TurtleFaceSelector(double x, double y) {
     super(x, y, IMAGES, IMAGE_RESOURCE_PACKAGE);
-    this.turtle = turtle;
     setColorButtons();
   }
 
@@ -39,6 +38,6 @@ public class TurtleFaceSelector extends ColorSelector {
   @Override
   protected void changeAppearance(String imageFileName) {
     Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(imageFileName)));
-    turtle.changeImage(image);
+    //turtle.changeImage(image);
   }
 }

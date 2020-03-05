@@ -1,12 +1,10 @@
 package slogo.model.code.instructions.math;
 
-import slogo.model.Turtle;
 import slogo.model.code.instructions.Instruction;
-import slogo.model.code.instructions.SingleRunInstruction;
 
 import java.util.List;
 
-public class Minus extends SingleRunInstruction {
+public class Minus extends Instruction {
 
     private static final int numArgs = 1;
 
@@ -15,13 +13,10 @@ public class Minus extends SingleRunInstruction {
         instrName = name;
     }
 
-    public void performAction (Turtle t) {
-        List<Double> paramsAsVals = this.getParamsAsVals(t);
+    @Override
+    public double execute() {
+        List<Double> paramsAsVals = this.getParamsAsVals();
         double val = paramsAsVals.get(0);
-        this.valueOfExecution = -val;
-    }
-
-    public String toString(double val){
-        return instrName + " " + val + " = " + valueOfExecution;
+        return -val;
     }
 }
