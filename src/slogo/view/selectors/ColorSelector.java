@@ -10,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import slogo.view.StaticViewElement;
 
@@ -30,7 +31,7 @@ public abstract class ColorSelector implements StaticViewElement {
   private ResourceBundle myResources;
   private Text myTitle = new Text();
 
-  protected Map colorMap = new HashMap<Integer, String>();
+  protected Map colorMap = new HashMap<Integer, Color>();
 
   public ColorSelector(double x, double y, List<String> identifiers, String resourcePackage) {
     myHolder.setLayoutX(x);
@@ -67,9 +68,10 @@ public abstract class ColorSelector implements StaticViewElement {
       newColor.setMaxHeight(COLOR_SELECTOR_HEIGHT);
       newColor.setMinHeight(COLOR_SELECTOR_HEIGHT);
       String rgb = myResources.getString(identifier);
-      //int idIntVal = Integer.parseInt(identifier);
-      //setButtonFromResourceResult(idIntVal, newColor, rgb);
-      setButtonFromResourceResult(newColor, 3, rgb);
+
+      int idIntVal = Integer.parseInt(identifier);
+      setButtonFromResourceResult(idIntVal, newColor, rgb);
+
       Text index = new Text(identifier);
       buttonHold.getChildren().addAll(newColor, index);
       buttonHold.setAlignment(Pos.CENTER);
@@ -93,17 +95,24 @@ public abstract class ColorSelector implements StaticViewElement {
    * @param newColor
    * @param rgb
    */
-/*
+
   protected void setButtonFromResourceResult(int id, Button newColor, String rgb) {
 
-    colorMap.put(id, rgb);
+    Color color = getColor(rgb);
+    colorMap.put(id, color);
     newColor.setStyle(String.format(DEFAULT_BACKGROUND_SETTER,rgb));
-    newColor.setOnAction(e -> changeAppearance(rgb));*/
+    newColor.setOnAction(e -> changeAppearance(id));
 
-  protected void setButtonFromResourceResult(Button newColor, int index, String rgb) {
-    //TODO get rgb from index
-    newColor.setStyle(String.format(DEFAULT_BACKGROUND_SETTER, rgb));
-    newColor.setOnAction(e -> changeAppearance(index));
+  }
+
+  public Color getColor(String rgb)
+  {
+    String [] rgbVals = rgb.split(",");
+    int r = Integer.parseInt(rgbVals[0]);
+    int g = Integer.parseInt(rgbVals[1]);
+    int b = Integer.parseInt(rgbVals[2]);
+
+    return Color.rgb(r,g,b);
   }
 
 }

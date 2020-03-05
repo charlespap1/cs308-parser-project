@@ -38,7 +38,7 @@ import slogo.view.selectors.TurtleFaceSelector;
 /**
  * This class allows us to make our main class less fat
  * and sets up all the visuals
- * @author Juliet, Natalie (binding)
+ * @author Juliet, Natalie
  */
 
 public class SetupScreen {

@@ -28,18 +28,14 @@ public class TurtleFaceSelector extends ColorSelector {
   }
 
   @Override
-
-  //protected void setButtonFromResourceResult(int id, Button newImageButton, String imageFileName) {
-    //colorMap.put(id, imageFileName);
-
-  protected void setButtonFromResourceResult(Button newImageButton, int index, String imageFileName) {
+  protected void setButtonFromResourceResult(int id, Button newImageButton, String imageFileName) {
     //TODO get filename from index
     Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(imageFileName)));
     ImageView iv = new ImageView(image);
     iv.setPreserveRatio(true);
     iv.setFitHeight(COLOR_SELECTOR_HEIGHT);
     newImageButton.setGraphic(iv);
-    newImageButton.setOnAction(e -> changeAppearance(index));
+    newImageButton.setOnAction(e -> changeAppearance(id));
   }
 
   @Override

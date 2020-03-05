@@ -42,7 +42,7 @@ public class PenSelector extends ColorSelector{
    * @param
    */
   @Override
-  public void changeAppearance(int index) {
+  public void changeAppearance(int color) {
     // TODO get rgb from mapping
     String rgb = "10,10,10";
     Color c = (new RGBHelper()).getColor(rgb);

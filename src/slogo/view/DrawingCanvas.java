@@ -1,12 +1,8 @@
 package slogo.view;
 
-import java.util.ArrayList;
-import java.util.List;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
-import javafx.util.Pair;
 
 /**
  * This class specifies the attributes of the
