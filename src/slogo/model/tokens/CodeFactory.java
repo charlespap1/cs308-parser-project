@@ -36,7 +36,6 @@ public class CodeFactory {
 
     public Token getSymbolAsObj(String piece) throws SyntaxException{
         String objectType = keyGrabber.getSymbol(piece);
-        System.out.println(objectType);
         if (objectType.equals(VARIABLE_TYPE)) return getVariable(piece);
         if (objectType.equals(NEW_COMMAND_TYPE)) return getNewCommand(piece);
         if (objectType.equals(TO_TYPE)) return new MakeUserInstruction(piece, this::addNewCommand);
