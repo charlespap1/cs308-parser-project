@@ -50,6 +50,7 @@ public class Controller extends Application {
         myView.setupHistory(myModel.getHistoryList(), myModel.getUndoDisabled(), myModel.getRedoDisabled());
         myView.setErrorMessage(myModel.getErrorMessage());
         myView.setNewWindowButton(e -> getNewPreferences(stage));
+        myView.setTurtlesStateButton(e -> showActiveTurtles(myView, stage));
         setupCommands(myView, myModel);
         myModel.setAddTurtleFunction(myView::addTurtle);
         myView.setUndoAction(e -> myModel.undo());
@@ -57,6 +58,11 @@ public class Controller extends Application {
         myView.setNewConfigButton(e -> executeTextFile(myView.getFile(), myModel), stage);
     }
 
+
+
+    private void showActiveTurtles(Interactions myView, Stage currentStage) {
+        myView.myTurtleStatePopup.show(currentStage);
+    }
 
     private void getNewPreferences(Stage currentStage) {
         SetPreferencesPopup prefPopup = new SetPreferencesPopup();

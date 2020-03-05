@@ -85,6 +85,7 @@ public class Model implements ModelAPI{
     }
 
     public ObservableList<Token> getVariableList(){ return createFromString.getVariableList(); }
+
     public ObservableList<Token> getHistoryList(){ return history.getHistoryList(); }
     public ObservableList<Token> getNewCommandsList(){ return createFromString.getNewCommandList(); }
     public BooleanProperty getUndoDisabled() { return history.getUndoDisabled(); }

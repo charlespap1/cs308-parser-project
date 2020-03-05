@@ -23,6 +23,7 @@ import slogo.view.commonCommands.CommonCommands;
 import slogo.view.popup.FileDoesNotExistException;
 import slogo.view.popup.LoadConfigPopup;
 import slogo.view.popup.ViewPopup;
+import slogo.view.popup.TurtleStatePopup;
 import slogo.view.scrollers.CommandViewer;
 import slogo.view.scrollers.HistoryViewer;
 import slogo.view.scrollers.ScrollingWindow;
@@ -88,10 +89,17 @@ public class SetupScreen {
 
   private Button undoButton;
   private Button redoButton;
+
   private ScrollingWindow myHistory = new HistoryViewer(COMMAND_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING);
   private ScrollingWindow myNewCommandViewer = new CommandViewer(LIST_VIEW_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING, this::setInputText);
   private ScrollingWindow myVariableView = new VariableViewer(LIST_VIEW_COLUMN, HEIGHT/2.0);
   private LineManager myLineManager = new LineManager(root);
+  //~~~~~~~~~~~~~ vvv for testing and troubleshooting vvv ~~~~~~~~~~~~~~~~
+  private Button myTestButton;
+  private Button myTurtlesStatesButton;
+  private TurtleStatePopup myTurtleStatePopup;
+  //~~~~~~~~~~~~~ ^^^ for testing and troubleshooting ^^^ ~~~~~~~~~~~~~~~~
+
 
   private LanguageSelector myLanguageSelector;
 
@@ -149,6 +157,10 @@ public class SetupScreen {
     root.getChildren().add(myCommandJumper);
   }
 
+
+  public String getUserInput() { return myUserInput.getUserInput(); }
+
+  public DrawingCanvas getDrawingCanvas() { return myDrawingCanvas; }
 
   public void bindErrorMessage(StringProperty message) {
     myCurrentErrorMessage.textProperty().bindBidirectional(message);
@@ -222,12 +234,30 @@ public class SetupScreen {
     myStop = new Button();
     //myStop.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
     belowCanvasButtons.getChildren().add(myStop);
+
     myStop.setOnAction(e -> { for(Turtle t : myTurtles) {
       boolean tempPen = t.getPenUp();
       t.setPenUp(true);
       t.returnTurtleToDefault();
       t.setPenUp(tempPen);
     } });
+
+    //~~~~~~~~~~~~~ vvv for testing and troubleshooting vvv ~~~~~~~~~~~~~~~~
+    myTestButton = new Button();
+    myTestButton.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
+    myTestButton.setText("Test");
+    myTestButton.setOnAction(e -> {
+//      myTurtlePopUpWindow.addTurtle(myTurtles.get(0));
+//      myTurtlePopUpWindow.printTurtles();
+    });
+    belowCanvasButtons.getChildren().add(myTestButton);
+
+    myTurtlesStatesButton = new Button();
+    myTurtlesStatesButton.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
+    myTurtlesStatesButton.setText("States");
+    belowCanvasButtons.getChildren().add(myTurtlesStatesButton);
+    //~~~~~~~~~~~~~ ^^^ for testing and troubleshooting ^^^ ~~~~~~~~~~~~~~~~
+
     myNewConfig = new Button();
     myNewWindow = new Button();
     HBox newWindowButtons = new HBox(BOX_SPACING);
@@ -255,6 +285,12 @@ public class SetupScreen {
     redoButton.setOnAction(redoAction);
     redoButton.addEventHandler(ActionEvent.ACTION, e -> myLineManager.redo());
   }
+  //~~~~~~~~~~~~~ vvv for testing and troubleshooting vvv ~~~~~~~~~~~~~~~~
+  public void setTurtlesStatesButton (EventHandler<ActionEvent> showTurtlesAction) {
+    myTurtlesStatesButton.setOnAction(showTurtlesAction);
+  };
+  //~~~~~~~~~~~~~ ^^^ for testing and troubleshooting ^^^ ~~~~~~~~~~~~~~~~
+
 
   private void setSelectors() {
     myLanguageSelector = new LanguageSelector(DrawingCanvas.CANVAS_SIDE_PADDING, DrawingCanvas.CANVAS_TOP_PADDING/4);
@@ -277,5 +313,9 @@ public class SetupScreen {
     myLanguageSelector.setTitleProperty(languageHelper.getStringProperty(LANGUAGE_SELECTOR_TEXT_KEY));
     myGraphicalMover.setTitleProperty(languageHelper.getStringProperty(PEN_THICKNESS_TEXT_KEY));
     myGraphicalMover.setPenLabelProperty(languageHelper.getStringProperty(PEN_UP_BUTTON_KEY), languageHelper.getStringProperty(PEN_DOWN_BUTTON_KEY));
+  }
+
+  public TurtleStatePopup getTurtleStatePopup() {
+    return myTurtleStatePopup;
   }
 }
