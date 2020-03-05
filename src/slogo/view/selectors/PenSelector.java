@@ -3,6 +3,8 @@ package slogo.view.selectors;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import javafx.scene.control.ColorPicker;
 import javafx.scene.paint.Color;
 import slogo.view.Turtle;
 
@@ -14,26 +16,40 @@ import slogo.view.Turtle;
 public class PenSelector extends ColorSelector{
 
   public static final List<String> BACKGROUND_COLORS = new ArrayList<>(
-      Arrays.asList("Blue", "Green", "White", "Red", "Black", "Magenta"));
-  private static final String RESOURCES_PATH = "resources.colors.PenColors";
+      Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8"));
+  private static final String RESOURCES_PATH = "resources.colors.BackgroundColors";
   //TODO: text hard coded
   public static final String TITLE = "Pen colors: ";
 
-  private Turtle turtle;
+  private List<Turtle> turtles;
 
-  public PenSelector(Turtle turtle, double x, double y) {
+  public PenSelector(List<Turtle> turtleList, double x, double y) {
     super(x,  y, BACKGROUND_COLORS,  RESOURCES_PATH);
     setColorButtons();
-    this.turtle = turtle;
+    turtles = turtleList;
   }
+
+  public void tryColorPicker() {
+    ColorPicker colorPicker = new ColorPicker();
+    colorPicker.setValue(Color.CORAL);
+    colorPicker.setOnAction(t ->setPenColor(colorPicker.getValue()));
+    myHolder.getChildren().add(colorPicker);
+  }
+
 
   /**
    * Changes color of turtle pen if button is clicked
-   * @param hex
+   * @param
    */
   @Override
-  protected void changeAppearance(String hex) {
-    Color color = Color.web(hex);
-    turtle.changePenColor(color);
+  public void changeAppearance(int index) {
+    // TODO get rgb from mapping
+    String rgb = "10,10,10";
+    Color c = (new RGBHelper()).getColor(rgb);
+    setPenColor(c);
+  }
+
+  private void setPenColor(Color color){
+    for (Turtle t:turtles) t.changePenColor(color);
   }
 }

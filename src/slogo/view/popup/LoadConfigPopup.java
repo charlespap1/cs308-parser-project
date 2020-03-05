@@ -1,7 +1,7 @@
 package slogo.view.popup;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.util.Objects;
 import java.util.Scanner;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -9,6 +9,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -20,11 +22,14 @@ import javafx.stage.Popup;
 public class LoadConfigPopup {
 
   public static final int HOLDER_SPACING = 10;
-  public static final int WINDOW_WIDTH = 300;
+  public static final int WINDOW_WIDTH = 325;
   public static final int WINDOW_HEIGHT = 50;
   public static final int TEXT_FIELD_WIDTH = 125;
+  public static final int EXIT_BUTTON_SIZE = 5;
   public static final Color HOLDER_BACKGROUND_COLOR = Color.LAVENDER;
   public static final int HOLDER_PADDING = 10;
+  public static final String PACKAGE = "resources/%s.txt";
+  private static final String X_IMAGE_FILE = "exit.png";
 
   private Popup myPopup;
 
@@ -32,6 +37,7 @@ public class LoadConfigPopup {
   private TextField myInput;
   private Text myPrompt;
   private Button myLoad;
+  private Button exit;
 
   public LoadConfigPopup()
   {
@@ -48,25 +54,39 @@ public class LoadConfigPopup {
     myPrompt = new Text();
     myPrompt.setText("    Enter \na filename: ");
 
-    setButton();
+    setButtons();
 
     myHolder.setAlignment(Pos.CENTER);
     myHolder.setPadding(new Insets(HOLDER_PADDING,HOLDER_PADDING,HOLDER_PADDING,HOLDER_PADDING));
-    myHolder.getChildren().addAll(myPrompt, myInput, myLoad);
+    myHolder.getChildren().addAll(exit, myPrompt, myInput, myLoad);
 
     myPopup.getContent().add(myHolder);
 
   }
 
-  private void setButton() {
+  private void setButtons() {
     myLoad = new Button("Load");
+
+    exit = new Button();
+    exit.setLayoutX(myHolder.getLayoutX());
+    exit.setLayoutY(myHolder.getLayoutY());
+    exit.setMaxSize( EXIT_BUTTON_SIZE,EXIT_BUTTON_SIZE);
+    exit.setOnAction(e -> myPopup.hide());
+    ImageView exitImage = getButtonPic();
+    exit.setGraphic(exitImage);
+
   }
 
-  /*public void setPromptProperty(StringProperty sp){
-    myPrompt.textProperty().bind(sp);
-    myPrompt.textProperty().setValue("Enter a filename");
-    myHolder.getChildren().add(0, myPrompt);
-  }*/
+  private ImageView getButtonPic()
+  {
+    Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(X_IMAGE_FILE)));
+    ImageView iv = new ImageView(image);
+    iv.setFitWidth(EXIT_BUTTON_SIZE);
+    iv.setFitHeight(EXIT_BUTTON_SIZE);
+    iv.setPreserveRatio(true);
+    return iv;
+  }
+
 
   public Popup getMyPopup()
   {
@@ -78,25 +98,17 @@ public class LoadConfigPopup {
     myLoad.setOnAction(e);
   }
 
-  public File getFile()
+  public File getFile() throws FileDoesNotExistException
   {
-    //System.out.println((getClass().getClassLoader().getResource("textFile.txt").toExternalForm()));
-    String path = (getClass().getClassLoader().getResource("textFile.txt").toExternalForm());
-    //File f = new File (path);
+    String path = String.format(PACKAGE, myInput.getText());
     try {
-      System.out.println(path);
-      File myObj = new File(path);
-      Scanner myReader = new Scanner(myObj);
-      while (myReader.hasNextLine()) {
-        String data = myReader.nextLine();
-        System.out.println(data);
-      }
-      myReader.close();
-    } catch (FileNotFoundException e) {
-      System.out.println("An error occurred.");
-      e.printStackTrace();
+      File f = new File(path);
+      Scanner myReader = new Scanner(f);
+      return f;
+
+    } catch (Exception e) {
+      throw new FileDoesNotExistException(e);
     }
-    return new File(path);
   }
 
 

@@ -15,7 +15,7 @@ public interface View {
     String getInstruction() throws NullPointerException;
     StringProperty getLanguageChoice();
     DisplayAction getAction(String method);
-    void setInitialTurtle(slogo.model.Turtle turtle);
+    void addTurtle(slogo.model.Turtle turtle);
     void setGoButton(EventHandler<ActionEvent> goAction);
     //void setViewLists(ObservableList<String> variableList, ObservableList<String> newCommandList);
     void setErrorMessage(StringProperty error);

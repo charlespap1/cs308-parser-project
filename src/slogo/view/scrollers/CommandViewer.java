@@ -1,16 +1,15 @@
 package slogo.view.scrollers;
 
-import slogo.model.code.Token;
-import slogo.model.code.instructions.Instruction;
+import slogo.model.tokens.Token;
+import slogo.model.tokens.instructions.Instruction;
 import slogo.view.SetInputAction;
 
-public class CommandViewer extends ListViewer {
+public class CommandViewer extends ScrollingWindow {
     SetInputAction setter;
 
     public CommandViewer(double elementWidthFactor, double topPadding, SetInputAction action) {
         super(elementWidthFactor, topPadding);
         setter = action;
-        myList.setOnMouseClicked(e -> onSelectedItem(myList.getSelectionModel().getSelectedItem()));
     }
 
     protected void onSelectedItem(Token t){
