@@ -54,6 +54,7 @@ public class SetupScreen {
   public static final int COMMAND_COLUMN = 1;
   public static final int LIST_VIEW_COLUMN = 2;
   public static final int ERROR_MESSAGE_PADDING = 285;
+
   public static final String VARIABLE_TITLE_KEY = "VariableTitleText";
   public static final String HISTORY_TITLE_KEY = "HistoryTitleText";
   public static final String NEW_COMMAND_TITLE_KEY = "NewCommandTitleText";
