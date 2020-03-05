@@ -42,6 +42,7 @@ public class Controller extends Application {
     }
 
     private void showPopUp(Stage currentStage, Model myModel){
+        //TODO: put front end back in front end
         LoadConfigPopup popup = new LoadConfigPopup();
         popup.getMyPopup().show(currentStage);
         EventHandler<ActionEvent> e = event -> {
@@ -69,16 +70,14 @@ public class Controller extends Application {
         myView.setPopupButton(e -> showPopUp(stage, myModel));
     }
 
-    private void getNewPreferences(Stage currentStage)
-    {
+    private void getNewPreferences(Stage currentStage) {
         SetPreferencesPopup prefPopup = new SetPreferencesPopup();
         prefPopup.getMyPopup().show(currentStage);
 
-        EventHandler<ActionEvent> e = event -> {
+        prefPopup.setPopupButton(e -> {
             makeNewWindow(prefPopup.getPreference());
             prefPopup.getMyPopup().hide();
-        };
-        prefPopup.setPopupButton(e);
+        });
     }
 
 

@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import slogo.view.selectors.RGBHelper;
 
 public class PreferenceLoaderSelector {
 
