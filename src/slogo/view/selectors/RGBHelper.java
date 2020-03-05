@@ -4,8 +4,6 @@ import javafx.scene.paint.Color;
 
 public class RGBHelper {
 
-  public RGBHelper(){}
-
   public Color getColor(String rgb)
   {
     String [] rgbVals = rgb.split(",");

@@ -6,6 +6,10 @@ import java.awt.geom.Point2D;
 
 public class Turtle {
 
+    private static final int DEFAULT_X = 0;
+    private static final int DEFAULT_Y = 0;
+    private static final int DEFAULT_ANGLE = 90;
+
     private DoubleProperty turtleX;
     private DoubleProperty turtleY;
     private DoubleProperty turtleAngle;
@@ -25,9 +29,9 @@ public class Turtle {
     }
 
     public void setDefault() {
-        setLocation(0, 0);
+        setLocation(DEFAULT_X, DEFAULT_Y);
         setPenUp(false);
-        setAngle(90);
+        setAngle(DEFAULT_ANGLE);
         setVisible(true);
         setActive(true);
     }
