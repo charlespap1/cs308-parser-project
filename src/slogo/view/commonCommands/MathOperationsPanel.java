@@ -2,6 +2,7 @@ package slogo.view.commonCommands;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Displays commands only associated with math operations
@@ -11,7 +12,7 @@ import java.util.Arrays;
 public class MathOperationsPanel extends CommandPanel{
 
   // TODO: hard coded text
-  public static final ArrayList<String> IDENTIFIERS = new ArrayList<>(
+  public static final List<String> IDENTIFIERS = new ArrayList<>(
       Arrays.asList("Sum", "Difference", "Product",
           "Quotient", "Remainder", "Minus", "Random",
           "Sine", "Cosine", "Tangent", "ArcTangent", "NaturalLog", "Power", "Pi"));
