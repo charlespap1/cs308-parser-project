@@ -24,6 +24,7 @@ public class History {
 
     public void setPointerToEnd() {
         programPointer = programHistory.size() - 1;
+        System.out.println(programPointer);
     }
 
     public Map<Double, State> undo() throws IndexOutOfBoundsException {
@@ -33,9 +34,13 @@ public class History {
     }
 
     public Map<Double, State> redo() throws IndexOutOfBoundsException {
-        if (programPointer >= programHistory.size()) throw new IndexOutOfBoundsException();
+        if (programPointer >= programHistory.size() - 1) throw new IndexOutOfBoundsException();
         return programHistory.get(++programPointer).getInitialTurtleStates();
         // either set turtle states to programHistory.get(programCounter) or execute everything in the program (before programPointer is incremented)
 
+    }
+
+    public List<Program> getProgramHistory () {
+        return programHistory;
     }
 }
