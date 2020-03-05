@@ -23,10 +23,6 @@ import java.util.*;
 
 public class Model implements ModelAPI{
 
-    enum SyntaxType{
-        COMMENT,CONSTANT,VARIABLE,COMMAND,LISTSTART,LISTEND,GROUPSTART,GROUPEND,WHITESPACE,NEWLINE
-    }
-
     // regular expression representing any whitespace characters (space, tab, or newline)
     public static final String WHITESPACE = "\\s+";
     public static final String SYNTAX = "Syntax";
@@ -93,7 +89,6 @@ public class Model implements ModelAPI{
     public ObservableList<Token> getNewCommandsList(){ return createFromString.getNewCommandList(); }
     public BooleanProperty getUndoDisabled() { return history.getUndoDisabled(); }
     public BooleanProperty getRedoDisabled() { return history.getRedoDisabled(); }
-
     public StringProperty getErrorMessage(){ return errorMessage; }
 
     private void setupLanguage(StringProperty language) {
