@@ -85,6 +85,7 @@ public class SetupScreen {
   private ScrollingWindow myHistory = new HistoryViewer(COMMAND_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING);
   private ScrollingWindow myNewCommandViewer = new CommandViewer(LIST_VIEW_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING, this::setInputText);
   private ScrollingWindow myVariableView = new VariableViewer(LIST_VIEW_COLUMN, HEIGHT/2.0);
+  private LineManager myLineManager = new LineManager(root);
 
   private BackgroundSelector myBackgroundSelector;
   private TurtleFaceSelector myCharacterSelector;
@@ -156,7 +157,7 @@ public class SetupScreen {
   public void setHistoryList(ObservableList<Token> historyList) { myHistory.bindList(historyList);  }
 
   public ScreenManager getScreenManager(){
-    return new ScreenManager(root, myUserInput, myTurtles, myDrawingCanvas, myLanguageSelector);
+    return new ScreenManager(root, myUserInput, myTurtles, myDrawingCanvas, myLanguageSelector, myLineManager);
   }
 
   private void setupBox(Pane box, double x, double y, double width){
@@ -172,7 +173,7 @@ public class SetupScreen {
     myClear = new Button();
     //myClear.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
     belowCanvasButtons.getChildren().add(myClear);
-    myClear.setOnAction(e -> { root.getChildren().removeAll(myDrawingCanvas.getLines()); });
+    myClear.setOnAction(e -> myLineManager.clearAllLines());
     myStop = new Button();
     //myStop.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
     belowCanvasButtons.getChildren().add(myStop);
@@ -195,8 +196,15 @@ public class SetupScreen {
     root.getChildren().add(newWindowButtons);
   }
 
-  public void setUndoButton (EventHandler<ActionEvent> undoAction) { undoButton.setOnAction(undoAction); }
-  public void setRedoButton (EventHandler<ActionEvent> redoAction) { redoButton.setOnAction(redoAction); }
+  public void setUndoButton (EventHandler<ActionEvent> undoAction) {
+    undoButton.addEventHandler(ActionEvent.ACTION, undoAction);
+    undoButton.addEventHandler(ActionEvent.ACTION, e -> myLineManager.undo());
+  }
+
+  public void setRedoButton (EventHandler<ActionEvent> redoAction) {
+    redoButton.setOnAction(redoAction);
+    redoButton.addEventHandler(ActionEvent.ACTION, e -> myLineManager.redo());
+  }
 
   private void setSelectors() {
     myBackgroundSelector = new BackgroundSelector(myDrawingCanvas, belowCanvasButtons.getLayoutX(), belowCanvasButtons.getLayoutY()+ BUTTON_HEIGHT_OFFSET);
@@ -271,7 +279,7 @@ public class SetupScreen {
     for(Turtle t: myTurtles) {
       t.returnTurtleToDefault();
     }
-    root.getChildren().removeAll(myDrawingCanvas.getLines());
+    myLineManager.clearAllLines();
     return 0;
   }
 

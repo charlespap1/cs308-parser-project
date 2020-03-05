@@ -4,7 +4,6 @@ import javafx.beans.property.StringProperty;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Line;
-import slogo.view.scrollers.HistoryViewer;
 import slogo.view.selectors.LanguageSelector;
 
 import java.util.List;
@@ -19,15 +18,17 @@ public class ScreenManager {
     private List<Turtle> myTurtles;
     private DrawingCanvas myDrawingCanvas;
     private LanguageSelector myLanguageSelector;
+    private LineManager myLineManager;
 
 
     public ScreenManager(Group root, UserCommandField commandField, List<Turtle> turtles, DrawingCanvas canvas,
-                         LanguageSelector languages){
+                         LanguageSelector languages, LineManager lineManager){
         myRoot = root;
         myUserInput = commandField;
         myTurtles = turtles;
         myDrawingCanvas = canvas;
         myLanguageSelector = languages;
+        myLineManager = lineManager;
     }
 
 
@@ -40,19 +41,21 @@ public class ScreenManager {
         turtle.pointProperty().addListener((o, oldVal, newVal) -> update(newTurtle));
     }
 
-    public String getUserInput() { return myUserInput.getUserInput(); }
+    public String getUserInput() {
+        myLineManager.newProgram();
+        return myUserInput.getUserInput();
+    }
 
     public StringProperty getLanguageChoice() { return myLanguageSelector.getLanguageChoiceProperty(); }
 
     /**
      * Updates the movement of the turtle according to new states
      */
-    private void update(Turtle newTurtle) {
-        Line newLine = newTurtle.drawLineAndBound();
+    private void update(Turtle turtle) {
+        Line newLine = turtle.drawLineAndBound();
         if (newLine!=null) {
-            myRoot.getChildren().add(newLine);
-            myDrawingCanvas.addLine(newLine);
-            newTurtle.getView().toFront();
+            myLineManager.addLine(newLine);
+            turtle.getView().toFront();
         }
     }
 }
