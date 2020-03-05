@@ -22,9 +22,9 @@ public class History {
         return programHistory.get(index);
     }
 
-//    public void incrementPointer() {
-//        programPointer++;
-//    }
+    public void setPointerToEnd() {
+        programPointer = programHistory.size() - 1;
+    }
 
     public Map<Integer, State> undo() throws IndexOutOfBoundsException {
         if (programPointer <= 0) throw new IndexOutOfBoundsException();

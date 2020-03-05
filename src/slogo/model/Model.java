@@ -45,13 +45,16 @@ public class Model implements ModelAPI{
         Turtle initialTurtle = new Turtle(1, 0, 0, false, 0);
         turtleMap.put(1, initialTurtle);
         activeTurtles.add(initialTurtle);
+        history.addNewProgram(new Program(generateStateMap(turtleMap)));
     }
 
     public void executeCode(String rawString) {
         errorMessage.set("");
         clearStacks();
-        history.addNewProgram(new Program(generateStateMap(turtleMap)));
         parseInstructions(rawString);
+        // add next state?
+        history.addNewProgram(new Program(generateStateMap(turtleMap)));
+        history.setPointerToEnd();
         if(!commands.isEmpty() || !arguments.isEmpty()){
             InvalidNumberArgumentsException e = new InvalidNumberArgumentsException();
             errorMessage.setValue(e.getMessage());
@@ -198,6 +201,7 @@ public class Model implements ModelAPI{
         if (currInstr.numRequiredArgs() == 0) {
             if (commands.isEmpty()) {
                 currInstr.execute(activeTurtles);
+                executed = true;
             } else {
                 arguments.peek().push(currInstr);
                 attemptToCreateFullInstruction();
@@ -219,7 +223,6 @@ public class Model implements ModelAPI{
                 Instruction currInstr = createCompleteInstruction(arguments.pop());
                 if (commands.isEmpty()) {
                     currInstr.execute(activeTurtles);
-                    //move pointer to end
                     executed = true;
                 } else {
                     arguments.peek().push(currInstr);
