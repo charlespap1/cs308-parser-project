@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import slogo.view.popup.TurtleStatePopup;
 import slogo.model.tokens.Token;
 
 import java.lang.reflect.Method;
@@ -20,6 +21,7 @@ import java.lang.reflect.Method;
  */
 public class Interactions implements View {
   public static final String TITLE = "SLogo";
+  public TurtleStatePopup myTurtleStatePopup;
 
   private ScreenManager myScreen;
   private SetupScreen mySetup;
@@ -30,6 +32,7 @@ public class Interactions implements View {
     Scene myScene = mySetup.setupGame();
     mySetup.addCommonCommands(primaryStage, myScene);
     myPreferences = preferences;
+    myTurtleStatePopup = mySetup.getTurtleStatePopup();
     myScreen = mySetup.getScreenManager();
 
     primaryStage.setScene(myScene);
@@ -54,7 +57,9 @@ public class Interactions implements View {
    * in the backend
    * @param turtle
    */
-  public void addTurtle(slogo.model.Turtle turtle){ myScreen.addNewTurtle(turtle); }
+  public void addTurtle(slogo.model.Turtle turtle){
+    myScreen.addNewTurtle(turtle);
+  }
 
   /**
    * Gives the ListViewers their updated list values (binding)
@@ -77,6 +82,7 @@ public class Interactions implements View {
   public void setGoButton(EventHandler<ActionEvent> goAction){ mySetup.setGoButton(goAction); }
   public void setNewWindowButton(EventHandler<ActionEvent> newWindowAction) { mySetup.setNewWindowButton(newWindowAction); }
   public void setNewConfigButton(EventHandler<ActionEvent> newWindowAction) { mySetup.setNewConfigButton(newWindowAction); }
+  public void setTurtlesStateButton(EventHandler<ActionEvent> showTurtlesAction) { mySetup.setTurtlesStatesButton(showTurtlesAction); }
   public void setPopupButton(EventHandler<ActionEvent> showPopup) {
     mySetup.setNewConfigButton(showPopup);
   }
@@ -96,5 +102,4 @@ public class Interactions implements View {
   }
 
   private void setPreferences() { mySetup.setPreferences(myPreferences); }
-
 }

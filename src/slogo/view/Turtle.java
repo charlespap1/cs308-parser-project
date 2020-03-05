@@ -36,6 +36,7 @@ public class Turtle {
   private double currX;
   private double currY;
   private int penThickness = 1;
+  private String filename;
 
   private Color penColor = DEFAULT_PEN_COLOR;
 
@@ -136,6 +137,8 @@ public class Turtle {
    * @param color
    */
   public void changePenColor(Color color) { penColor = color; }
+
+
 
   public void setPenUp(boolean isPenUp)
   {
