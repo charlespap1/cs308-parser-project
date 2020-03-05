@@ -15,7 +15,11 @@ public class ListSyntax implements Token {
 
     public List<Token> getContents() { return contents; }
 
+    @Override
     public String toString(){
-        return contents.toString();
+        StringBuilder sb = new StringBuilder("[");
+        for (Token t:contents) sb.append(" ").append(t.toString());
+        sb.append(" ]");
+        return sb.toString();
     }
 }

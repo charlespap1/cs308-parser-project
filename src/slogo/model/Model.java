@@ -145,6 +145,7 @@ public class Model implements ModelAPI{
         if (currInstr.numRequiredArgs() == 0) {
             if (commands.isEmpty()) {
                 currInstr.execute();
+                System.out.println("line: " + currInstr.toString());
             } else {
                 arguments.peek().push(currInstr);
                 attemptToCreateFullInstruction();
@@ -166,6 +167,7 @@ public class Model implements ModelAPI{
                 Instruction currInstr = createCompleteInstruction(arguments.pop());
                 if (commands.isEmpty()) {
                     currInstr.execute();
+                    System.out.println("line: " + currInstr.toString());
                     executed = true;
                 } else {
                     arguments.peek().push(currInstr);

@@ -11,4 +11,7 @@ public class NewCommandName implements Token {
     public double execute() {
         return 0;
     }
+
+    @Override
+    public String toString() { return myName; }
 }
