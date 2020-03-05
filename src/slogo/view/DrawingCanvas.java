@@ -27,8 +27,6 @@ public class DrawingCanvas {
   private double canvasHeight;
   private Rectangle myView = new Rectangle();
 
-  private List<Line> myLines = new ArrayList<>();
-
   public DrawingCanvas(double screenWidth, double screenHeight) {
     canvasWidth = screenWidth/3 - 2*CANVAS_SIDE_PADDING;
     canvasHeight = screenHeight - CANVAS_TOP_PADDING - CANVAS_BOTTOM_PADDING;
@@ -60,25 +58,6 @@ public class DrawingCanvas {
   public void changeBackground(Color color)
   {
     myView.setFill(color);
-  }
-
-  /**
-   * Adds lines to the canvas as the turtle is moved,
-   * Need to keep track of lines here to be able to clear them
-   * @param newLine
-   */
-  public void addLine(Line newLine)
-  {
-    myLines.add(newLine);
-  }
-
-  /**
-   * Needed to be able to clear all the lines from the root
-   * @return
-   */
-  public List<Line> getLines()
-  {
-    return myLines;
   }
 
   private void setBody() {

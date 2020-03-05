@@ -33,7 +33,6 @@ public abstract class ColorSelector implements StaticViewElement {
   protected Map colorMap = new HashMap<Integer, String>();
 
   public ColorSelector(double x, double y, List<String> identifiers, String resourcePackage) {
-
     myHolder.setLayoutX(x);
     myHolder.setLayoutY(y);
     myHolder.getChildren().addAll(myTopElements);
@@ -45,9 +44,9 @@ public abstract class ColorSelector implements StaticViewElement {
   /**
    * Performs the action of changing whatever element
    * of the selector is clicked
-   * @param rgb
+   * @param
    */
-  protected abstract void changeAppearance(String rgb);
+  public abstract void changeAppearance(int index);
 
   /**
    * Allows for adding the selector to the root
@@ -68,8 +67,9 @@ public abstract class ColorSelector implements StaticViewElement {
       newColor.setMaxHeight(COLOR_SELECTOR_HEIGHT);
       newColor.setMinHeight(COLOR_SELECTOR_HEIGHT);
       String rgb = myResources.getString(identifier);
-      int idIntVal = Integer.parseInt(identifier);
-      setButtonFromResourceResult(idIntVal, newColor, rgb);
+      //int idIntVal = Integer.parseInt(identifier);
+      //setButtonFromResourceResult(idIntVal, newColor, rgb);
+      setButtonFromResourceResult(newColor, 3, rgb);
       Text index = new Text(identifier);
       buttonHold.getChildren().addAll(newColor, index);
       buttonHold.setAlignment(Pos.CENTER);
@@ -93,11 +93,17 @@ public abstract class ColorSelector implements StaticViewElement {
    * @param newColor
    * @param rgb
    */
+/*
   protected void setButtonFromResourceResult(int id, Button newColor, String rgb) {
 
     colorMap.put(id, rgb);
     newColor.setStyle(String.format(DEFAULT_BACKGROUND_SETTER,rgb));
-    newColor.setOnAction(e -> changeAppearance(rgb));
+    newColor.setOnAction(e -> changeAppearance(rgb));*/
+
+  protected void setButtonFromResourceResult(Button newColor, int index, String rgb) {
+    //TODO get rgb from index
+    newColor.setStyle(String.format(DEFAULT_BACKGROUND_SETTER, rgb));
+    newColor.setOnAction(e -> changeAppearance(index));
   }
 
 }

@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import slogo.model.Model;
+import slogo.model.Turtle;
 import slogo.view.Interactions;
 import slogo.view.DisplayAction;
 import slogo.view.popup.FileDoesNotExistException;
@@ -41,6 +42,7 @@ public class Controller extends Application {
     }
 
     private void showPopUp(Stage currentStage, Model myModel){
+        //TODO: put front end back in front end
         LoadConfigPopup popup = new LoadConfigPopup();
         popup.getMyPopup().show(currentStage);
         EventHandler<ActionEvent> e = event -> {
@@ -59,27 +61,26 @@ public class Controller extends Application {
     private void makeWindow(Stage stage, String preferences){
         Interactions myView = new Interactions(stage, preferences);
         Model myModel = new Model(myView.getLanguageChoice());
-        myView.setInitialTurtle(myModel.getTurtle());
         myView.setGoButton(e -> getInstruction(myView, myModel));
         myView.setViewLists(myModel.getVariableList(), myModel.getNewCommandsList());
+        myView.setupHistory(myModel.getHistoryList(), myModel.getUndoDisabled(), myModel.getRedoDisabled());
         myView.setErrorMessage(myModel.getErrorMessage());
         myView.setNewWindowButton(e -> getNewPreferences(stage));
         setupCommands(myView, myModel);
+        myModel.setAddTurtleFunction(myView::addTurtle);
         myView.setPopupButton(e -> showPopUp(stage, myModel));
-        //TODO: add listener for method tell command
-        //myView.add(turtle);
+        myView.setUndoAction(e -> myModel.undo());
+        myView.setRedoAction(e -> myModel.redo());
     }
 
-    private void getNewPreferences(Stage currentStage)
-    {
+    private void getNewPreferences(Stage currentStage) {
         SetPreferencesPopup prefPopup = new SetPreferencesPopup();
         prefPopup.getMyPopup().show(currentStage);
 
-        EventHandler<ActionEvent> e = event -> {
+        prefPopup.setPopupButton(e -> {
             makeNewWindow(prefPopup.getPreference());
             prefPopup.getMyPopup().hide();
-        };
-        prefPopup.setPopupButton(e);
+        });
     }
 
 

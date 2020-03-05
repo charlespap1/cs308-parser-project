@@ -38,9 +38,9 @@ public class TurtleGraphicalMover implements StaticViewElement{
   private RadioButton changePenDown;
   private Text myThicknessText = new Text();
 
-  public TurtleGraphicalMover(Turtle t, double x, double y)
+  public TurtleGraphicalMover(double x, double y)
   {
-    myTurtle = t;
+    //myTurtle = t;
     myHolder = new HBox(MAJOR_BOX_SPACING);
     myButtonHolder = new VBox(BOX_SPACING);
     myMiddleButtons = new HBox(BOX_SPACING);
@@ -108,14 +108,14 @@ public class TurtleGraphicalMover implements StaticViewElement{
     changePenUp.setToggleGroup(radioGroup);
     changePenDown.setToggleGroup(radioGroup);
 
-    if(myTurtle.getPenUp())
-    {
-      changePenUp.setSelected(true);
-    }
-    else
-    {
-      changePenDown.setSelected(true);
-    }
+//    if(myTurtle.getPenUp())
+//    {
+//      changePenUp.setSelected(true);
+//    }
+//    else
+//    {
+//      changePenDown.setSelected(true);
+//    }
 
   }
 
@@ -161,41 +161,41 @@ public class TurtleGraphicalMover implements StaticViewElement{
 
   private void setPenUp(boolean isPenUp)
   {
-    myTurtle.setPenUp(isPenUp);
+    //myTurtle.setPenUp(isPenUp);
   }
 
   private void setThickness(int thickness)
   {
-    myTurtle.setThickness(thickness);
+    //myTurtle.setThickness(thickness);
   }
 
 
   private void moveTurtleUp()
   {
-    double y = myTurtle.getYPos() - MOVEMENT_VALUE;
-    setTurtle(myTurtle.getXPos(), y);
+//    double y = myTurtle.getYPos() - MOVEMENT_VALUE;
+//    setTurtle(myTurtle.getXPos(), y);
   }
   private void moveTurtleDown()
   {
-    double y = myTurtle.getYPos() + MOVEMENT_VALUE;
-    setTurtle(myTurtle.getXPos(), y);
+//    double y = myTurtle.getYPos() + MOVEMENT_VALUE;
+//    setTurtle(myTurtle.getXPos(), y);
   }
 
   private void moveTurtleLeft()
   {
-    double x = myTurtle.getXPos() - MOVEMENT_VALUE;
-    setTurtle(x, myTurtle.getYPos());
+//    double x = myTurtle.getXPos() - MOVEMENT_VALUE;
+//    setTurtle(x, myTurtle.getYPos());
   }
 
   private void moveTurtleRight()
   {
-    double x = myTurtle.getXPos() + MOVEMENT_VALUE;
-    setTurtle(x, myTurtle.getYPos());
+//    double x = myTurtle.getXPos() + MOVEMENT_VALUE;
+//    setTurtle(x, myTurtle.getYPos());
   }
 
   private void setTurtle(double x, double y)
   {
-    myTurtle.setLocation(x, y);
+    //myTurtle.setLocation(x, y);
   }
 
 

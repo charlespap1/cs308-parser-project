@@ -4,7 +4,6 @@ import javafx.beans.property.*;
 
 import java.awt.geom.Point2D;
 
-
 public class Turtle {
 
     private DoubleProperty turtleX;
@@ -12,11 +11,11 @@ public class Turtle {
     private DoubleProperty turtleAngle;
     private BooleanProperty penUp;
     private BooleanProperty visible = new SimpleBooleanProperty(true);
-    private StringProperty currCommand = new SimpleStringProperty();
     private ObjectProperty<Point2D> coordinates;
-    private int id;
+    private BooleanProperty active = new SimpleBooleanProperty(true);
+    private double id;
 
-    public Turtle(int id, int xPos, int yPos, boolean isPenUp, int angle) {
+    public Turtle(double id, int xPos, int yPos, boolean isPenUp, int angle) {
         this.id = id;
         turtleX = new SimpleDoubleProperty(xPos);
         turtleY = new SimpleDoubleProperty(yPos);
@@ -25,13 +24,21 @@ public class Turtle {
         coordinates = new SimpleObjectProperty<>(new Point2D.Double(xPos, yPos));
     }
 
+    public void setDefault() {
+        setLocation(0, 0);
+        setPenUp(false);
+        setAngle(90);
+        setVisible(true);
+        setActive(true);
+    }
+
     public DoubleProperty turtleXProperty(){ return turtleX; }
     public DoubleProperty turtleYProperty(){ return turtleY; }
     public DoubleProperty turtleAngleProperty(){ return turtleAngle; }
     public BooleanProperty penUpProperty(){ return penUp; }
     public BooleanProperty visibleProperty(){ return visible; }
-    public StringProperty currCommandProperty(){ return currCommand; }
     public ObjectProperty<Point2D> pointProperty() { return coordinates; }
+    public BooleanProperty activeProperty() { return active; }
 
     public void setLocation(double x, double y) {
         turtleX.setValue(x);
@@ -42,7 +49,7 @@ public class Turtle {
     public void setVisible(boolean isVisible) { visible.set(isVisible); }
     public void setAngle(double angle) { turtleAngle.setValue(angle); }
     public void setPenUp(boolean isPenUp) { penUp.setValue(isPenUp);}
-    public void setCurrCommand(String command) { currCommand.setValue(command); }
+    public void setActive(boolean isActive) { active.setValue(isActive);}
 
     public double getXPos() {
         return turtleX.getValue();
@@ -55,5 +62,6 @@ public class Turtle {
     }
     public double getAngle() { return turtleAngle.getValue(); }
     public boolean isVisible() { return visible.getValue(); }
-    public int getId() { return id; }
+    public boolean isActive() { return active.getValue();}
+    public double getId() { return id; }
 }

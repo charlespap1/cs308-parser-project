@@ -3,7 +3,7 @@ package slogo.model.parse;
 import java.util.*;
 import java.util.regex.Pattern;
 
-import slogo.model.code.exceptions.LanguageFileNotFoundException;
+import slogo.model.exceptions.LanguageFileNotFoundException;
 
 public class RegexHandler {
     public static final String RESOURCES_PACKAGE = "resources.commands.";

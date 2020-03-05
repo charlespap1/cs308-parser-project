@@ -1,19 +1,21 @@
 package slogo.model.parse;
 
-import slogo.model.code.BracketClose;
-import slogo.model.code.BracketOpen;
-import slogo.model.code.Constant;
-import slogo.model.code.Variable;
-import slogo.model.code.instructions.booleans.*;
-import slogo.model.code.instructions.commands.*;
-import slogo.model.code.instructions.math.*;
-import slogo.model.code.instructions.misc.*;
-import slogo.model.code.instructions.queries.*;
+import slogo.model.tokens.BracketClose;
+import slogo.model.tokens.BracketOpen;
+import slogo.model.tokens.Constant;
+import slogo.model.tokens.Variable;
+import slogo.model.tokens.instructions.booleans.*;
+import slogo.model.tokens.instructions.commands.*;
+import slogo.model.tokens.instructions.display.*;
+import slogo.model.tokens.instructions.math.*;
+import slogo.model.tokens.instructions.misc.*;
+import slogo.model.tokens.instructions.multipleturtles.*;
+import slogo.model.tokens.instructions.queries.*;
 
 public enum CodeType {
     CLEARSCREEN(ClearScreen.class),
     ISSHOWING(TurtleShowingQuery.class),
-    ASKWITH(null),
+    ASKWITH(AskWith.class),
     LEFT(Left.class),
     OR(Or.class),
     SETPOSITION(SetXY.class),
@@ -21,26 +23,26 @@ public enum CodeType {
     SINE(Sine.class),
     REPEAT(Repeat.class),
     DIFFERENCE(Difference.class),
-    SETBACKGROUND(null),
+    SETBACKGROUND(SetBackground.class),
     MAKEVARIABLE(Make.class),
     LESSTHAN(Less.class),
     ISPENDOWN(PenDownQuery.class),
     RANDOM(Random.class),
     GREATERTHAN(Greater.class),
     EQUAL(Equal.class),
-    GETPENCOLOR(null),
+    GETPENCOLOR(PenColor.class),
     SETHEADING(SetHeading.class),
     PI(Pi.class),
-    ID(null),
+    ID(Id.class),
     YCOORDINATE(YCor.class),
     NOTEQUAL(NotEqual.class),
     FOR(For.class),
-    SETPALETTE(null),
+    SETPALETTE(SetPalette.class),
     SUM(Sum.class),
     ARCTANGENT(Arctan.class),
     NOT(Not.class),
     AND(And.class),
-    TURTLES(null),
+    TURTLES(Turtles.class),
     DOTIMES(DoTimes.class),
     XCOORDINATE(XCor.class),
     SETTOWARDS(Towards.class),
@@ -49,26 +51,26 @@ public enum CodeType {
     HIDETURTLE(HideTurtle.class),
     COSINE(Cosine.class),
     PENDOWN(PenDown.class),
-    SETPENSIZE(null),
+    SETPENSIZE(SetPenSize.class),
     HEADING(Heading.class),
-    SETPENCOLOR(null),
+    SETPENCOLOR(SetPenColor.class),
     IFELSE(IfElse.class),
     RIGHT(Right.class),
     REMAINDER(Remainder.class),
     BACKWARD(Back.class),
-    ASK(null),
+    ASK(Ask.class),
     NATURALLOG(Log.class),
     HOME(SetHome.class),
     PENUP(PenUp.class),
-    STAMP(null),
+    STAMP(null), //stamp
     TANGENT(Tangent.class),
     MAKEUSERINSTRUCTION(To.class),
-    SETSHAPE(null),
-    GETSHAPE(null),
-    TELL(null),
+    SETSHAPE(SetShape.class),
+    GETSHAPE(Shape.class),
+    TELL(Tell.class),
     FORWARD(Forward.class),
     SHOWTURTLE(ShowTurtle.class),
-    CLEARSTAMPS(null),
+    CLEARSTAMPS(null), //stamps?
     QUOTIENT(Quotient.class),
     POWER(Pow.class),
     COMMENT(null),
@@ -80,8 +82,7 @@ public enum CodeType {
     GROUPSTART(null),
     NEWLINE(null),
     LISTEND(BracketClose.class),
-    WHITESPACE(null),
-    COMMONCOMMANDBUTTON(null);
+    WHITESPACE(null);
 
     private Class associatedClass;
 
