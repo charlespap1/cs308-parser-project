@@ -2,6 +2,8 @@ package slogo.view;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -154,7 +156,11 @@ public class SetupScreen {
   public void setInputText(String command) { myUserInput.setUserInput(command); }
   public void setVariableList(ObservableList<Token> variableList) { myVariableView.bindList(variableList); }
   public void setNewCommandList(ObservableList<Token> newCommandList) { myNewCommandViewer.bindList(newCommandList); }
-  public void setHistoryList(ObservableList<Token> historyList) { myHistory.bindList(historyList);  }
+  public void setupHistory(ObservableList<Token> historyList, BooleanProperty undoDisabled, BooleanProperty redoDisabled) {
+    myHistory.bindList(historyList);
+    undoButton.disableProperty().bind(undoDisabled);
+    redoButton.disableProperty().bind(redoDisabled);
+  }
 
   public ScreenManager getScreenManager(){
     return new ScreenManager(root, myUserInput, myTurtles, myDrawingCanvas, myLanguageSelector, myLineManager);
@@ -177,7 +183,12 @@ public class SetupScreen {
     myStop = new Button();
     //myStop.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
     belowCanvasButtons.getChildren().add(myStop);
-    myStop.setOnAction(e -> { for(Turtle t : myTurtles) t.returnTurtleToDefault(); });
+    myStop.setOnAction(e -> { for(Turtle t : myTurtles) {
+      boolean tempPen = t.getPenUp();
+      t.setPenUp(true);
+      t.returnTurtleToDefault();
+      t.setPenUp(tempPen);
+    } });
     myNewConfig = new Button();
     myNewWindow = new Button();
     HBox newWindowButtons = new HBox(BOX_SPACING);

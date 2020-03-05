@@ -62,7 +62,8 @@ public class Controller extends Application {
         Interactions myView = new Interactions(stage, preferences);
         Model myModel = new Model(myView.getLanguageChoice());
         myView.setGoButton(e -> getInstruction(myView, myModel));
-        myView.setViewLists(myModel.getVariableList(), myModel.getNewCommandsList(), myModel.getHistoryList());
+        myView.setViewLists(myModel.getVariableList(), myModel.getNewCommandsList());
+        myView.setupHistory(myModel.getHistoryList(), myModel.getUndoDisabled(), myModel.getRedoDisabled());
         myView.setErrorMessage(myModel.getErrorMessage());
         myView.setNewWindowButton(e -> getNewPreferences(stage));
         setupCommands(myView, myModel);

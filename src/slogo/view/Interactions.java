@@ -1,6 +1,8 @@
 package slogo.view;
 
 import java.util.List;
+
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -59,10 +61,13 @@ public class Interactions implements View {
    * @param variableList
    * @param newCommandList
    */
-  public void setViewLists(ObservableList<Token> variableList, ObservableList<Token> newCommandList, ObservableList<Token> historyList){
+  public void setViewLists(ObservableList<Token> variableList, ObservableList<Token> newCommandList){
     mySetup.setVariableList(variableList);
     mySetup.setNewCommandList(newCommandList);
-    mySetup.setHistoryList(historyList);
+  }
+
+  public void setupHistory(ObservableList<Token> historyList, BooleanProperty undoDisabled, BooleanProperty redoDisabled){
+    mySetup.setupHistory(historyList, undoDisabled, redoDisabled);
   }
 
   /**

@@ -1,5 +1,6 @@
 package slogo.model;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
@@ -57,7 +58,6 @@ public class Model implements ModelAPI{
         clearStacks();
         parseInstructions(rawString);
         history.addNewProgram(new Program(turtleMaster.generateStateMap()));
-        history.setPointerToEnd();
         if(!commands.isEmpty() || !arguments.isEmpty()){
             InvalidNumberArgumentsException e = new InvalidNumberArgumentsException();
             errorMessage.setValue(e.getMessage());
@@ -91,6 +91,8 @@ public class Model implements ModelAPI{
     public ObservableList<Token> getVariableList(){ return createFromString.getVariableList(); }
     public ObservableList<Token> getHistoryList(){ return history.getHistoryList(); }
     public ObservableList<Token> getNewCommandsList(){ return createFromString.getNewCommandList(); }
+    public BooleanProperty getUndoDisabled() { return history.getUndoDisabled(); }
+    public BooleanProperty getRedoDisabled() { return history.getRedoDisabled(); }
 
     public StringProperty getErrorMessage(){ return errorMessage; }
 

@@ -1,5 +1,6 @@
 package slogo.view;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.scene.Group;
 import javafx.scene.shape.Line;
 
@@ -10,7 +11,7 @@ public class LineManager {
 
     private Group myRoot;
     private List<List<Line>> myLines = new ArrayList<>();
-    private int programPointer = 0;
+    private int programPointer = -1;
 
     public LineManager(Group root){
         myRoot = root;
