@@ -80,11 +80,15 @@ public class TurtleMaster {
     }
 
     private void updateSingleTurtle(Turtle turtle, State state) {
+        boolean tempPenStatus = turtle.getIsPenUp();
+        turtle.setPenUp(true);
         turtle.setLocation(state.getxPos(), state.getyPos());
         turtle.setAngle(state.getAngle());
         turtle.setPenUp(state.getIsPenUp());
         turtle.setVisible(true);
+        turtle.setPenUp(tempPenStatus);
     }
+
     private void addTurtle(double id){
         Turtle newTurtle = new Turtle(id, 0, 0, false, 0);
         turtleMap.put(id, newTurtle);

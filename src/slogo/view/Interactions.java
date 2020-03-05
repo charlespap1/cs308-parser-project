@@ -59,9 +59,10 @@ public class Interactions implements View {
    * @param variableList
    * @param newCommandList
    */
-  public void setViewLists(ObservableList<Token> variableList, ObservableList<Token> newCommandList){
+  public void setViewLists(ObservableList<Token> variableList, ObservableList<Token> newCommandList, ObservableList<Token> historyList){
     mySetup.setVariableList(variableList);
     mySetup.setNewCommandList(newCommandList);
+    mySetup.setHistoryList(historyList);
   }
 
   /**

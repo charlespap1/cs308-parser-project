@@ -10,22 +10,20 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import slogo.model.code.Token;
 import slogo.view.commonCommands.CommonCommands;
 import slogo.view.scrollers.CommandViewer;
-import slogo.view.scrollers.HistoryCanvas;
-import slogo.view.scrollers.ListViewer;
+import slogo.view.scrollers.HistoryViewer;
 
 import java.util.Objects;
 
+import slogo.view.scrollers.ScrollingWindow;
 import slogo.view.scrollers.VariableViewer;
 import slogo.view.selectors.BackgroundSelector;
 import slogo.view.selectors.LanguageSelector;
@@ -72,7 +70,6 @@ public class SetupScreen {
   public static final String PEN_DOWN_BUTTON_KEY = "PenDownButton";
   private static final String NEW_CONFIG_BUTTON_KEY = "NewConfigButton";
 
-
   private UserCommandField myUserInput = new UserCommandField(WIDTH, HEIGHT);
   private Group root = new Group();
   private List<Turtle> myTurtles = new ArrayList<>();
@@ -84,9 +81,9 @@ public class SetupScreen {
   private Button myNewConfig;
   private Button undoButton;
   private Button redoButton;
-  private HistoryCanvas myHistory = new HistoryCanvas(COMMAND_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING);
-  private ListViewer myNewCommandViewer = new CommandViewer(LIST_VIEW_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING, this::setInputText);
-  private ListViewer myVariableView = new VariableViewer(LIST_VIEW_COLUMN, HEIGHT/2.0);
+  private ScrollingWindow myHistory = new HistoryViewer(COMMAND_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING);
+  private ScrollingWindow myNewCommandViewer = new CommandViewer(LIST_VIEW_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING, this::setInputText);
+  private ScrollingWindow myVariableView = new VariableViewer(LIST_VIEW_COLUMN, HEIGHT/2.0);
 
   private BackgroundSelector myBackgroundSelector;
   private TurtleFaceSelector myCharacterSelector;
@@ -123,8 +120,6 @@ public class SetupScreen {
 
     root.getChildren().add(myCurrentErrorMessage);
 
-    //setPreferences();
-
     Scene scene = new Scene(root, WIDTH, HEIGHT, BACKGROUND);
     scene.getStylesheets().add(Objects.requireNonNull(getClass().getClassLoader().getResource(MAIN_STYLESHEET)).toExternalForm());
 
@@ -157,9 +152,10 @@ public class SetupScreen {
   public void setInputText(String command) { myUserInput.setUserInput(command); }
   public void setVariableList(ObservableList<Token> variableList) { myVariableView.bindList(variableList); }
   public void setNewCommandList(ObservableList<Token> newCommandList) { myNewCommandViewer.bindList(newCommandList); }
+  public void setHistoryList(ObservableList<Token> historyList) { myHistory.bindList(historyList);  }
 
   public ScreenManager getScreenManager(){
-    return new ScreenManager(root, myUserInput, myTurtles, myDrawingCanvas, myHistory, myLanguageSelector);
+    return new ScreenManager(root, myUserInput, myTurtles, myDrawingCanvas, myLanguageSelector);
   }
 
   private void setupBox(Pane box, double x, double y, double width){
@@ -175,10 +171,7 @@ public class SetupScreen {
     myClear = new Button();
     myClear.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
     belowCanvasButtons.getChildren().add(myClear);
-    myClear.setOnAction(e -> {
-      root.getChildren().removeAll(myDrawingCanvas.getLines());
-      myHistory.clearHistory();
-    });
+    myClear.setOnAction(e -> { root.getChildren().removeAll(myDrawingCanvas.getLines()); });
     myStop = new Button();
     myStop.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
     belowCanvasButtons.getChildren().add(myStop);
@@ -271,7 +264,6 @@ public class SetupScreen {
   public int getShape(List<Double> params) { return 0; }
 
   public int clearScreen(List<Double> params) {
-    myHistory.clearHistory();
     for(Turtle t: myTurtles) {
       t.returnTurtleToDefault();
     }
