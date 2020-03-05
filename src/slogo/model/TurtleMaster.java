@@ -42,6 +42,7 @@ public class TurtleMaster {
     public double executeMultiTurtleCommand(TurtleAction action, List<Double> turtles) {
         for (Double id : turtles) if (!turtleMap.containsKey(id)) addTurtle(id);
         double executionValue = -1;
+        inLoop = true;
         for (Turtle t: turtleMap.values()) {
             Turtle previousActiveTurtle = currentActiveTurtle;
             currentActiveTurtle = t;
@@ -49,6 +50,7 @@ public class TurtleMaster {
             if (currentExecutionValue != Integer.MIN_VALUE || turtles.contains(t.getId())) executionValue = currentExecutionValue;
             if (!t.isActive()) currentActiveTurtle = previousActiveTurtle;
         }
+        inLoop = false;
         return executionValue;
     }
 
