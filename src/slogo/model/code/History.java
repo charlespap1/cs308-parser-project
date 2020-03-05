@@ -26,13 +26,13 @@ public class History {
         programPointer = programHistory.size() - 1;
     }
 
-    public Map<Integer, State> undo() throws IndexOutOfBoundsException {
+    public Map<Double, State> undo() throws IndexOutOfBoundsException {
         if (programPointer <= 0) throw new IndexOutOfBoundsException();
         return programHistory.get(--programPointer).getInitialTurtleStates();
         // set turtle states to programHistory.get(programCounter)
     }
 
-    public Map<Integer, State> redo() throws IndexOutOfBoundsException {
+    public Map<Double, State> redo() throws IndexOutOfBoundsException {
         if (programPointer >= programHistory.size()) throw new IndexOutOfBoundsException();
         return programHistory.get(++programPointer).getInitialTurtleStates();
         // either set turtle states to programHistory.get(programCounter) or execute everything in the program (before programPointer is incremented)

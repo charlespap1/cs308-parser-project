@@ -3,13 +3,13 @@ package slogo.model.code;
 import slogo.model.Turtle;
 
 public class State {
-    private int id;
+    private double id;
     private double xPos;
     private double yPos;
     private boolean isPenUp;
     private double angle;
 
-    public State(int id, double xPos, double yPos, boolean isPenUp, double angle) {
+    public State(double id, double xPos, double yPos, boolean isPenUp, double angle) {
         this.id = id;
         this.xPos = xPos;
         this.yPos = yPos;
@@ -25,7 +25,7 @@ public class State {
         angle = t.getAngle();
     }
 
-    public int getId() {
+    public double getId() {
         return id;
     }
 
