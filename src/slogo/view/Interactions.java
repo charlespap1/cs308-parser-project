@@ -72,6 +72,8 @@ public class Interactions implements View {
   public void setPopupButton(EventHandler<ActionEvent> showPopup) {
     mySetup.setNewConfigButton(showPopup);
   }
+  public void setUndoAction(EventHandler<ActionEvent> undoAction) { mySetup.setUndoButton(undoAction); }
+  public void setRedoAction(EventHandler<ActionEvent> redoAction) { mySetup.setRedoButton(redoAction); }
 
   public void setErrorMessage(StringProperty error){ mySetup.bindErrorMessage(error); }
 

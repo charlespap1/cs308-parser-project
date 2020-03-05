@@ -82,6 +82,8 @@ public class SetupScreen {
   private Button myStop;
   private Button myNewWindow;
   private Button myNewConfig;
+  private Button undoButton;
+  private Button redoButton;
   private HistoryCanvas myHistory = new HistoryCanvas(COMMAND_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING);
   private ListViewer myNewCommandViewer = new CommandViewer(LIST_VIEW_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING, this::setInputText);
   private ListViewer myVariableView = new VariableViewer(LIST_VIEW_COLUMN, HEIGHT/2.0);
@@ -187,8 +189,17 @@ public class SetupScreen {
     newWindowButtons.setLayoutY(COMMON_COMMAND_BUTTON_HEIGHT_OFFSET);
     newWindowButtons.setLayoutX(WIDTH/2 - BUTTON_HEIGHT_OFFSET*3);
     newWindowButtons.getChildren().addAll(myNewWindow, myNewConfig);
+    undoButton = new Button();
+    undoButton.setText("Undo");
+    redoButton = new Button();
+    redoButton.setText("Redo");
+    belowCanvasButtons.getChildren().addAll(undoButton, redoButton);
+
     root.getChildren().add(newWindowButtons);
   }
+
+  public void setUndoButton (EventHandler<ActionEvent> undoAction) { undoButton.setOnAction(undoAction); }
+  public void setRedoButton (EventHandler<ActionEvent> redoAction) { redoButton.setOnAction(redoAction); }
 
   private void setSelectors() {
     myBackgroundSelector = new BackgroundSelector(myDrawingCanvas, belowCanvasButtons.getLayoutX(), belowCanvasButtons.getLayoutY()+ BUTTON_HEIGHT_OFFSET);

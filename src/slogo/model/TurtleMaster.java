@@ -1,6 +1,7 @@
 package slogo.model;
 
 import slogo.controller.AddNewTurtleFunction;
+import slogo.model.code.State;
 import slogo.model.code.instructions.TurtleAction;
 
 import java.util.ArrayList;
@@ -58,6 +59,32 @@ public class TurtleMaster {
         return action.actOnTurtle(currentActiveTurtle);
     }
 
+    public Map<Double, State> generateStateMap() {
+        Map<Double, State> stateMap = new HashMap<>();
+        for (double id : turtleMap.keySet()) {
+            stateMap.put(id, new State(turtleMap.get(id)));
+        }
+        return stateMap;
+    }
+
+    public void updateTurtlesWithStates(Map<Double, State> turtleStates) {
+        //update turtles that existed before undo/redo
+        for (double id : turtleMap.keySet()) {
+            if (!turtleStates.containsKey(id)) {
+                // for undo, when a tell command was executed
+                turtleMap.get(id).setVisible(false);
+            } else {
+                updateSingleTurtle(turtleMap.get(id), turtleStates.get(id));
+            }
+        }
+    }
+
+    private void updateSingleTurtle(Turtle turtle, State state) {
+        turtle.setLocation(state.getxPos(), state.getyPos());
+        turtle.setAngle(state.getAngle());
+        turtle.setPenUp(state.getIsPenUp());
+        turtle.setVisible(true);
+    }
     private void addTurtle(double id){
         Turtle newTurtle = new Turtle(id, 0, 0, false, 0);
         turtleMap.put(id, newTurtle);
