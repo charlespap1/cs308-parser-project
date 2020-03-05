@@ -23,8 +23,6 @@ import slogo.view.scrollers.CommandViewer;
 import slogo.view.scrollers.HistoryCanvas;
 import slogo.view.scrollers.ListViewer;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import slogo.view.scrollers.VariableViewer;
@@ -90,6 +88,9 @@ public class SetupScreen {
   private HistoryCanvas myHistory = new HistoryCanvas(COMMAND_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING);
   private ListViewer myNewCommandViewer = new CommandViewer(LIST_VIEW_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING, this::setInputText);
   private ListViewer myVariableView = new VariableViewer(LIST_VIEW_COLUMN, HEIGHT/2.0);
+  //~~~~~~~~~~~~~ vvv for testing and troubleshooting vvv ~~~~~~~~~~~~~~~~
+  private Button myTestButton;
+  //~~~~~~~~~~~~~ ^^^ for testing and troubleshooting ^^^ ~~~~~~~~~~~~~~~~
 
   private BackgroundSelector myBackgroundSelector;
   private TurtleFaceSelector myCharacterSelector;
@@ -263,6 +264,16 @@ public class SetupScreen {
       for(Turtle t : myTurtles) t.returnTurtleToDefault();
       clearScreen(null);
     });
+    //~~~~~~~~~~~~~ vvv for testing and troubleshooting vvv ~~~~~~~~~~~~~~~~
+    myTestButton = new Button();
+    myTestButton.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
+    myTestButton.setText("Test");
+    myTestButton.setOnAction(e -> {
+//      myTurtlePopUpWindow.addTurtle(myTurtles.get(0));
+//      myTurtlePopUpWindow.printTurtles();
+    });
+    belowCanvasButtons.getChildren().add(myTestButton);
+    //~~~~~~~~~~~~~ ^^^ for testing and troubleshooting ^^^ ~~~~~~~~~~~~~~~~
 
     HBox newWindowButtons = new HBox(BOX_SPACING);
     myNewConfig = new Button();
