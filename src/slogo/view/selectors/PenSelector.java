@@ -50,6 +50,6 @@ public class PenSelector extends ColorSelector{
   }
 
   private void setPenColor(Color color){
-    for (Turtle t:turtles) t.changePenColor(color);
+    //for (Turtle t:turtles) t.changePenColor(color);
   }
 }

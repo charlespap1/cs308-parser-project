@@ -22,7 +22,7 @@ public class PreferenceBackendSetter {
     int index = params.get(0).intValue();
     //TODO: implement with palette
 
-    for (Turtle turtle : myTurtles) turtle.changePenColor(Color.RED);
+    //for (Turtle turtle : myTurtles) turtle.changePenColor(Color.RED);
     return index;
   }
 

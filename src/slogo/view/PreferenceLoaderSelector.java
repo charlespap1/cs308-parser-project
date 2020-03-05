@@ -43,7 +43,7 @@ public class PreferenceLoaderSelector {
 
     boolean penUp = getStringBooleanFromPackage(myPreferences.getString("PenUp"), DEFAULT_PEN_UP);
 
-    t.changePenColor(penColor);
+    //t.changePenColor(penColor);
     t.changeImage(image);
     t.setPenUp(penUp);
   }

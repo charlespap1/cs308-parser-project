@@ -169,7 +169,7 @@ public class SetupScreen {
     int index = params.get(0).intValue();
     //TODO: implement with palette
     String rgb = myPenSelector.map().get(index);
-    for (Turtle turtle : myTurtles) turtle.changePenColor(rgbHelper.getColor(rgb));
+    //for (Turtle turtle : myTurtles) turtle.changePenColor(rgbHelper.getColor(rgb));
     return index;
   }
 
