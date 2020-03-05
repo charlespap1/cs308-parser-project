@@ -49,15 +49,24 @@ public class Model implements ModelAPI{
         public double multiTurtleCommandToMaster(TurtleAction action, List<Double> turtles) { return turtleMaster.executeMultiTurtleCommand(action, turtles); }
     };
 
+    private History history = new History();
+
     public Model(StringProperty language) {
         typeCheck.addPatterns(SYNTAX);
         setupLanguage(language);
+        Turtle initialTurtle = new Turtle(1, 0, 0, false, 0);
+        turtleMap.put(1, initialTurtle);
+        activeTurtles.add(initialTurtle);
+        history.addNewProgram(new Program(generateStateMap(turtleMap)));
     }
 
     public void executeCode(String rawString) {
         errorMessage.set("");
         clearStacks();
         parseInstructions(rawString);
+        // add next state?
+        history.addNewProgram(new Program(generateStateMap(turtleMap)));
+        history.setPointerToEnd();
         if(!commands.isEmpty() || !arguments.isEmpty()){
             InvalidNumberArgumentsException e = new InvalidNumberArgumentsException();
             errorMessage.setValue(e.getMessage());
@@ -69,6 +78,53 @@ public class Model implements ModelAPI{
         //TODO: convert file f into rawString, then call executeCode with rawString
 
     }
+
+    public Map<Integer, State> generateStateMap(Map<Integer, Turtle> turtleMap) {
+        Map<Integer, State> stateMap = new HashMap<>();
+        for (int id : turtleMap.keySet()) {
+            stateMap.put(id, new State(turtleMap.get(id)));
+        }
+        return stateMap;
+    }
+
+    public void undo() {
+        try {
+            Map<Integer, State> prevTurtleStates = history.undo();
+            updateTurtlesWithStates(prevTurtleStates);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void redo() {
+        try {
+            Map<Integer, State> nextTurtleStates = history.redo();
+            updateTurtlesWithStates(nextTurtleStates);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void updateTurtlesWithStates(Map<Integer, State> turtleStates) {
+        //update turtles that existed before undo/redo
+        for (int id : turtleMap.keySet()) {
+            if (!turtleStates.containsKey(id)) {
+                // for undo, when a tell command was executed
+                turtleMap.get(id).setVisible(false);
+            } else {
+                updateSingleTurtle(turtleMap.get(id), turtleStates.get(id));
+            }
+        }
+    }
+
+    private void updateSingleTurtle(Turtle turtle, State state) {
+        turtle.setLocation(state.getxPos(), state.getyPos());
+        turtle.setAngle(state.getAngle());
+        turtle.setPenUp(state.getIsPenUp());
+        turtle.setVisible(true);
+    }
+
+    public Turtle getTurtle(){ return turtleMap.get(1); }
 
     public ObservableList<Token> getVariableList(){ return createFromString.getVariableList(); }
 
@@ -104,6 +160,9 @@ public class Model implements ModelAPI{
                     currFullCommand += piece + " ";
                 }
                 if(executed){
+//                    activeTurtles.get(0).setCurrCommand(currFullCommand);
+////                    activeTurtles.get(0).setCurrCommand("");
+                    history.getProgram(-1).addNewCommand(currFullCommand);
                     currFullCommand = "";
                     executed = false;
                 }
