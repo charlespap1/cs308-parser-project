@@ -21,7 +21,8 @@ public class Variable implements Token {
         return value;
     }
 
+    @Override
     public String toString(){
-        return name + " " + value;
+        return name;
     }
 }

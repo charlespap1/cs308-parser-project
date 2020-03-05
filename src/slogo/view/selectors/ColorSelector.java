@@ -28,7 +28,6 @@ public abstract class ColorSelector implements StaticViewElement {
   private Text myTitle = new Text();
 
   public ColorSelector(double x, double y, List<String> identifiers, String resourcePackage) {
-
     myHolder.setLayoutX(x);
     myHolder.setLayoutY(y);
     myHolder.getChildren().addAll(myTopElements);
@@ -40,9 +39,9 @@ public abstract class ColorSelector implements StaticViewElement {
   /**
    * Performs the action of changing whatever element
    * of the selector is clicked
-   * @param rgb
+   * @param
    */
-  protected abstract void changeAppearance(String rgb);
+  public abstract void changeAppearance(int index);
 
   /**
    * Allows for adding the selector to the root
@@ -63,7 +62,7 @@ public abstract class ColorSelector implements StaticViewElement {
       newColor.setMaxHeight(COLOR_SELECTOR_HEIGHT);
       newColor.setMinHeight(COLOR_SELECTOR_HEIGHT);
       String rgb = myResources.getString(identifier);
-      setButtonFromResourceResult(newColor, rgb);
+      setButtonFromResourceResult(newColor, 3, rgb);
       Text index = new Text(identifier);
       index.setTranslateX(5);
       buttonHold.getChildren().addAll(newColor, index);
@@ -81,10 +80,10 @@ public abstract class ColorSelector implements StaticViewElement {
    * @param newColor
    * @param rgb
    */
-  protected void setButtonFromResourceResult(Button newColor, String rgb) {
-
-    newColor.setStyle(String.format(DEFAULT_BACKGROUND_SETTER,rgb));
-    newColor.setOnAction(e -> changeAppearance(rgb));
+  protected void setButtonFromResourceResult(Button newColor, int index, String rgb) {
+    //TODO get rgb from index
+    newColor.setStyle(String.format(DEFAULT_BACKGROUND_SETTER, rgb));
+    newColor.setOnAction(e -> changeAppearance(index));
   }
 
 }

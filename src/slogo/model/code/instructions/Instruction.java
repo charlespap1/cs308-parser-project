@@ -10,7 +10,7 @@ import slogo.model.TurtleMasterAccessor;
 
 public abstract class Instruction implements Token {
 
-    protected List<Token> parameters = null;
+    protected List<Token> parameters = new ArrayList<>();
     protected String instrName = "";
     private int NUM_ARGS;
     protected TurtleMasterAccessor myAccessor;
@@ -48,6 +48,8 @@ public abstract class Instruction implements Token {
     }
 
     public String toString(){
-        return instrName;
+        StringBuilder sb = new StringBuilder(instrName);
+        for (Token param:parameters) sb.append(" ").append(param.toString());
+        return sb.toString();
     }
 }

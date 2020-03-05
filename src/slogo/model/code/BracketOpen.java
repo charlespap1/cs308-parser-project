@@ -14,4 +14,7 @@ public class BracketOpen extends Instruction {
     public double execute() {
         return -1;
     }
+
+    @Override
+    public String toString() { return " [ "; }
 }

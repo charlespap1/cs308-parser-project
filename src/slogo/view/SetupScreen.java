@@ -17,6 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
+import javafx.stage.Stage;
 import slogo.model.code.Token;
 import slogo.view.commonCommands.CommonCommands;
 import slogo.view.scrollers.CommandViewer;
@@ -38,8 +39,6 @@ import slogo.view.selectors.TurtleFaceSelector;
  */
 
 public class SetupScreen {
-
-  public static final String DEFAULT_TURTLE_IMAGE = "turtle.png";
   public static final String MAIN_STYLESHEET = "main.css";
 
   public static final double BOX_SPACING = 10;
@@ -64,7 +63,6 @@ public class SetupScreen {
   private static final String PEN_THICKNESS_TEXT_KEY = "PenThicknessText";
   private static final String TURTLE_SELECTOR_TEXT_KEY = "TurtleSelectorText";
 
-
   public static final String COMMON_COMMAND_BUTTON_KEY = "CommonCommandButton";
   public static final String GO_BUTTON_KEY = "GoButton";
   public static final String CLEAR_BUTTON_KEY = "ClearButton";
@@ -82,13 +80,10 @@ public class SetupScreen {
   private Button myGo;
   private Button myClear;
   private Button myStop;
-  private Button myCommandJumper;
   private Button myNewWindow;
   private Button myNewConfig;
-
   private Button undoButton;
   private Button redoButton;
-
   private HistoryCanvas myHistory = new HistoryCanvas(COMMAND_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING);
   private ListViewer myNewCommandViewer = new CommandViewer(LIST_VIEW_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING, this::setInputText);
   private ListViewer myVariableView = new VariableViewer(LIST_VIEW_COLUMN, HEIGHT/2.0);
@@ -138,10 +133,11 @@ public class SetupScreen {
 
   /**
    * Allows us to add a jumper to a common command page
-   * @param commonCommands
+   * @param
    */
-  public void addCommonCommands(CommonCommands commonCommands) {
-    myCommandJumper = new Button();
+  public void addCommonCommands(Stage primaryStage, Scene scene) {
+    CommonCommands commonCommands = new CommonCommands(primaryStage, scene, myLanguageSelector.getLanguageChoiceProperty());
+    Button myCommandJumper = new Button();
     myCommandJumper.textProperty().bind(languageHelper.getStringProperty(COMMON_COMMAND_BUTTON_KEY));
     myCommandJumper.setOnAction(e -> commonCommands.showCommonCommandScene());
     myCommandJumper.setLayoutX(WIDTH - COMMON_COMMAND_BUTTON_WIDTH_OFFSET);
@@ -149,27 +145,6 @@ public class SetupScreen {
     root.getChildren().add(myCommandJumper);
   }
 
-  public void addNewTurtle(slogo.model.Turtle turtle) {
-    Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(DEFAULT_TURTLE_IMAGE)));
-    Turtle newTurtle = new Turtle(image, myDrawingCanvas.getWidth(), myDrawingCanvas.getHeight());
-    myTurtles.add(newTurtle);
-    root.getChildren().add(newTurtle.getView());
-    newTurtle.setProperties(turtle);
-    turtle.pointProperty().addListener((o, oldVal, newVal) -> update(newTurtle));
-    turtle.currCommandProperty().addListener((o, oldVal, newVal) -> addHistory(newVal));
-  }
-
-  public void setInputText(String command) { myUserInput.setUserInput(command); }
-
-  public String getUserInput() { return myUserInput.getUserInput(); }
-
-  public DrawingCanvas getDrawingCanvas() { return myDrawingCanvas; }
-
-  public void setVariableList(ObservableList<Token> variableList) { myVariableView.bindList(variableList); }
-
-  public void setNewCommandList(ObservableList<Token> newCommandList) { myNewCommandViewer.bindList(newCommandList); }
-
-  public void addHistory(String command) { myHistory.addHistory(command);}
 
   public void bindErrorMessage(StringProperty message) {
     myCurrentErrorMessage.textProperty().bind(message);
@@ -177,68 +152,14 @@ public class SetupScreen {
   }
 
   public void setGoButton(EventHandler<ActionEvent> goAction) { myGo.setOnAction(goAction); }
-
   public void setNewWindowButton(EventHandler<ActionEvent> newWindowAction) { myNewWindow.setOnAction(newWindowAction);}
   public void setNewConfigButton(EventHandler<ActionEvent> newConfigAction) { myNewConfig.setOnAction(newConfigAction); }
+  public void setInputText(String command) { myUserInput.setUserInput(command); }
+  public void setVariableList(ObservableList<Token> variableList) { myVariableView.bindList(variableList); }
+  public void setNewCommandList(ObservableList<Token> newCommandList) { myNewCommandViewer.bindList(newCommandList); }
 
-  public Group getRoot() { return root; }
-
-  public StringProperty getLanguageChoice() { return myLanguageSelector.getLanguageChoiceProperty(); }
-
-  public int setPenColor(List<Double> params) {
-    int index = params.get(0).intValue();
-    //TODO: implement with palette
-
-    for (Turtle turtle : myTurtles) turtle.changePenColor(Color.RED);
-    return index;
-  }
-
-  public int setBackground(List<Double> params){
-    int index = params.get(0).intValue();
-    //TODO: implement with palette
-    myDrawingCanvas.changeBackground(Color.RED);
-    return index;
-  }
-
-  public int setPenThickness(List<Double> params){
-    int index = params.get(0).intValue();
-    //TODO: implement with palette ? unsure
-    for (Turtle turtle : myTurtles) turtle.setThickness(index);
-    return index;
-  }
-
-  public int setTurtleImage(List<Double> params){
-    int index = params.get(0).intValue();
-    //TODO: implement with palette
-    for (Turtle turtle : myTurtles) turtle.changeImage(null);
-    return index;
-  }
-
-  public int setPalette(List<Double> params){return 0;}
-
-  public int getPenColor(List<Double> params) { return 0;}
-  public int getShape(List<Double> params) { return 0; }
-
-  public int clearScreen(List<Double> params) {
-    myHistory.clearHistory();
-    for(Turtle t: myTurtles)
-    {
-      t.returnTurtleToDefault();
-    }
-    root.getChildren().removeAll(myDrawingCanvas.getLines());
-    return 0;
-  }
-
-  /**
-   * Updates the movement of the turtle according to new states
-   */
-  private void update(Turtle newTurtle) {
-    Line newLine = newTurtle.drawLineAndBound();
-    if (newLine!=null) {
-      root.getChildren().add(newLine);
-      myDrawingCanvas.addLine(newLine);
-      newTurtle.getView().toFront();
-    }
+  public ScreenManager getScreenManager(){
+    return new ScreenManager(root, myUserInput, myTurtles, myDrawingCanvas, myHistory, myLanguageSelector);
   }
 
   private void setupBox(Pane box, double x, double y, double width){
@@ -251,28 +172,23 @@ public class SetupScreen {
     myGo = new Button();
     myGo.setMinWidth(myUserInput.getWidth());
     belowInputFieldItems.getChildren().add(myGo);
-
     myClear = new Button();
     myClear.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
     belowCanvasButtons.getChildren().add(myClear);
-    myClear.setOnAction(e -> clearScreen(null));
-
+    myClear.setOnAction(e -> {
+      root.getChildren().removeAll(myDrawingCanvas.getLines());
+      myHistory.clearHistory();
+    });
     myStop = new Button();
     myStop.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
     belowCanvasButtons.getChildren().add(myStop);
-    myStop.setOnAction(e -> {
-      for(Turtle t : myTurtles) t.returnTurtleToDefault();
-      clearScreen(null);
-    });
-
-    HBox newWindowButtons = new HBox(BOX_SPACING);
+    myStop.setOnAction(e -> { for(Turtle t : myTurtles) t.returnTurtleToDefault(); });
     myNewConfig = new Button();
-
     myNewWindow = new Button();
+    HBox newWindowButtons = new HBox(BOX_SPACING);
     newWindowButtons.setLayoutY(COMMON_COMMAND_BUTTON_HEIGHT_OFFSET);
     newWindowButtons.setLayoutX(WIDTH/2 - BUTTON_HEIGHT_OFFSET*3);
     newWindowButtons.getChildren().addAll(myNewWindow, myNewConfig);
-
     undoButton = new Button();
     undoButton.setText("Undo");
     redoButton = new Button();
@@ -280,21 +196,15 @@ public class SetupScreen {
     belowCanvasButtons.getChildren().addAll(undoButton, redoButton);
 
     root.getChildren().add(newWindowButtons);
-
   }
 
-  public void setUndoButton (EventHandler<ActionEvent> undoAction) {
-    undoButton.setOnAction(undoAction);
-  }
-
-  public void setRedoButton (EventHandler<ActionEvent> redoAction) {
-    redoButton.setOnAction(redoAction);
-  }
+  public void setUndoButton (EventHandler<ActionEvent> undoAction) { undoButton.setOnAction(undoAction); }
+  public void setRedoButton (EventHandler<ActionEvent> redoAction) { redoButton.setOnAction(redoAction); }
 
   private void setSelectors() {
     myBackgroundSelector = new BackgroundSelector(myDrawingCanvas, belowCanvasButtons.getLayoutX(), belowCanvasButtons.getLayoutY()+ BUTTON_HEIGHT_OFFSET);
-    myCharacterSelector = new TurtleFaceSelector(myVariableView.getView().getLayoutX(), belowInputFieldItems.getLayoutY() + CHARACTER_TYPE_OFFSET);
-    myPenSelector = new PenSelector(belowInputFieldItems.getLayoutX(), belowInputFieldItems.getLayoutY() + BUTTON_HEIGHT_OFFSET);
+    myCharacterSelector = new TurtleFaceSelector(myTurtles, myVariableView.getView().getLayoutX(), belowInputFieldItems.getLayoutY() + CHARACTER_TYPE_OFFSET);
+    myPenSelector = new PenSelector(myTurtles, belowInputFieldItems.getLayoutX(), belowInputFieldItems.getLayoutY() + BUTTON_HEIGHT_OFFSET);
     myLanguageSelector = new LanguageSelector(DrawingCanvas.CANVAS_SIDE_PADDING, DrawingCanvas.CANVAS_TOP_PADDING/4);
   }
 
@@ -317,18 +227,56 @@ public class SetupScreen {
     myLanguageSelector.setTitleProperty(languageHelper.getStringProperty(LANGUAGE_SELECTOR_TEXT_KEY));
     myGraphicalMover.setTitleProperty(languageHelper.getStringProperty(PEN_THICKNESS_TEXT_KEY));
     myGraphicalMover.setPenLabelProperty(languageHelper.getStringProperty(PEN_UP_BUTTON_KEY), languageHelper.getStringProperty(PEN_DOWN_BUTTON_KEY));
-
   }
 
-  public void setPreferences(String preferenceTitle)
-  {
+  public void setPreferences(String preferenceTitle) {
     PreferenceLoaderSelector myPreferences = new PreferenceLoaderSelector(preferenceTitle);
-
-    for(Turtle t : myTurtles)
-    {
+    for(Turtle t : myTurtles) {
       myPreferences.setTurtle(t);
     }
     myPreferences.changeBackground(myDrawingCanvas);
+  }
+
+  public int setPenColor(List<Double> params) {
+    int index = params.get(0).intValue();
+    //TODO: implement with palette
+    myPenSelector.changeAppearance(index);
+    return index;
+  }
+
+  public int setBackground(List<Double> params){
+    int index = params.get(0).intValue();
+    //TODO: implement with palette
+    myDrawingCanvas.changeBackground(Color.RED);
+    return index;
+  }
+
+  public int setPenThickness(List<Double> params){
+    int index = params.get(0).intValue();
+    //TODO: implement with palette ? unsure
+    for (Turtle turtle : myTurtles) turtle.setThickness(index);
+    return index;
+  }
+
+  public int setTurtleImage(List<Double> params){
+    int index = params.get(0).intValue();
+    //TODO: implement with palette
+    myCharacterSelector.changeAppearance(index);
+    return index;
+  }
+
+  public int setPalette(List<Double> params){return 0;}
+
+  public int getPenColor(List<Double> params) { return 0;}
+  public int getShape(List<Double> params) { return 0; }
+
+  public int clearScreen(List<Double> params) {
+    myHistory.clearHistory();
+    for(Turtle t: myTurtles) {
+      t.returnTurtleToDefault();
+    }
+    root.getChildren().removeAll(myDrawingCanvas.getLines());
+    return 0;
   }
 
 }

@@ -36,7 +36,7 @@ public class Model implements ModelAPI{
     private String currFullCommand = "";
     private boolean executed = false;
     private TurtleMaster turtleMaster = new TurtleMaster();
-    private Map<Double, Turtle> turtleMap = turtleMaster.getTurtleMap();
+    private History history = new History();
     private TurtleMasterAccessor accessor = new TurtleMasterAccessor() {
         @Override
         public double turtleCommandToMaster(TurtleAction action) { return turtleMaster.executeTurtleCommand(action); }
@@ -46,23 +46,18 @@ public class Model implements ModelAPI{
         public double multiTurtleCommandToMaster(TurtleAction action, List<Double> turtles) { return turtleMaster.executeMultiTurtleCommand(action, turtles); }
     };
 
-    private History history = new History();
-
     public Model(StringProperty language) {
         typeCheck.addPatterns(SYNTAX);
         setupLanguage(language);
-        Turtle initialTurtle = new Turtle(0, 0, 0, false, 90);
-        turtleMap.put(0.0, initialTurtle);
-        //activeTurtles.add(initialTurtle);
-        history.addNewProgram(new Program(generateStateMap(turtleMap)));
+
+        history.addNewProgram(new Program(turtleMaster.generateStateMap()));
     }
 
     public void executeCode(String rawString) {
         errorMessage.set("");
         clearStacks();
         parseInstructions(rawString);
-        // add next state?
-        history.addNewProgram(new Program(generateStateMap(turtleMap)));
+        history.addNewProgram(new Program(turtleMaster.generateStateMap()));
         history.setPointerToEnd();
         if(!commands.isEmpty() || !arguments.isEmpty()){
             InvalidNumberArgumentsException e = new InvalidNumberArgumentsException();
@@ -76,18 +71,10 @@ public class Model implements ModelAPI{
 
     }
 
-    public Map<Double, State> generateStateMap(Map<Double, Turtle> turtleMap) {
-        Map<Double, State> stateMap = new HashMap<>();
-        for (double id : turtleMap.keySet()) {
-            stateMap.put(id, new State(turtleMap.get(id)));
-        }
-        return stateMap;
-    }
-
     public void undo() {
         try {
             Map<Double, State> prevTurtleStates = history.undo();
-            updateTurtlesWithStates(prevTurtleStates);
+            turtleMaster.updateTurtlesWithStates(prevTurtleStates);
         } catch (IndexOutOfBoundsException e) {
             System.out.println(e.getMessage());
         }
@@ -96,34 +83,11 @@ public class Model implements ModelAPI{
     public void redo() {
         try {
             Map<Double, State> nextTurtleStates = history.redo();
-            updateTurtlesWithStates(nextTurtleStates);
+            turtleMaster.updateTurtlesWithStates(nextTurtleStates);
         } catch (IndexOutOfBoundsException e) {
             System.out.println(e.getMessage());
         }
     }
-
-    private void updateTurtlesWithStates(Map<Double, State> turtleStates) {
-        //update turtles that existed before undo/redo
-        System.out.println(turtleMap);
-        System.out.println(turtleStates);
-        for (double id : turtleMap.keySet()) {
-            if (!turtleStates.containsKey(id)) {
-                // for undo, when a tell command was executed
-                turtleMap.get(id).setVisible(false);
-            } else {
-                updateSingleTurtle(turtleMap.get(id), turtleStates.get(id));
-            }
-        }
-    }
-
-    private void updateSingleTurtle(Turtle turtle, State state) {
-        turtle.setLocation(state.getxPos(), state.getyPos());
-        turtle.setAngle(state.getAngle());
-        turtle.setPenUp(state.getIsPenUp());
-        turtle.setVisible(true);
-    }
-
-    public Turtle getTurtle(){ return turtleMap.get(1); }
 
     public ObservableList<Token> getVariableList(){ return createFromString.getVariableList(); }
 
@@ -159,8 +123,6 @@ public class Model implements ModelAPI{
                     currFullCommand += piece + " ";
                 }
                 if(executed){
-//                    activeTurtles.get(0).setCurrCommand(currFullCommand);
-////                    activeTurtles.get(0).setCurrCommand("");
                     history.getProgram(history.getProgramHistory().size() - 1).addNewCommand(currFullCommand);
                     currFullCommand = "";
                     executed = false;
