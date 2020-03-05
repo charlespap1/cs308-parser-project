@@ -24,7 +24,6 @@ public class ScreenManager {
     private DisplayCustomizer myDisplayCustomizer;
     private TurtleGraphicalMover myGraphicalMover;
 
-
     public ScreenManager(Group root, UserCommandField commandField, List<Turtle> turtles, DrawingCanvas canvas,
                          LanguageSelector languages, LineManager lineManager, DisplayCustomizer displayCustomizer, TurtleGraphicalMover mover){
         myRoot = root;
@@ -37,6 +36,9 @@ public class ScreenManager {
         myGraphicalMover = mover;
     }
 
+    public void setPreferences(String preferences){
+        PreferenceLoaderSelector.setPreferences(preferences, myDisplayCustomizer);
+    }
 
     public void addNewTurtle(slogo.model.Turtle turtle) {
         Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(DEFAULT_TURTLE_IMAGE)));
@@ -75,9 +77,10 @@ public class ScreenManager {
         return thickness;
     }
 
-    public int setTurtleImage(List<Double> params){
+    public int setShape(List<Double> params){
         int index = params.get(0).intValue();
         Image image = myDisplayCustomizer.getImage(index);
+        System.out.println("changing");
         for (Turtle turtle : myTurtles) turtle.changeImage(image);
         return index;
     }

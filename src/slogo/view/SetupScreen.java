@@ -1,9 +1,5 @@
 package slogo.view;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
@@ -22,21 +18,16 @@ import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import slogo.model.tokens.Token;
 import slogo.view.commonCommands.CommonCommands;
-import slogo.view.popup.FileDoesNotExistException;
-import slogo.view.popup.LoadConfigPopup;
 import slogo.view.scrollers.CommandViewer;
 import slogo.view.scrollers.HistoryViewer;
-
-import java.util.Objects;
-
 import slogo.view.scrollers.ScrollingWindow;
 import slogo.view.scrollers.VariableViewer;
-import slogo.view.selectors.BackgroundSelector;
 import slogo.view.selectors.DisplayCustomizer;
 import slogo.view.selectors.LanguageSelector;
-import slogo.view.selectors.PenSelector;
-import slogo.view.selectors.RGBHelper;
-import slogo.view.selectors.TurtleFaceSelector;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * This class allows us to make our main class less fat
@@ -263,13 +254,4 @@ public class SetupScreen {
     myGraphicalMover.setTitleProperty(languageHelper.getStringProperty(PEN_THICKNESS_TEXT_KEY));
     myGraphicalMover.setPenLabelProperty(languageHelper.getStringProperty(PEN_UP_BUTTON_KEY), languageHelper.getStringProperty(PEN_DOWN_BUTTON_KEY));
   }
-
-  public void setPreferences(String preferenceTitle) {
-    PreferenceLoaderSelector myPreferences = new PreferenceLoaderSelector(preferenceTitle);
-    for(Turtle t : myTurtles) {
-      myPreferences.setTurtle(t);
-    }
-    myPreferences.changeBackground(myDrawingCanvas);
-  }
-
 }

@@ -32,6 +32,7 @@ public class DisplayCustomizer {
   private static final String IMAGE_PATH = "resources.commands.TurtleImages";
   private static final int DEFAULT_PEN_COLOR = 0;
   private static final int DEFAULT_TURTLE_FACE = 0;
+  private static final int DEFAULT_BACKGROUND_COLOR = 7;
 
   public static final ResourceBundle myImageResource = ResourceBundle.getBundle(IMAGE_PATH);
   public static final ResourceBundle myColorResource = ResourceBundle.getBundle(COLOR_PATH);
@@ -54,6 +55,8 @@ public class DisplayCustomizer {
 
   private int penColorIndex = DEFAULT_PEN_COLOR;
   private int imageIndex = DEFAULT_TURTLE_FACE;
+  private int backgroundColorIndex = DEFAULT_BACKGROUND_COLOR;
+  private boolean penUp = false;
 
   public DisplayCustomizer(double x, double y) {
     myHolder.setLayoutX(x);
@@ -89,6 +92,8 @@ public class DisplayCustomizer {
     colors.add(index, color);
   }
   public void setPenColor(int index){ penColorIndex = index; }
+  public void setPenUp(boolean isPenUp){ penUp = isPenUp; }
+  public void setBackground(int index){ backgroundColorIndex = index; }
 
   private List<Button> createButtons(List<String> ids, HBox holder)
   {

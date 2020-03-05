@@ -50,7 +50,6 @@ public class LanguageSelector {
     public StringProperty getLanguageChoiceProperty() { return currentLanguage; }
 
     private void makeSelector(){
-        //Label prompt = new Label(PROMPT);
         ComboBox<String> languages = new ComboBox<>(LANGUAGE_LIST);
         languages.valueProperty().setValue(DEFAULT_LANGUAGE);
         currentLanguage.bind(languages.valueProperty());

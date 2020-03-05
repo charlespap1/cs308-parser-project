@@ -24,20 +24,17 @@ public class Interactions implements View {
 
   private ScreenManager myScreen;
   private SetupScreen mySetup;
-  private String myPreferences;
 
   public Interactions(Stage primaryStage, String preferences) {
     mySetup = new SetupScreen();
     Scene myScene = mySetup.setupGame();
     mySetup.addCommonCommands(primaryStage, myScene);
-    myPreferences = preferences;
     myScreen = mySetup.getScreenManager();
+    myScreen.setPreferences(preferences);
 
     primaryStage.setScene(myScene);
     primaryStage.setTitle(TITLE);
     primaryStage.show();
-
-    setPreferences();
   }
 
   /**
@@ -104,7 +101,4 @@ public class Interactions implements View {
       return (Integer) value;
     };
   }
-
-  private void setPreferences() { mySetup.setPreferences(myPreferences); }
-
 }
