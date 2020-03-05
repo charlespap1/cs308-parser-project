@@ -87,4 +87,12 @@ public class Interactions implements View {
 
   public void setPreferences() { mySetup.setPreferences(myPreferences); }
 
+  public void setUndoAction(EventHandler<ActionEvent> undoAction) {
+    mySetup.setUndoButton(undoAction);
+  }
+
+  public void setRedoAction(EventHandler<ActionEvent> redoAction) {
+    mySetup.setRedoButton(redoAction);
+  }
+
 }
