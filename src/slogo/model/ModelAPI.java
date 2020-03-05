@@ -2,13 +2,14 @@ package slogo.model;
 
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
+import slogo.model.code.Token;
 
 import java.io.File;
 
 public interface ModelAPI {
     void executeCode(String rawCode);
     void executeCode(File f);
-    ObservableList<String> getVariableList();
-    ObservableList<String> getNewCommandsList();
+    ObservableList<Token> getVariableList();
+    ObservableList<Token> getNewCommandsList();
     StringProperty getErrorMessage();
 }

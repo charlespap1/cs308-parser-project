@@ -70,9 +70,9 @@ public class Model implements ModelAPI{
 
     }
 
-    public ObservableList<String> getVariableList(){ return createFromString.getVariableList(); }
+    public ObservableList<Token> getVariableList(){ return createFromString.getVariableList(); }
 
-    public ObservableList<String> getNewCommandsList(){ return createFromString.getNewCommandList(); }
+    public ObservableList<Token> getNewCommandsList(){ return createFromString.getNewCommandList(); }
 
     public StringProperty getErrorMessage(){ return errorMessage; }
 
@@ -92,6 +92,8 @@ public class Model implements ModelAPI{
     }
 
     public void setAddTurtleFunction(AddNewTurtleFunction function){ turtleMaster.setAddTurtleFunction(function); }
+
+    public void setErrorMessage(String error) { errorMessage.setValue(error); }
 
     private void parseInstructions(String rawString){
         try {

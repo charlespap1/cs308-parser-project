@@ -14,12 +14,11 @@ public class SetPenSize extends DisplayCommand {
     @Override
     public double execute() {
         List<Double> paramsAsVals = getParamsAsVals();
-        double pixels = paramsAsVals.get(0);
         try {
-            myAction.execute(new ArrayList<>(List.of((int) pixels)));
+            myAction.execute(paramsAsVals);
         } catch (Exception e) {
             System.out.println("Bad input");
         }
-        return pixels;
+        return paramsAsVals.get(0);
     }
 }

@@ -16,19 +16,14 @@ public class SetPalette extends DisplayCommand {
     @Override
     public double execute() throws InvalidArgumentException {
         List<Double> paramsAsVals = getParamsAsVals();
-        double index = paramsAsVals.get(0);
-        double r = paramsAsVals.get(1);
-        double g = paramsAsVals.get(2);
-        double b = paramsAsVals.get(3);
-        if (!(rgbValueIsValid(r) && rgbValueIsValid(g) && rgbValueIsValid(b))) {
-            throw new InvalidArgumentException();
-        }
+        for (int i=1; i<=3; i++) if (!(rgbValueIsValid(paramsAsVals.get(i)))) throw new InvalidArgumentException();
+
         try {
-            myAction.execute(new ArrayList<>(List.of((int) index, (int) r, (int) g, (int) b)));
+            myAction.execute(paramsAsVals);
         } catch (Exception e) {
             System.out.println("Bad input");
         }
-        return index;
+        return paramsAsVals.get(0);
     }
 
     private boolean rgbValueIsValid (double value) {

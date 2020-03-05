@@ -1,14 +1,14 @@
 package slogo.view.popup;
 
-import java.io.File;
 import java.util.Objects;
-import java.util.Scanner;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.ComboBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
@@ -19,27 +19,30 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Popup;
 
-public class LoadConfigPopup {
+public class SetPreferencesPopup implements ViewPopup{
 
-  public static final int HOLDER_SPACING = 10;
-  public static final int WINDOW_WIDTH = 325;
+  public static final int HOLDER_SPACING = 5;
+  public static final int WINDOW_WIDTH = 340;
   public static final int WINDOW_HEIGHT = 50;
-  public static final int TEXT_FIELD_WIDTH = 125;
-  public static final int EXIT_BUTTON_SIZE = 5;
+  public static final int LIST_WIDTH = 165;
   public static final Color HOLDER_BACKGROUND_COLOR = Color.LAVENDER;
-  public static final int HOLDER_PADDING = 10;
-  public static final String PACKAGE = "resources/%s.txt";
+  public static final int HOLDER_PADDING = 5;
+  private static final int LIST_HEIGHT = 20;
+  public static final int EXIT_BUTTON_SIZE = 5;
   private static final String X_IMAGE_FILE = "exit.png";
+
 
   private Popup myPopup;
 
   private HBox myHolder;
-  private TextField myInput;
   private Text myPrompt;
-  private Button myLoad;
+  private ComboBox<String> myList;
   private Button exit;
 
-  public LoadConfigPopup()
+  private Button myGo;
+
+
+  public SetPreferencesPopup()
   {
     myPopup = new Popup();
 
@@ -49,24 +52,25 @@ public class LoadConfigPopup {
     myHolder.setMinSize(WINDOW_WIDTH, WINDOW_HEIGHT);
     myHolder.setBackground(new Background(new BackgroundFill(HOLDER_BACKGROUND_COLOR, CornerRadii.EMPTY, Insets.EMPTY)));
 
-    myInput = new TextField();
-    myInput.setMaxWidth(TEXT_FIELD_WIDTH);
     myPrompt = new Text();
-    myPrompt.setText("    Enter \na filename: ");
+    myPrompt.setText("    Choose \n Preference: ");
 
-    setButtons();
+    myGo = new Button("Go");
 
     myHolder.setAlignment(Pos.CENTER);
     myHolder.setPadding(new Insets(HOLDER_PADDING,HOLDER_PADDING,HOLDER_PADDING,HOLDER_PADDING));
-    myHolder.getChildren().addAll(exit, myPrompt, myInput, myLoad);
 
     myPopup.getContent().add(myHolder);
 
+    setList();
+    setExit();
+    myList.setPrefSize(LIST_WIDTH, LIST_HEIGHT);
+    myHolder.getChildren().addAll(exit, myPrompt, myList, myGo);
+
   }
 
-  private void setButtons() {
-    myLoad = new Button("Load");
-
+  private void setExit()
+  {
     exit = new Button();
     exit.setLayoutX(myHolder.getLayoutX());
     exit.setLayoutY(myHolder.getLayoutY());
@@ -74,7 +78,21 @@ public class LoadConfigPopup {
     exit.setOnAction(e -> myPopup.hide());
     ImageView exitImage = getButtonPic();
     exit.setGraphic(exitImage);
+  }
 
+
+  private void setList()
+  {
+    myList = new ComboBox<>();
+    ObservableList<String> items = FXCollections.observableArrayList(
+        "DefaultPreferences", "PreferencesOne");
+    myList.setValue("DefaultPreferences");
+    myList.setItems(items);
+  }
+
+  public String getPreference()
+  {
+    return myList.getSelectionModel().getSelectedItem();
   }
 
   private ImageView getButtonPic()
@@ -87,29 +105,14 @@ public class LoadConfigPopup {
     return iv;
   }
 
+  @Override
+  public void setPopupButton(EventHandler<ActionEvent> makeNewWindow) {
+    myGo.setOnAction(makeNewWindow);
+  }
 
   public Popup getMyPopup()
   {
     return myPopup;
   }
-
-  public void setPopupButton(EventHandler<ActionEvent> e)
-  {
-    myLoad.setOnAction(e);
-  }
-
-  public File getFile() throws FileDoesNotExistException
-  {
-    String path = String.format(PACKAGE, myInput.getText());
-    try {
-      File f = new File(path);
-      Scanner myReader = new Scanner(f);
-      return f;
-
-    } catch (Exception e) {
-      throw new FileDoesNotExistException(e);
-    }
-  }
-
 
 }
