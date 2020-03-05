@@ -7,9 +7,9 @@ import java.util.Map;
 public class Program {
 
     private List<String> listOfCommands = new ArrayList<>();
-    private Map<Integer, State> initialTurtleStates;
+    private Map<Double, State> initialTurtleStates;
 
-    public Program (Map<Integer, State> initialTurtleStates) {
+    public Program (Map<Double, State> initialTurtleStates) {
         this.initialTurtleStates = initialTurtleStates;
     }
 
@@ -17,7 +17,7 @@ public class Program {
         listOfCommands.add(command);
     }
 
-    public Map<Integer, State> getInitialTurtleStates () {
+    public Map<Double, State> getInitialTurtleStates () {
         return initialTurtleStates;
     }
 
