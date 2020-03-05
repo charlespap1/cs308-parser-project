@@ -17,8 +17,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
+import javafx.stage.Stage;
 import slogo.model.code.Token;
 import slogo.view.commonCommands.CommonCommands;
+import slogo.view.popup.TurtleStatePopup;
 import slogo.view.scrollers.CommandViewer;
 import slogo.view.scrollers.HistoryCanvas;
 import slogo.view.scrollers.ListViewer;
@@ -94,6 +96,8 @@ public class SetupScreen {
   private ListViewer myVariableView = new VariableViewer(LIST_VIEW_COLUMN, HEIGHT/2.0);
   //~~~~~~~~~~~~~ vvv for testing and troubleshooting vvv ~~~~~~~~~~~~~~~~
   private Button myTestButton;
+  private Button myTurtlesStatesButton;
+  private TurtleStatePopup myTurtleStatePopup = new TurtleStatePopup();
   //~~~~~~~~~~~~~ ^^^ for testing and troubleshooting ^^^ ~~~~~~~~~~~~~~~~
 
   private BackgroundSelector myBackgroundSelector;
@@ -277,6 +281,11 @@ public class SetupScreen {
 //      myTurtlePopUpWindow.printTurtles();
     });
     belowCanvasButtons.getChildren().add(myTestButton);
+
+    myTurtlesStatesButton = new Button();
+    myTurtlesStatesButton.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
+    myTurtlesStatesButton.setText("States");
+    belowCanvasButtons.getChildren().add(myTurtlesStatesButton);
     //~~~~~~~~~~~~~ ^^^ for testing and troubleshooting ^^^ ~~~~~~~~~~~~~~~~
 
     HBox newWindowButtons = new HBox(BOX_SPACING);
@@ -304,6 +313,12 @@ public class SetupScreen {
   public void setRedoButton (EventHandler<ActionEvent> redoAction) {
     redoButton.setOnAction(redoAction);
   }
+  //~~~~~~~~~~~~~ vvv for testing and troubleshooting vvv ~~~~~~~~~~~~~~~~
+  public void setTurtlesStatesButton (EventHandler<ActionEvent> showTurtlesAction) {
+    myTurtlesStatesButton.setOnAction(showTurtlesAction);
+  };
+  //~~~~~~~~~~~~~ ^^^ for testing and troubleshooting ^^^ ~~~~~~~~~~~~~~~~
+
 
   private void setSelectors() {
     myBackgroundSelector = new BackgroundSelector(myDrawingCanvas, belowCanvasButtons.getLayoutX(), belowCanvasButtons.getLayoutY()+ BUTTON_HEIGHT_OFFSET);
@@ -345,4 +360,7 @@ public class SetupScreen {
     myPreferences.changeBackground(myDrawingCanvas);
   }
 
+  public TurtleStatePopup getTurtleStatePopup() {
+    return myTurtleStatePopup;
+  }
 }

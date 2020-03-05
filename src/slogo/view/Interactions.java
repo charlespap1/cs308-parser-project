@@ -14,6 +14,7 @@ import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import slogo.model.code.Token;
 import slogo.view.commonCommands.CommonCommands;
+import slogo.view.popup.TurtleStatePopup;
 
 import java.util.List;
 import java.util.Objects;
@@ -27,6 +28,7 @@ import java.lang.reflect.Method;
  */
 public class Interactions implements View {
   public static final String TITLE = "SLogo";
+  public TurtleStatePopup myTurtleStatePopup;
 
   private SetupScreen mySetup;
   private Group root;
@@ -41,6 +43,7 @@ public class Interactions implements View {
     root = mySetup.getRoot();
     myCanvas = mySetup.getDrawingCanvas();
     myPreferences = preferences;
+    myTurtleStatePopup = mySetup.getTurtleStatePopup();
 
     primaryStage.setScene(myScene);
     primaryStage.setTitle(TITLE);
@@ -83,6 +86,8 @@ public class Interactions implements View {
 
   public void setNewWindowButton(EventHandler<ActionEvent> newWindowAction) { mySetup.setNewWindowButton(newWindowAction); }
   public void setNewConfigButton(EventHandler<ActionEvent> newWindowAction) { mySetup.setNewConfigButton(newWindowAction); }
+  public void setTurtlesStateButton(EventHandler<ActionEvent> showTurtlesAction) { mySetup.setTurtlesStatesButton(showTurtlesAction); }
+
 
   public void setErrorMessage(StringProperty error){ mySetup.bindErrorMessage(error); }
 
@@ -113,5 +118,4 @@ public class Interactions implements View {
   public void setRedoAction(EventHandler<ActionEvent> redoAction) {
     mySetup.setRedoButton(redoAction);
   }
-
 }
