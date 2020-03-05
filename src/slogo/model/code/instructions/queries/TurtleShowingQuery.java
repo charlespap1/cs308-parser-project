@@ -14,7 +14,5 @@ public class TurtleShowingQuery extends Instruction {
 
     public void performAction (Turtle t) {
         valueOfExecution = t.isVisible() ? 1 : 0;
-        t.setCurrCommand(toString());
-        t.setCurrCommand("");
     }
 }

@@ -9,7 +9,7 @@ public interface ModelAPI {
     void executeCode(String rawCode);
     void executeCode(File f);
     //Turtle getTurtle();
-    ObservableList<String> getVariableList();
-    ObservableList<String> getNewCommandsList();
+    //ObservableList<String> getVariableList();
+    //ObservableList<String> getNewCommandsList();
     StringProperty getErrorMessage();
 }

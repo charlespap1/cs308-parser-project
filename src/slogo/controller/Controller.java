@@ -1,20 +1,28 @@
 package slogo.controller;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.FileNotFoundException;
+import java.util.ResourceBundle;
+
+import java.io.File;
 import java.util.Scanner;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import slogo.model.Model;
-import slogo.model.code.instructions.queries.YCor;
 import slogo.view.Interactions;
+import slogo.view.DisplayAction;
+import slogo.view.popup.FileDoesNotExistException;
+import slogo.view.popup.LoadConfigPopup;
+import slogo.view.popup.SetPreferencesPopup;
 
 /**
  * Main method where the GUI comes together
  * @author natalie
  */
 public class Controller extends Application {
-
+    public static final String RESOURCES_PATH = "resources.commands.Methods";
+    public static final String DEFAULT_PREFERENCES = "DefaultPreferences";
     public static void main (String[] args) {
         launch(args);
     }
@@ -25,23 +33,53 @@ public class Controller extends Application {
      */
     @Override
     public void start(Stage primaryStage) {
-        makeWindow(primaryStage);
+        makeWindow(primaryStage, DEFAULT_PREFERENCES);
     }
 
-    private void makeNewWindow() {
-        makeWindow(new Stage());
+    private void makeNewWindow(String preference) {
+        makeWindow(new Stage(), preference);
     }
 
-    private void makeWindow(Stage stage){
-        Interactions myView = new Interactions(stage);
+    private void showPopUp(Stage currentStage, Model myModel){
+        LoadConfigPopup popup = new LoadConfigPopup();
+        popup.getMyPopup().show(currentStage);
+        EventHandler<ActionEvent> e = event -> {
+            try{
+                File commandFile = popup.getFile();
+                executeTextFile(commandFile, myModel);
+            }catch(FileDoesNotExistException err)
+            {
+                myModel.setErrorMessage(err.getMessage());
+            }
+            popup.getMyPopup().hide();
+        };
+        popup.setPopupButton(e);
+    }
+
+    private void makeWindow(Stage stage, String preferences){
+        Interactions myView = new Interactions(stage, preferences);
         Model myModel = new Model(myView.getLanguageChoice());
-        //myView.setTurtle(myModel.getTurtle());
-        myView.setTurtles(myModel.getTurtles());
+        myView.setInitialTurtle(myModel.getTurtle());
         myView.setGoButton(e -> getInstruction(myView, myModel));
         myView.setViewLists(myModel.getVariableList(), myModel.getNewCommandsList());
         myView.setErrorMessage(myModel.getErrorMessage());
-        myView.setNewWindowButton(e -> makeNewWindow());
-        myModel.setClearAction(myView.getClearAction());
+        myView.setNewWindowButton(e -> getNewPreferences(stage));
+        setupCommands(myView, myModel);
+        myView.setPopupButton(e -> showPopUp(stage, myModel));
+        //TODO: add listener for method tell command
+        //myView.add(turtle);
+    }
+
+    private void getNewPreferences(Stage currentStage)
+    {
+        SetPreferencesPopup prefPopup = new SetPreferencesPopup();
+        prefPopup.getMyPopup().show(currentStage);
+
+        EventHandler<ActionEvent> e = event -> {
+            makeNewWindow(prefPopup.getPreference());
+            prefPopup.getMyPopup().hide();
+        };
+        prefPopup.setPopupButton(e);
     }
 
 
@@ -52,8 +90,32 @@ public class Controller extends Application {
      * @throws NullPointerException
      */
     private void getInstruction(Interactions view, Model model) throws NullPointerException {
-        // TODO: error handling when receiving null pointer or if execute code throws error
         String input = view.getInstruction();
         model.executeCode(input);
+    }
+
+    private void setupCommands(Interactions view, Model model) {
+        ResourceBundle rb = ResourceBundle.getBundle(RESOURCES_PATH);
+        for (String key : rb.keySet()) {
+            String methodName = rb.getString(key);
+            DisplayAction action = view.getAction(methodName);
+            model.setAction(key, action);
+        }
+    }
+
+    private void executeTextFile(File f, Model model) throws NullPointerException {
+        // print to see if working
+        try {
+            Scanner myReader = new Scanner(f);
+            while (myReader.hasNextLine()) {
+                String data = myReader.nextLine();
+                System.out.println(data);
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+        model.executeCode(f);
     }
 }

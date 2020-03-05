@@ -19,8 +19,6 @@ public class Arctan extends SingleRunInstruction {
         List<Double> paramsAsVals = this.getParamsAsVals(t);
         double val = paramsAsVals.get(0);
         valueOfExecution = Math.atan(val);
-        t.setCurrCommand(toString(val));
-        t.setCurrCommand("");
     }
 
     public String toString(double val){

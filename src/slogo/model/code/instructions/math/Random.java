@@ -19,8 +19,6 @@ public class Random extends SingleRunInstruction {
         List<Double> paramsAsVals = this.getParamsAsVals(t);
         double max = paramsAsVals.get(0);
         valueOfExecution = Math.random() * max;
-        t.setCurrCommand(toString(max));
-        t.setCurrCommand("");
     }
 
     public String toString(double max){

@@ -22,8 +22,6 @@ public class Quotient extends SingleRunInstruction {
         double val2 = paramsAsVals.get(1);
         if (val2 == 0 && val1 != 0) throw new DivideByZeroException();
         valueOfExecution = val1 / val2;
-        t.setCurrCommand(toString(val1, val2));
-        t.setCurrCommand("");
     }
 
     public String toString(double val1, double val2){

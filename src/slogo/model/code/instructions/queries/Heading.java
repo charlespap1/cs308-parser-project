@@ -14,7 +14,5 @@ public class Heading extends Instruction {
 
     public void performAction (Turtle t) {
         valueOfExecution = t.getAngle();
-        t.setCurrCommand(toString());
-        t.setCurrCommand("");
     }
 }

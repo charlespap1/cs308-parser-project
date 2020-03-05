@@ -14,7 +14,7 @@ import java.util.*;
  * @author Braeden
  */
 public class TurtleFaceSelector extends ColorSelector {
-  public static final List<String> IMAGES = new ArrayList<>(Arrays.asList("Turtle", "Airplane", "Car", "Dog"));
+  public static final List<String> IMAGES = new ArrayList<>(Arrays.asList("Turtle", "Plane", "Car", "Dog"));
   public static final String RESOURCES = "resources";
   public static final String IMAGE_RESOURCE_PACKAGE = RESOURCES + ".commands.TurtleImages";
 

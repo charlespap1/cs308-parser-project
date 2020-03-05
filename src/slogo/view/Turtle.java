@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
 import java.awt.geom.Point2D;
+import java.util.List;
 
 /**
  * This class holds all of the attributes of our GUI turtle
@@ -71,6 +72,7 @@ public class Turtle {
     currY = y.getValue();
     returnTurtleToDefault();
   }
+
 
   /**
    * Allows Main class to be put turtle back in center
@@ -142,7 +144,6 @@ public class Turtle {
   {
     return this.penUp.get();
   }
-
 
   private Line drawLine(){
     Line line = null;

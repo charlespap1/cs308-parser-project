@@ -26,9 +26,16 @@ public class CommonCommands {
   public static final String COMMON_COMMAND_TITLE = "Common Commands";
   public static final String BACK_BUTTON_KEY = "CommonCommandBackButton";
   public static final String HYPERLINK_TEXT_KEY = "HyperlinkText";
+  public static final String MATH_OPS_KEY = "MathOperationsText";
+  public static final String BOOLEAN_OPS_KEY = "BooleanOperationsText";
+  public static final String QUERIES_KEY = "TurtleQueriesText";
+  public static final String COMMANDS_KEY = "TurtleCommandsText";
+
   public static final double BUTTON_PADDING = 10;
   public static final double TOP_PADDING = 30 + BUTTON_PADDING;
   private static final double HYPERLINK_PADDING = 150;
+  public static final String MAIN_STYLESHEET = "main.css";
+  public static final String LINK_TO_ALL_COMMANDS = "https://www2.cs.duke.edu/courses/spring20/compsci308/assign/03_parser/commands.php";
 
   private Scene myPrevious;
   private Stage myStage;
@@ -84,14 +91,25 @@ public class CommonCommands {
   private Scene setupCommandScene() {
     Group myRoot = new Group();
     TurtleCommandPanel turtleCommands = new TurtleCommandPanel(language.get(), 0);
+    turtleCommands.setTitleProperty(myLanguageHelper.getStringProperty(COMMANDS_KEY));
+
     TurtleQueriesPanel turtleQueries = new TurtleQueriesPanel(language.get(), width/4);
+    turtleQueries.setTitleProperty(myLanguageHelper.getStringProperty(QUERIES_KEY));
+
     MathOperationsPanel mathOps = new MathOperationsPanel(language.get(), width/2);
+    mathOps.setTitleProperty(myLanguageHelper.getStringProperty(MATH_OPS_KEY));
+
     BooleanOperationsPanel boolOps = new BooleanOperationsPanel(language.get(), 3*width/4);
+    boolOps.setTitleProperty(myLanguageHelper.getStringProperty(BOOLEAN_OPS_KEY));
 
     setHyperlink(myRoot);
 
     myRoot.getChildren().addAll(turtleCommands.getView(), turtleQueries.getView(), mathOps.getView(), boolOps.getView(), backButton);
-    return new Scene(myRoot, width, height, background);
+
+    Scene scene = new Scene(myRoot, width, height, background);
+    scene.getStylesheets().add(getClass().getClassLoader().getResource(MAIN_STYLESHEET).toExternalForm());
+
+    return scene;
   }
 
   public void setHyperlinkText(StringProperty  sp){
@@ -111,7 +129,7 @@ public class CommonCommands {
     myLink.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent e) {
-        String url_open ="https://www2.cs.duke.edu/courses/spring20/compsci308/assign/03_parser/commands.php";
+        String url_open = LINK_TO_ALL_COMMANDS;
         try {
           java.awt.Desktop.getDesktop().browse(java.net.URI.create(url_open));
         } catch (IOException ex) {

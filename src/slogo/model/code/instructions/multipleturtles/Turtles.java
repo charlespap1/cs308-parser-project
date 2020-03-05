@@ -22,7 +22,5 @@ public class Turtles extends SingleRunInstruction {
 
     public void performAction (Turtle t) throws InvalidArgumentException, InvalidLoopConditionException {
         valueOfExecution = Model.getTurtleMap().size();
-        t.setCurrCommand(toString());
-        t.setCurrCommand("");
     }
 }

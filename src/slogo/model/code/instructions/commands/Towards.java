@@ -22,11 +22,9 @@ public class Towards extends Instruction {
         double angleDegrees = Math.toDegrees(angle);
         valueOfExecution = Math.abs(t.getAngle() - angleDegrees);
         t.setAngle(angleDegrees+ANGLE_OFFSET);
-        t.setCurrCommand(toString(xCord, yCord));
-        t.setCurrCommand("");
     }
 
     public String toString(double x, double y){
-        return instrName + " " + x + ", " + y;
+        return instrName + " " + x + " " + y;
     }
 }

@@ -15,8 +15,6 @@ public class ShowTurtle extends Instruction {
     public void performAction (Turtle t) {
         t.setVisible(true);
         valueOfExecution = 1;
-        t.setCurrCommand(toString());
-        t.setCurrCommand("");
     }
 
     @Override

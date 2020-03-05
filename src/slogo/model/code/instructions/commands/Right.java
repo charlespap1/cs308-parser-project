@@ -20,7 +20,5 @@ public class Right extends Instruction {
         valueOfExecution = valueForExec;
         double angle = t.getAngle() + valueForExec;
         t.setAngle(angle);
-        t.setCurrCommand(toString());
-        t.setCurrCommand("");
     }
 }

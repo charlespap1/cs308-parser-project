@@ -39,4 +39,6 @@ public class NewCommand extends Instruction {
     public double generateValue() {
         return 0;
     }
+
+    public String toString() { return myName; }
 }

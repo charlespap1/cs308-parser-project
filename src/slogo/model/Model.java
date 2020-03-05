@@ -9,21 +9,16 @@ import slogo.model.code.ListSyntax;
 import slogo.model.code.NewCommandName;
 import slogo.model.code.Token;
 import slogo.model.code.exceptions.InvalidCommandException;
-import slogo.model.code.exceptions.InvalidLoopConditionException;
 import slogo.model.code.exceptions.InvalidNumberArgumentsException;
 import slogo.model.code.exceptions.LanguageFileNotFoundException;
-import slogo.model.code.exceptions.CommandCannotDoListException;
-import slogo.model.code.exceptions.SyntaxException;
 import slogo.model.code.instructions.Instruction;
 import slogo.model.code.instructions.misc.To;
-import slogo.model.code.instructions.multipleturtles.Ask;
-import slogo.model.code.instructions.multipleturtles.AskWith;
-import slogo.model.code.instructions.multipleturtles.Tell;
 import slogo.model.parse.CodeFactory;
 import slogo.model.parse.RegexHandler;
-import slogo.view.ClearAction;
+import slogo.view.DisplayAction;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class Model implements ModelAPI{
@@ -42,7 +37,9 @@ public class Model implements ModelAPI{
     private RegexHandler typeCheck = new RegexHandler();
     private static Map<Integer, Turtle> turtleMap = new HashMap<>();
     private StringProperty errorMessage = new SimpleStringProperty();
-    private static List<Turtle> activeTurtles = new ArrayList<>();
+    private List<Turtle> activeTurtles = new ArrayList<>();
+    private String currFullCommand = "";
+    private boolean executed = false;
 
     public Model(StringProperty language) {
         typeCheck.addPatterns(SYNTAX);
@@ -68,17 +65,14 @@ public class Model implements ModelAPI{
 
     }
 
-    //public Turtle getTurtle(){ return activeTurtle; }
+    public Turtle getTurtle(){ return turtleMap.get(1); }
 
-    public List<Turtle> getTurtles(){ return activeTurtles; }
+    public ObservableList<Token> getVariableList(){ return createFromString.getVariableList(); }
 
-    public ObservableList<String> getVariableList(){ return createFromString.getVariableList(); }
 
-    public ObservableList<String> getNewCommandsList(){ return createFromString.getNewCommandList(); }
+    public ObservableList<Token> getNewCommandsList(){ return createFromString.getNewCommandList(); }
 
     public StringProperty getErrorMessage(){ return errorMessage; }
-
-    public void setClearAction(ClearAction action){ createFromString.setClearAction(action); }
 
     private void setupLanguage(StringProperty language) {
         try {
@@ -98,7 +92,7 @@ public class Model implements ModelAPI{
         return turtleMap.get(id);
     }
 
-    public static List<Turtle> getActiveTurtles() {
+    public List<Turtle> getActiveTurtles() {
         return activeTurtles;
     }
 
@@ -106,12 +100,29 @@ public class Model implements ModelAPI{
         return turtleMap;
     }
 
+    public void setAction(String key, DisplayAction action){
+        createFromString.addAction(key, action);
+    }
+
+    public void setErrorMessage(String error)
+    {
+        errorMessage.setValue(error);
+    }
+
+
     private void parseInstructions(String rawString){
         try {
             String[] inputPieces = rawString.split(WHITESPACE);
             for (String piece: inputPieces) {
                 if (piece.trim().length() > 0) {
                     addToAppropriateStack(piece);
+                    currFullCommand += piece + " ";
+                }
+                if(executed){
+                    activeTurtles.get(0).setCurrCommand(currFullCommand);
+                    activeTurtles.get(0).setCurrCommand("");
+                    currFullCommand = "";
+                    executed = false;
                 }
             }
         }
@@ -137,7 +148,7 @@ public class Model implements ModelAPI{
         }
     }
 
-    private void addArgumentToStack(Token currItem) {
+    private void addArgumentToStack(Token currItem) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         if (arguments.isEmpty() && commands.isEmpty()) {
             throw new InvalidNumberArgumentsException();
         }
@@ -145,7 +156,7 @@ public class Model implements ModelAPI{
         attemptToCreateFullInstruction();
     }
 
-    private void addInstructionToStack(Instruction currInstr){
+    private void addInstructionToStack(Instruction currInstr) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         if (currInstr.numRequiredArgs() == 0) {
             if (commands.isEmpty()) {
                 currInstr.execute(activeTurtles);
@@ -159,7 +170,7 @@ public class Model implements ModelAPI{
         }
     }
 
-    private void attemptToCreateFullInstruction() {
+    private void attemptToCreateFullInstruction() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         Instruction currCommand = (Instruction) commands.peek();
         if (enoughArgs(currCommand.numRequiredArgs())) {
             if (currCommand instanceof BracketOpen) {
@@ -170,6 +181,7 @@ public class Model implements ModelAPI{
                 Instruction currInstr = createCompleteInstruction(arguments.pop());
                 if (commands.isEmpty()) {
                     currInstr.execute(activeTurtles);
+                    executed = true;
                 } else {
                     arguments.peek().push(currInstr);
                     attemptToCreateFullInstruction();

@@ -1,7 +1,9 @@
 package slogo.view.scrollers;
 
 import javafx.collections.ObservableList;
+
 import javafx.scene.control.ListView;
+import slogo.model.code.Token;
 
 /**
  * Allows us to condense variables and new commands into one
@@ -9,13 +11,13 @@ import javafx.scene.control.ListView;
  * @author Natalie
  */
 
-public class ListViewer extends ScrollingWindow {
-  private ListView<String> myList = new ListView<>();
+public abstract class ListViewer extends ScrollingWindow {
+  protected ListView<Token> myList = new ListView<>();
 
   public ListViewer(double elementWidthFactor, double topPadding) {
     super(elementWidthFactor, topPadding);
     myList.setPrefSize(myWidth-2*VBOX_SPACING, myHeight);
-    myTextHolder.getChildren().add(myList);
+    myTextHolder.getChildren().addAll(myList);
   }
 
   /**
@@ -23,7 +25,9 @@ public class ListViewer extends ScrollingWindow {
    * variables in backend
    * @param list
    */
-  public void bindList(ObservableList<String> list){
+  public void bindList(ObservableList<Token> list) {
     myList.setItems(list);
   }
+
+  protected abstract void onSelectedItem(Token t);
 }

@@ -45,7 +45,5 @@ public class AskWith extends SingleRunInstruction {
                 }
             }
         }
-        t.setCurrCommand(toString());
-        t.setCurrCommand("");
     }
 }

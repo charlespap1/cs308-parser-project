@@ -20,8 +20,6 @@ public class Pow extends SingleRunInstruction {
         double base = paramsAsVals.get(0);
         double exponent = paramsAsVals.get(1);
         valueOfExecution = Math.pow(base, exponent);
-        t.setCurrCommand(toString(base, exponent));
-        t.setCurrCommand("");
     }
 
     public String toString(double val1, double val2){

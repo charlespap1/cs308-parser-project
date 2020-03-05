@@ -16,8 +16,6 @@ public class HideTurtle extends Instruction {
         System.out.println("exec");
         t.setVisible(false);
         valueOfExecution = 0;
-        t.setCurrCommand(toString());
-        t.setCurrCommand("");
     }
 
     @Override

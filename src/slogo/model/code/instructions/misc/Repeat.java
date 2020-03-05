@@ -25,8 +25,6 @@ public class Repeat extends Instruction {
         if (!(list instanceof ListSyntax)) {
             throw new InvalidArgumentException();
         }
-        t.setCurrCommand(toString());
-        t.setCurrCommand("");
 
         List<Token> commands = ((ListSyntax) list).getContents();
         for (int i = 0; i < numRepeats; i++) {

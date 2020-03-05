@@ -1,5 +1,8 @@
 package slogo.view;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -9,10 +12,13 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
+import slogo.model.code.Token;
 import slogo.view.commonCommands.CommonCommands;
 
 import java.util.List;
 import java.util.Objects;
+
+import java.lang.reflect.Method;
 
 
 /**
@@ -25,24 +31,27 @@ public class Interactions implements View {
 
   private SetupScreen mySetup;
   private Group root;
-  //private Turtle myTurtle;
-  private List<Turtle> myTurtles;
+  private List<Turtle> myTurtles = new ArrayList<>();
+  private Turtle myInitialTurtle;
   private DrawingCanvas myCanvas;
+  private String myPreferences;
 
-  public Interactions(Stage primaryStage) {
+  public Interactions(Stage primaryStage, String preferences) {
     mySetup = new SetupScreen();
     Scene myScene = mySetup.setupGame();
     CommonCommands myCommonCommands = new CommonCommands(primaryStage, myScene, getLanguageChoice());
     mySetup.addCommonCommands(myCommonCommands);
-    mySetup.setBelowCanvasButtons(e -> returnToDefaultTurtle(), e -> clearCanvas());
-//    myTurtle = mySetup.getTurtle();
-    myTurtles = mySetup.getTurtles();
+    myInitialTurtle = mySetup.getInitialTurtle();
+    myTurtles.add(myInitialTurtle);
+
     root = mySetup.getRoot();
     myCanvas = mySetup.getDrawingCanvas();
+    myPreferences = preferences;
 
     primaryStage.setScene(myScene);
     primaryStage.setTitle(TITLE);
     primaryStage.show();
+    setPreferences();
   }
 
   /**
@@ -56,34 +65,21 @@ public class Interactions implements View {
     return mySetup.getUserInput();
   }
 
-//  /**
-//   * Sets the frontend turtle whenever the location is changed
-//   * in the backend
-//   * @param turtle
-//   */
-//  public void setTurtle(slogo.model.Turtle turtle){
-//    myTurtle.setProperties(turtle);
-//    turtle.pointProperty().addListener((o, oldVal, newVal) -> update());
-//    turtle.currCommandProperty().addListener((o, oldVal, newVal) -> mySetup.addHistory(newVal));
-//  }
-  public void setTurtle(slogo.model.Turtle turtle){
-    //does nothing; just here to satisfy requirements of 'view' interface
+
+
+  public void setInitialTurtle(slogo.model.Turtle turtle){
+    myInitialTurtle.setProperties(turtle);
+    turtle.pointProperty().addListener((o, oldVal, newVal) -> update(myInitialTurtle));
+    turtle.currCommandProperty().addListener((o, oldVal, newVal) -> mySetup.addHistory(newVal));
+
   }
 
-  /**
-   * Sets the list of frontend turtles whenever the location of a backend turtle is changed
-   * in the backend
-   * @param turtles: a list of turtles given from the backend
-   */
-  public void setTurtles(List<slogo.model.Turtle> turtles){
-    for (int i=0; i<turtles.size(); i++){
-      if(turtles.get(i) == null) continue;
-      Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(DEFAULT_TURTLE_IMAGE)));
-      if(i>=myTurtles.size()) myTurtles.add(new Turtle(image,0,0)); //besides the image, properties don't matter on this line
-      myTurtles.get(i).setProperties(turtles.get(i));
-      turtles.get(i).pointProperty().addListener((o, oldVal, newVal) -> update());
-      turtles.get(i).currCommandProperty().addListener((o, oldVal, newVal) -> mySetup.addHistory(newVal));
-    }
+  public void addTurtle(slogo.model.Turtle turtle){
+    Turtle newTurtle = mySetup.addNewTurtle();
+    myTurtles.add(newTurtle);
+    newTurtle.setProperties(turtle);
+    turtle.pointProperty().addListener((o, oldVal, newVal) -> update(newTurtle));
+    //turtle.currCommandProperty().addListener((o, oldVal, newVal) -> mySetup.addHistory(newVal));
   }
 
   /**
@@ -91,7 +87,7 @@ public class Interactions implements View {
    * @param variableList
    * @param newCommandList
    */
-  public void setViewLists(ObservableList<String> variableList, ObservableList<String> newCommandList){
+  public void setViewLists(ObservableList<Token> variableList, ObservableList<Token> newCommandList){
     mySetup.setVariableList(variableList);
     mySetup.setNewCommandList(newCommandList);
   }
@@ -103,12 +99,22 @@ public class Interactions implements View {
   public void setGoButton(EventHandler<ActionEvent> goAction){ mySetup.setGoButton(goAction); }
 
   public void setNewWindowButton(EventHandler<ActionEvent> newWindowAction) { mySetup.setNewWindowButton(newWindowAction); }
+  public void setNewConfigButton(EventHandler<ActionEvent> newWindowAction) { mySetup.setNewConfigButton(newWindowAction); }
 
   public void setErrorMessage(StringProperty error){ mySetup.bindErrorMessage(error); }
 
   public StringProperty getLanguageChoice() { return mySetup.getLanguageChoice(); }
-  
-  public ClearAction getClearAction() { return this::clearCanvas; }
+
+  public DisplayAction getAction(String methodName) {
+    return new DisplayAction() {
+      @Override
+      public int execute(List<Double> params) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Method m = SetupScreen.class.getDeclaredMethod(methodName, List.class);
+        Object value = m.invoke(mySetup, params);
+        return (Integer) value;
+      }
+    };
+  }
 
 //  /**
 //   * Updates the movement of the turtle according to new states
@@ -125,30 +131,23 @@ public class Interactions implements View {
   /**
    * Updates the movement of all of the turtles according to new states
    */
-  private void update() {
-    for(Turtle t: myTurtles) {
-      Line newLine = t.drawLineAndBound();
-      if (newLine != null) {
-        root.getChildren().add(newLine);
-        myCanvas.addLine(newLine);
-        t.getView().toFront();
-      }
+  private void update(Turtle newTurtle) {
+    Line newLine = newTurtle.drawLineAndBound();
+    if (newLine!=null) {
+      root.getChildren().add(newLine);
+      myCanvas.addLine(newLine);
+      newTurtle.getView().toFront();
     }
   }
 
-//  private void returnToDefaultTurtle() {
-//    myTurtle.returnTurtleToDefault();
-//    clearCanvas();
-//  }
-
-  private void returnToDefaultTurtle() {
-    for (int i=1; i<myTurtles.size(); i++) myTurtles.remove(i);
-    myTurtles.get(0).returnTurtleToDefault();
-    clearCanvas();
+  public void setPreferences()
+  {
+    mySetup.setPreferences(myPreferences);
   }
 
-  private void clearCanvas() {
-    mySetup.clearHistory();
-    root.getChildren().removeAll(myCanvas.getLines());
+
+  public void setPopupButton(EventHandler<ActionEvent> showPopup) {
+    mySetup.setNewConfigButton(showPopup);
   }
+
 }

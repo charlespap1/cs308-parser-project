@@ -33,8 +33,6 @@ public class For extends Instruction {
         double start = checkTokenNotListAndGetVal(loopParameters.get(1), t);
         double end = checkTokenNotListAndGetVal(loopParameters.get(2), t);
         double increment = checkTokenNotListAndGetVal(loopParameters.get(3), t);
-        t.setCurrCommand(toString());
-        t.setCurrCommand("");
 
         List<Token> commands = ((ListSyntax) list2).getContents();
         for (double i = start; i <= end; i += increment) {
