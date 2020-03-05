@@ -4,7 +4,9 @@ public class BracketClose implements Token {
     public BracketClose(String name){
         super();
     }
-    public double generateValue() {
+
+    @Override
+    public double execute() {
         return 0;
     }
 }

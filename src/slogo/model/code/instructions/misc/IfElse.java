@@ -1,9 +1,7 @@
 package slogo.model.code.instructions.misc;
 
-import slogo.model.Turtle;
 import slogo.model.code.ListSyntax;
 import slogo.model.code.Token;
-import slogo.model.code.exceptions.CommandCannotDoListException;
 import slogo.model.code.exceptions.InvalidArgumentException;
 import slogo.model.code.exceptions.InvalidLoopConditionException;
 import slogo.model.code.instructions.Instruction;
@@ -19,32 +17,28 @@ public class IfElse extends Instruction {
         this.instrName = name;
     }
 
-    public void performAction (Turtle t) {
-        Token expr = this.parameters.get(0);
-        Token list1 = this.parameters.get(1);
-        Token list2 = this.parameters.get(2);
-        checkTokenNotListAndGetVal(expr, t);
-        this.valueOfExecution = 0;
-        if (expr.generateValue() != 0)
-            runCommandsInList(list1, t);
-        else
-            runCommandsInList(list2, t);
-    }
-
-    private void runCommandsInList (Token list, Turtle t) {
-        if (!(list instanceof ListSyntax)) {
-            throw new InvalidArgumentException();
-        }
+    private double runCommandsInList (Token list) {
+        if (!(list instanceof ListSyntax)) throw new InvalidArgumentException();
         List<Token> commands = ((ListSyntax) list).getContents();
+        double returnValue = 0;
         for (Token command: commands) {
-            if (!(command instanceof Instruction)) {
-                throw new InvalidLoopConditionException();
-            }
-            ((Instruction) command).performAction(t);
-            this.valueOfExecution = command.generateValue();
+            if (!(command instanceof Instruction)) throw new InvalidLoopConditionException();
+            returnValue = command.execute();
         }
+        return returnValue;
     }
 
     @Override
-    public String toString() { return instrName;}
+    public double execute() {
+        Token expr = this.parameters.get(0);
+        Token list1 = this.parameters.get(1);
+        Token list2 = this.parameters.get(2);
+        checkTokenNotListAndGetVal(expr);
+        double returnValue = 0;
+        if (expr.execute() != 0)
+            returnValue = runCommandsInList(list1);
+        else
+            returnValue = runCommandsInList(list2);
+        return returnValue;
+    }
 }

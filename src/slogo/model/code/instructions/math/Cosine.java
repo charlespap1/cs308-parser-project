@@ -1,12 +1,10 @@
 package slogo.model.code.instructions.math;
 
-import slogo.model.Turtle;
 import slogo.model.code.instructions.Instruction;
-import slogo.model.code.instructions.SingleRunInstruction;
 
 import java.util.List;
 
-public class Cosine extends SingleRunInstruction {
+public class Cosine extends Instruction {
 
     private static final int numArgs = 1;
 
@@ -15,13 +13,10 @@ public class Cosine extends SingleRunInstruction {
         instrName = name;
     }
 
-    public void performAction (Turtle t) {
-        List<Double> paramsAsVals = this.getParamsAsVals(t);
+    @Override
+    public double execute() {
+        List<Double> paramsAsVals = this.getParamsAsVals();
         double val = paramsAsVals.get(0);
-        valueOfExecution = Math.cos(Math.toRadians(val));
-    }
-
-    public String toString(double val){
-        return instrName + " " + val + " = " + valueOfExecution;
+        return Math.cos(Math.toRadians(val));
     }
 }

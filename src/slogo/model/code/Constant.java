@@ -8,7 +8,7 @@ public class Constant implements Token {
         val = Double.parseDouble(value);
     }
 
-    public double generateValue() {
+    public double execute() {
         return val;
     }
 

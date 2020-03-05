@@ -20,9 +20,8 @@ public class TurtleFaceSelector extends ColorSelector {
 
   private Turtle turtle;
 
-  public TurtleFaceSelector(Turtle turtle, double x, double y) {
+  public TurtleFaceSelector(double x, double y) {
     super(x, y, IMAGES, IMAGE_RESOURCE_PACKAGE);
-    this.turtle = turtle;
     setColorButtons();
   }
 
@@ -39,6 +38,6 @@ public class TurtleFaceSelector extends ColorSelector {
   @Override
   protected void changeAppearance(String imageFileName) {
     Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(imageFileName)));
-    turtle.changeImage(image);
+    //turtle.changeImage(image);
   }
 }
