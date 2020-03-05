@@ -47,13 +47,8 @@ public class Interactions implements View {
     return myScreen.getUserInput();
   }
 
-  public void setPopupAction(EventHandler<ActionEvent> e){
-    //mySetup.setPopupAction(e);
-  }
-
   public File getFile(){
-    return null;
-    //return mySetup.getFile();
+    return mySetup.getFile();
   }
 
   /**
@@ -83,10 +78,8 @@ public class Interactions implements View {
    */
   public void setGoButton(EventHandler<ActionEvent> goAction){ mySetup.setGoButton(goAction); }
   public void setNewWindowButton(EventHandler<ActionEvent> newWindowAction) { mySetup.setNewWindowButton(newWindowAction); }
-  public void setNewConfigButton(EventHandler<ActionEvent> newWindowAction) { mySetup.setNewConfigButton(newWindowAction); }
-  public void setPopupButton(EventHandler<ActionEvent> showPopup) {
-    mySetup.setNewConfigButton(showPopup);
-  }
+  public void setNewConfigButton(EventHandler<ActionEvent> newWindowAction, Stage stage) { mySetup.setNewConfigPopupButton(newWindowAction, stage); }
+
   public void setUndoAction(EventHandler<ActionEvent> undoAction) { mySetup.setUndoButton(undoAction); }
   public void setRedoAction(EventHandler<ActionEvent> redoAction) { mySetup.setRedoButton(redoAction); }
 

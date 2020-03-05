@@ -1,5 +1,7 @@
 package slogo.view;
 
+import java.io.File;
+
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
@@ -18,6 +20,9 @@ import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import slogo.model.tokens.Token;
 import slogo.view.commonCommands.CommonCommands;
+import slogo.view.popup.FileDoesNotExistException;
+import slogo.view.popup.LoadConfigPopup;
+import slogo.view.popup.ViewPopup;
 import slogo.view.scrollers.CommandViewer;
 import slogo.view.scrollers.HistoryViewer;
 import slogo.view.scrollers.ScrollingWindow;
@@ -44,12 +49,11 @@ public class SetupScreen {
   public static final Paint BACKGROUND = Color.AZURE;
   public static final double BUTTON_HEIGHT_OFFSET = 40;
   public static final double GRAPHICAL_VIEWER_HEIGHT_OFFSET = 255;
-  public static final double CHARACTER_TYPE_OFFSET = 100;
   public static final double COMMON_COMMAND_BUTTON_HEIGHT_OFFSET = 15;
   public static final double COMMON_COMMAND_BUTTON_WIDTH_OFFSET = 225;
   public static final int COMMAND_COLUMN = 1;
   public static final int LIST_VIEW_COLUMN = 2;
-  public static final int ERROR_MESSAGE_PADDING = 285;
+  public static final int ERROR_MESSAGE_PADDING = 320;
 
   public static final String VARIABLE_TITLE_KEY = "VariableTitleText";
   public static final String HISTORY_TITLE_KEY = "HistoryTitleText";
@@ -80,6 +84,7 @@ public class SetupScreen {
   private Button myStop;
   private Button myNewWindow;
   private Button myNewConfig;
+  private LoadConfigPopup myCurrentPopup;
 
   private Button undoButton;
   private Button redoButton;
@@ -118,7 +123,7 @@ public class SetupScreen {
     root.getChildren().addAll(myDrawingCanvas.getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myNewCommandViewer.getView(), myVariableView.getView());
     root.getChildren().addAll(myGraphicalMover.getView(), myCustomizer.getView(), myLanguageSelector.getView());
 
-    myCurrentErrorMessage.setLayoutX(myHistory.getView().getLayoutX());
+    myCurrentErrorMessage.setLayoutX(myVariableView.getView().getLayoutX());
     myCurrentErrorMessage.setLayoutY(myVariableView.getView().getLayoutY() + ERROR_MESSAGE_PADDING);
 
     root.getChildren().add(myCurrentErrorMessage);
@@ -146,22 +151,41 @@ public class SetupScreen {
 
 
   public void bindErrorMessage(StringProperty message) {
-    myCurrentErrorMessage.textProperty().bind(message);
+    myCurrentErrorMessage.textProperty().bindBidirectional(message);
     myCurrentErrorMessage.setTextFill(Color.RED);
   }
 
   public void setGoButton(EventHandler<ActionEvent> goAction) { myGo.setOnAction(goAction); }
-  public void setPopupButton(EventHandler<ActionEvent> popupAction) {
-    //myPopup.addEventHandler(ActionEvent.ACTION, popupAction);
-    //myPopup.addEventHandler(ActionEvent.ACTION, e -> myLineManager.newProgram());
+
+  public void setNewWindowButton(EventHandler<ActionEvent> newWindowAction) {
+    myNewWindow.setOnAction(newWindowAction);
+
   }
-  public void setNewWindowButton(EventHandler<ActionEvent> newWindowAction) { myNewWindow.setOnAction(newWindowAction);}
+
+  public File getFile()
+  {
+    try{
+      myLineManager.newProgram();
+      return myCurrentPopup.getFile();
+    }
+    catch(FileDoesNotExistException err)
+    {
+      myCurrentErrorMessage.textProperty().setValue(err.getMessage());
+      return null;
+    }
+  }
 
 
-  public void setNewConfigButton(EventHandler<ActionEvent> newConfigAction) {
+  public void setNewConfigPopupButton(EventHandler<ActionEvent> newConfigAction, Stage primaryStage) {
 
-    myNewConfig.addEventHandler(ActionEvent.ACTION, newConfigAction);
-    
+    EventHandler<ActionEvent> e = event -> {
+        myCurrentPopup = new LoadConfigPopup();
+        myCurrentPopup.getMyPopup().show(primaryStage);
+        myCurrentPopup.setPopupButton(newConfigAction);
+    };
+
+    myNewConfig.setOnAction(e);
+
   }
 
   public Group getRoot() { return root; }
