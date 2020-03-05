@@ -1,16 +1,20 @@
 package slogo.model;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import slogo.controller.AddNewTurtleFunction;
-import slogo.model.code.*;
-import slogo.model.code.exceptions.InvalidCommandException;
-import slogo.model.code.exceptions.InvalidNumberArgumentsException;
-import slogo.model.code.exceptions.LanguageFileNotFoundException;
-import slogo.model.code.instructions.Instruction;
-import slogo.model.code.instructions.TurtleAction;
-import slogo.model.code.instructions.misc.*;
+import slogo.model.tokens.*;
+import slogo.model.exceptions.InvalidCommandException;
+import slogo.model.exceptions.InvalidNumberArgumentsException;
+import slogo.model.exceptions.LanguageFileNotFoundException;
+import slogo.model.tokens.instructions.Instruction;
+import slogo.model.tokens.instructions.TurtleAction;
+import slogo.model.tokens.instructions.misc.*;
+import slogo.model.history.History;
+import slogo.model.history.Program;
+import slogo.model.history.State;
 import slogo.model.parse.CodeFactory;
 import slogo.model.parse.RegexHandler;
 import slogo.view.DisplayAction;
@@ -54,7 +58,6 @@ public class Model implements ModelAPI{
         clearStacks();
         parseInstructions(rawString);
         history.addNewProgram(new Program(turtleMaster.generateStateMap()));
-        history.setPointerToEnd();
         if(!commands.isEmpty() || !arguments.isEmpty()){
             InvalidNumberArgumentsException e = new InvalidNumberArgumentsException();
             errorMessage.setValue(e.getMessage());
@@ -88,6 +91,8 @@ public class Model implements ModelAPI{
     public ObservableList<Token> getVariableList(){ return createFromString.getVariableList(); }
     public ObservableList<Token> getHistoryList(){ return history.getHistoryList(); }
     public ObservableList<Token> getNewCommandsList(){ return createFromString.getNewCommandList(); }
+    public BooleanProperty getUndoDisabled() { return history.getUndoDisabled(); }
+    public BooleanProperty getRedoDisabled() { return history.getRedoDisabled(); }
 
     public StringProperty getErrorMessage(){ return errorMessage; }
 

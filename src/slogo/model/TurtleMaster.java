@@ -1,10 +1,9 @@
 package slogo.model;
 
 import slogo.controller.AddNewTurtleFunction;
-import slogo.model.code.State;
-import slogo.model.code.instructions.TurtleAction;
+import slogo.model.history.State;
+import slogo.model.tokens.instructions.TurtleAction;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

@@ -1,6 +1,6 @@
 package slogo.view.scrollers;
 
-import slogo.model.code.Token;
+import slogo.model.tokens.Token;
 
 /**
  * This class allows us to show the history of commands

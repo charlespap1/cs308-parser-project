@@ -2,6 +2,8 @@ package slogo.view;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,7 +19,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
-import slogo.model.code.Token;
+import slogo.model.tokens.Token;
 import slogo.view.commonCommands.CommonCommands;
 import slogo.view.scrollers.CommandViewer;
 import slogo.view.scrollers.HistoryViewer;
@@ -85,6 +87,7 @@ public class SetupScreen {
   private ScrollingWindow myHistory = new HistoryViewer(COMMAND_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING);
   private ScrollingWindow myNewCommandViewer = new CommandViewer(LIST_VIEW_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING, this::setInputText);
   private ScrollingWindow myVariableView = new VariableViewer(LIST_VIEW_COLUMN, HEIGHT/2.0);
+  private LineManager myLineManager = new LineManager(root);
 
   private BackgroundSelector myBackgroundSelector;
   private TurtleFaceSelector myCharacterSelector;
@@ -153,10 +156,14 @@ public class SetupScreen {
   public void setInputText(String command) { myUserInput.setUserInput(command); }
   public void setVariableList(ObservableList<Token> variableList) { myVariableView.bindList(variableList); }
   public void setNewCommandList(ObservableList<Token> newCommandList) { myNewCommandViewer.bindList(newCommandList); }
-  public void setHistoryList(ObservableList<Token> historyList) { myHistory.bindList(historyList);  }
+  public void setupHistory(ObservableList<Token> historyList, BooleanProperty undoDisabled, BooleanProperty redoDisabled) {
+    myHistory.bindList(historyList);
+    undoButton.disableProperty().bind(undoDisabled);
+    redoButton.disableProperty().bind(redoDisabled);
+  }
 
   public ScreenManager getScreenManager(){
-    return new ScreenManager(root, myUserInput, myTurtles, myDrawingCanvas, myLanguageSelector);
+    return new ScreenManager(root, myUserInput, myTurtles, myDrawingCanvas, myLanguageSelector, myLineManager);
   }
 
   private void setupBox(Pane box, double x, double y, double width){
@@ -172,11 +179,16 @@ public class SetupScreen {
     myClear = new Button();
     //myClear.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
     belowCanvasButtons.getChildren().add(myClear);
-    myClear.setOnAction(e -> { root.getChildren().removeAll(myDrawingCanvas.getLines()); });
+    myClear.setOnAction(e -> myLineManager.clearAllLines());
     myStop = new Button();
     //myStop.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
     belowCanvasButtons.getChildren().add(myStop);
-    myStop.setOnAction(e -> { for(Turtle t : myTurtles) t.returnTurtleToDefault(); });
+    myStop.setOnAction(e -> { for(Turtle t : myTurtles) {
+      boolean tempPen = t.getPenUp();
+      t.setPenUp(true);
+      t.returnTurtleToDefault();
+      t.setPenUp(tempPen);
+    } });
     myNewConfig = new Button();
     myNewWindow = new Button();
     HBox newWindowButtons = new HBox(BOX_SPACING);
@@ -195,8 +207,15 @@ public class SetupScreen {
     root.getChildren().add(newWindowButtons);
   }
 
-  public void setUndoButton (EventHandler<ActionEvent> undoAction) { undoButton.setOnAction(undoAction); }
-  public void setRedoButton (EventHandler<ActionEvent> redoAction) { redoButton.setOnAction(redoAction); }
+  public void setUndoButton (EventHandler<ActionEvent> undoAction) {
+    undoButton.addEventHandler(ActionEvent.ACTION, undoAction);
+    undoButton.addEventHandler(ActionEvent.ACTION, e -> myLineManager.undo());
+  }
+
+  public void setRedoButton (EventHandler<ActionEvent> redoAction) {
+    redoButton.setOnAction(redoAction);
+    redoButton.addEventHandler(ActionEvent.ACTION, e -> myLineManager.redo());
+  }
 
   private void setSelectors() {
     myBackgroundSelector = new BackgroundSelector(myDrawingCanvas, belowCanvasButtons.getLayoutX(), belowCanvasButtons.getLayoutY()+ BUTTON_HEIGHT_OFFSET);
@@ -271,7 +290,7 @@ public class SetupScreen {
     for(Turtle t: myTurtles) {
       t.returnTurtleToDefault();
     }
-    root.getChildren().removeAll(myDrawingCanvas.getLines());
+    myLineManager.clearAllLines();
     return 0;
   }
 

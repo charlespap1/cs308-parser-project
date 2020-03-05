@@ -56,7 +56,9 @@ public class PreferenceBackendSetter {
     {
       t.returnTurtleToDefault();
     }
-    myRoot.getChildren().removeAll(myDrawingCanvas.getLines());
+
+    // use line manager to clear lines instead.
+    // myRoot.getChildren().removeAll(myDrawingCanvas.getLines());
     return 0;
   }
 

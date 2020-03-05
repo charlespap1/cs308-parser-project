@@ -2,7 +2,7 @@ package slogo.model;
 
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
-import slogo.model.code.Token;
+import slogo.model.tokens.Token;
 
 import java.io.File;
 
