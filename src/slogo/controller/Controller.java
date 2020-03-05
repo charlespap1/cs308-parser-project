@@ -67,6 +67,10 @@ public class Controller extends Application {
         setupCommands(myView, myModel);
         myModel.setAddTurtleFunction(myView::addTurtle);
         myView.setPopupButton(e -> showPopUp(stage, myModel));
+        //TODO: add listener for method tell command
+        //myView.add(turtle);
+        myView.setUndoAction(e -> myModel.undo());
+        myView.setRedoAction(e -> myModel.redo());
     }
 
     private void getNewPreferences(Stage currentStage)
