@@ -36,6 +36,7 @@ public class Model implements ModelAPI{
     private String currFullCommand = "";
     private boolean executed = false;
     private TurtleMaster turtleMaster = new TurtleMaster();
+    private Map<Double, Turtle> turtleMap = turtleMaster.getTurtleMap();
     private TurtleMasterAccessor accessor = new TurtleMasterAccessor() {
         @Override
         public double turtleCommandToMaster(TurtleAction action) { return turtleMaster.executeTurtleCommand(action); }

@@ -91,4 +91,8 @@ public class TurtleMaster {
         turtleMap.put(id, newTurtle);
         addTurtleFunction.addTurtle(newTurtle);
     }
+
+    public Map<Double, Turtle> getTurtleMap () {
+        return turtleMap;
+    }
 }
