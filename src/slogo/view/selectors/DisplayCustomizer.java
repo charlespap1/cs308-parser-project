@@ -68,15 +68,11 @@ public class DisplayCustomizer {
     buildLists();
   }
 
-<<<<<<< HEAD
   public int getPenIndex(){ return penIndex; }
   public int getBackgroundIndex(){ return backgroundIndex; }
   public int getImageIndex(){ return imageIndex; }
 
-  private List<Button> createButtons(List<String> ids)
-=======
   private List<Button> createButtons(List<String> ids, HBox holder)
->>>>>>> 0f771401009d2990ee2f9c4853dfecc2dc736bcb
   {
     List<Button> buttons = new ArrayList<>();
     for(String id : ids)

@@ -79,7 +79,7 @@ public class ScreenManager {
         return 0;
     }
 
-    public int getPenColor(List<Double> params) { return dc.get;}
+    //public int getPenColor(List<Double> params) { return dc.get;}
 
     public int getShape(List<Double> params) {
         myTurtles.get(0);
