@@ -29,7 +29,12 @@ import java.util.Objects;
 
 import slogo.view.scrollers.ScrollingWindow;
 import slogo.view.scrollers.VariableViewer;
-import slogo.view.selectors.*;
+import slogo.view.selectors.BackgroundSelector;
+import slogo.view.selectors.DisplayCustomizer;
+import slogo.view.selectors.LanguageSelector;
+import slogo.view.selectors.PenSelector;
+import slogo.view.selectors.RGBHelper;
+import slogo.view.selectors.TurtleFaceSelector;
 
 /**
  * This class allows us to make our main class less fat
@@ -100,6 +105,8 @@ public class SetupScreen {
   private VBox belowInputFieldItems = new VBox(BOX_SPACING);
   private HBox belowCanvasButtons = new HBox(BOX_SPACING);
 
+  private DisplayCustomizer cust = new DisplayCustomizer(belowCanvasButtons.getLayoutX(), belowCanvasButtons.getLayoutY()+ BUTTON_HEIGHT_OFFSET);
+
   private LanguageHelper languageHelper;
   private TurtleGraphicalMover myGraphicalMover;
 
@@ -115,11 +122,10 @@ public class SetupScreen {
     setSelectors();
 
     myGraphicalMover = new TurtleGraphicalMover(myBackgroundSelector.getView().getLayoutX(), myBackgroundSelector.getView().getLayoutY() + GRAPHICAL_VIEWER_HEIGHT_OFFSET);
-
     setText();
 
     root.getChildren().addAll(myDrawingCanvas.getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myNewCommandViewer.getView(), myVariableView.getView());
-    root.getChildren().addAll(myBackgroundSelector.getView(), myPenSelector.getView(), myCharacterSelector.getView(), myLanguageSelector.getView(), myGraphicalMover.getView());
+    root.getChildren().addAll(cust.getView(), myPenSelector.getView(), myCharacterSelector.getView(), myLanguageSelector.getView());
 
     myCurrentErrorMessage.setLayoutX(myHistory.getView().getLayoutX());
     myCurrentErrorMessage.setLayoutY(myVariableView.getView().getLayoutY() + ERROR_MESSAGE_PADDING);
@@ -129,7 +135,6 @@ public class SetupScreen {
     Scene scene = new Scene(root, WIDTH, HEIGHT, BACKGROUND);
     scene.getStylesheets().add(Objects.requireNonNull(getClass().getClassLoader().getResource(MAIN_STYLESHEET)).toExternalForm());
 
-    DisplayCustomizer dc  = new DisplayCustomizer(0, 0);
     return scene;
   }
 
@@ -172,7 +177,7 @@ public class SetupScreen {
   }
 
   public ScreenManager getScreenManager(){
-    return new ScreenManager(root, myUserInput, myTurtles, myDrawingCanvas, myLanguageSelector, myLineManager);
+    return new ScreenManager(root, myUserInput, myTurtles, myDrawingCanvas, myLanguageSelector, myLineManager, cust);
 
   }
 

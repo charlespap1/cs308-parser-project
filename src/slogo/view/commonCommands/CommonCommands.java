@@ -133,7 +133,7 @@ public class CommonCommands {
         try {
           java.awt.Desktop.getDesktop().browse(java.net.URI.create(url_open));
         } catch (IOException ex) {
-          ex.printStackTrace();
+          System.out.println("Error occurred.");
         }
       }
     });
