@@ -36,9 +36,6 @@ public class Turtle {
   private double currX;
   private double currY;
   private int penThickness = 1;
-  private String filename;
-
-  private Color penColor = DEFAULT_PEN_COLOR;
 
   public Turtle(Image image, double width, double height)
   {
@@ -132,18 +129,7 @@ public class Turtle {
    */
   public void changeImage(Image image) { myTurtleView.setImage(image); }
 
-  /**
-   * Allows pen color to be changed by the PenSelector
-   * @param color
-   */
-  public void changePenColor(Color color) { penColor = color; }
-
-
-
-  public void setPenUp(boolean isPenUp)
-  {
-    this.penUp.set(isPenUp);
-  }
+  public void setPenUp(boolean isPenUp) { this.penUp.set(isPenUp); }
 
   public void setThickness(int newThickness)
   {
@@ -160,7 +146,6 @@ public class Turtle {
     if (!penUp.getValue()) {
       line = new Line(currX + centerX, currY + centerY, x.getValue() + centerX, y.getValue() + centerY);
       line.setStrokeWidth(penThickness);
-      line.setStroke(penColor);
     }
     currX = x.getValue();
     currY = y.getValue();

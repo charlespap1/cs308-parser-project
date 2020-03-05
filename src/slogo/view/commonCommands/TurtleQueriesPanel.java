@@ -2,6 +2,7 @@ package slogo.view.commonCommands;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Displays commands only associated with turtle queries
@@ -10,7 +11,7 @@ import java.util.Arrays;
 
 public class TurtleQueriesPanel extends CommandPanel{
   //TODO: hard coded text
-  public static final ArrayList<String> IDENTIFIERS = new ArrayList<>(
+  public static final List<String> IDENTIFIERS = new ArrayList<>(
         Arrays.asList("XCoordinate", "YCoordinate", "Heading",
             "IsPenDown", "IsShowing"));
 

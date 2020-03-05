@@ -2,6 +2,7 @@ package slogo.view.commonCommands;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Displays commands only associated with boolean operations
@@ -11,7 +12,7 @@ import java.util.Arrays;
 public class BooleanOperationsPanel extends CommandPanel{
 
   //TODO: hard coded text
-  public static final ArrayList<String> IDENTIFIERS = new ArrayList<>(
+  public static final List<String> IDENTIFIERS = new ArrayList<>(
       Arrays.asList("LessThan", "GreaterThan", "Equal",
           "NotEqual", "And", "Or", "Not"));
 

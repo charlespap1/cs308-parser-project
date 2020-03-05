@@ -9,13 +9,12 @@ import slogo.model.tokens.*;
 import slogo.model.exceptions.InvalidCommandException;
 import slogo.model.exceptions.InvalidNumberArgumentsException;
 import slogo.model.exceptions.LanguageFileNotFoundException;
-import slogo.model.tokens.instructions.Instruction;
-import slogo.model.tokens.instructions.TurtleAction;
-import slogo.model.tokens.instructions.misc.*;
+import slogo.model.tokens.Instruction;
+import slogo.model.tokens.TurtleAction;
 import slogo.model.history.History;
 import slogo.model.history.Program;
 import slogo.model.history.State;
-import slogo.model.parse.CodeFactory;
+import slogo.model.tokens.CodeFactory;
 import slogo.model.parse.RegexHandler;
 import slogo.view.DisplayAction;
 
@@ -23,10 +22,6 @@ import java.io.File;
 import java.util.*;
 
 public class Model implements ModelAPI{
-
-    enum SyntaxType{
-        COMMENT,CONSTANT,VARIABLE,COMMAND,LISTSTART,LISTEND,GROUPSTART,GROUPEND,WHITESPACE,NEWLINE
-    }
 
     // regular expression representing any whitespace characters (space, tab, or newline)
     public static final String WHITESPACE = "\\s+";
@@ -56,6 +51,7 @@ public class Model implements ModelAPI{
     public void executeCode(String rawString) {
         errorMessage.set("");
         clearStacks();
+        history.clearCurrentProgram();
         parseInstructions(rawString);
         history.addNewProgram(new Program(turtleMaster.generateStateMap()));
         if(!commands.isEmpty() || !arguments.isEmpty()){
@@ -94,7 +90,6 @@ public class Model implements ModelAPI{
     public ObservableList<Token> getNewCommandsList(){ return createFromString.getNewCommandList(); }
     public BooleanProperty getUndoDisabled() { return history.getUndoDisabled(); }
     public BooleanProperty getRedoDisabled() { return history.getRedoDisabled(); }
-
     public StringProperty getErrorMessage(){ return errorMessage; }
 
     private void setupLanguage(StringProperty language) {
@@ -134,7 +129,7 @@ public class Model implements ModelAPI{
     private void addToAppropriateStack(String piece) throws InvalidCommandException, InvalidNumberArgumentsException {
         try {
             Token currItem = createFromString.getSymbolAsObj(piece);
-            if (currItem instanceof NewCommandName && (commands.isEmpty() || !(commands.peek() instanceof To))) {
+            if (currItem instanceof NewCommandName && (commands.isEmpty() || !(commands.peek() instanceof MakeUserInstruction))) {
                 throw new InvalidCommandException();
             } else if (currItem instanceof Instruction) {
                 Instruction currInstr = (Instruction) currItem;
@@ -173,7 +168,7 @@ public class Model implements ModelAPI{
     private void attemptToCreateFullInstruction() {
         Instruction currCommand = (Instruction) commands.peek();
         if (enoughArgs(currCommand.numRequiredArgs())) {
-            if (currCommand instanceof BracketOpen) {
+            if (currCommand instanceof ListStart) {
                 ListSyntax completeList = grabList(arguments.pop());
                 arguments.peek().push(completeList);
                 attemptToCreateFullInstruction();
@@ -211,7 +206,7 @@ public class Model implements ModelAPI{
     }
 
     private boolean enoughArgs(int numNeeded) {
-        boolean isCompleteList = commands.peek() instanceof BracketOpen && arguments.peek().peek() instanceof BracketClose;
+        boolean isCompleteList = commands.peek() instanceof ListStart && arguments.peek().peek() instanceof ListEnd;
         boolean enoughCommandParameters = arguments.peek().size() >= numNeeded && numNeeded != -1;
         return isCompleteList || enoughCommandParameters;
     }
