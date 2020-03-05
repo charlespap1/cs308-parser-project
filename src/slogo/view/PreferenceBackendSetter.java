@@ -4,6 +4,7 @@ import java.util.List;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import slogo.view.scrollers.HistoryCanvas;
+import slogo.view.selectors.ColorSelector;
 
 public class PreferenceBackendSetter {
 
@@ -12,7 +13,7 @@ public class PreferenceBackendSetter {
   private Group myRoot;
   private HistoryCanvas myHistory;
 
-  public PreferenceBackendSetter(List<Turtle> allTurtles, DrawingCanvas dc, Group root, HistoryCanvas hist)
+  public PreferenceBackendSetter(List<Turtle> allTurtles, DrawingCanvas dc, Group root, HistoryCanvas hist, List<ColorSelector> colorSelector)
   {
     myTurtles = allTurtles;
     myDrawingCanvas = dc;

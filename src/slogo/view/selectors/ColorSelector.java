@@ -1,8 +1,11 @@
 package slogo.view.selectors;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.beans.property.StringProperty;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
@@ -26,6 +29,8 @@ public abstract class ColorSelector implements StaticViewElement {
   private List<String> myIdentifiers;
   private ResourceBundle myResources;
   private Text myTitle = new Text();
+
+  protected Map colorMap = new HashMap<Integer, String>();
 
   public ColorSelector(double x, double y, List<String> identifiers, String resourcePackage) {
 
@@ -63,10 +68,12 @@ public abstract class ColorSelector implements StaticViewElement {
       newColor.setMaxHeight(COLOR_SELECTOR_HEIGHT);
       newColor.setMinHeight(COLOR_SELECTOR_HEIGHT);
       String rgb = myResources.getString(identifier);
-      setButtonFromResourceResult(newColor, rgb);
+      int idIntVal = Integer.parseInt(identifier);
+      setButtonFromResourceResult(idIntVal, newColor, rgb);
+
       Text index = new Text(identifier);
-      index.setTranslateX(5);
       buttonHold.getChildren().addAll(newColor, index);
+      buttonHold.setAlignment(Pos.CENTER);
       myTopElements.getChildren().add(buttonHold);
     }
   }
@@ -76,13 +83,20 @@ public abstract class ColorSelector implements StaticViewElement {
     myTopElements.getChildren().add(0, myTitle);
   }
 
+  public Map<String, String> map()
+  {
+    return colorMap;
+  }
+
+
   /**
    * Gets the style of the button from the resource given
    * @param newColor
    * @param rgb
    */
-  protected void setButtonFromResourceResult(Button newColor, String rgb) {
+  protected void setButtonFromResourceResult(int id, Button newColor, String rgb) {
 
+    colorMap.put(id, rgb);
     newColor.setStyle(String.format(DEFAULT_BACKGROUND_SETTER,rgb));
     newColor.setOnAction(e -> changeAppearance(rgb));
   }

@@ -87,6 +87,7 @@ public class SetupScreen {
   private HistoryCanvas myHistory = new HistoryCanvas(COMMAND_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING);
   private ListViewer myNewCommandViewer = new CommandViewer(LIST_VIEW_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING, this::setInputText);
   private ListViewer myVariableView = new VariableViewer(LIST_VIEW_COLUMN, HEIGHT/2.0);
+  private RGBHelper rgbHelper = new RGBHelper();
 
   private BackgroundSelector myBackgroundSelector;
   private TurtleFaceSelector myCharacterSelector;
@@ -196,8 +197,8 @@ public class SetupScreen {
   public int setPenColor(List<Double> params) {
     int index = params.get(0).intValue();
     //TODO: implement with palette
-
-    for (Turtle turtle : myTurtles) turtle.changePenColor(Color.RED);
+    String rgb = myPenSelector.map().get(index);
+    for (Turtle turtle : myTurtles) turtle.changePenColor(rgbHelper.getColor(rgb));
     return index;
   }
 

@@ -14,7 +14,7 @@ import java.util.*;
  * @author Braeden
  */
 public class TurtleFaceSelector extends ColorSelector {
-  public static final List<String> IMAGES = new ArrayList<>(Arrays.asList("Turtle", "Plane", "Car", "Dog"));
+  public static final List<String> IMAGES = new ArrayList<>(Arrays.asList("1", "2", "3", "4"));
   public static final String RESOURCES = "resources";
   public static final String IMAGE_RESOURCE_PACKAGE = RESOURCES + ".commands.TurtleImages";
 
@@ -27,7 +27,8 @@ public class TurtleFaceSelector extends ColorSelector {
   }
 
   @Override
-  protected void setButtonFromResourceResult(Button newImageButton, String imageFileName) {
+  protected void setButtonFromResourceResult(String id, Button newImageButton, String imageFileName) {
+    colorMap.put(id, imageFileName);
     Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(imageFileName)));
     ImageView iv = new ImageView(image);
     iv.setPreserveRatio(true);
