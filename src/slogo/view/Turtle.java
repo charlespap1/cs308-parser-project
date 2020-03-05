@@ -77,6 +77,7 @@ public class Turtle {
       else myTurtleView.setOpacity(0.5);
     });
     returnTurtleToDefault();
+    myTurtleView.setOnMouseClicked(e -> active.setValue(!active.getValue()));
   }
 
 
