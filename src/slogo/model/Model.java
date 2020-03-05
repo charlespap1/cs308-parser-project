@@ -57,6 +57,8 @@ public class Model implements ModelAPI{
         errorMessage.set("");
         clearStacks();
         parseInstructions(rawString);
+        history.addNewProgram(new Program(turtleMaster.generateStateMap()));
+        history.setPointerToEnd();
         if(!commands.isEmpty() || !arguments.isEmpty()){
             InvalidNumberArgumentsException e = new InvalidNumberArgumentsException();
             errorMessage.setValue(e.getMessage());
@@ -185,7 +187,6 @@ public class Model implements ModelAPI{
                 Instruction currInstr = createCompleteInstruction(arguments.pop());
                 if (commands.isEmpty()) {
                     currInstr.execute();
-                    System.out.println("line: " + currInstr.toString());
                     executed = true;
                 } else {
                     arguments.peek().push(currInstr);

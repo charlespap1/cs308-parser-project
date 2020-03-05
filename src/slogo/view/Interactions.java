@@ -33,6 +33,8 @@ public class Interactions implements View {
     primaryStage.setScene(myScene);
     primaryStage.setTitle(TITLE);
     primaryStage.show();
+
+    setPreferences();
   }
 
   /**
@@ -87,6 +89,6 @@ public class Interactions implements View {
     };
   }
 
-  public void setPreferences() { mySetup.setPreferences(myPreferences); }
+  private void setPreferences() { mySetup.setPreferences(myPreferences); }
 
 }
