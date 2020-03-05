@@ -50,6 +50,10 @@ public class DisplayCustomizer {
   private List<String> colorKeys;
   private List<String> imageKeys;
 
+  private int penIndex = 0;
+  private int backgroundIndex = 0;
+  private int imageIndex = 0;
+
   public DisplayCustomizer(double x, double y) {
     myHolder.setLayoutX(x);
     myHolder.setLayoutY(y);
@@ -64,6 +68,10 @@ public class DisplayCustomizer {
     imageButtons = createButtons(imageKeys, myCharacterHolder);
     buildLists();
   }
+
+  public int getPenIndex(){ return penIndex; }
+  public int getBackgroundIndex(){ return backgroundIndex; }
+  public int getImageIndex(){ return imageIndex; }
 
   private List<Button> createButtons(List<String> ids, HBox holder)
   {
