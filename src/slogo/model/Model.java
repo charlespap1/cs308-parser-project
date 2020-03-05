@@ -9,13 +9,12 @@ import slogo.model.tokens.*;
 import slogo.model.exceptions.InvalidCommandException;
 import slogo.model.exceptions.InvalidNumberArgumentsException;
 import slogo.model.exceptions.LanguageFileNotFoundException;
-import slogo.model.tokens.instructions.Instruction;
-import slogo.model.tokens.instructions.TurtleAction;
-import slogo.model.tokens.instructions.misc.*;
+import slogo.model.tokens.Instruction;
+import slogo.model.tokens.TurtleAction;
 import slogo.model.history.History;
 import slogo.model.history.Program;
 import slogo.model.history.State;
-import slogo.model.parse.CodeFactory;
+import slogo.model.tokens.CodeFactory;
 import slogo.model.parse.RegexHandler;
 import slogo.view.DisplayAction;
 

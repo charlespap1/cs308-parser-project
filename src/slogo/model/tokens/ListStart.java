@@ -1,7 +1,5 @@
 package slogo.model.tokens;
 
-import slogo.model.tokens.instructions.Instruction;
-
 public class ListStart extends Instruction {
 
     private static final int numArgs = -1;
