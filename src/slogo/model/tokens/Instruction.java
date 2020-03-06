@@ -2,6 +2,8 @@ package slogo.model.tokens;
 
 import slogo.model.TurtleMasterAccessor;
 import slogo.model.exceptions.CommandCannotDoListException;
+import slogo.model.exceptions.InvalidArgumentException;
+import slogo.model.exceptions.InvalidLoopConditionException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,5 +51,20 @@ public abstract class Instruction implements Token {
         StringBuilder sb = new StringBuilder(instrName);
         for (Token param:parameters) sb.append(" ").append(param.toString());
         return sb.toString();
+    }
+
+    protected double runLoop(double start, double end, double increment, Token variable){
+        Token list2 = parameters.get(1);
+        if(!(list2 instanceof ListSyntax)) throw new InvalidArgumentException();
+        double returnValue = 0;
+        List<Token> commands = ((ListSyntax) list2).getContents();
+        for (double i = start; i <= end; i += increment) {
+            if (variable!=null) ((Variable) variable).setVariable(i);
+            for (Token command: commands) {
+                if (!(command instanceof Instruction)) throw new InvalidLoopConditionException();
+                returnValue = command.execute();
+            }
+        }
+        return returnValue;
     }
 }

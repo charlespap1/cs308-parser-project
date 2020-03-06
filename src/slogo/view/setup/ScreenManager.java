@@ -5,16 +5,11 @@ import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import slogo.view.DrawingCanvas;
-import slogo.view.LineManager;
-import slogo.view.Turtle;
-import slogo.view.TurtleGraphicalMover;
-import slogo.view.UserCommandField;
+import slogo.view.*;
 import slogo.view.selectors.DisplayCustomizer;
 import slogo.view.selectors.LanguageSelector;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * This method was added to breakup the SetupScreen class which was enormous
@@ -81,7 +76,7 @@ public class ScreenManager {
      * @param turtle
      */
     public void addNewTurtle(slogo.model.Turtle turtle) {
-        Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(DEFAULT_TURTLE_IMAGE)));
+        Image image = myDisplayCustomizer.getImage(myDisplayCustomizer.getImageIndex());
         Turtle newTurtle = new Turtle(image, myDrawingCanvas.getWidth(), myDrawingCanvas.getHeight());
         myTurtles.add(newTurtle);
         myRoot.getChildren().add(newTurtle.getView());

@@ -10,14 +10,13 @@ import javafx.stage.Stage;
 import slogo.controller.DirectExecutor;
 import slogo.model.tokens.Token;
 import slogo.view.popup.TurtleStatePopup;
+import slogo.view.setup.MethodDoesNotExistException;
+import slogo.view.setup.ScreenManager;
+import slogo.view.setup.SetupScreen;
 
 import java.io.File;
 import java.lang.reflect.Method;
 import java.util.List;
-
-import slogo.view.setup.MethodDoesNotExistException;
-import slogo.view.setup.ScreenManager;
-import slogo.view.setup.SetupScreen;
 
 
 /**

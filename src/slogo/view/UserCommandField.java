@@ -1,9 +1,10 @@
 package slogo.view;
 
-import java.util.List;
 import javafx.beans.property.StringProperty;
 import javafx.scene.Node;
 import javafx.scene.control.TextArea;
+
+import java.util.List;
 
 /**
  * This class allows us to specify the attributes of the user input box

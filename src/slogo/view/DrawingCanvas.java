@@ -1,10 +1,11 @@
 package slogo.view;
 
-import java.util.List;
 import javafx.beans.property.StringProperty;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+
+import java.util.List;
 
 /**
  * This class specifies the attributes of the

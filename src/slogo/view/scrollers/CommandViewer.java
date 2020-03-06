@@ -17,9 +17,9 @@ public class CommandViewer extends ScrollingWindow {
     }
 
     protected void onSelectedItem(Token t){
-        StringBuilder output = new StringBuilder();
-        output.append(t.toString());
-        output.append(" 0".repeat(Math.max(0, ((Instruction) t).numRequiredArgs())));
-        setter.setInput(output.toString());
+        if (t==null) return;
+        String output = t.toString() +
+                " 0".repeat(Math.max(0, ((Instruction) t).numRequiredArgs()));
+        setter.setInput(output);
     }
 }

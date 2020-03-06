@@ -3,7 +3,6 @@ package slogo.view.scrollers;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -13,7 +12,6 @@ import javafx.scene.layout.HBox;
 import slogo.model.tokens.Token;
 import slogo.model.tokens.Variable;
 
-import java.beans.EventHandler;
 import java.util.Objects;
 
 /**
@@ -79,6 +77,7 @@ public class VariableViewer extends ScrollingWindow {
      */
     @Override
     protected void onSelectedItem(Token t){
+        if (t==null) return;
         label.setText(t.toString() + " " + t.execute());
         text.setText("");
         button.setOnAction(e -> {

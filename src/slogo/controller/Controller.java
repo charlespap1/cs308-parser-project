@@ -4,10 +4,8 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import slogo.model.Model;
 import slogo.model.tokens.Instruction;
-import slogo.model.tokens.Token;
 import slogo.view.DisplayAction;
 import slogo.view.Interactions;
-import slogo.view.popup.SetPreferencesPopup;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -77,7 +75,7 @@ public class Controller extends Application {
      */
     private void getInstruction(Interactions view, Model model) throws NullPointerException {
         String input = view.getInstruction();
-        model.executeCode(input);
+        if (input.length()>0) model.executeCode(input);
     }
 
     private void setupDisplayCommands(Interactions view, Model model) {

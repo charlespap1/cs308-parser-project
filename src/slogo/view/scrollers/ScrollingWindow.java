@@ -1,18 +1,19 @@
 package slogo.view.scrollers;
 
-import java.util.List;
 import javafx.beans.property.StringProperty;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import slogo.model.tokens.Token;
 import slogo.view.DrawingCanvas;
-import slogo.view.setup.SetupScreen;
 import slogo.view.StaticViewElement;
+import slogo.view.setup.SetupScreen;
+
+import java.util.List;
 
 /**
  * Bare bones class which allows for scrolling and clicking on items in
@@ -53,7 +54,10 @@ public abstract class ScrollingWindow implements StaticViewElement {
 
     myList.setPrefSize(myWidth-2*VBOX_SPACING, myHeight);
     myTextHolder.getChildren().addAll(myList);
-    myList.setOnMouseClicked(e -> onSelectedItem(myList.getSelectionModel().getSelectedItem()));
+    myList.setOnMouseClicked(e -> {
+      onSelectedItem(myList.getSelectionModel().getSelectedItem());
+      myList.getSelectionModel().clearSelection();
+    });
   }
 
   /**
@@ -83,6 +87,7 @@ public abstract class ScrollingWindow implements StaticViewElement {
    */
   public void bindList(ObservableList<Token> list) {
     myList.setItems(list);
+    list.addListener((ListChangeListener<Token>) c -> myList.scrollTo(list.size()-1));
   }
 
   /**

@@ -1,12 +1,5 @@
 package slogo.view.setup;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
@@ -25,21 +18,13 @@ import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import slogo.controller.DirectExecutor;
 import slogo.model.tokens.Token;
-import slogo.view.DrawingCanvas;
-import slogo.view.LanguageHelper;
-import slogo.view.LineManager;
-import slogo.view.StaticViewElement;
-import slogo.view.Turtle;
-import slogo.view.TurtleGraphicalMover;
-import slogo.view.UserCommandField;
+import slogo.view.*;
 import slogo.view.commonCommands.CommonCommands;
 import slogo.view.exceptions.FileDoesNotExistException;
 import slogo.view.exceptions.TextParsingException;
 import slogo.view.exceptions.WriterCannotFindFileException;
 import slogo.view.popup.LoadConfigPopup;
-
 import slogo.view.popup.SetPreferencesPopup;
-
 import slogo.view.popup.TurtleStatePopup;
 import slogo.view.scrollers.CommandViewer;
 import slogo.view.scrollers.HistoryViewer;
@@ -48,10 +33,8 @@ import slogo.view.scrollers.VariableViewer;
 import slogo.view.selectors.DisplayCustomizer;
 import slogo.view.selectors.LanguageSelector;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.io.*;
+import java.util.*;
 
 /**
  * This class allows us to make our main class less fat
