@@ -51,7 +51,7 @@ public class Controller extends Application {
         myView.setPreferences(preferences);
         myView.setUndoAction(e -> myModel.undo());
         myView.setRedoAction(e -> myModel.redo());
-        myView.setNewConfigButton(e -> executeTextFile(myView.getFile(), myModel), stage);
+        myView.setLoadTextFileButton(e -> executeTextFile(myView.getFile(), myView, myModel), stage);
     }
 
 
@@ -91,7 +91,7 @@ public class Controller extends Application {
         }
     }
 
-    private void executeTextFile(File f, Model model) throws NullPointerException {
+    private void executeTextFile(File f, Interactions view, Model model) throws NullPointerException {
         // print to see if working
         try {
             Scanner myReader = new Scanner(f);

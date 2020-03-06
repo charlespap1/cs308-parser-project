@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class ScreenManager {
-    // TODO: shouldn't use default
     public static final String DEFAULT_TURTLE_IMAGE = "turtle.png";
 
     private Group myRoot;
@@ -34,6 +33,7 @@ public class ScreenManager {
         myLineManager = lineManager;
         myDisplayCustomizer = displayCustomizer;
         myGraphicalMover = mover;
+        setButtons();
     }
 
     public void setPreferences(String preferences){
@@ -122,28 +122,7 @@ public class ScreenManager {
         }
     }
 
-    private void moveTurtleUp() {
-        for (Turtle t: myTurtles){
-            if (t.isActive())
-        }
-//    double y = myTurtle.getYPos() - MOVEMENT_VALUE;
-//    setTurtle(myTurtle.getXPos(), y);
-    }
-    private void moveTurtleDown()
-    {
-//    double y = myTurtle.getYPos() + MOVEMENT_VALUE;
-//    setTurtle(myTurtle.getXPos(), y);
-    }
-
-    private void moveTurtleLeft()
-    {
-//    double x = myTurtle.getXPos() - MOVEMENT_VALUE;
-//    setTurtle(x, myTurtle.getYPos());
-    }
-
-    private void moveTurtleRight()
-    {
-//    double x = myTurtle.getXPos() + MOVEMENT_VALUE;
-//    setTurtle(x, myTurtle.getYPos());
+    private void setButtons(){
+        myDisplayCustomizer.setButtons(this::setPenColor, this::setBackground, this::setShape);
     }
 }

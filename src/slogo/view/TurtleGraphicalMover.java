@@ -1,6 +1,9 @@
 package slogo.view;
 
 import javafx.beans.property.StringProperty;
+
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -16,14 +19,11 @@ import javafx.scene.text.Text;
 import java.util.Objects;
 
 public class TurtleGraphicalMover implements StaticViewElement{
-
-  public static final int MOVEMENT_VALUE = 10;
   public static final int BOX_SPACING = 5;
   public static final int MAJOR_BOX_SPACING = 15;
   public static final String ARROW_IMAGE_FILE = "arrow.png";
   public static final int BUTTON_WIDTH = 20;
 
-  private Turtle myTurtle;
   private VBox myButtonHolder;
   private HBox myMiddleButtons;
   private VBox myPenElements;
@@ -57,6 +57,17 @@ public class TurtleGraphicalMover implements StaticViewElement{
 
     myHolder.getChildren().addAll(myButtonHolder, myPenElements);
   }
+
+  public void setUpButton(EventHandler<ActionEvent> action, LineManager lineManager){
+    up.addEventHandler(ActionEvent.ACTION, e -> lineManager.checkMovingFromButtons());
+    up.addEventHandler(ActionEvent.ACTION, action);
+  }
+  public void setDownButton(EventHandler<ActionEvent> action, LineManager lineManager){
+    down.addEventHandler(ActionEvent.ACTION, e -> lineManager.checkMovingFromButtons());
+    down.addEventHandler(ActionEvent.ACTION, action);
+  }
+  public void setLeftButton(EventHandler<ActionEvent> action){ left.setOnAction(action); }
+  public void setRightButton(EventHandler<ActionEvent> action){ right.setOnAction(action); }
 
   public Node getView()
   {
@@ -122,27 +133,22 @@ public class TurtleGraphicalMover implements StaticViewElement{
 
   private void setTurtleButtons()
   {
-
     up = new Button();
-    up.setOnAction(e -> moveTurtleUp());
     ImageView upImage = getButtonPic();
     upImage.setRotate(-90);
     up.setGraphic(upImage);
 
     left = new Button();
-    left.setOnAction(e -> moveTurtleLeft());
     ImageView leftImage = getButtonPic();
     leftImage.setRotate(180);
     left.setGraphic(leftImage);
 
     down = new Button();
-    down.setOnAction(e -> moveTurtleDown());
     ImageView downImage = getButtonPic();
     downImage.setRotate(90);
     down.setGraphic(downImage);
 
     right = new Button();
-    right.setOnAction(e -> moveTurtleRight());
     ImageView rightImage = getButtonPic();
     right.setGraphic(rightImage);
 
@@ -169,9 +175,6 @@ public class TurtleGraphicalMover implements StaticViewElement{
   {
     //myTurtle.setThickness(thickness);
   }
-
-
-
 
   private void setTurtle(double x, double y)
   {

@@ -85,7 +85,7 @@ public class Interactions implements View {
    */
   public void setGoButton(EventHandler<ActionEvent> goAction){ mySetup.setGoButton(goAction); }
   public void setNewWindowButton(EventHandler<ActionEvent> newWindowAction) { mySetup.setNewWindowButton(newWindowAction); }
-  public void setNewConfigButton(EventHandler<ActionEvent> newWindowAction, Stage stage) { mySetup.setNewConfigPopupButton(newWindowAction, stage); }
+  public void setLoadTextFileButton(EventHandler<ActionEvent> newWindowAction, Stage stage) { mySetup.setLoadTextFileButton(newWindowAction, stage); }
   public void setTurtlesStateButton(EventHandler<ActionEvent> showTurtlesAction) { mySetup.setTurtlesStatesButton(showTurtlesAction); }
 
   public void setUndoAction(EventHandler<ActionEvent> undoAction) { mySetup.setUndoButton(undoAction); }
@@ -97,9 +97,15 @@ public class Interactions implements View {
 
   public DisplayAction getAction(String methodName) {
     return params -> {
-      Method m = ScreenManager.class.getDeclaredMethod(methodName, List.class);
-      Object value = m.invoke(myScreen, params);
-      return (Integer) value;
+      try {
+        Method m = ScreenManager.class.getDeclaredMethod(methodName, List.class);
+        Object value = m.invoke(myScreen, params);
+        return (Integer) value;
+      } catch (Exception e) {
+        //TODO: errors
+        System.out.println("bad method");
+        return 0;
+      }
     };
   }
 }

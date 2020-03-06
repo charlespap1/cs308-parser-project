@@ -10,8 +10,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import slogo.view.DisplayAction;
 import slogo.view.Turtle;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class DisplayCustomizer {
@@ -128,6 +130,20 @@ public class DisplayCustomizer {
       iv.setPreserveRatio(true);
       iv.setFitHeight(COLOR_SELECTOR_HEIGHT);
       imageButtons.get(index).setGraphic(iv);
+    }
+  }
+
+  public void setButtons(DisplayAction penChangeAction, DisplayAction backgroundChangeAction, DisplayAction imageChangeAction) {
+    for (int i = 0; i<penButtons.size(); i++){
+      List<Double> index = new ArrayList<>();
+      index.add((double) i);
+      penButtons.get(i).setOnAction(e -> penChangeAction.execute(index));
+      backgroundButtons.get(i).setOnAction(e -> backgroundChangeAction.execute(index));
+    }
+    for (int i = 0; i<imageButtons.size(); i++){
+      List<Double> index = new ArrayList<>();
+      index.add((double) i);
+      imageButtons.get(i).setOnAction(e -> imageChangeAction.execute(index));
     }
   }
 

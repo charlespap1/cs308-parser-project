@@ -102,19 +102,13 @@ public class Turtle {
     return line;
   }
 
-  public double getXPos() {
-    return x.getValue();
-  }
-
   public void setLocation(double x, double y) {
     this.x.setValue(x);
     this.y.setValue(y);
     coordinates.setValue(new Point2D.Double(x, y));
   }
 
-  public double getYPos() {
-    return y.getValue();
-  }
+
 
   /**
    * Allows the Main class to get the image body of the turtle to display
@@ -127,18 +121,23 @@ public class Turtle {
    * @param image
    */
   public void changeImage(Image image) { myTurtleView.setImage(image); }
-
   public void setPenUp(boolean isPenUp) { this.penUp.set(isPenUp); }
-
   public void setThickness(int newThickness)
   {
     penThickness = newThickness;
   }
-
+  public void setAngle(double newAngle) { angle.set(newAngle); }
   public boolean isActive() { return active.get(); }
   public boolean getPenUp()
   {
-    return this.penUp.get();
+    return penUp.get();
+  }
+  public double getAngle() { return angle.get(); }
+  public double getXPos() {
+    return x.getValue();
+  }
+  public double getYPos() {
+    return y.getValue();
   }
 
   private Line drawLine(){

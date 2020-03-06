@@ -53,6 +53,7 @@ public class SetupScreen {
   public static final int COMMAND_COLUMN = 1;
   public static final int LIST_VIEW_COLUMN = 2;
   public static final int ERROR_MESSAGE_PADDING = 320;
+  public static final int MOVEMENT_VALUE = 10;
 
   public static final String VARIABLE_TITLE_KEY = "VariableTitleText";
   public static final String HISTORY_TITLE_KEY = "HistoryTitleText";
@@ -82,7 +83,7 @@ public class SetupScreen {
   private Button myClear;
   private Button myStop;
   private Button myNewWindow;
-  private Button myNewConfig;
+  private Button loadFileButton;
   private LoadConfigPopup myCurrentPopup;
 
   private Button undoButton;
@@ -123,7 +124,7 @@ public class SetupScreen {
 
     myGraphicalMover = new TurtleGraphicalMover(myUserInput.getView().getLayoutX(), myUserInput.getView().getLayoutY() + GRAPHICAL_VIEWER_HEIGHT_OFFSET);
     myCustomizer = new DisplayCustomizer(belowCanvasButtons.getLayoutX(), belowCanvasButtons.getLayoutY()+ BUTTON_HEIGHT_OFFSET + 10);
-
+    setupGraphicalMover();
     setText();
 
     root.getChildren().addAll(myDrawingCanvas.getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myNewCommandViewer.getView(), myVariableView.getView());
@@ -138,6 +139,13 @@ public class SetupScreen {
     scene.getStylesheets().add(Objects.requireNonNull(getClass().getClassLoader().getResource(MAIN_STYLESHEET)).toExternalForm());
 
     return scene;
+  }
+
+  private void setupGraphicalMover(){
+    myGraphicalMover.setUpButton(e->moveTurtleUp(), myLineManager);
+    myGraphicalMover.setDownButton(e->moveTurtleDown(), myLineManager);
+    myGraphicalMover.setLeftButton(e->moveTurtleLeft());
+    myGraphicalMover.setRightButton(e->moveTurtleRight());
   }
 
 
@@ -155,11 +163,6 @@ public class SetupScreen {
     root.getChildren().add(myCommandJumper);
   }
 
-
-  public String getUserInput() { return myUserInput.getUserInput(); }
-
-  public DrawingCanvas getDrawingCanvas() { return myDrawingCanvas; }
-
   public void bindErrorMessage(StringProperty message) {
     myCurrentErrorMessage.textProperty().bindBidirectional(message);
     myCurrentErrorMessage.setTextFill(Color.RED);
@@ -172,35 +175,24 @@ public class SetupScreen {
 
   }
 
-  public File getFile()
-  {
-    try{
-      myLineManager.newProgram();
-      return myCurrentPopup.getFile();
-    }
-    catch(FileDoesNotExistException err)
-    {
+  public File getFile() {
+    myLineManager.newProgram();
+    try{ return myCurrentPopup.getFile(); }
+    catch(FileDoesNotExistException err) {
       myCurrentErrorMessage.textProperty().setValue(err.getMessage());
       return null;
     }
   }
 
 
-  public void setNewConfigPopupButton(EventHandler<ActionEvent> newConfigAction, Stage primaryStage) {
-
+  public void setLoadTextFileButton(EventHandler<ActionEvent> loadFileAction, Stage primaryStage) {
     EventHandler<ActionEvent> e = event -> {
         myCurrentPopup = new LoadConfigPopup();
         myCurrentPopup.getMyPopup().show(primaryStage);
-        myCurrentPopup.setPopupButton(newConfigAction);
+        myCurrentPopup.setPopupButton(loadFileAction);
     };
-
-    myNewConfig.setOnAction(e);
-
+    loadFileButton.addEventHandler(ActionEvent.ACTION, e);
   }
-
-  public Group getRoot() { return root; }
-
-  public StringProperty getLanguageChoice() { return myLanguageSelector.getLanguageChoiceProperty(); }
 
   public void setInputText(String command) { myUserInput.setUserInput(command); }
   public void setVariableList(ObservableList<Token> variableList) { myVariableView.bindList(variableList); }
@@ -256,12 +248,12 @@ public class SetupScreen {
     belowCanvasButtons.getChildren().add(myTurtlesStatesButton);
     //~~~~~~~~~~~~~ ^^^ for testing and troubleshooting ^^^ ~~~~~~~~~~~~~~~~
 
-    myNewConfig = new Button();
+    loadFileButton = new Button();
     myNewWindow = new Button();
     HBox newWindowButtons = new HBox(BOX_SPACING);
     newWindowButtons.setLayoutY(COMMON_COMMAND_BUTTON_HEIGHT_OFFSET);
     newWindowButtons.setLayoutX(WIDTH/2 - BUTTON_HEIGHT_OFFSET*3);
-    newWindowButtons.getChildren().addAll(myNewWindow, myNewConfig);
+    newWindowButtons.getChildren().addAll(myNewWindow, loadFileButton);
     undoButton = new Button();
     undoButton.setText("Undo");
     redoButton = new Button();
@@ -300,7 +292,7 @@ public class SetupScreen {
     myClear.textProperty().bind(languageHelper.getStringProperty(CLEAR_BUTTON_KEY));
     myStop.textProperty().bind(languageHelper.getStringProperty(STOP_BUTTON_KEY));
     myNewWindow.textProperty().bind(languageHelper.getStringProperty(NEW_WINDOW_BUTTON_KEY));
-    myNewConfig.textProperty().bind(languageHelper.getStringProperty(NEW_CONFIG_BUTTON_KEY));
+    loadFileButton.textProperty().bind(languageHelper.getStringProperty(NEW_CONFIG_BUTTON_KEY));
 
     myVariableView.setTitleProperty(languageHelper.getStringProperty(VARIABLE_TITLE_KEY));
     myNewCommandViewer.setTitleProperty(languageHelper.getStringProperty(NEW_COMMAND_TITLE_KEY));
@@ -315,5 +307,37 @@ public class SetupScreen {
 
   public TurtleStatePopup getTurtleStatePopup() {
     return myTurtleStatePopup;
+  }
+
+  private void moveTurtleUp() {
+    for (Turtle t: myTurtles){
+      if (t.isActive()) {
+        double x = t.getXPos() - MOVEMENT_VALUE * Math.cos(Math.toRadians(t.getAngle()));
+        double y = t.getYPos() - MOVEMENT_VALUE * Math.sin(Math.toRadians(t.getAngle()));
+        t.setLocation(x, y);
+      }
+    }
+  }
+
+  private void moveTurtleDown() {
+    for (Turtle t: myTurtles){
+      if (t.isActive()) {
+        double x = t.getXPos() + MOVEMENT_VALUE * Math.cos(Math.toRadians(t.getAngle()));
+        double y = t.getYPos() + MOVEMENT_VALUE * Math.sin(Math.toRadians(t.getAngle()));
+        t.setLocation(x, y);
+      }
+    }
+  }
+
+  private void moveTurtleLeft() {
+    for (Turtle t: myTurtles){
+      if (t.isActive()) t.setAngle(t.getAngle()-MOVEMENT_VALUE);
+    }
+  }
+
+  private void moveTurtleRight() {
+    for (Turtle t: myTurtles){
+      if (t.isActive()) t.setAngle(t.getAngle()-MOVEMENT_VALUE);
+    }
   }
 }
