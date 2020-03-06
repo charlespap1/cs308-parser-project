@@ -54,6 +54,7 @@ public class Controller extends Application {
         myView.setUndoAction(e -> myModel.undo());
         myView.setRedoAction(e -> myModel.redo());
         myView.setLoadTextFileButton(e -> executeTextFile(myView.getFile(), myView, myModel), stage);
+        myView.setClearHistory(e -> myModel.clearHistory());
         myView.setDirectInstructionExecutor(new DirectExecutor() {
             public void execute(Instruction i) { myModel.executeCode(i); }
             public void execute(String s) { myModel.executeCode(s); }

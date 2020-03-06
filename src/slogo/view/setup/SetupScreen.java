@@ -230,6 +230,13 @@ public class SetupScreen {
     undoButton.disableProperty().bind(undoDisabled);
     redoButton.disableProperty().bind(redoDisabled);
   }
+  public void setClearHistory(EventHandler<ActionEvent> clearAction) {
+    myClear.setOnAction(e -> {
+      myLineManager.clearAllLines();
+      moveTurtlesToCenter();
+      clearAction.handle(e);
+    });
+  }
 
   public ScreenManager getScreenManager(){
     return new ScreenManager(root, myUserInput, myTurtles, myDrawingCanvas, myLanguageSelector, myLineManager, myCustomizer, myGraphicalMover);
@@ -241,24 +248,25 @@ public class SetupScreen {
     box.setMinWidth(width);
   }
 
+  private void moveTurtlesToCenter(){
+    boolean tempPen = myGraphicalMover.getPenUp();
+    myGraphicalMover.setPenUp(true);
+    for(Turtle t : myTurtles) {
+      t.returnTurtleToDefault();
+    }
+    myGraphicalMover.setPenUp(tempPen);
+  }
+
   private void setButtons() {
     myGo = new Button();
     myGo.setMinWidth(myUserInput.getWidth());
     belowInputFieldItems.getChildren().add(myGo);
     myClear = new Button();
     belowCanvasButtons.getChildren().add(myClear);
-    myClear.setOnAction(e -> myLineManager.clearAllLines());
     myStop = new Button();
     belowCanvasButtons.getChildren().add(myStop);
 
-    myStop.setOnAction(e -> {
-      boolean tempPen = myGraphicalMover.getPenUp();
-      myGraphicalMover.setPenUp(true);
-      for(Turtle t : myTurtles) {
-        t.returnTurtleToDefault();
-      }
-      myGraphicalMover.setPenUp(tempPen);
-    });
+    myStop.setOnAction(e -> moveTurtlesToCenter());
 
     //~~~~~~~~~~~~~ vvv for testing and troubleshooting vvv ~~~~~~~~~~~~~~~~
     myTestButton = new Button();

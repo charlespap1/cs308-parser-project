@@ -99,6 +99,7 @@ public class Interactions implements View {
   public void setRedoAction(EventHandler<ActionEvent> redoAction) { mySetup.setRedoButton(redoAction); }
 
   public void setErrorMessage(StringProperty error){ mySetup.bindErrorMessage(error); }
+  public void setClearHistory(EventHandler<ActionEvent> clearAction) { mySetup.setClearHistory(clearAction); }
 
   public StringProperty getLanguageChoice() { return myScreen.getLanguageChoice(); }
 
