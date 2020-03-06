@@ -1,27 +1,20 @@
 package slogo.view.selectors;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.ResourceBundle;
 import javafx.beans.property.StringProperty;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import slogo.view.DisplayAction;
+import slogo.view.Turtle;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
 
 public class DisplayCustomizer {
 
@@ -82,6 +75,8 @@ public class DisplayCustomizer {
 
   public int getPenIndex(){ return penColorIndex; }
   public int getImageIndex(){ return imageIndex; }
+  public boolean getPenUp(){ return penUp; }
+  public int getBackgroundIndex(){ return backgroundColorIndex; }
   public Color getColor(int index){ return getColor(colors.get(index)); }
   public Image getImage(int index){
     imageIndex = index;
@@ -135,6 +130,20 @@ public class DisplayCustomizer {
       iv.setPreserveRatio(true);
       iv.setFitHeight(COLOR_SELECTOR_HEIGHT);
       imageButtons.get(index).setGraphic(iv);
+    }
+  }
+
+  public void setButtons(DisplayAction penChangeAction, DisplayAction backgroundChangeAction, DisplayAction imageChangeAction) {
+    for (int i = 0; i<penButtons.size(); i++){
+      List<Double> index = new ArrayList<>();
+      index.add((double) i);
+      penButtons.get(i).setOnAction(e -> penChangeAction.execute(index));
+      backgroundButtons.get(i).setOnAction(e -> backgroundChangeAction.execute(index));
+    }
+    for (int i = 0; i<imageButtons.size(); i++){
+      List<Double> index = new ArrayList<>();
+      index.add((double) i);
+      imageButtons.get(i).setOnAction(e -> imageChangeAction.execute(index));
     }
   }
 

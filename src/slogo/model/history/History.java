@@ -4,8 +4,8 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import slogo.model.tokens.Token;
 import slogo.model.tokens.Instruction;
+import slogo.model.tokens.Token;
 
 import java.util.ArrayList;
 import java.util.List;

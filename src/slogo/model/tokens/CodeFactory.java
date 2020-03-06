@@ -2,9 +2,9 @@ package slogo.model.tokens;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import slogo.model.parse.RegexHandler;
 import slogo.model.exceptions.LanguageFileNotFoundException;
 import slogo.model.exceptions.SyntaxException;
+import slogo.model.parse.RegexHandler;
 import slogo.view.DisplayAction;
 
 import java.lang.reflect.Constructor;

@@ -5,7 +5,6 @@ import java.util.Scanner;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 
-
 public class LoadConfigPopup extends PopupSkeleton {
 
   public static final int TEXT_FIELD_WIDTH = 125;

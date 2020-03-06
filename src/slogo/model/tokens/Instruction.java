@@ -1,12 +1,10 @@
 package slogo.model.tokens;
 
-import slogo.model.tokens.ListSyntax;
-import slogo.model.tokens.Token;
+import slogo.model.TurtleMasterAccessor;
+import slogo.model.exceptions.CommandCannotDoListException;
 
 import java.util.ArrayList;
 import java.util.List;
-import slogo.model.exceptions.CommandCannotDoListException;
-import slogo.model.TurtleMasterAccessor;
 
 public abstract class Instruction implements Token {
 
