@@ -83,6 +83,8 @@ public class SetupScreen {
   public static final String PEN_UP_BUTTON_KEY = "PenUpButton";
   public static final String PEN_DOWN_BUTTON_KEY = "PenDownButton";
   private static final String NEW_CONFIG_BUTTON_KEY = "NewConfigButton";
+  private static final String UNDO_BUTTON_KEY = "UndoButton";
+  private static final String REDO_BUTTON_KEY = "RedoButton";
 
   private static final String LOAD_FILE_PROMPT = "LoadFilePrompt";
   private static final String SELECT_PREFERENCES_PROMPT = "SelectPreferencesPrompt";
@@ -291,9 +293,9 @@ public class SetupScreen {
     newWindowButtons.setLayoutX(WIDTH/2 - BUTTON_HEIGHT_OFFSET*3);
     newWindowButtons.getChildren().addAll(myNewWindow, loadFileButton);
     undoButton = new Button();
-    undoButton.setText("Undo");
+    //undoButton.setText("Undo");
     redoButton = new Button();
-    redoButton.setText("Redo");
+    //redoButton.setText("Redo");
     belowCanvasButtons.setMaxWidth(myDrawingCanvas.getWidth());
     belowCanvasButtons.setMinWidth(myDrawingCanvas.getWidth());
     belowCanvasButtons.setAlignment(Pos.CENTER);
@@ -339,6 +341,8 @@ public class SetupScreen {
     myStop.textProperty().bind(languageHelper.getStringProperty(STOP_BUTTON_KEY));
     myNewWindow.textProperty().bind(languageHelper.getStringProperty(NEW_WINDOW_BUTTON_KEY));
     loadFileButton.textProperty().bind(languageHelper.getStringProperty(NEW_CONFIG_BUTTON_KEY));
+    undoButton.textProperty().bind(languageHelper.getStringProperty(UNDO_BUTTON_KEY));
+    redoButton.textProperty().bind(languageHelper.getStringProperty(REDO_BUTTON_KEY));
 
     myVariableView.setTitleProperty(languageHelper.getStringProperty(VARIABLE_TITLE_KEY));
     myNewCommandViewer.setTitleProperty(languageHelper.getStringProperty(NEW_COMMAND_TITLE_KEY));
