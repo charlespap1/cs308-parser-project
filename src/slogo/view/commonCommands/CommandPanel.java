@@ -2,17 +2,18 @@ package slogo.view.commonCommands;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.property.StringProperty;
 import javafx.scene.Node;
-import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import slogo.view.SetupScreen;
 import slogo.view.StaticViewElement;
+
+import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * Provides generic way to put common phrases into boxes for displaying

@@ -1,10 +1,11 @@
 package slogo.view;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.ResourceBundle;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 
 public class LanguageHelper {
   private ResourceBundle myResources;

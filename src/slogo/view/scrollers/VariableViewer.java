@@ -33,6 +33,7 @@ public class VariableViewer extends ScrollingWindow {
             ((Variable) t).setVariable(Double.parseDouble(text.getText()));
             myHolder.getChildren().remove(box);
         });
+        // TODO: deal with empty box
         if (!myHolder.getChildren().contains(box)) myHolder.getChildren().add(box);
     }
 }

@@ -18,11 +18,7 @@ public abstract class DisplayCommand extends Instruction {
     @Override
     public double execute() {
         List<Double> paramsAsVals = getParamsAsVals();
-        try {
-            myAction.execute(paramsAsVals);
-        } catch (Exception e) {
-            System.out.println("Bad input");
-        }
+        myAction.execute(paramsAsVals);
         return paramsAsVals.get(0);
     }
 }

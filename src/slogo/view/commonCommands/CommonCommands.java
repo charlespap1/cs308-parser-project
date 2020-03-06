@@ -20,6 +20,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import slogo.view.LanguageHelper;
 
+import java.io.IOException;
+
 /**
  * This holds the Scene of the Common Commands page as well as gives the ability to jump
  * back to your workspace or jump to a link with more information on the commands

@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class ScreenManager {
-    // TODO: shouldn't use default
     public static final String DEFAULT_TURTLE_IMAGE = "turtle.png";
 
     private Group myRoot;
@@ -34,10 +33,14 @@ public class ScreenManager {
         myLineManager = lineManager;
         myDisplayCustomizer = displayCustomizer;
         myGraphicalMover = mover;
+        setButtons();
     }
 
     public void setPreferences(String preferences){
         PreferenceLoaderSelector.setPreferences(preferences, myDisplayCustomizer);
+        myTurtles.get(0).setPenUp(myDisplayCustomizer.getPenUp());
+        myTurtles.get(0).changeImage(myDisplayCustomizer.getImage(myDisplayCustomizer.getImageIndex()));
+        myDrawingCanvas.changeBackground(myDisplayCustomizer.getColor(myDisplayCustomizer.getBackgroundIndex()));
     }
 
     public void addNewTurtle(slogo.model.Turtle turtle) {
@@ -56,6 +59,7 @@ public class ScreenManager {
 
     public int setBackground(List<Double> params) {
         int index = params.get(0).intValue();
+        myDisplayCustomizer.setBackground(index);
         Color color = myDisplayCustomizer.getColor(index);
         myDrawingCanvas.changeBackground(color);
         return index;
@@ -97,9 +101,7 @@ public class ScreenManager {
     public int getPenColor(List<Double> params) { return myDisplayCustomizer.getPenIndex(); }
     public int getShape(List<Double> params) { return myDisplayCustomizer.getImageIndex();  }
 
-    //TODO
     public int clearScreen(List<Double> params) {
-        //myHistory.clearHistory();
         for (Turtle t : myTurtles) t.returnTurtleToDefault();
         myLineManager.clearAllLines();
         return 0;
@@ -118,5 +120,9 @@ public class ScreenManager {
             myLineManager.addLine(newLine);
             turtle.getView().toFront();
         }
+    }
+
+    private void setButtons(){
+        myDisplayCustomizer.setButtons(this::setPenColor, this::setBackground, this::setShape);
     }
 }

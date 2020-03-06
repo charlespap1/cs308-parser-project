@@ -1,21 +1,16 @@
 package slogo.controller;
 
-import java.io.FileNotFoundException;
-import java.util.ResourceBundle;
-
-import java.io.File;
-import java.util.Scanner;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import slogo.model.Model;
-import slogo.model.Turtle;
-import slogo.view.Interactions;
 import slogo.view.DisplayAction;
-import slogo.view.popup.FileDoesNotExistException;
-import slogo.view.popup.LoadConfigPopup;
+import slogo.view.Interactions;
 import slogo.view.popup.SetPreferencesPopup;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ResourceBundle;
+import java.util.Scanner;
 
 /**
  * Main method where the GUI comes together
@@ -43,7 +38,7 @@ public class Controller extends Application {
     }
 
     private void makeWindow(Stage stage, String preferences){
-        Interactions myView = new Interactions(stage, preferences);
+        Interactions myView = new Interactions(stage);
         Model myModel = new Model(myView.getLanguageChoice());
         myView.setGoButton(e -> getInstruction(myView, myModel));
         myView.setViewLists(myModel.getVariableList(), myModel.getNewCommandsList());
@@ -53,9 +48,10 @@ public class Controller extends Application {
         myView.setTurtlesStateButton(e -> showActiveTurtles(myView, stage));
         setupCommands(myView, myModel);
         myModel.setAddTurtleFunction(myView::addTurtle);
+        myView.setPreferences(preferences);
         myView.setUndoAction(e -> myModel.undo());
         myView.setRedoAction(e -> myModel.redo());
-        myView.setNewConfigButton(e -> executeTextFile(myView.getFile(), myModel), stage);
+        myView.setLoadTextFileButton(e -> executeTextFile(myView.getFile(), myView, myModel), stage);
     }
 
 
@@ -85,7 +81,7 @@ public class Controller extends Application {
         }
     }
 
-    private void executeTextFile(File f, Model model) throws NullPointerException {
+    private void executeTextFile(File f, Interactions view, Model model) throws NullPointerException {
         // print to see if working
         try {
             Scanner myReader = new Scanner(f);

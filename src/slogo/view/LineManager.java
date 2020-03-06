@@ -1,6 +1,5 @@
 package slogo.view;
 
-import javafx.beans.property.BooleanProperty;
 import javafx.scene.Group;
 import javafx.scene.shape.Line;
 
@@ -12,19 +11,24 @@ public class LineManager {
     private Group myRoot;
     private List<List<Line>> myLines = new ArrayList<>();
     private int programPointer = -1;
+    private boolean graphicalLinesListExists = false;
 
     public LineManager(Group root){
         myRoot = root;
     }
 
     public void newProgram(){
-        int lastListIndex = myLines.size() - 1;
-        while (programPointer<lastListIndex){
-            myLines.remove(lastListIndex);
-            lastListIndex--;
+        if (!graphicalLinesListExists){
+            int lastListIndex = myLines.size() - 1;
+            while (programPointer<lastListIndex){
+                myLines.remove(lastListIndex);
+                lastListIndex--;
+            }
+            programPointer = lastListIndex + 1;
+            myLines.add(new ArrayList<>());
+        } else {
+            graphicalLinesListExists = false;
         }
-        programPointer = lastListIndex + 1;
-        myLines.add(new ArrayList<>());
     }
 
     public void addLine(Line line){
@@ -52,5 +56,10 @@ public class LineManager {
         }
         myLines = new ArrayList<>();
         programPointer = -1;
+    }
+
+    public void checkMovingFromButtons(){
+        if (myLines.size()<1) newProgram();
+        graphicalLinesListExists = true;
     }
 }
