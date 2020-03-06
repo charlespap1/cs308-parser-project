@@ -161,11 +161,12 @@ public class SetupScreen {
     myCustomizer = new DisplayCustomizer(belowCanvasButtons.getLayoutX(), belowCanvasButtons.getLayoutY()+ BUTTON_HEIGHT_OFFSET + 10);
     setText();
 
-    //root.getChildren().addAll(belowInputFieldItems, belowCanvasButtons);
+    root.getChildren().addAll(belowInputFieldItems, belowCanvasButtons);
 
-    root.getChildren().addAll(myDrawingCanvas.getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myNewCommandViewer.getView(), myVariableView.getView());
-    root.getChildren().addAll(myGraphicalMover.getView(), myCustomizer.getView(), myLanguageSelector.getView());
-
+    for(StaticViewElement element: myStaticViewElements.keySet())
+    {
+      root.getChildren().add(element.getView());
+    }
 
 
     myCurrentErrorMessage.setLayoutX(myVariableView.getView().getLayoutX());

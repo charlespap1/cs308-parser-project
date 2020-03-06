@@ -34,7 +34,6 @@ public abstract class ScrollingWindow implements StaticViewElement {
   protected VBox myTextHolder = new VBox(TEXT_HOLDER_SPACING);
   protected ListView<Token> myList = new ListView<>();
   private Text myTitle = new Text();
-  private ScrollPane myView = new ScrollPane();
 
 
   public ScrollingWindow(double elementWidthFactor, double topPadding) {
@@ -44,11 +43,10 @@ public abstract class ScrollingWindow implements StaticViewElement {
 
     myHolder.setMinHeight(myHeight);
     myHolder.setMaxHeight(myHeight);
-    myView.setContent(myTextHolder);
-    myView.setMaxWidth(myWidth);
-    myView.setMinWidth(myWidth);
+    myTextHolder.setMaxWidth(myWidth);
+    myTextHolder.setMinWidth(myWidth);
 
-    myHolder.getChildren().add(myView);
+    myHolder.getChildren().add(myTextHolder);
 
     myList.setPrefSize(myWidth-2*VBOX_SPACING, myHeight);
     myTextHolder.getChildren().addAll(myList);
