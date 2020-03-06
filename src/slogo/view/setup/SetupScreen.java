@@ -63,6 +63,7 @@ public class SetupScreen {
   public static final int LIST_VIEW_COLUMN = 2;
   public static final int ERROR_MESSAGE_PADDING = 320;
   public static final int MOVEMENT_VALUE = 10;
+  public static final double HALFWAY_DOWN = HEIGHT/2.0;
 
   public static final String VARIABLE_TITLE_KEY = "VariableTitleText";
   public static final String HISTORY_TITLE_KEY = "HistoryTitleText";
@@ -96,9 +97,7 @@ public class SetupScreen {
   private Button myNewWindow;
 
   private Button loadFileButton;
-  private LoadConfigPopup myCurrentPopup;
 
-  private Button myNewConfig;
   private LoadConfigPopup myCurrentLoadPopup;
   private SetPreferencesPopup myCurrentNewWindowPopup;
 
@@ -107,7 +106,7 @@ public class SetupScreen {
 
   private ScrollingWindow myHistory = new HistoryViewer(COMMAND_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING);
   private ScrollingWindow myNewCommandViewer = new CommandViewer(LIST_VIEW_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING, this::setInputText);
-  private ScrollingWindow myVariableView = new VariableViewer(LIST_VIEW_COLUMN, HEIGHT/2.0);
+  private ScrollingWindow myVariableView = new VariableViewer(LIST_VIEW_COLUMN, HALFWAY_DOWN);
   private LineManager myLineManager = new LineManager(root);
   //~~~~~~~~~~~~~ vvv for testing and troubleshooting vvv ~~~~~~~~~~~~~~~~
   private Button myTestButton;
@@ -203,7 +202,9 @@ public class SetupScreen {
 
   public File getFile() {
     myLineManager.newProgram();
-    try{ return myCurrentPopup.getFile(); }
+    try{
+      return myCurrentLoadPopup.getFile();
+    }
     catch(FileDoesNotExistException err) {
       myCurrentErrorMessage.textProperty().setValue(err.getMessage());
       return null;

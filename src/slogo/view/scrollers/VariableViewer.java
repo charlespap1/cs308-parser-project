@@ -9,7 +9,8 @@ import slogo.model.tokens.Variable;
 
 public class VariableViewer extends ScrollingWindow {
     private static final String BUTTON_TEXT = "set";
-    private HBox box =  new HBox();
+    private static final int HBOX_SPACING = 10;
+    private HBox box =  new HBox(HBOX_SPACING);
     private Button button = new Button(BUTTON_TEXT);
     private Label label = new Label();
     private TextArea text = new TextArea();
