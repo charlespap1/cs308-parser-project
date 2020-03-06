@@ -103,9 +103,16 @@ public class SetupScreen {
   private static final String UNDO_BUTTON_KEY = "UndoButton";
   private static final String REDO_BUTTON_KEY = "RedoButton";
   private static final String SAVE_BUTTON_KEY = "SaveButton";
+  private static final String SAVE_VARS_BUTTON_KEY = "SaveVarsButton";
+
+  private static final String FORWARD_KEY = "Forward";
+  private static final String BACKWARD_KEY = "Backward";
+  private static final String RIGHT_KEY = "Right";
+  private static final String LEFT_KEY = "Left";
 
   private static final String LOAD_FILE_PROMPT = "LoadFilePrompt";
   private static final String SELECT_PREFERENCES_PROMPT = "SelectPreferencesPrompt";
+
 
   private UserCommandField myUserInput = new UserCommandField(WIDTH, HEIGHT);
   private Group root = new Group();
@@ -184,8 +191,8 @@ public class SetupScreen {
    * @param executor
    */
   public void setDirectExecutor(DirectExecutor executor){
-    myGraphicalMover.setCommandNameProperties(languageHelper.getStringProperty("Forward"), languageHelper.getStringProperty("Right"),
-        languageHelper.getStringProperty("Backward"), languageHelper.getStringProperty("Left"));
+    myGraphicalMover.setCommandNameProperties(languageHelper.getStringProperty(FORWARD_KEY), languageHelper.getStringProperty(RIGHT_KEY),
+        languageHelper.getStringProperty(BACKWARD_KEY), languageHelper.getStringProperty(LEFT_KEY));
     myGraphicalMover.setButtons(executor, myLineManager);
     myHistory.setDirectExecutor(executor, myLineManager);
   }
@@ -403,7 +410,6 @@ public class SetupScreen {
     belowCanvasButtons.getChildren().add(myStop);
 
     mySaveVarsAndCommands = new Button();
-    mySaveVarsAndCommands.setText("Save Variables and Commands");
     mySaveVarsAndCommands.setLayoutX(myVariableView.getView().getLayoutX() + SAVE_VARS_PADDING_X);
     mySaveVarsAndCommands.setLayoutY(myVariableView.getView().getLayoutY() + SAVE_VARS_PADDING_Y);
 
@@ -446,6 +452,7 @@ public class SetupScreen {
     bindButton(undoButton, UNDO_BUTTON_KEY);
     bindButton(redoButton, REDO_BUTTON_KEY);
     bindButton(mySaveText, SAVE_BUTTON_KEY);
+    bindButton(mySaveVarsAndCommands, SAVE_VARS_BUTTON_KEY);
 
     setStaticViewElementMap();
     for(StaticViewElement element: myStaticViewElements.keySet())
