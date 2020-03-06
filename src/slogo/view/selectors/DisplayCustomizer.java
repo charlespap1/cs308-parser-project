@@ -98,6 +98,7 @@ public class DisplayCustomizer implements StaticViewElement {
    */
   public void setPalette(int index, String r, String g, String b){
     String color = r + "," + g + "," + b;
+    colors.remove(index);
     colors.add(index, color);
     backgroundButtons.get(index).setStyle(String.format(DEFAULT_BACKGROUND_SETTER, color));
     penButtons.get(index).setStyle(String.format(DEFAULT_BACKGROUND_SETTER, color));
@@ -130,13 +131,13 @@ public class DisplayCustomizer implements StaticViewElement {
 
   /**
    * Allows us to get the holder to display all of the lists
-   * @return
+   * @return the view
    */
   public Node getView() { return myHolder; }
 
   /**
    * Allows for all intros to be set language dynamically
-   * @param sp
+   * @param sp StringProperty to bind
    */
   @Override
   public void setTitleProperty(List<StringProperty> sp) {
@@ -155,8 +156,8 @@ public class DisplayCustomizer implements StaticViewElement {
 
   /**
    * Links the buttons to changing the color or image of frontend elements
-   * @param backgroundChangeAction
-   * @param imageChangeAction
+   * @param backgroundChangeAction action to change background
+   * @param imageChangeAction action to change turtle images
    */
   public void setButtons(DisplayAction backgroundChangeAction, DisplayAction imageChangeAction) {
     for (int i = 0; i<penButtons.size(); i++){
@@ -170,15 +171,6 @@ public class DisplayCustomizer implements StaticViewElement {
       imageButtons.get(i).setOnAction(e -> imageChangeAction.execute(index));
     }
   }
-
-  /**
-   * Allows for labels to be dynamically set
-   * @param background
-   * @param pen
-   * @param character
-   */
-  /*public void setTitleProperty(StringProperty background, StringProperty pen, StringProperty character){
-  }*/
 
   private void buildLists(){
     for (String key: colorKeys){
@@ -204,8 +196,7 @@ public class DisplayCustomizer implements StaticViewElement {
   }
 
 
-  private Color getColor(String rgb)
-  {
+  private Color getColor(String rgb) {
     String [] rgbVals = rgb.split(",");
     int r = Integer.parseInt(rgbVals[0]);
     int g = Integer.parseInt(rgbVals[1]);

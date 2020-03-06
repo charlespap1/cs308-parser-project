@@ -16,6 +16,7 @@ import slogo.model.tokens.*;
 import slogo.view.DisplayAction;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -24,8 +25,6 @@ import java.util.Map;
 import java.util.Stack;
 
 public class Model implements ModelAPI{
-
-    // regular expression representing any whitespace characters (space, tab, or newline)
     public static final String WHITESPACE = "\\s+";
     public static final String SYNTAX = "Syntax";
 
@@ -70,7 +69,6 @@ public class Model implements ModelAPI{
             executeCode(rawString);
         }
         catch(Exception e) {
-            //TODO: create exception type
             errorMessage.setValue("Could Not Find File");
         }
     }
