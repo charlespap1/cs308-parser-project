@@ -25,6 +25,7 @@ public class Turtle {
   public static final int TURTLE_IMAGE_SIZE = 30;
   public static final double DEFAULT_ANGLE = 90;
   public static final double TURTLE_FACTOR = TURTLE_IMAGE_SIZE/2.0;
+  public static final String STATE_POPUP_STYLE = "state-popup";
 
   private ImageView myTurtleView;
   private double centerX;
@@ -81,29 +82,25 @@ public class Turtle {
     myTurtleView.setOnMouseClicked(e -> turtle.activeProperty().setValue(!turtle.activeProperty().getValue()));
   }
 
-  public void setPopup(Group root){
-    String cssLayout = "-fx-border-color: black;\n"+
-            "-fx-background-color: white;\n";
+  public VBox buildPopup(){
     VBox stateBox = new VBox();
     Text xtext = new Text();
     Text ytext = new Text();
     Text angletext = new Text();
     stateBox.getChildren().addAll(new Label("ID: "+id), xtext, ytext, angletext);
-    stateBox.setStyle(cssLayout);
     stateBox.setVisible(false);
-    stateBox.setMinWidth(TURTLE_IMAGE_SIZE*2);
-    stateBox.setAlignment(Pos.CENTER);
-    root.getChildren().add(stateBox);
+    stateBox.getStyleClass().add(STATE_POPUP_STYLE);
     myTurtleView.setOnMouseEntered(e->{
       xtext.setText("x: "+ Math.round(x.get()));
       ytext.setText("y: "+ Math.round(-y.get()));
-      angletext.setText("Θ: "+ Math.round(angle.get()-DEFAULT_ANGLE));
+      angletext.setText("Θ: "+ (Math.floorMod(Math.round(angle.get()-DEFAULT_ANGLE), 360)));
       stateBox.setLayoutX(myTurtleView.getX()+TURTLE_IMAGE_SIZE);
       stateBox.setLayoutY(myTurtleView.getY()+TURTLE_IMAGE_SIZE);
       stateBox.setVisible(true);
       stateBox.toFront();
     });
     myTurtleView.setOnMouseExited(e-> stateBox.setVisible(false));
+    return stateBox;
   }
 
 

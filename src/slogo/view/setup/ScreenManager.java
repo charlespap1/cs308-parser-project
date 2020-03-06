@@ -61,7 +61,7 @@ public class ScreenManager {
         myRoot.getChildren().add(newTurtle.getView());
         newTurtle.setProperties(turtle);
         turtle.pointProperty().addListener((o, oldVal, newVal) -> update(newTurtle));
-        newTurtle.setPopup(myRoot);
+        myRoot.getChildren().add(newTurtle.buildPopup());
     }
 
     public int setBackground(List<Double> params) {
