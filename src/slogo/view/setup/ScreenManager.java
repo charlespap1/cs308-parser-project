@@ -1,10 +1,15 @@
-package slogo.view;
+package slogo.view.setup;
 
 import javafx.beans.property.StringProperty;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import slogo.view.DrawingCanvas;
+import slogo.view.LineManager;
+import slogo.view.Turtle;
+import slogo.view.TurtleGraphicalMover;
+import slogo.view.UserCommandField;
 import slogo.view.selectors.DisplayCustomizer;
 import slogo.view.selectors.LanguageSelector;
 

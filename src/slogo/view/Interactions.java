@@ -13,6 +13,8 @@ import slogo.view.popup.TurtleStatePopup;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.util.List;
+import slogo.view.setup.ScreenManager;
+import slogo.view.setup.SetupScreen;
 
 
 /**

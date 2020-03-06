@@ -1,4 +1,4 @@
-package slogo.view;
+package slogo.view.setup;
 
 import slogo.view.selectors.DisplayCustomizer;
 

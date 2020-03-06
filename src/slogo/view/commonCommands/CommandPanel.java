@@ -9,11 +9,8 @@ import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import slogo.view.SetupScreen;
+import slogo.view.setup.SetupScreen;
 import slogo.view.StaticViewElement;
-
-import java.util.List;
-import java.util.ResourceBundle;
 
 /**
  * Provides generic way to put common phrases into boxes for displaying

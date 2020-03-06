@@ -1,4 +1,4 @@
-package slogo.view;
+package slogo.view.setup;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.StringProperty;
@@ -17,6 +17,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import slogo.model.tokens.Token;
+import slogo.view.DrawingCanvas;
+import slogo.view.LanguageHelper;
+import slogo.view.LineManager;
+import slogo.view.Turtle;
+import slogo.view.TurtleGraphicalMover;
+import slogo.view.UserCommandField;
 import slogo.view.commonCommands.CommonCommands;
 import slogo.view.popup.FileDoesNotExistException;
 import slogo.view.popup.LoadConfigPopup;
@@ -240,11 +246,9 @@ public class SetupScreen {
     myGo.setMinWidth(myUserInput.getWidth());
     belowInputFieldItems.getChildren().add(myGo);
     myClear = new Button();
-    //myClear.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
     belowCanvasButtons.getChildren().add(myClear);
     myClear.setOnAction(e -> myLineManager.clearAllLines());
     myStop = new Button();
-    //myStop.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
     belowCanvasButtons.getChildren().add(myStop);
 
     myStop.setOnAction(e -> { for(Turtle t : myTurtles) {
@@ -262,12 +266,12 @@ public class SetupScreen {
 //      myTurtlePopUpWindow.addTurtle(myTurtles.get(0));
 //      myTurtlePopUpWindow.printTurtles();
     });
-    belowCanvasButtons.getChildren().add(myTestButton);
+    //belowCanvasButtons.getChildren().add(myTestButton);
 
     myTurtlesStatesButton = new Button();
     myTurtlesStatesButton.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
     myTurtlesStatesButton.setText("States");
-    belowCanvasButtons.getChildren().add(myTurtlesStatesButton);
+    //belowCanvasButtons.getChildren().add(myTurtlesStatesButton);
     //~~~~~~~~~~~~~ ^^^ for testing and troubleshooting ^^^ ~~~~~~~~~~~~~~~~
 
     loadFileButton = new Button();
@@ -359,7 +363,7 @@ public class SetupScreen {
 
   private void moveTurtleRight() {
     for (Turtle t : myTurtles) {
-      if (t.isActive()) t.setAngle(t.getAngle() - MOVEMENT_VALUE);
+      if (t.isActive()) t.setAngle(t.getAngle() + MOVEMENT_VALUE);
     }
   }
 
