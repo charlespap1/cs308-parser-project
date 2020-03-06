@@ -161,8 +161,12 @@ public class SetupScreen {
     myCustomizer = new DisplayCustomizer(belowCanvasButtons.getLayoutX(), belowCanvasButtons.getLayoutY()+ BUTTON_HEIGHT_OFFSET + 10);
     setText();
 
+    //root.getChildren().addAll(belowInputFieldItems, belowCanvasButtons);
+
     root.getChildren().addAll(myDrawingCanvas.getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myNewCommandViewer.getView(), myVariableView.getView());
     root.getChildren().addAll(myGraphicalMover.getView(), myCustomizer.getView(), myLanguageSelector.getView());
+
+
 
     myCurrentErrorMessage.setLayoutX(myVariableView.getView().getLayoutX());
     myCurrentErrorMessage.setLayoutY(myVariableView.getView().getLayoutY() + ERROR_MESSAGE_PADDING);
@@ -459,7 +463,7 @@ public class SetupScreen {
   public TurtleStatePopup getTurtleStatePopup() {
     return myTurtleStatePopup;
   }
-  
+
   private void createNewFileSaverPopup(Stage s){
     myCurrentLoadPopup = new LoadConfigPopup();
     myCurrentLoadPopup.setGoButtonProperty(languageHelper.getStringProperty(SAVE_BUTTON_KEY));
@@ -475,12 +479,14 @@ public class SetupScreen {
   private void setStaticViewElementMap()
   {
     myStaticViewElements = new HashMap<>();
-    myStaticViewElements.put(myVariableView, Arrays.asList(keyToSP(VARIABLE_TITLE_KEY)));
-    myStaticViewElements.put(myNewCommandViewer, Arrays.asList(keyToSP(NEW_COMMAND_TITLE_KEY)));
+    myStaticViewElements.put(myDrawingCanvas, null);
+    myStaticViewElements.put(myUserInput, null);
     myStaticViewElements.put(myHistory, Arrays.asList(keyToSP(HISTORY_TITLE_KEY)));
+    myStaticViewElements.put(myNewCommandViewer, Arrays.asList(keyToSP(NEW_COMMAND_TITLE_KEY)));
+    myStaticViewElements.put(myVariableView, Arrays.asList(keyToSP(VARIABLE_TITLE_KEY)));
+    myStaticViewElements.put(myGraphicalMover, Arrays.asList(keyToSP(PEN_THICKNESS_TEXT_KEY), keyToSP(PEN_UP_BUTTON_KEY), keyToSP(PEN_DOWN_BUTTON_KEY)));
     myStaticViewElements.put(myCustomizer, Arrays.asList(keyToSP(BACKGROUND_SELECTOR_TEXT_KEY), keyToSP(PEN_SELECTOR_TEXT_KEY), keyToSP(TURTLE_SELECTOR_TEXT_KEY)));
     myStaticViewElements.put(myLanguageSelector, Arrays.asList(keyToSP(LANGUAGE_SELECTOR_TEXT_KEY)));
-    myStaticViewElements.put(myGraphicalMover, Arrays.asList(keyToSP(PEN_THICKNESS_TEXT_KEY), keyToSP(PEN_UP_BUTTON_KEY), keyToSP(PEN_DOWN_BUTTON_KEY)));
   }
 
   private StringProperty keyToSP(String key)
