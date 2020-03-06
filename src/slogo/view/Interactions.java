@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import slogo.controller.DirectExecutor;
 import slogo.model.tokens.Token;
 import slogo.view.popup.TurtleStatePopup;
 
@@ -114,4 +115,6 @@ public class Interactions implements View {
       }
     };
   }
+
+  public void setDirectInstructionExecutor(DirectExecutor executor) { mySetup.setDirectExecutor(executor); }
 }

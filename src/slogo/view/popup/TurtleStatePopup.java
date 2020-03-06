@@ -82,8 +82,8 @@ public class TurtleStatePopup {
     private void updateView(){
         myTurtleStates.getChildren().clear();
         for(slogo.model.Turtle t : myTurtles){
-            Label label = new Label(String.format("X: %f  Y: %f  Angle: %f  Visible: %b  PenUp: %b",
-                    t.getXPos(), t.getYPos(), t.getAngle(), t.isVisible() ,t.getIsPenUp()));
+            Label label = new Label(String.format("X: %f  Y: %f  Angle: %f  Visible: %b ",
+                    t.getXPos(), t.getYPos(), t.getAngle(), t.isVisible()));
             myTurtleStates.getChildren().add(label);
         }
     }

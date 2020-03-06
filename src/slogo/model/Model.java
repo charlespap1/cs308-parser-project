@@ -66,6 +66,15 @@ public class Model implements ModelAPI{
 
     }
 
+    public void executeCode(Instruction instruction){
+        errorMessage.set("");
+        clearStacks();
+        history.clearCurrentProgram();
+        instruction.execute();
+        history.addCommand(instruction);
+        history.addNewProgram(new Program(turtleMaster.generateStateMap()));
+    }
+
     public void undo() {
         try {
             Map<Double, State> prevTurtleStates = history.undo();
