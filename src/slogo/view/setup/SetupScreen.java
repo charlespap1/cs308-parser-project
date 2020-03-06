@@ -186,7 +186,7 @@ public class SetupScreen {
    */
   public void setDirectExecutor(DirectExecutor executor){
     myGraphicalMover.setCommandNameProperties(languageHelper.getStringProperty("Forward"), languageHelper.getStringProperty("Right"),
-        languageHelper.getStringProperty("Back"), languageHelper.getStringProperty("Left"));
+        languageHelper.getStringProperty("Backward"), languageHelper.getStringProperty("Left"));
     myGraphicalMover.setButtons(executor, myLineManager);
     myHistory.setDirectExecutor(executor, myLineManager);
   }
