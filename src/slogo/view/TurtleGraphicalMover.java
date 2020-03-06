@@ -24,6 +24,7 @@ import java.util.Objects;
  * This class allows the user to press buttons to move the turtle and
  * change its pen attributes
  * rather than always having to put in commands
+ * @author Juliet, Natalie
  */
 public class TurtleGraphicalMover implements StaticViewElement{
   public static final int BOX_SPACING = 5;

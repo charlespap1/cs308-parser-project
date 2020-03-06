@@ -8,6 +8,7 @@ import slogo.view.exceptions.FileDoesNotExistException;
 /**
  * Popup for when you want the program to load or save a text file.
  * Allows for input of filenames which are converted into package statement
+ * @author Juliet
  */
 public class LoadConfigPopup extends PopupSkeleton {
 

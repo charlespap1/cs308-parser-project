@@ -15,6 +15,7 @@ import java.util.Objects;
 /**
  * Class which allows users to view their previously defined variables and click
  * to change them
+ * @author Natalie
  */
 public class VariableViewer extends ScrollingWindow {
     public static final String GO_BUTTON = "go.png";

@@ -4,6 +4,7 @@ package slogo.view.exceptions;
  * Exception for when the writer cannot find the file created
  * Should never happen because it is making a new package from whatever you
  * just inputted
+ * @author Juliet
  */
 public class WriterCannotFindFileException extends RuntimeException{
 

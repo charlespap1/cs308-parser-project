@@ -7,6 +7,7 @@ import javafx.stage.Popup;
 
 /**
  * Interface to define what popups can do
+ * @author Juliet
  */
 public interface ViewPopup {
 

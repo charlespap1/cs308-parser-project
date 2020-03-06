@@ -20,6 +20,7 @@ import java.util.*;
  * Within this class we consolidated all of our Color, Background, Pen and
  * Turtle face selectors. This class allows for dynamic pallets for each of
  * these view elements
+ * @author Juliet, Natalie
  */
 public class DisplayCustomizer {
 

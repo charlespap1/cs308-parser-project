@@ -3,6 +3,11 @@ package slogo.view;
 import javafx.beans.property.StringProperty;
 import javafx.scene.Node;
 
+
+/**
+ * Interface to define the basic needs of every element on the screen
+ * @author Juliet
+ */
 public interface StaticViewElement {
 
   /**

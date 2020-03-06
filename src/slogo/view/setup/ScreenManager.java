@@ -20,6 +20,7 @@ import java.util.Objects;
  * This method was added to breakup the SetupScreen class which was enormous
  * This class deals with visual objects that interact dynamically on the frontend including
  * turtles, lines, the GraphicalMover and languages (necessary to name give labels)
+ * @author Natalie
  */
 
 public class ScreenManager {

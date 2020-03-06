@@ -6,6 +6,7 @@ import javafx.scene.control.ComboBox;
 
 /**
  * This popup allows for users to make a new window and specify preferences to go with it
+ * @author Juliet
  */
 public class SetPreferencesPopup extends PopupSkeleton implements ViewPopup{
 

@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 
 /**
  * Helps us consolidate code for setting languages, cuts down on duplicated code
+ * @author Juliet
  */
 public class LanguageHelper {
   private ResourceBundle myResources;
