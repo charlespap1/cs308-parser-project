@@ -54,6 +54,10 @@ public class Interactions implements View {
     return mySetup.getFile();
   }
 
+  public String getNewWindowPreferences(){
+    return mySetup.getNewWindowPreferences();
+  }
+
   /**
    * Sets the frontend turtle whenever the location is changed
    * in the backend
@@ -82,7 +86,7 @@ public class Interactions implements View {
    * @param goAction
    */
   public void setGoButton(EventHandler<ActionEvent> goAction){ mySetup.setGoButton(goAction); }
-  public void setNewWindowButton(EventHandler<ActionEvent> newWindowAction) { mySetup.setNewWindowButton(newWindowAction); }
+  public void setNewWindowButton(EventHandler<ActionEvent> newWindowAction, Stage stage) { mySetup.setNewWindowButton(newWindowAction, stage); }
   public void setNewConfigButton(EventHandler<ActionEvent> newWindowAction, Stage stage) { mySetup.setNewConfigPopupButton(newWindowAction, stage); }
   public void setTurtlesStateButton(EventHandler<ActionEvent> showTurtlesAction) { mySetup.setTurtlesStatesButton(showTurtlesAction); }
 

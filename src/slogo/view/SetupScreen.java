@@ -22,6 +22,7 @@ import slogo.model.tokens.Token;
 import slogo.view.commonCommands.CommonCommands;
 import slogo.view.popup.FileDoesNotExistException;
 import slogo.view.popup.LoadConfigPopup;
+import slogo.view.popup.SetPreferencesPopup;
 import slogo.view.popup.ViewPopup;
 import slogo.view.popup.TurtleStatePopup;
 import slogo.view.scrollers.CommandViewer;
@@ -84,7 +85,8 @@ public class SetupScreen {
   private Button myStop;
   private Button myNewWindow;
   private Button myNewConfig;
-  private LoadConfigPopup myCurrentPopup;
+  private LoadConfigPopup myCurrentLoadPopup;
+  private SetPreferencesPopup myCurrentNewWindowPopup;
 
   private Button undoButton;
   private Button redoButton;
@@ -168,8 +170,15 @@ public class SetupScreen {
 
   public void setGoButton(EventHandler<ActionEvent> goAction) { myGo.setOnAction(goAction); }
 
-  public void setNewWindowButton(EventHandler<ActionEvent> newWindowAction) {
-    myNewWindow.setOnAction(newWindowAction);
+  public void setNewWindowButton(EventHandler<ActionEvent> newWindowAction, Stage stage) {
+
+    EventHandler<ActionEvent> e = event -> {
+      myCurrentNewWindowPopup = new SetPreferencesPopup();
+      myCurrentNewWindowPopup.getMyPopup().show(stage);
+      myCurrentNewWindowPopup.setPopupButton(newWindowAction);
+    };
+
+    myNewWindow.setOnAction(e);
 
   }
 
@@ -177,7 +186,7 @@ public class SetupScreen {
   {
     try{
       myLineManager.newProgram();
-      return myCurrentPopup.getFile();
+      return myCurrentLoadPopup.getFile();
     }
     catch(FileDoesNotExistException err)
     {
@@ -190,14 +199,15 @@ public class SetupScreen {
   public void setNewConfigPopupButton(EventHandler<ActionEvent> newConfigAction, Stage primaryStage) {
 
     EventHandler<ActionEvent> e = event -> {
-        myCurrentPopup = new LoadConfigPopup();
-        myCurrentPopup.getMyPopup().show(primaryStage);
-        myCurrentPopup.setPopupButton(newConfigAction);
+      myCurrentLoadPopup = new LoadConfigPopup();
+      myCurrentLoadPopup.getMyPopup().show(primaryStage);
+      myCurrentLoadPopup.setPopupButton(newConfigAction);
     };
 
     myNewConfig.setOnAction(e);
 
   }
+
 
   public Group getRoot() { return root; }
 
@@ -316,5 +326,9 @@ public class SetupScreen {
 
   public TurtleStatePopup getTurtleStatePopup() {
     return myTurtleStatePopup;
+  }
+
+  public String getNewWindowPreferences() {
+    return myCurrentNewWindowPopup.getPreference();
   }
 }
