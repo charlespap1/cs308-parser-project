@@ -68,20 +68,6 @@ public abstract class ScrollingWindow implements StaticViewElement {
     myTitle.textProperty().bind(sp);
     myHolder.getChildren().add(0, myTitle);
   }
-
-
-  public void setWidth(double width) {
-    this.myWidth = width;
-    myView.setMaxWidth(myWidth);
-    myView.setMinWidth(myWidth);
-  }
-
-  public void setHeight(double height) {
-    this.myHeight = height;
-    myHolder.setMinHeight(myHeight);
-    myHolder.setMaxHeight(myHeight);
-  }
-
   /**
    * Allows list to be binded to commands or
    * variables in backend

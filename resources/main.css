@@ -91,5 +91,16 @@
   -fx-background-color: #dcecf9;
 }
 
+.state-popup{
+  -fx-border-color: black;
+  -fx-background-color: aliceblue;
+  -fx-alignment: center;
+  -fx-min-width: 60;
+}
+
+.label{
+   -fx-font-weight: bold;
+}
+
 
 

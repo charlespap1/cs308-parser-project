@@ -1,11 +1,19 @@
 package slogo.view;
 
 import javafx.beans.property.*;
+import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Text;
 
 import java.awt.geom.Point2D;
 
@@ -17,6 +25,7 @@ public class Turtle {
   public static final int TURTLE_IMAGE_SIZE = 30;
   public static final double DEFAULT_ANGLE = 90;
   public static final double TURTLE_FACTOR = TURTLE_IMAGE_SIZE/2.0;
+  public static final String STATE_POPUP_STYLE = "state-popup";
 
   private ImageView myTurtleView;
   private double centerX;
@@ -29,9 +38,9 @@ public class Turtle {
   private ObjectProperty<Point2D> coordinates = new SimpleObjectProperty<>();
   private DoubleProperty angle = new SimpleDoubleProperty();
   private BooleanProperty visible = new SimpleBooleanProperty();
+  private double id;
   private double currX;
   private double currY;
-  private int penThickness = 1;
 
   public Turtle(Image image, double width, double height)
   {
@@ -57,6 +66,7 @@ public class Turtle {
    * @param turtle
    */
   public void setProperties(slogo.model.Turtle turtle) {
+    id = turtle.getId();
     x.bindBidirectional(turtle.turtleXProperty());
     y.bindBidirectional(turtle.turtleYProperty());
     angle.bindBidirectional(turtle.turtleAngleProperty());
@@ -70,6 +80,27 @@ public class Turtle {
     });
     returnTurtleToDefault();
     myTurtleView.setOnMouseClicked(e -> turtle.activeProperty().setValue(!turtle.activeProperty().getValue()));
+  }
+
+  public VBox buildPopup(){
+    VBox stateBox = new VBox();
+    Text xtext = new Text();
+    Text ytext = new Text();
+    Text angletext = new Text();
+    stateBox.getChildren().addAll(new Label("ID: "+id), xtext, ytext, angletext);
+    stateBox.setVisible(false);
+    stateBox.getStyleClass().add(STATE_POPUP_STYLE);
+    myTurtleView.setOnMouseEntered(e->{
+      xtext.setText("x: "+ Math.round(x.get()));
+      ytext.setText("y: "+ Math.round(-y.get()));
+      angletext.setText("Θ: "+ (Math.floorMod(Math.round(angle.get()-DEFAULT_ANGLE), 360)));
+      stateBox.setLayoutX(myTurtleView.getX()+TURTLE_IMAGE_SIZE);
+      stateBox.setLayoutY(myTurtleView.getY()+TURTLE_IMAGE_SIZE);
+      stateBox.setVisible(true);
+      stateBox.toFront();
+    });
+    myTurtleView.setOnMouseExited(e-> stateBox.setVisible(false));
+    return stateBox;
   }
 
 
@@ -108,19 +139,12 @@ public class Turtle {
    * @param image
    */
   public void changeImage(Image image) { myTurtleView.setImage(image); }
-  public void setThickness(int newThickness)
-  {
-    penThickness = newThickness;
-  }
   public void setAngle(double newAngle) { angle.set(newAngle); }
   public double getAngle() { return angle.get(); }
 
   private Line drawLine(boolean penUp){
     Line line = null;
-    if (!penUp) {
-      line = new Line(currX + centerX, currY + centerY, x.getValue() + centerX, y.getValue() + centerY);
-      line.setStrokeWidth(penThickness);
-    }
+    if (!penUp) line = new Line(currX + centerX, currY + centerY, x.getValue() + centerX, y.getValue() + centerY);
     currX = x.getValue();
     currY = y.getValue();
     return line;
