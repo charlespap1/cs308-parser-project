@@ -11,13 +11,6 @@ public class ClearScreen extends DisplayCommand {
 
     @Override
     public double execute () {
-        double distanceMoved = -1;
-        try{
-            distanceMoved = myAction.execute(null);
-        } catch (Exception e){
-            // TODO: error handling
-            System.out.println("bad method");
-        }
-        return distanceMoved;
+        return myAction.execute(null);
     }
 }

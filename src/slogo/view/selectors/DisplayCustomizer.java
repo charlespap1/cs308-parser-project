@@ -49,7 +49,6 @@ public class DisplayCustomizer {
   private int penColorIndex = DEFAULT_PEN_COLOR;
   private int imageIndex = DEFAULT_TURTLE_FACE;
   private int backgroundColorIndex = DEFAULT_BACKGROUND_COLOR;
-  private boolean penUp = false;
 
   public DisplayCustomizer(double x, double y) {
     myHolder.setLayoutX(x);
@@ -69,13 +68,10 @@ public class DisplayCustomizer {
     myBackgroundHolder.setAlignment(Pos.CENTER_RIGHT);
     myCharacterHolder.setAlignment(Pos.CENTER_RIGHT);
     myPenHolder.setAlignment(Pos.CENTER_RIGHT);
-
-
   }
 
   public int getPenIndex(){ return penColorIndex; }
   public int getImageIndex(){ return imageIndex; }
-  public boolean getPenUp(){ return penUp; }
   public int getBackgroundIndex(){ return backgroundColorIndex; }
   public Color getColor(int index){ return getColor(colors.get(index)); }
   public Image getImage(int index){
@@ -87,7 +83,6 @@ public class DisplayCustomizer {
     colors.add(index, color);
   }
   public void setPenColor(int index){ penColorIndex = index; }
-  public void setPenUp(boolean isPenUp){ penUp = isPenUp; }
   public void setBackground(int index){ backgroundColorIndex = index; }
 
   private List<Button> createButtons(List<String> ids, HBox holder)
@@ -118,6 +113,7 @@ public class DisplayCustomizer {
       int index = Integer.parseInt(key);
       backgroundButtons.get(index).setStyle(String.format(DEFAULT_BACKGROUND_SETTER, rgb));
       penButtons.get(index).setStyle(String.format(DEFAULT_BACKGROUND_SETTER, rgb));
+      penButtons.get(index).setOnAction(e -> penColorIndex = index);
     }
 
     for(String key: imageKeys)
@@ -133,11 +129,10 @@ public class DisplayCustomizer {
     }
   }
 
-  public void setButtons(DisplayAction penChangeAction, DisplayAction backgroundChangeAction, DisplayAction imageChangeAction) {
+  public void setButtons(DisplayAction backgroundChangeAction, DisplayAction imageChangeAction) {
     for (int i = 0; i<penButtons.size(); i++){
       List<Double> index = new ArrayList<>();
       index.add((double) i);
-      penButtons.get(i).setOnAction(e -> penChangeAction.execute(index));
       backgroundButtons.get(i).setOnAction(e -> backgroundChangeAction.execute(index));
     }
     for (int i = 0; i<imageButtons.size(); i++){

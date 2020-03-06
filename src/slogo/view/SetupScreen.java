@@ -247,12 +247,14 @@ public class SetupScreen {
     //myStop.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
     belowCanvasButtons.getChildren().add(myStop);
 
-    myStop.setOnAction(e -> { for(Turtle t : myTurtles) {
-      boolean tempPen = t.getPenUp();
-      t.setPenUp(true);
-      t.returnTurtleToDefault();
-      t.setPenUp(tempPen);
-    } });
+    myStop.setOnAction(e -> {
+      boolean tempPen = myGraphicalMover.getPenUp();
+      myGraphicalMover.setPenUp(true);
+      for(Turtle t : myTurtles) {
+        t.returnTurtleToDefault();
+      }
+      myGraphicalMover.setPenUp(tempPen);
+    });
 
     //~~~~~~~~~~~~~ vvv for testing and troubleshooting vvv ~~~~~~~~~~~~~~~~
     myTestButton = new Button();

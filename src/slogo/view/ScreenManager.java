@@ -37,11 +37,17 @@ public class ScreenManager {
     }
 
     public void setPreferences(String preferences){
-        PreferenceLoaderSelector.setPreferences(preferences, myDisplayCustomizer);
-        myTurtles.get(0).setPenUp(myDisplayCustomizer.getPenUp());
+        PreferenceLoaderSelector.setPreferences(preferences, myDisplayCustomizer, myGraphicalMover);
         myTurtles.get(0).changeImage(myDisplayCustomizer.getImage(myDisplayCustomizer.getImageIndex()));
         myDrawingCanvas.changeBackground(myDisplayCustomizer.getColor(myDisplayCustomizer.getBackgroundIndex()));
     }
+
+    public String getUserInput() {
+        myLineManager.newProgram();
+        return myUserInput.getUserInput();
+    }
+
+    public StringProperty getLanguageChoice() { return myLanguageSelector.getLanguageChoiceProperty(); }
 
     public void addNewTurtle(slogo.model.Turtle turtle) {
         Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(DEFAULT_TURTLE_IMAGE)));
@@ -52,16 +58,18 @@ public class ScreenManager {
         turtle.pointProperty().addListener((o, oldVal, newVal) -> update(newTurtle));
     }
 
-    public String getUserInput() {
-        myLineManager.newProgram();
-        return myUserInput.getUserInput();
-    }
-
     public int setBackground(List<Double> params) {
         int index = params.get(0).intValue();
         myDisplayCustomizer.setBackground(index);
         Color color = myDisplayCustomizer.getColor(index);
         myDrawingCanvas.changeBackground(color);
+        return index;
+    }
+
+    public int setShape(List<Double> params){
+        int index = params.get(0).intValue();
+        Image image = myDisplayCustomizer.getImage(index);
+        for (Turtle turtle : myTurtles) turtle.changeImage(image);
         return index;
     }
 
@@ -71,22 +79,22 @@ public class ScreenManager {
         return index;
     }
 
-    //TODO
-    public int setPenThickness(List<Double> params){
+    public int setPenUp(List<Double> params){
+        myGraphicalMover.setPenUp(true);
+        return 0;
+    }
+
+    public int setPenDown(List<Double> params){
+        myGraphicalMover.setPenUp(false);
+        return 1;
+    }
+
+    public int setPenSize(List<Double> params){
         int thickness = params.get(0).intValue();
         if(thickness > 5) thickness = 5;
         else if (thickness < 1) thickness = 1;
-        //TODO: implement with palette ? unsure
-        //myGraphicalMover.setSlider(thickness);
+        myGraphicalMover.setPenWidth(thickness);
         return thickness;
-    }
-
-    public int setShape(List<Double> params){
-        int index = params.get(0).intValue();
-        Image image = myDisplayCustomizer.getImage(index);
-        System.out.println("changing");
-        for (Turtle turtle : myTurtles) turtle.changeImage(image);
-        return index;
     }
 
     public int setPalette(List<Double> params){
@@ -98,6 +106,7 @@ public class ScreenManager {
         return index;
     }
 
+    public int getPenDown(List<Double> params){ return myGraphicalMover.getPenUp() ? 0 : 1; }
     public int getPenColor(List<Double> params) { return myDisplayCustomizer.getPenIndex(); }
     public int getShape(List<Double> params) { return myDisplayCustomizer.getImageIndex();  }
 
@@ -107,22 +116,20 @@ public class ScreenManager {
         return 0;
     }
 
-    public StringProperty getLanguageChoice() { return myLanguageSelector.getLanguageChoiceProperty(); }
-
     /**
      * Updates the movement of the turtle according to new states
      */
     private void update(Turtle turtle) {
-        Line newLine = turtle.drawLineAndBound();
+        Line newLine = turtle.drawLineAndBound(myGraphicalMover.getPenUp());
         if (newLine!=null) {
             newLine.setStroke(myDisplayCustomizer.getColor(myDisplayCustomizer.getPenIndex()));
-            //newLine.setStrokeWidth(currentWidth);
+            newLine.setStrokeWidth(myGraphicalMover.getPenWidth());
             myLineManager.addLine(newLine);
             turtle.getView().toFront();
         }
     }
 
     private void setButtons(){
-        myDisplayCustomizer.setButtons(this::setPenColor, this::setBackground, this::setShape);
+        myDisplayCustomizer.setButtons(this::setBackground, this::setShape);
     }
 }

@@ -9,14 +9,7 @@ public class GetShape extends DisplayCommand {
     }
 
     @Override
-    public double execute() {
-        double shape = -1;
-        try{
-            shape = myAction.execute(null);
-        } catch (Exception e) {
-            //TODO errors
-            System.out.println("bad method");
-        }
-        return shape;
+    public double execute () {
+        return myAction.execute(null);
     }
 }

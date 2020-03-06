@@ -10,13 +10,6 @@ public class GetPenColor extends DisplayCommand {
 
     @Override
     public double execute() {
-        double penColor = -1;
-        try{
-            penColor = myAction.execute(null);
-        } catch (Exception e) {
-            //TODO errors
-            System.out.println("bad method");
-        }
-        return penColor;
+        return myAction.execute(null);
     }
 }

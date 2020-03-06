@@ -18,7 +18,6 @@ public abstract class DisplayCommand extends Instruction {
     @Override
     public double execute() {
         List<Double> paramsAsVals = getParamsAsVals();
-        myAction.execute(paramsAsVals);
-        return paramsAsVals.get(0);
+        return myAction.execute(paramsAsVals);
     }
 }
