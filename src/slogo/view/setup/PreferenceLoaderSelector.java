@@ -5,9 +5,14 @@ import slogo.view.selectors.DisplayCustomizer;
 
 import java.util.ResourceBundle;
 
+/**
+ * Class that helps set the preferences of the new window based
+ * on the preference sheet specified 
+ */
+
 public class PreferenceLoaderSelector {
     public static final String FILE_PATH = "resources.preferences.";
-  public static final String DEFAULT_PREFERENCE = "resources.preferences.PreferencesOne";
+  public static final String DEFAULT_PREFERENCE = "resources.preferences.DefaultPreferences";
 
   public static final String PEN_COLOR_KEY = "PenColor";
   public static final String TURTLE_IMAGE_KEY = "TurtleImage";
