@@ -16,6 +16,11 @@ import slogo.view.Turtle;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
+/**
+ * Within this class we consolidated all of our Color, Background, Pen and
+ * Turtle face selectors. This class allows for dynamic pallets for each of
+ * these view elements
+ */
 public class DisplayCustomizer {
 
   public static final int BOX_SPACING = 5;
@@ -70,6 +75,10 @@ public class DisplayCustomizer {
     myPenHolder.setAlignment(Pos.CENTER_RIGHT);
   }
 
+  /**
+   * Getter methods so we are able to grab indexes to communicate with backend
+   * @return
+   */
   public int getPenIndex(){ return penColorIndex; }
   public int getImageIndex(){ return imageIndex; }
   public int getBackgroundIndex(){ return backgroundColorIndex; }
@@ -78,12 +87,26 @@ public class DisplayCustomizer {
     imageIndex = index;
     return new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(turtleFaces.get(index))));
   }
+
+  /**
+   * Allows us to change the palette with different user commands based on
+   * index and an inputted rgb value
+   * @param index
+   * @param r
+   * @param g
+   * @param b
+   */
   public void setPalette(int index, String r, String g, String b){
     String color = r + "," + g + "," + b;
     colors.add(index, color);
     backgroundButtons.get(index).setStyle(String.format(DEFAULT_BACKGROUND_SETTER, color));
     penButtons.get(index).setStyle(String.format(DEFAULT_BACKGROUND_SETTER, color));
   }
+
+  /**
+   * Allows for backend commands to set the color of the turtle or background by giving an index
+   * @param index
+   */
   public void setPenColor(int index){ penColorIndex = index; }
   public void setBackground(int index){ backgroundColorIndex = index; }
 
@@ -105,8 +128,49 @@ public class DisplayCustomizer {
     return buttons;
   }
 
+  /**
+   * Allows us to get the holder to display all of the lists
+   * @return
+   */
   public Node getView() { return myHolder; }
 
+  /**
+   * Links the buttons to changing the color or image of frontend elements
+   * @param backgroundChangeAction
+   * @param imageChangeAction
+   */
+  public void setButtons(DisplayAction backgroundChangeAction, DisplayAction imageChangeAction) {
+    for (int i = 0; i<penButtons.size(); i++){
+      List<Double> index = new ArrayList<>();
+      index.add((double) i);
+      backgroundButtons.get(i).setOnAction(e -> backgroundChangeAction.execute(index));
+    }
+    for (int i = 0; i<imageButtons.size(); i++){
+      List<Double> index = new ArrayList<>();
+      index.add((double) i);
+      imageButtons.get(i).setOnAction(e -> imageChangeAction.execute(index));
+    }
+  }
+
+  /**
+   * Allows for labels to be dynamically set
+   * @param background
+   * @param pen
+   * @param character
+   */
+  public void setTitleProperty(StringProperty background, StringProperty pen, StringProperty character){
+    Text backgroundLabel = new Text();
+    backgroundLabel.textProperty().bind(background);
+    myBackgroundHolder.getChildren().add(0, backgroundLabel);
+
+    Text penLabel = new Text();
+    penLabel.textProperty().bind(pen);
+    myPenHolder.getChildren().add(0, penLabel);
+
+    Text imageLabel = new Text();
+    imageLabel.textProperty().bind(character);
+    myCharacterHolder.getChildren().add(0, imageLabel);
+  }
 
   private void buildLists(){
     for (String key: colorKeys){
@@ -131,33 +195,6 @@ public class DisplayCustomizer {
     }
   }
 
-  public void setButtons(DisplayAction backgroundChangeAction, DisplayAction imageChangeAction) {
-    for (int i = 0; i<penButtons.size(); i++){
-      List<Double> index = new ArrayList<>();
-      index.add((double) i);
-      backgroundButtons.get(i).setOnAction(e -> backgroundChangeAction.execute(index));
-    }
-    for (int i = 0; i<imageButtons.size(); i++){
-      List<Double> index = new ArrayList<>();
-      index.add((double) i);
-      imageButtons.get(i).setOnAction(e -> imageChangeAction.execute(index));
-    }
-  }
-
-  public void setTitleProperty(StringProperty background, StringProperty pen, StringProperty character){
-    Text backgroundLabel = new Text();
-    backgroundLabel.textProperty().bind(background);
-    myBackgroundHolder.getChildren().add(0, backgroundLabel);
-
-    Text penLabel = new Text();
-    penLabel.textProperty().bind(pen);
-    myPenHolder.getChildren().add(0, penLabel);
-
-    Text imageLabel = new Text();
-    imageLabel.textProperty().bind(character);
-    myCharacterHolder.getChildren().add(0, imageLabel);
-  }
-
 
   private Color getColor(String rgb)
   {
@@ -168,8 +205,6 @@ public class DisplayCustomizer {
 
     return Color.rgb(r,g,b);
   }
-
-
 
 
 }

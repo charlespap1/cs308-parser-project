@@ -12,6 +12,10 @@ import slogo.model.tokens.Variable;
 
 import java.util.Objects;
 
+/**
+ * Class which allows users to view their previously defined variables and click
+ * to change them
+ */
 public class VariableViewer extends ScrollingWindow {
     public static final String GO_BUTTON = "go.png";
     private static final int HBOX_SPACING = 10;
@@ -37,6 +41,10 @@ public class VariableViewer extends ScrollingWindow {
         box.getChildren().addAll(label, text, button);
     }
 
+    /**
+     * Allows for clicking on variable to change it
+     * @param t
+     */
     @Override
     protected void onSelectedItem(Token t){
         label.setText(t.toString() + " " + t.execute());

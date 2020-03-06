@@ -13,10 +13,9 @@ import slogo.view.setup.SetupScreen;
 import slogo.view.StaticViewElement;
 
 /**
- * Class allows us to create a scrolling box for any element that needs scrolling
- * This used to be implemented by new commands and new variables until we changed
- * them to list viewers. As such, only one class, HistoryCanvas, extends this class
- * @author Juliet
+ * Bare bones class which allows for scrolling and clicking on items in
+ * a list bound to the backend
+ * @author Juliet, Natalie
  */
 public abstract class ScrollingWindow implements StaticViewElement {
 
@@ -68,6 +67,7 @@ public abstract class ScrollingWindow implements StaticViewElement {
     myTitle.textProperty().bind(sp);
     myHolder.getChildren().add(0, myTitle);
   }
+
   /**
    * Allows list to be binded to commands or
    * variables in backend
@@ -77,6 +77,10 @@ public abstract class ScrollingWindow implements StaticViewElement {
     myList.setItems(list);
   }
 
+  /**
+   * For lists which click to do a action
+   * @param t
+   */
   protected abstract void onSelectedItem(Token t);
 
 

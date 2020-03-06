@@ -16,8 +16,15 @@ import slogo.view.selectors.LanguageSelector;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * This method was added to breakup the SetupScreen class which was enormous
+ * This class deals with visual objects that interact dynamically on the frontend including
+ * turtles, lines, the GraphicalMover and languages (necessary to name give labels)
+ */
+
 public class ScreenManager {
     public static final String DEFAULT_TURTLE_IMAGE = "turtle.png";
+    public static final int INITIAL_TURTLE_INDEX = 0;
 
     private Group myRoot;
     private UserCommandField myUserInput;
@@ -41,19 +48,37 @@ public class ScreenManager {
         setButtons();
     }
 
+    /**
+     * Set intital preferences for the background and turtle attributes
+     * @param preferences
+     */
     public void setPreferences(String preferences){
         PreferenceLoaderSelector.setPreferences(preferences, myDisplayCustomizer, myGraphicalMover);
-        myTurtles.get(0).changeImage(myDisplayCustomizer.getImage(myDisplayCustomizer.getImageIndex()));
+        myTurtles.get(INITIAL_TURTLE_INDEX).changeImage(myDisplayCustomizer.getImage(myDisplayCustomizer.getImageIndex()));
         myDrawingCanvas.changeBackground(myDisplayCustomizer.getColor(myDisplayCustomizer.getBackgroundIndex()));
     }
 
+    /**
+     * Get the user input to send to controller. Must be done here because we need to
+     * create a new bucket for new lines to be drawn
+     * @return
+     */
     public String getUserInput() {
         myLineManager.newProgram();
         return myUserInput.getUserInput();
     }
 
+    /**
+     * Gets the language choice to set labels
+     * @return
+     */
     public StringProperty getLanguageChoice() { return myLanguageSelector.getLanguageChoiceProperty(); }
 
+    /**
+     * Method to be called by Controller to create a new frontend turtle
+     * and bind it to the backend turtle which had been created
+     * @param turtle
+     */
     public void addNewTurtle(slogo.model.Turtle turtle) {
         Image image = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(DEFAULT_TURTLE_IMAGE)));
         Turtle newTurtle = new Turtle(image, myDrawingCanvas.getWidth(), myDrawingCanvas.getHeight());
@@ -64,6 +89,11 @@ public class ScreenManager {
         myRoot.getChildren().add(newTurtle.buildPopup());
     }
 
+    /**
+     * Allows backend to set the frontend background from input commands
+     * @param params
+     * @return
+     */
     public int setBackground(List<Double> params) {
         int index = params.get(0).intValue();
         myDisplayCustomizer.setBackground(index);
@@ -72,6 +102,11 @@ public class ScreenManager {
         return index;
     }
 
+    /**
+     * Allows backend to set the turtle character from input commands
+     * @param params
+     * @return
+     */
     public int setShape(List<Double> params){
         int index = params.get(0).intValue();
         Image image = myDisplayCustomizer.getImage(index);
@@ -79,22 +114,42 @@ public class ScreenManager {
         return index;
     }
 
+    /**
+     * Allows backend to set the pen color from input commands
+     * @param params
+     * @return
+     */
     public int setPenColor(List<Double> params) {
         int index = params.get(0).intValue();
         myDisplayCustomizer.setPenColor(index);
         return index;
     }
 
+    /**
+     * Allows backend to set the pen state to up from input commands
+     * @param params
+     * @return
+     */
     public int setPenUp(List<Double> params){
         myGraphicalMover.setPenUp(true);
         return 0;
     }
 
+    /**
+     * Allows backend to set pen state to down from input commands
+     * @param params
+     * @return
+     */
     public int setPenDown(List<Double> params){
         myGraphicalMover.setPenUp(false);
         return 1;
     }
 
+    /**
+     * Allows backend to set pen thickness from input commands
+     * @param params
+     * @return
+     */
     public int setPenSize(List<Double> params){
         int thickness = params.get(0).intValue();
         if(thickness > 5) thickness = 5;
@@ -103,6 +158,12 @@ public class ScreenManager {
         return thickness;
     }
 
+    /**
+     * Allows backend to change the colors represented in the
+     * pallete from input commands
+     * @param params
+     * @return
+     */
     public int setPalette(List<Double> params){
         int index = params.get(0).intValue();
         String r = String.valueOf(params.get(1).intValue());
@@ -112,10 +173,20 @@ public class ScreenManager {
         return index;
     }
 
+    /**
+     * These three methods allow backend to get the status of the pen and turtle from input commands
+     * @param params
+     * @return
+     */
     public int getPenDown(List<Double> params){ return myGraphicalMover.getPenUp() ? 0 : 1; }
     public int getPenColor(List<Double> params) { return myDisplayCustomizer.getPenIndex(); }
     public int getShape(List<Double> params) { return myDisplayCustomizer.getImageIndex();  }
 
+    /**
+     * Allows backend to clear the screen from input commands
+     * @param params
+     * @return
+     */
     public int clearScreen(List<Double> params) {
         for (Turtle t : myTurtles) t.returnTurtleToDefault();
         myLineManager.clearAllLines();

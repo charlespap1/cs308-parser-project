@@ -96,6 +96,16 @@ public class CommonCommands {
     myStage.show();
   }
 
+  /**
+   * Allows us to set the hyperlink text based on the current language
+   * @param sp
+   */
+
+  public void setHyperlinkText(StringProperty  sp){
+    myTitle.textProperty().bind(sp);
+    myLink.setText(myTitle.textProperty().get());
+
+  }
 
   private Scene setupCommandScene() {
     Group myRoot = new Group();
@@ -114,12 +124,6 @@ public class CommonCommands {
     scene.getStylesheets().add(getClass().getClassLoader().getResource(MAIN_STYLESHEET).toExternalForm());
 
     return scene;
-  }
-
-  public void setHyperlinkText(StringProperty  sp){
-    myTitle.textProperty().bind(sp);
-    myLink.setText(myTitle.textProperty().get());
-
   }
 
 

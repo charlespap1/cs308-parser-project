@@ -4,13 +4,15 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
 
+/**
+ * This popup allows for users to make a new window and specify preferences to go with it
+ */
 public class SetPreferencesPopup extends PopupSkeleton implements ViewPopup{
 
   public static final int LIST_WIDTH = 165;
   private static final int LIST_HEIGHT = 20;
 
   private ComboBox<String> myList;
-
 
   public SetPreferencesPopup()
   {
@@ -22,6 +24,16 @@ public class SetPreferencesPopup extends PopupSkeleton implements ViewPopup{
 
   }
 
+  /**
+   * Gets whatever the preference the user chose and gives it to the
+   * Controller to call makeNewWindow()
+   * @return
+   */
+  public String getPreference()
+  {
+    return myList.getSelectionModel().getSelectedItem();
+  }
+
   private void setList()
   {
     myList = new ComboBox<>();
@@ -31,9 +43,5 @@ public class SetPreferencesPopup extends PopupSkeleton implements ViewPopup{
     myList.setItems(items);
   }
 
-  public String getPreference()
-  {
-    return myList.getSelectionModel().getSelectedItem();
-  }
 
 }

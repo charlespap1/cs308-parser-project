@@ -42,11 +42,19 @@ public class CommandPanel implements StaticViewElement {
     myHolder.getChildren().add(myView);
   }
 
+  /**
+   * Gets the holder Node to be displayed
+   * @return
+   */
   public Node getView()
   {
     return myHolder;
   }
 
+  /**
+   * Allows us to set the title text based on the current language
+   * @param sp
+   */
   public void setTitleProperty(StringProperty sp)
   {
     myTitle.textProperty().bind(sp);

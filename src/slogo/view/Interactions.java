@@ -51,6 +51,10 @@ public class Interactions implements View {
     return myScreen.getUserInput();
   }
 
+  /**
+   * Used to get the
+   * @return
+   */
   public File getFile(){
     return mySetup.getFile();
   }
