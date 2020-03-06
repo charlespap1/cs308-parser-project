@@ -6,7 +6,6 @@ public class State {
     private double id;
     private double xPos;
     private double yPos;
-    private boolean isPenUp;
     private double angle;
     private boolean isActive;
     private boolean isVisible;
@@ -15,7 +14,6 @@ public class State {
         id = t.getId();
         xPos = t.getXPos();
         yPos = t.getYPos();
-        isPenUp = t.getIsPenUp();
         angle = t.getAngle();
         isActive = t.isActive();
         isVisible = t.isVisible();
@@ -31,10 +29,6 @@ public class State {
 
     public double getyPos() {
         return yPos;
-    }
-
-    public boolean getIsPenUp() {
-        return isPenUp;
     }
 
     public double getAngle() {

@@ -67,11 +67,8 @@ public class TurtleMaster {
     }
 
     public void updateTurtlesWithStates(Map<Double, State> turtleStates) {
-        //update turtles that existed before undo/redo
         for (double id : turtleMap.keySet()) {
             if (!turtleStates.containsKey(id)) {
-                // for undo, when a tell command was executed
-                // move turtle to origin, set to invisible, set to inactive
                 Turtle t = turtleMap.get(id);
                 t.setDefault();
                 t.setVisible(false);
@@ -83,18 +80,14 @@ public class TurtleMaster {
     }
 
     private void updateSingleTurtle(Turtle turtle, State state) {
-        boolean tempPenStatus = turtle.getIsPenUp();
-        turtle.setPenUp(true);
         turtle.setLocation(state.getxPos(), state.getyPos());
         turtle.setAngle(state.getAngle());
-        turtle.setPenUp(state.getIsPenUp());
         turtle.setVisible(state.getIsVisible());
         turtle.setActive(state.getIsActive());
-        turtle.setPenUp(tempPenStatus);
     }
 
     private void addTurtle(double id){
-        Turtle newTurtle = new Turtle(id, 0, 0, false, 0);
+        Turtle newTurtle = new Turtle(id);
         turtleMap.put(id, newTurtle);
         addTurtleFunction.addTurtle(newTurtle);
     }

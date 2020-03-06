@@ -1,5 +1,6 @@
 package slogo.view;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 import javafx.event.ActionEvent;
@@ -15,6 +16,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import slogo.controller.DirectExecutor;
 
 import java.util.Objects;
 
@@ -24,6 +26,13 @@ public class TurtleGraphicalMover implements StaticViewElement{
   public static final String ARROW_IMAGE_FILE = "arrow.png";
   public static final int BUTTON_WIDTH = 20;
   public static final int DEFAULT_PEN_WIDTH = 1;
+  public static final int MOVEMENT_VALUE = 30;
+
+  private StringProperty forwardString = new SimpleStringProperty();
+  private StringProperty rightString = new SimpleStringProperty();
+  private StringProperty backString = new SimpleStringProperty();
+  private StringProperty leftString = new SimpleStringProperty();
+
 
   private VBox myButtonHolder;
   private HBox myMiddleButtons;
@@ -72,16 +81,24 @@ public class TurtleGraphicalMover implements StaticViewElement{
   }
   public double getPenWidth() { return penWidth; }
 
-  public void setUpButton(EventHandler<ActionEvent> action, LineManager lineManager){
-    up.addEventHandler(ActionEvent.ACTION, e -> lineManager.checkMovingFromButtons());
-    up.addEventHandler(ActionEvent.ACTION, action);
+  public void setButtons(DirectExecutor executor, LineManager lineManager){
+    up.setOnAction(e ->{
+      lineManager.newProgram();
+      executor.execute(forwardString.get() + " " + MOVEMENT_VALUE);
+    });
+    down.setOnAction(e -> {
+      lineManager.newProgram();
+      executor.execute(backString.get() + " " + MOVEMENT_VALUE);
+    });
+    right.setOnAction(e -> {
+      lineManager.newProgram();
+      executor.execute(rightString.get() + " " + MOVEMENT_VALUE);
+    });
+    left.setOnAction(e ->{
+      lineManager.newProgram();
+      executor.execute(leftString.get() + " " + MOVEMENT_VALUE);
+    });
   }
-  public void setDownButton(EventHandler<ActionEvent> action, LineManager lineManager){
-    down.addEventHandler(ActionEvent.ACTION, e -> lineManager.checkMovingFromButtons());
-    down.addEventHandler(ActionEvent.ACTION, action);
-  }
-  public void setLeftButton(EventHandler<ActionEvent> action){ left.setOnAction(action); }
-  public void setRightButton(EventHandler<ActionEvent> action){ right.setOnAction(action); }
 
   public Node getView()
   {
@@ -92,6 +109,13 @@ public class TurtleGraphicalMover implements StaticViewElement{
   public void setTitleProperty(StringProperty sp) {
     myThicknessText.textProperty().bind(sp);
     myPenElements.getChildren().add(0, myThicknessText);
+  }
+
+  public void setCommandNameProperties(StringProperty forward, StringProperty right, StringProperty back, StringProperty left){
+    forwardString.bind(forward);
+    rightString.bind(right);
+    backString.bind(back);
+    leftString.bind(left);
   }
 
   private void setPenElements() {

@@ -16,6 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
+import slogo.controller.DirectExecutor;
 import slogo.model.tokens.Token;
 import slogo.view.DrawingCanvas;
 import slogo.view.LanguageHelper;
@@ -62,7 +63,6 @@ public class SetupScreen {
   public static final int COMMAND_COLUMN = 1;
   public static final int LIST_VIEW_COLUMN = 2;
   public static final int ERROR_MESSAGE_PADDING = 320;
-  public static final int MOVEMENT_VALUE = 10;
   public static final double HALFWAY_DOWN = HEIGHT/2.0;
 
   public static final String VARIABLE_TITLE_KEY = "VariableTitleText";
@@ -104,7 +104,7 @@ public class SetupScreen {
   private Button undoButton;
   private Button redoButton;
 
-  private ScrollingWindow myHistory = new HistoryViewer(COMMAND_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING);
+  private HistoryViewer myHistory = new HistoryViewer(COMMAND_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING);
   private ScrollingWindow myNewCommandViewer = new CommandViewer(LIST_VIEW_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING, this::setInputText);
   private ScrollingWindow myVariableView = new VariableViewer(LIST_VIEW_COLUMN, HALFWAY_DOWN);
   private LineManager myLineManager = new LineManager(root);
@@ -139,7 +139,6 @@ public class SetupScreen {
 
     myGraphicalMover = new TurtleGraphicalMover(myUserInput.getView().getLayoutX(), myUserInput.getView().getLayoutY() + GRAPHICAL_VIEWER_HEIGHT_OFFSET);
     myCustomizer = new DisplayCustomizer(belowCanvasButtons.getLayoutX(), belowCanvasButtons.getLayoutY()+ BUTTON_HEIGHT_OFFSET + 10);
-    setupGraphicalMover();
     setText();
 
     root.getChildren().addAll(myDrawingCanvas.getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myNewCommandViewer.getView(), myVariableView.getView());
@@ -156,11 +155,11 @@ public class SetupScreen {
     return scene;
   }
 
-  private void setupGraphicalMover(){
-    myGraphicalMover.setUpButton(e->moveTurtleUp(), myLineManager);
-    myGraphicalMover.setDownButton(e->moveTurtleDown(), myLineManager);
-    myGraphicalMover.setLeftButton(e->moveTurtleLeft());
-    myGraphicalMover.setRightButton(e->moveTurtleRight());
+  public void setDirectExecutor(DirectExecutor executor){
+    myGraphicalMover.setCommandNameProperties(languageHelper.getStringProperty("Forward"), languageHelper.getStringProperty("Right"),
+            languageHelper.getStringProperty("Back"), languageHelper.getStringProperty("Left"));
+    myGraphicalMover.setButtons(executor, myLineManager);
+    myHistory.setDirectExecutor(executor, myLineManager);
   }
 
 
@@ -296,13 +295,23 @@ public class SetupScreen {
   }
 
   public void setUndoButton (EventHandler<ActionEvent> undoAction) {
-    undoButton.addEventHandler(ActionEvent.ACTION, undoAction);
-    undoButton.addEventHandler(ActionEvent.ACTION, e -> myLineManager.undo());
+    undoButton.setOnAction(event -> {
+      boolean tempPen = myGraphicalMover.getPenUp();
+      myGraphicalMover.setPenUp(true);
+      myLineManager.undo();
+      undoAction.handle(event);
+      myGraphicalMover.setPenUp(tempPen);
+    });
   }
 
   public void setRedoButton (EventHandler<ActionEvent> redoAction) {
-    redoButton.setOnAction(redoAction);
-    redoButton.addEventHandler(ActionEvent.ACTION, e -> myLineManager.redo());
+    redoButton.setOnAction(event -> {
+      boolean tempPen = myGraphicalMover.getPenUp();
+      myGraphicalMover.setPenUp(true);
+      myLineManager.redo();
+      redoAction.handle(event);
+      myGraphicalMover.setPenUp(tempPen);
+    });
   }
   //~~~~~~~~~~~~~ vvv for testing and troubleshooting vvv ~~~~~~~~~~~~~~~~
   public void setTurtlesStatesButton (EventHandler<ActionEvent> showTurtlesAction) {
@@ -336,38 +345,6 @@ public class SetupScreen {
 
   public TurtleStatePopup getTurtleStatePopup() {
     return myTurtleStatePopup;
-  }
-
-  private void moveTurtleUp() {
-    for (Turtle t: myTurtles){
-      if (t.isActive()) {
-        double x = t.getXPos() - MOVEMENT_VALUE * Math.cos(Math.toRadians(t.getAngle()));
-        double y = t.getYPos() - MOVEMENT_VALUE * Math.sin(Math.toRadians(t.getAngle()));
-        t.setLocation(x, y);
-      }
-    }
-  }
-
-  private void moveTurtleDown() {
-    for (Turtle t: myTurtles){
-      if (t.isActive()) {
-        double x = t.getXPos() + MOVEMENT_VALUE * Math.cos(Math.toRadians(t.getAngle()));
-        double y = t.getYPos() + MOVEMENT_VALUE * Math.sin(Math.toRadians(t.getAngle()));
-        t.setLocation(x, y);
-      }
-    }
-  }
-
-  private void moveTurtleLeft() {
-    for (Turtle t: myTurtles){
-      if (t.isActive()) t.setAngle(t.getAngle()-MOVEMENT_VALUE);
-    }
-  }
-
-  private void moveTurtleRight() {
-    for (Turtle t : myTurtles) {
-      if (t.isActive()) t.setAngle(t.getAngle() + MOVEMENT_VALUE);
-    }
   }
 
   public String getNewWindowPreferences(){
