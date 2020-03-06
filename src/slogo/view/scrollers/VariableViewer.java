@@ -29,6 +29,7 @@ public class VariableViewer extends ScrollingWindow {
     @Override
     protected void onSelectedItem(Token t){
         label.setText(t.toString());
+        text.setText("");
         button.setOnAction(e -> {
             ((Variable) t).setVariable(Double.parseDouble(text.getText()));
             myHolder.getChildren().remove(box);
