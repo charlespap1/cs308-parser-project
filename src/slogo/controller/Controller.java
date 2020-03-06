@@ -58,6 +58,12 @@ public class Controller extends Application {
         });
         myView.setSaveTextFileButton(stage);
         myView.setSaveVariableButton("WHATEVER YOU WANT TO SAVE", stage);
+        myView.setLoadVarsAndCommandsButton(e -> loadVarsAndCommands(myView.getFile()), stage);
+    }
+
+    private void loadVarsAndCommands(File f)
+    {
+        System.out.println("LOAD YOUR VARIABLES AND COMMANDS THAT ARE HELD IN f");
     }
 
 

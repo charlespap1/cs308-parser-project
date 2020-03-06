@@ -104,6 +104,7 @@ public class SetupScreen {
   private static final String REDO_BUTTON_KEY = "RedoButton";
   private static final String SAVE_BUTTON_KEY = "SaveButton";
   private static final String SAVE_VARS_BUTTON_KEY = "SaveVarsButton";
+  private static final String LOAD_VARS_BUTTON_KEY = "LoadVarsButton";
 
   private static final String FORWARD_KEY = "Forward";
   private static final String BACKWARD_KEY = "Backward";
@@ -112,7 +113,6 @@ public class SetupScreen {
 
   private static final String LOAD_FILE_PROMPT = "LoadFilePrompt";
   private static final String SELECT_PREFERENCES_PROMPT = "SelectPreferencesPrompt";
-
 
   private UserCommandField myUserInput = new UserCommandField(WIDTH, HEIGHT);
   private Group root = new Group();
@@ -124,7 +124,9 @@ public class SetupScreen {
   private Button myStop;
   private Button myNewWindow;
   private Button mySaveText;
+
   private Button mySaveVarsAndCommands;
+  private Button loadVarsAndCommands;
 
   private Button loadFileButton;
 
@@ -280,14 +282,11 @@ public class SetupScreen {
    * @param primaryStage
    */
   public void setLoadTextFileButton(EventHandler<ActionEvent> loadFileAction, Stage primaryStage) {
-    EventHandler<ActionEvent> e = event -> {
-      myCurrentLoadPopup = new LoadConfigPopup();
-      myCurrentLoadPopup.setPromptProperty(languageHelper.getStringProperty(LOAD_FILE_PROMPT));
-      myCurrentLoadPopup.setGoButtonProperty(languageHelper.getStringProperty(GO_BUTTON_KEY));
-      myCurrentLoadPopup.getMyPopup().show(primaryStage);
-      myCurrentLoadPopup.setPopupButton(loadFileAction);
-    };
-    loadFileButton.addEventHandler(ActionEvent.ACTION, e);
+    loadFileButton.setOnAction(e -> createNewFileLoaderPopup(primaryStage, loadFileAction));
+  }
+
+  public void setLoadVarsAndCommands(EventHandler<ActionEvent> loadFileAction, Stage primaryStage) {
+    loadVarsAndCommands.setOnAction(e -> createNewFileLoaderPopup(primaryStage, loadFileAction));
   }
 
   /**
@@ -409,9 +408,17 @@ public class SetupScreen {
     myStop = new Button();
     belowCanvasButtons.getChildren().add(myStop);
 
+
+    HBox variableCommandButtons = new HBox(BOX_SPACING);
+
     mySaveVarsAndCommands = new Button();
-    mySaveVarsAndCommands.setLayoutX(myVariableView.getView().getLayoutX() + SAVE_VARS_PADDING_X);
-    mySaveVarsAndCommands.setLayoutY(myVariableView.getView().getLayoutY() + SAVE_VARS_PADDING_Y);
+    loadVarsAndCommands = new Button();
+    variableCommandButtons.setLayoutX(myVariableView.getView().getLayoutX());
+    variableCommandButtons.setLayoutY(myVariableView.getView().getLayoutY() + SAVE_VARS_PADDING_Y);
+    variableCommandButtons.setAlignment(Pos.CENTER);
+    variableCommandButtons.getChildren().addAll(mySaveVarsAndCommands, loadVarsAndCommands);
+
+
 
     myStop.setOnAction(e -> moveTurtlesToCenter());
 
@@ -429,7 +436,7 @@ public class SetupScreen {
     belowCanvasButtons.setAlignment(Pos.CENTER);
     belowCanvasButtons.getChildren().addAll(undoButton, redoButton);
 
-    root.getChildren().addAll(newWindowButtons, mySaveVarsAndCommands);
+    root.getChildren().addAll(newWindowButtons, variableCommandButtons);
   }
 
 
@@ -453,6 +460,7 @@ public class SetupScreen {
     bindButton(redoButton, REDO_BUTTON_KEY);
     bindButton(mySaveText, SAVE_BUTTON_KEY);
     bindButton(mySaveVarsAndCommands, SAVE_VARS_BUTTON_KEY);
+    bindButton(loadVarsAndCommands, LOAD_VARS_BUTTON_KEY);
 
     setStaticViewElementMap();
     for(StaticViewElement element: myStaticViewElements.keySet())
@@ -468,6 +476,16 @@ public class SetupScreen {
     myCurrentLoadPopup.getMyPopup().show(s);
     myCurrentLoadPopup.setPopupButton(e-> saveFile(myCurrentLoadPopup.getFilePackage(), stringToSave));
   }
+
+  private void createNewFileLoaderPopup(Stage s, EventHandler<ActionEvent> loadFileAction)
+  {
+    myCurrentLoadPopup = new LoadConfigPopup();
+    myCurrentLoadPopup.setPromptProperty(languageHelper.getStringProperty(LOAD_FILE_PROMPT));
+    myCurrentLoadPopup.setGoButtonProperty(languageHelper.getStringProperty(GO_BUTTON_KEY));
+    myCurrentLoadPopup.getMyPopup().show(s);
+    myCurrentLoadPopup.setPopupButton(loadFileAction);
+  }
+
 
   private void bindButton(Button button, String key)
   {
