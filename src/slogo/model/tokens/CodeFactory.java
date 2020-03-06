@@ -74,15 +74,27 @@ public class CodeFactory {
         vars.add(t);
     }
 
-    public void saveCommands () {
+    public String saveCommands () {
         StringBuilder commands = new StringBuilder();
         for (Token newCommand : newCommands) {
             NewCommand command = (NewCommand) newCommand;
-            commands.append("TO %s [".format(command.getName()));
-            for (Token var: command.getVariables()) {
-                //commands.append("[ %s ] ".format(var));
+            commands.append("TO %s [ ".format(command.getName()));
+            for (Token variable: command.getVariables()) {
+                Variable var = (Variable) variable;
+                //var.setPrintOnlyName(true);
+                commands.append("%s ".format(var.toString()));
+            }
+            commands.append("] [ ");
+            for (Token instruction: command.getInstructions()) {
+                Instruction instr = (Instruction) instruction;
+                commands.append("%s ".format(instr.toString()));
+            }
+            commands.append("]");
+            for (Token variable: command.getVariables()) {
+                //((Variable) variable).setPrintOnlyName(false);
             }
         }
+        return commands.toString();
     }
 
     private Token getVariable(String piece) {

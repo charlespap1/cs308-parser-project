@@ -6,11 +6,11 @@ public class Variable implements Token {
     private double value;
     private String name;
     private AddToListFunction function;
+    //private boolean printOnlyName = false;
 
     public Variable(String name, AddToListFunction fn){
         this.name = name;
         function = fn;
-        value = Double.MIN_VALUE;
     }
 
     public void setVariable(double var){
@@ -26,8 +26,12 @@ public class Variable implements Token {
         return value;
     }
 
+//    public void setPrintOnlyName (boolean printOnlyName) {
+//        this.printOnlyName = printOnlyName;
+//    }
+
     @Override
     public String toString(){
-        return (value == Double.MIN_VALUE) ? name: name + " " + value;
+        return name + " " + value;
     }
 }
