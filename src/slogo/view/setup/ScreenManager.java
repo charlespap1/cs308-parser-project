@@ -49,7 +49,7 @@ public class ScreenManager {
     }
 
     /**
-     * Set intital preferences for the background and turtle attributes
+     * Set initial preferences for the background and turtle attributes
      * @param preferences
      */
     public void setPreferences(String preferences){
@@ -59,7 +59,7 @@ public class ScreenManager {
     }
 
     /**
-     * Get the user input to send to controller. Must be done here because we need to
+     * Get the user input to send to Controller. Must be done here because we need to
      * create a new bucket for new lines to be drawn
      * @return
      */

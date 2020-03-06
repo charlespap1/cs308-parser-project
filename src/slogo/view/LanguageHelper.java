@@ -7,6 +7,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+/**
+ * Helps us consolidate code for setting languages, cuts down on duplicated code
+ */
 public class LanguageHelper {
   private ResourceBundle myResources;
   private static final String BASE_RESOURCES_PATH = "resources.labels.";
@@ -19,7 +22,13 @@ public class LanguageHelper {
         language.addListener((o, oldVal, newVal) -> changeLanguage(newVal));
       }
 
-      public StringProperty getStringProperty(String key){
+  /**
+   * Gets the given key from the map of values so we don't have to access the resource
+   * bundle every time
+   * @param key
+   * @return
+   */
+  public StringProperty getStringProperty(String key){
         return labelMap.get(key);
       }
 
