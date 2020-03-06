@@ -1,5 +1,8 @@
 package slogo.view.exceptions;
 
+/**
+ * Exception for a file.io exception when writing to a file
+ */
 public class TextParsingException extends RuntimeException{
 
   private static final String errorMessage = "ERROR: Parser Could Not Write Given Input";

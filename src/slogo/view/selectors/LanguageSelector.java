@@ -48,15 +48,18 @@ public class LanguageSelector {
      */
     public StringProperty getLanguageChoiceProperty() { return currentLanguage; }
 
+    /**
+     * The language prompt itself has to be able to dynamically change with the given language
+     */
+    public void setTitleProperty(StringProperty  sp){
+        myTitle.textProperty().bind(sp);
+        box.getChildren().add(0, myTitle);
+    }
+
     private void makeSelector(){
         ComboBox<String> languages = new ComboBox<>(LANGUAGE_LIST);
         languages.valueProperty().setValue(DEFAULT_LANGUAGE);
         currentLanguage.bind(languages.valueProperty());
         box.getChildren().add(languages);
-    }
-
-    public void setTitleProperty(StringProperty  sp){
-        myTitle.textProperty().bind(sp);
-        box.getChildren().add(0, myTitle);
     }
 }

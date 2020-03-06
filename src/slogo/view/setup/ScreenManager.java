@@ -24,7 +24,7 @@ import java.util.Objects;
 
 public class ScreenManager {
     public static final String DEFAULT_TURTLE_IMAGE = "turtle.png";
-    public static final int INITIAL_TURTLE_INDEX = 1;
+    public static final int INITIAL_TURTLE_INDEX = 0;
 
     private Group myRoot;
     private UserCommandField myUserInput;

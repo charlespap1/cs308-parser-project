@@ -4,6 +4,9 @@ import slogo.model.tokens.Instruction;
 import slogo.model.tokens.Token;
 import slogo.view.SetInputAction;
 
+/**
+ * Class which allows users to see the commands they have created
+ */
 public class CommandViewer extends ScrollingWindow {
     SetInputAction setter;
 

@@ -5,6 +5,9 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.stage.Popup;
 
+/**
+ * Interface to define what popups can do
+ */
 public interface ViewPopup {
 
   void setPopupButton(EventHandler<ActionEvent> e);
