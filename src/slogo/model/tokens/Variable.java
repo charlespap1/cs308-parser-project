@@ -3,9 +3,10 @@ package slogo.model.tokens;
 import slogo.model.parse.AddToListFunction;
 
 public class Variable implements Token {
-    private double value = 0;
+    private double value;
     private String name;
     private AddToListFunction function;
+    //private boolean printOnlyName = false;
 
     public Variable(String name, AddToListFunction fn){
         this.name = name;
@@ -17,9 +18,21 @@ public class Variable implements Token {
         function.addToList(this);
     }
 
+    public String getName () {
+        return name;
+    }
+
+    public double getValue () {
+        return value;
+    }
+
     public double execute(){
         return value;
     }
+
+//    public void setPrintOnlyName (boolean printOnlyName) {
+//        this.printOnlyName = printOnlyName;
+//    }
 
     @Override
     public String toString(){
