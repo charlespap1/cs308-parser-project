@@ -22,7 +22,7 @@ public class DisplayCustomizer {
   public static final double COLOR_SELECTOR_HEIGHT = 17;
   public static final String DEFAULT_BACKGROUND_SETTER = "-fx-background-color: rgb(%s)";
   private static final String COLOR_PATH = "resources.colors.BackgroundColors";
-  private static final String IMAGE_PATH = "resources.commands.TurtleImages";
+  private static final String IMAGE_PATH = "resources.colors.TurtleImages";
   private static final int DEFAULT_PEN_COLOR = 0;
   private static final int DEFAULT_TURTLE_FACE = 0;
   private static final int DEFAULT_BACKGROUND_COLOR = 7;
