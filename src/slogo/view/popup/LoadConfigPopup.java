@@ -3,6 +3,7 @@ package slogo.view.popup;
 import java.io.File;
 import java.util.Scanner;
 import javafx.scene.control.TextField;
+import slogo.view.exceptions.FileDoesNotExistException;
 
 public class LoadConfigPopup extends PopupSkeleton {
 

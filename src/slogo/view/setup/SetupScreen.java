@@ -29,7 +29,9 @@ import slogo.view.Turtle;
 import slogo.view.TurtleGraphicalMover;
 import slogo.view.UserCommandField;
 import slogo.view.commonCommands.CommonCommands;
-import slogo.view.popup.FileDoesNotExistException;
+import slogo.view.exceptions.FileDoesNotExistException;
+import slogo.view.exceptions.TextParsingException;
+import slogo.view.exceptions.WriterCannotFindFileException;
 import slogo.view.popup.LoadConfigPopup;
 
 import slogo.view.popup.SetPreferencesPopup;
@@ -49,12 +51,17 @@ import java.util.Objects;
 
 /**
  * This class allows us to make our main class less fat
- * and sets up all the visuals
+ * and sets most of the visuals
+ * EDIT: Now Setup has been broken up into SetupScreen, Screen Manager and PreferenceLoaderSelector
+ * in order to democratize all of the work.
+ * SetupScreen specifically holds all the buttons which need to access methods and
+ * objects in the controller
  * @author Juliet, Natalie
  */
 
 public class SetupScreen {
   public static final String MAIN_STYLESHEET = "main.css";
+  public static final String FILE_CASE_PREFERENCE = "UTF-8";
 
   public static final double BOX_SPACING = 10;
   public static final int WIDTH = 1000;
@@ -163,9 +170,14 @@ public class SetupScreen {
     return scene;
   }
 
+  /**
+   * Allows the graphical mover to get the commands which work with backend and for the
+   * graphical mover to move multiple active turtle
+   * @param executor
+   */
   public void setDirectExecutor(DirectExecutor executor){
     myGraphicalMover.setCommandNameProperties(languageHelper.getStringProperty("Forward"), languageHelper.getStringProperty("Right"),
-            languageHelper.getStringProperty("Back"), languageHelper.getStringProperty("Left"));
+        languageHelper.getStringProperty("Back"), languageHelper.getStringProperty("Left"));
     myGraphicalMover.setButtons(executor, myLineManager);
     myHistory.setDirectExecutor(executor, myLineManager);
   }
@@ -185,13 +197,28 @@ public class SetupScreen {
     root.getChildren().add(myCommandJumper);
   }
 
+  /**
+   * Binds the error message to the backend so both ends can throw exceptions
+   * @param message
+   */
   public void bindErrorMessage(StringProperty message) {
     myCurrentErrorMessage.textProperty().bindBidirectional(message);
     myCurrentErrorMessage.setTextFill(Color.RED);
   }
 
+  /**
+   * Allows the Go button to call the getInstuction() and myModel.execute() located in the controller
+   * without having direct access to the model
+   * @param goAction
+   */
   public void setGoButton(EventHandler<ActionEvent> goAction) { myGo.setOnAction(goAction); }
 
+  /**
+   * Allows the new window button to create a popup and for the popup go button to access
+   * the makeNewWindow() method in the Controller
+   * @param newWindowAction
+   * @param stage
+   */
   public void setNewWindowButton(EventHandler<ActionEvent> newWindowAction, Stage stage) {
 
     EventHandler<ActionEvent> e = event -> {
@@ -206,7 +233,11 @@ public class SetupScreen {
 
   }
 
-
+  /**
+   * Allows controller to get the file which is loaded in the popup
+   * in order to pass to backend
+   * @return
+   */
   public File getFile() {
     myLineManager.newProgram();
     try{
@@ -218,12 +249,20 @@ public class SetupScreen {
     }
   }
 
+  /**
+   * Allows us to create a popup using the stage from the controller
+   * @param s
+   */
   public void setSaveTextFileButton(Stage s)
   {
     mySaveText.setOnAction(e -> createNewFileSaverPopup(s));
   }
 
-
+  /**
+   * Allows us to create a popup with the current stage in controller. Also gives
+   * controller method of myModel.execute(file) to the popup go button
+   * @param primaryStage
+   */
   public void setLoadTextFileButton(EventHandler<ActionEvent> loadFileAction, Stage primaryStage) {
     EventHandler<ActionEvent> e = event -> {
       myCurrentLoadPopup = new LoadConfigPopup();
@@ -235,14 +274,40 @@ public class SetupScreen {
     loadFileButton.addEventHandler(ActionEvent.ACTION, e);
   }
 
+  /**
+   * Allows us to set the input prompt for the user
+   * @param command
+   */
   public void setInputText(String command) { myUserInput.setUserInput(command); }
+
+  /**
+   * Binds our variable viewer to the backend list of variables
+   * @param variableList
+   */
   public void setVariableList(ObservableList<Token> variableList) { myVariableView.bindList(variableList); }
+
+  /**
+   * Binds our new command list to the backend list of commands
+   * @param newCommandList
+   */
   public void setNewCommandList(ObservableList<Token> newCommandList) { myNewCommandViewer.bindList(newCommandList); }
+
+  /**
+   * Binds our history list to the backend list of history
+   * @param historyList
+   * @param undoDisabled
+   * @param redoDisabled
+   */
   public void setupHistory(ObservableList<Token> historyList, BooleanProperty undoDisabled, BooleanProperty redoDisabled) {
     myHistory.bindList(historyList);
     undoButton.disableProperty().bind(undoDisabled);
     redoButton.disableProperty().bind(redoDisabled);
   }
+
+  /**
+   * Allows us to clear the current history on front and backend, as well as the lines drawn on DrawingCanvas
+   * @param clearAction
+   */
   public void setClearHistory(EventHandler<ActionEvent> clearAction) {
     myClear.setOnAction(e -> {
       myLineManager.clearAllLines();
@@ -251,8 +316,51 @@ public class SetupScreen {
     });
   }
 
+  /**
+   * Creates a new screen manger to set up and link our visual elements
+   * that interact with eachother in the frontend
+   * @return
+   */
   public ScreenManager getScreenManager(){
     return new ScreenManager(root, myUserInput, myTurtles, myDrawingCanvas, myLanguageSelector, myLineManager, myCustomizer, myGraphicalMover);
+  }
+
+  /**
+   * Sets up undo button to delete lines and move the turtle back
+   * @param undoAction
+   */
+  public void setUndoButton (EventHandler<ActionEvent> undoAction) {
+    undoButton.setOnAction(event -> {
+      boolean tempPen = myGraphicalMover.getPenUp();
+      myGraphicalMover.setPenUp(true);
+      myLineManager.undo();
+      undoAction.handle(event);
+      myGraphicalMover.setPenUp(tempPen);
+    });
+  }
+
+  /**
+   * Sets up redo button to draw previous lines
+   * and move the turtle
+   * @param redoAction
+   */
+  public void setRedoButton (EventHandler<ActionEvent> redoAction) {
+    redoButton.setOnAction(event -> {
+      boolean tempPen = myGraphicalMover.getPenUp();
+      myGraphicalMover.setPenUp(true);
+      myLineManager.redo();
+      redoAction.handle(event);
+      myGraphicalMover.setPenUp(tempPen);
+    });
+  }
+
+  /**
+   * Needed in order to create a newWindow in the Controller with preferences
+   * chosen in the popup
+   * @return
+   */
+  public String getNewWindowPreferences(){
+    return myCurrentNewWindowPopup.getPreference();
   }
 
   private void setupBox(Pane box, double x, double y, double width){
@@ -305,9 +413,7 @@ public class SetupScreen {
     newWindowButtons.setLayoutX(WIDTH/2 - BUTTON_HEIGHT_OFFSET*4);
     newWindowButtons.getChildren().addAll(myNewWindow, loadFileButton, mySaveText);
     undoButton = new Button();
-    //undoButton.setText("Undo");
     redoButton = new Button();
-    //redoButton.setText("Redo");
     belowCanvasButtons.setMaxWidth(myDrawingCanvas.getWidth());
     belowCanvasButtons.setMinWidth(myDrawingCanvas.getWidth());
     belowCanvasButtons.setAlignment(Pos.CENTER);
@@ -316,25 +422,6 @@ public class SetupScreen {
     root.getChildren().add(newWindowButtons);
   }
 
-  public void setUndoButton (EventHandler<ActionEvent> undoAction) {
-    undoButton.setOnAction(event -> {
-      boolean tempPen = myGraphicalMover.getPenUp();
-      myGraphicalMover.setPenUp(true);
-      myLineManager.undo();
-      undoAction.handle(event);
-      myGraphicalMover.setPenUp(tempPen);
-    });
-  }
-
-  public void setRedoButton (EventHandler<ActionEvent> redoAction) {
-    redoButton.setOnAction(event -> {
-      boolean tempPen = myGraphicalMover.getPenUp();
-      myGraphicalMover.setPenUp(true);
-      myLineManager.redo();
-      redoAction.handle(event);
-      myGraphicalMover.setPenUp(tempPen);
-    });
-  }
   //~~~~~~~~~~~~~ vvv for testing and troubleshooting vvv ~~~~~~~~~~~~~~~~
   public void setTurtlesStatesButton (EventHandler<ActionEvent> showTurtlesAction) {
     myTurtlesStatesButton.setOnAction(showTurtlesAction);
@@ -372,10 +459,6 @@ public class SetupScreen {
     return myTurtleStatePopup;
   }
 
-  public String getNewWindowPreferences(){
-    return myCurrentNewWindowPopup.getPreference();
-  }
-
   private void createNewFileSaverPopup(Stage s){
     myCurrentLoadPopup = new LoadConfigPopup();
     myCurrentLoadPopup.setGoButtonProperty(languageHelper.getStringProperty(SAVE_BUTTON_KEY));
@@ -387,21 +470,21 @@ public class SetupScreen {
   private void saveFile(String newFilePackage)
   {
     String s = myUserInput.getUserInput();
-    System.out.println(s);
-
     FileOutputStream out = null;
+
     try {
-      out = new FileOutputStream(newFilePackage);
-      PrintWriter writer = new PrintWriter(newFilePackage, "UTF-8");
-      writer.write(s);
-      writer.close();
-      out.close();
+        out = new FileOutputStream(newFilePackage);
+        PrintWriter writer = new PrintWriter(newFilePackage, FILE_CASE_PREFERENCE);
+        writer.write(s);
+        writer.close();
+        out.close();
     } catch (FileNotFoundException e) {
-      e.printStackTrace();
+      WriterCannotFindFileException error = new WriterCannotFindFileException(e);
+      myCurrentErrorMessage.textProperty().setValue(error.getMessage());
     } catch (IOException e) {
-      e.printStackTrace();
+      TextParsingException error = new TextParsingException(e);
+      myCurrentErrorMessage.textProperty().setValue(error.getMessage());
     }
   }
-
 
 }

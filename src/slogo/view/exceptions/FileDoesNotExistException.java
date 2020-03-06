@@ -1,4 +1,4 @@
-package slogo.view.popup;
+package slogo.view.exceptions;
 
 public class FileDoesNotExistException extends RuntimeException{
 
