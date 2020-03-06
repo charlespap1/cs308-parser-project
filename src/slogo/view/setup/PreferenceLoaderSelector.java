@@ -1,5 +1,6 @@
 package slogo.view.setup;
 
+import slogo.view.TurtleGraphicalMover;
 import slogo.view.selectors.DisplayCustomizer;
 
 import java.util.ResourceBundle;

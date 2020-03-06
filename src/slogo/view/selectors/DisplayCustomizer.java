@@ -81,6 +81,8 @@ public class DisplayCustomizer {
   public void setPalette(int index, String r, String g, String b){
     String color = r + "," + g + "," + b;
     colors.add(index, color);
+    backgroundButtons.get(index).setStyle(String.format(DEFAULT_BACKGROUND_SETTER, color));
+    penButtons.get(index).setStyle(String.format(DEFAULT_BACKGROUND_SETTER, color));
   }
   public void setPenColor(int index){ penColorIndex = index; }
   public void setBackground(int index){ backgroundColorIndex = index; }
