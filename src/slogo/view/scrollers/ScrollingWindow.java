@@ -9,7 +9,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import slogo.model.tokens.Token;
 import slogo.view.DrawingCanvas;
-import slogo.view.SetupScreen;
+import slogo.view.setup.SetupScreen;
 import slogo.view.StaticViewElement;
 
 /**

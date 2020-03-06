@@ -3,7 +3,6 @@ package slogo.view.popup;
 import java.io.File;
 import java.util.Scanner;
 import javafx.scene.control.TextField;
-import javafx.scene.paint.Color;
 
 public class LoadConfigPopup extends PopupSkeleton {
 
