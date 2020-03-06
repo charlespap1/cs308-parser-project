@@ -432,6 +432,10 @@ public class SetupScreen {
     root.getChildren().add(newWindowButtons);
   }
 
+  public void setError(Exception e){
+    myCurrentErrorMessage.textProperty().set(e.getMessage());
+  }
+
   //~~~~~~~~~~~~~ vvv for testing and troubleshooting vvv ~~~~~~~~~~~~~~~~
   public void setTurtlesStatesButton (EventHandler<ActionEvent> showTurtlesAction) {
     myTurtlesStatesButton.setOnAction(showTurtlesAction);
