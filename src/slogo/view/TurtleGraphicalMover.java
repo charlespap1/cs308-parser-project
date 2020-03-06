@@ -1,7 +1,10 @@
 package slogo.view;
 
-import java.util.Objects;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -13,20 +16,27 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import slogo.controller.DirectExecutor;
+
+import java.util.Objects;
 
 public class TurtleGraphicalMover implements StaticViewElement{
-
-  public static final int MOVEMENT_VALUE = 10;
   public static final int BOX_SPACING = 5;
   public static final int MAJOR_BOX_SPACING = 15;
   public static final String ARROW_IMAGE_FILE = "arrow.png";
   public static final int BUTTON_WIDTH = 20;
+  public static final int DEFAULT_PEN_WIDTH = 1;
+  public static final int MOVEMENT_VALUE = 30;
 
-  private Turtle myTurtle;
+  private StringProperty forwardString = new SimpleStringProperty();
+  private StringProperty rightString = new SimpleStringProperty();
+  private StringProperty backString = new SimpleStringProperty();
+  private StringProperty leftString = new SimpleStringProperty();
+
+
   private VBox myButtonHolder;
   private HBox myMiddleButtons;
   private VBox myPenElements;
-
   private HBox myHolder;
 
   private Button up;
@@ -38,9 +48,10 @@ public class TurtleGraphicalMover implements StaticViewElement{
   private RadioButton changePenDown;
   private Text myThicknessText = new Text();
 
-  public TurtleGraphicalMover(double x, double y)
-  {
-    //myTurtle = t;
+  private boolean penUp = false;
+  private double penWidth = DEFAULT_PEN_WIDTH;
+
+  public TurtleGraphicalMover(double x, double y) {
     myHolder = new HBox(MAJOR_BOX_SPACING);
     myButtonHolder = new VBox(BOX_SPACING);
     myMiddleButtons = new HBox(BOX_SPACING);
@@ -57,14 +68,41 @@ public class TurtleGraphicalMover implements StaticViewElement{
     myHolder.getChildren().addAll(myButtonHolder, myPenElements);
   }
 
+  public void setPenUp(boolean isPenUp) {
+    if (isPenUp){
+      changePenUp.setSelected(true);
+    } else changePenDown.setSelected(true);
+    penUp = isPenUp;
+  }
+  public boolean getPenUp() { return penUp; }
+  public void setPenWidth(double val) {
+    penWidth = val;
+    increaseThickness.setValue(val);
+  }
+  public double getPenWidth() { return penWidth; }
+
+  public void setButtons(DirectExecutor executor, LineManager lineManager){
+    up.setOnAction(e ->{
+      lineManager.newProgram();
+      executor.execute(forwardString.get() + " " + MOVEMENT_VALUE);
+    });
+    down.setOnAction(e -> {
+      lineManager.newProgram();
+      executor.execute(backString.get() + " " + MOVEMENT_VALUE);
+    });
+    right.setOnAction(e -> {
+      lineManager.newProgram();
+      executor.execute(rightString.get() + " " + MOVEMENT_VALUE);
+    });
+    left.setOnAction(e ->{
+      lineManager.newProgram();
+      executor.execute(leftString.get() + " " + MOVEMENT_VALUE);
+    });
+  }
+
   public Node getView()
   {
     return myHolder;
-  }
-
-  public void setSlider(double val)
-  {
-    increaseThickness.setValue(val);
   }
 
   @Override
@@ -73,20 +111,25 @@ public class TurtleGraphicalMover implements StaticViewElement{
     myPenElements.getChildren().add(0, myThicknessText);
   }
 
-  private void setPenElements()
-  {
+  public void setCommandNameProperties(StringProperty forward, StringProperty right, StringProperty back, StringProperty left){
+    forwardString.bind(forward);
+    rightString.bind(right);
+    backString.bind(back);
+    leftString.bind(left);
+  }
+
+  private void setPenElements() {
     increaseThickness = new Slider(1, 5, 1);
     increaseThickness.setShowTickLabels(true);
     increaseThickness.setShowTickMarks(true);
     increaseThickness.setMajorTickUnit(5);
     increaseThickness.setMinorTickCount(4);
     increaseThickness.snapToTicksProperty().setValue(true);
-    increaseThickness.setOnMouseClicked(e -> setThickness((int) Math.round(increaseThickness.getValue())));
+    increaseThickness.setOnMouseClicked(e -> setPenWidth(increaseThickness.getValue()));
 
     setUpToggleViewer();
     HBox buttonHolder = new HBox(MAJOR_BOX_SPACING);
     buttonHolder.getChildren().addAll(changePenUp, changePenDown);
-
     myPenElements.getChildren().addAll(increaseThickness, buttonHolder);
   }
 
@@ -95,8 +138,7 @@ public class TurtleGraphicalMover implements StaticViewElement{
     changePenDown.textProperty().bind(penDown);
   }
 
-  private void setUpToggleViewer()
-  {
+  private void setUpToggleViewer() {
     changePenUp = new RadioButton();
     changePenUp.setOnAction(e -> setPenUp(true));
 
@@ -104,44 +146,28 @@ public class TurtleGraphicalMover implements StaticViewElement{
     changePenDown.setOnAction(e -> setPenUp(false));
 
     ToggleGroup radioGroup = new ToggleGroup();
-
+    //changePenDown.setSelected(true);
     changePenUp.setToggleGroup(radioGroup);
     changePenDown.setToggleGroup(radioGroup);
-
-//    if(myTurtle.getPenUp())
-//    {
-//      changePenUp.setSelected(true);
-//    }
-//    else
-//    {
-//      changePenDown.setSelected(true);
-//    }
-
   }
 
-  private void setTurtleButtons()
-  {
-
+  private void setTurtleButtons() {
     up = new Button();
-    up.setOnAction(e -> moveTurtleUp());
     ImageView upImage = getButtonPic();
     upImage.setRotate(-90);
     up.setGraphic(upImage);
 
     left = new Button();
-    left.setOnAction(e -> moveTurtleLeft());
     ImageView leftImage = getButtonPic();
     leftImage.setRotate(180);
     left.setGraphic(leftImage);
 
     down = new Button();
-    down.setOnAction(e -> moveTurtleDown());
     ImageView downImage = getButtonPic();
     downImage.setRotate(90);
     down.setGraphic(downImage);
 
     right = new Button();
-    right.setOnAction(e -> moveTurtleRight());
     ImageView rightImage = getButtonPic();
     right.setGraphic(rightImage);
 
@@ -158,45 +184,4 @@ public class TurtleGraphicalMover implements StaticViewElement{
     iv.setPreserveRatio(true);
     return iv;
   }
-
-  private void setPenUp(boolean isPenUp)
-  {
-    //myTurtle.setPenUp(isPenUp);
-  }
-
-  private void setThickness(int thickness)
-  {
-    //myTurtle.setThickness(thickness);
-  }
-
-
-  private void moveTurtleUp()
-  {
-//    double y = myTurtle.getYPos() - MOVEMENT_VALUE;
-//    setTurtle(myTurtle.getXPos(), y);
-  }
-  private void moveTurtleDown()
-  {
-//    double y = myTurtle.getYPos() + MOVEMENT_VALUE;
-//    setTurtle(myTurtle.getXPos(), y);
-  }
-
-  private void moveTurtleLeft()
-  {
-//    double x = myTurtle.getXPos() - MOVEMENT_VALUE;
-//    setTurtle(x, myTurtle.getYPos());
-  }
-
-  private void moveTurtleRight()
-  {
-//    double x = myTurtle.getXPos() + MOVEMENT_VALUE;
-//    setTurtle(x, myTurtle.getYPos());
-  }
-
-  private void setTurtle(double x, double y)
-  {
-    //myTurtle.setLocation(x, y);
-  }
-
-
 }

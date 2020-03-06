@@ -1,7 +1,7 @@
 package slogo.model.history;
 
+import slogo.model.tokens.Instruction;
 import slogo.model.tokens.Token;
-import slogo.model.tokens.instructions.Instruction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,5 +25,7 @@ public class Program {
     public Map<Double, State> getInitialTurtleStates () {
         return initialTurtleStates;
     }
+
+    public void clear(){ myInstructions.clear(); }
 
 }

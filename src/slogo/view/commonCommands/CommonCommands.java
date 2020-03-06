@@ -1,6 +1,10 @@
 package slogo.view.commonCommands;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.ResourceBundle;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
@@ -15,6 +19,8 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import slogo.view.LanguageHelper;
+
+import java.io.IOException;
 
 /**
  * This holds the Scene of the Common Commands page as well as gives the ability to jump
@@ -36,6 +42,8 @@ public class CommonCommands {
   private static final double HYPERLINK_PADDING = 150;
   public static final String MAIN_STYLESHEET = "main.css";
   public static final String LINK_TO_ALL_COMMANDS = "https://www2.cs.duke.edu/courses/spring20/compsci308/assign/03_parser/commands.php";
+  private static final List<String> KEYS = new ArrayList<>(Arrays.asList(MATH_OPS_KEY, BOOLEAN_OPS_KEY, QUERIES_KEY, COMMANDS_KEY));
+  private static final String RESOURCE_BUNDLE = "resources.commands.CommandSorter";
 
   private Scene myPrevious;
   private Stage myStage;
@@ -48,6 +56,7 @@ public class CommonCommands {
   private Text myTitle = new Text();
   private LanguageHelper myLanguageHelper;
   private Hyperlink myLink;
+  private ResourceBundle myResource = ResourceBundle.getBundle(RESOURCE_BUNDLE);
 
   public CommonCommands(Stage primaryStage, Scene previousScene, StringProperty languageProperty) {
     myStage = primaryStage;
@@ -90,21 +99,16 @@ public class CommonCommands {
 
   private Scene setupCommandScene() {
     Group myRoot = new Group();
-    TurtleCommandPanel turtleCommands = new TurtleCommandPanel(language.get(), 0);
-    turtleCommands.setTitleProperty(myLanguageHelper.getStringProperty(COMMANDS_KEY));
 
-    TurtleQueriesPanel turtleQueries = new TurtleQueriesPanel(language.get(), width/4);
-    turtleQueries.setTitleProperty(myLanguageHelper.getStringProperty(QUERIES_KEY));
-
-    MathOperationsPanel mathOps = new MathOperationsPanel(language.get(), width/2);
-    mathOps.setTitleProperty(myLanguageHelper.getStringProperty(MATH_OPS_KEY));
-
-    BooleanOperationsPanel boolOps = new BooleanOperationsPanel(language.get(), 3*width/4);
-    boolOps.setTitleProperty(myLanguageHelper.getStringProperty(BOOLEAN_OPS_KEY));
+    for(int i = 0; i < KEYS.size(); i ++)
+    {
+      String [] identifiers = myResource.getString(KEYS.get(i)).split("\\.");
+      CommandPanel panel = new CommandPanel(language.get(), identifiers,i*width/4, CommonCommands.TOP_PADDING);
+      panel.setTitleProperty(myLanguageHelper.getStringProperty(COMMANDS_KEY));
+      myRoot.getChildren().add(panel.getView());
+    }
 
     setHyperlink(myRoot);
-
-    myRoot.getChildren().addAll(turtleCommands.getView(), turtleQueries.getView(), mathOps.getView(), boolOps.getView(), backButton);
 
     Scene scene = new Scene(myRoot, width, height, background);
     scene.getStylesheets().add(getClass().getClassLoader().getResource(MAIN_STYLESHEET).toExternalForm());
@@ -133,7 +137,7 @@ public class CommonCommands {
         try {
           java.awt.Desktop.getDesktop().browse(java.net.URI.create(url_open));
         } catch (IOException ex) {
-          ex.printStackTrace();
+          System.out.println("Error occurred.");
         }
       }
     });

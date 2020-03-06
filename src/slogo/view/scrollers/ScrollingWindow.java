@@ -9,7 +9,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import slogo.model.tokens.Token;
 import slogo.view.DrawingCanvas;
-import slogo.view.SetupScreen;
+import slogo.view.setup.SetupScreen;
 import slogo.view.StaticViewElement;
 
 /**
@@ -27,19 +27,19 @@ public abstract class ScrollingWindow implements StaticViewElement {
   public static final double TEXT_HOLDER_SPACING =5;
 
   protected VBox myHolder = new VBox(VBOX_SPACING);
+
   protected double myWidth = SetupScreen.WIDTH/3.0 - 2*SCROLLING_SIDE_PADDING;
   protected double myHeight = SetupScreen.HEIGHT/2.0 - SCROLLING_MIDDLE_PADDING - SCROLLING_TOP_PADDING;
   protected VBox myTextHolder = new VBox(TEXT_HOLDER_SPACING);
   protected ListView<Token> myList = new ListView<>();
   private Text myTitle = new Text();
+  private ScrollPane myView = new ScrollPane();
 
 
   public ScrollingWindow(double elementWidthFactor, double topPadding) {
     myHolder.setLayoutX(elementWidthFactor*SetupScreen.WIDTH/3 + SCROLLING_SIDE_PADDING);
     myHolder.setLayoutY(topPadding);
     myHolder.setFillWidth(true);
-
-    ScrollPane myView = new ScrollPane();
 
     myHolder.setMinHeight(myHeight);
     myHolder.setMaxHeight(myHeight);
@@ -64,9 +64,22 @@ public abstract class ScrollingWindow implements StaticViewElement {
     return myHolder;
   }
 
-  public void setTitleProperty(StringProperty  sp){
+  public void setTitleProperty(StringProperty  sp) {
     myTitle.textProperty().bind(sp);
     myHolder.getChildren().add(0, myTitle);
+  }
+
+
+  public void setWidth(double width) {
+    this.myWidth = width;
+    myView.setMaxWidth(myWidth);
+    myView.setMinWidth(myWidth);
+  }
+
+  public void setHeight(double height) {
+    this.myHeight = height;
+    myHolder.setMinHeight(myHeight);
+    myHolder.setMaxHeight(myHeight);
   }
 
   /**
@@ -79,5 +92,6 @@ public abstract class ScrollingWindow implements StaticViewElement {
   }
 
   protected abstract void onSelectedItem(Token t);
+
 
 }

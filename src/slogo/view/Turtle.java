@@ -8,7 +8,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
 import java.awt.geom.Point2D;
-import java.util.List;
 
 /**
  * This class holds all of the attributes of our GUI turtle
@@ -16,7 +15,6 @@ import java.util.List;
  */
 public class Turtle {
   public static final int TURTLE_IMAGE_SIZE = 30;
-  public static final Color DEFAULT_PEN_COLOR = Color.BLACK;
   public static final double DEFAULT_ANGLE = 90;
   public static final double TURTLE_FACTOR = TURTLE_IMAGE_SIZE/2.0;
 
@@ -30,15 +28,10 @@ public class Turtle {
   private DoubleProperty y = new SimpleDoubleProperty();
   private ObjectProperty<Point2D> coordinates = new SimpleObjectProperty<>();
   private DoubleProperty angle = new SimpleDoubleProperty();
-  private BooleanProperty penUp = new SimpleBooleanProperty();
   private BooleanProperty visible = new SimpleBooleanProperty();
-  private BooleanProperty active = new SimpleBooleanProperty();
   private double currX;
   private double currY;
   private int penThickness = 1;
-  private String filename;
-
-  private Color penColor = DEFAULT_PEN_COLOR;
 
   public Turtle(Image image, double width, double height)
   {
@@ -67,18 +60,16 @@ public class Turtle {
     x.bindBidirectional(turtle.turtleXProperty());
     y.bindBidirectional(turtle.turtleYProperty());
     angle.bindBidirectional(turtle.turtleAngleProperty());
-    penUp.bindBidirectional(turtle.penUpProperty());
     visible.bind(turtle.visibleProperty());
     coordinates.bindBidirectional(turtle.pointProperty());
     currX = x.getValue();
     currY = y.getValue();
-    active.bindBidirectional(turtle.activeProperty());
-    active.addListener(e -> {
-      if (active.getValue()) myTurtleView.setOpacity(1);
+    turtle.activeProperty().addListener(e -> {
+      if (turtle.activeProperty().getValue()) myTurtleView.setOpacity(1);
       else myTurtleView.setOpacity(0.5);
     });
     returnTurtleToDefault();
-    myTurtleView.setOnMouseClicked(e -> active.setValue(!active.getValue()));
+    myTurtleView.setOnMouseClicked(e -> turtle.activeProperty().setValue(!turtle.activeProperty().getValue()));
   }
 
 
@@ -99,25 +90,11 @@ public class Turtle {
    * Draws line as long as turtle is in bounds
    * @return
    */
-  public Line drawLineAndBound(){
+  public Line drawLineAndBound(boolean penUp){
     Line line = null;
     if (outOfBounds()) fixBounding();
-    else line = drawLine();
+    else line = drawLine(penUp);
     return line;
-  }
-
-  public double getXPos() {
-    return x.getValue();
-  }
-
-  public void setLocation(double x, double y) {
-    this.x.setValue(x);
-    this.y.setValue(y);
-    coordinates.setValue(new Point2D.Double(x, y));
-  }
-
-  public double getYPos() {
-    return y.getValue();
   }
 
   /**
@@ -131,36 +108,18 @@ public class Turtle {
    * @param image
    */
   public void changeImage(Image image) { myTurtleView.setImage(image); }
-
-  /**
-   * Allows pen color to be changed by the PenSelector
-   * @param color
-   */
-  public void changePenColor(Color color) { penColor = color; }
-
-
-
-  public void setPenUp(boolean isPenUp)
-  {
-    this.penUp.set(isPenUp);
-  }
-
   public void setThickness(int newThickness)
   {
     penThickness = newThickness;
   }
+  public void setAngle(double newAngle) { angle.set(newAngle); }
+  public double getAngle() { return angle.get(); }
 
-  public boolean getPenUp()
-  {
-    return this.penUp.get();
-  }
-
-  private Line drawLine(){
+  private Line drawLine(boolean penUp){
     Line line = null;
-    if (!penUp.getValue()) {
+    if (!penUp) {
       line = new Line(currX + centerX, currY + centerY, x.getValue() + centerX, y.getValue() + centerY);
       line.setStrokeWidth(penThickness);
-      line.setStroke(penColor);
     }
     currX = x.getValue();
     currY = y.getValue();

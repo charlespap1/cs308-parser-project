@@ -7,12 +7,11 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 
 import java.util.Collection;
 import java.util.List;
-import javafx.scene.text.Text;
 
 /**
  * This structure allows the user to code in different language environments
@@ -50,7 +49,6 @@ public class LanguageSelector {
     public StringProperty getLanguageChoiceProperty() { return currentLanguage; }
 
     private void makeSelector(){
-        //Label prompt = new Label(PROMPT);
         ComboBox<String> languages = new ComboBox<>(LANGUAGE_LIST);
         languages.valueProperty().setValue(DEFAULT_LANGUAGE);
         currentLanguage.bind(languages.valueProperty());
