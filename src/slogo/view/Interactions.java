@@ -34,7 +34,6 @@ public class Interactions implements View {
     mySetup = new SetupScreen();
     Scene myScene = mySetup.setupGame();
     mySetup.addCommonCommands(primaryStage, myScene);
-    myTurtleStatePopup = mySetup.getTurtleStatePopup();
     myScreen = mySetup.getScreenManager();
 
     primaryStage.setScene(myScene);
@@ -59,6 +58,7 @@ public class Interactions implements View {
   public File getFile(){
     return mySetup.getFile();
   }
+
 
   public void setPreferences(String preferences) {
     myScreen.setPreferences(preferences);
@@ -92,14 +92,16 @@ public class Interactions implements View {
   }
 
   /**
-   * Sets the go button to be binded to do action in the backend
+   * Sets the go button to be bound to action in the backend
    * @param goAction
    */
   public void setGoButton(EventHandler<ActionEvent> goAction){ mySetup.setGoButton(goAction); }
   public void setNewWindowButton(EventHandler<ActionEvent> newWindowAction, Stage stage) { mySetup.setNewWindowButton(newWindowAction, stage); }
   public void setLoadTextFileButton(EventHandler<ActionEvent> newWindowAction, Stage stage) { mySetup.setLoadTextFileButton(newWindowAction, stage); }
-  public void setTurtlesStateButton(EventHandler<ActionEvent> showTurtlesAction) { mySetup.setTurtlesStatesButton(showTurtlesAction); }
+  public void setLoadVarsAndCommandsButton(EventHandler<ActionEvent> newWindowAction, Stage stage){mySetup.setLoadVarsAndCommands(newWindowAction, stage);}
   public void setSaveTextFileButton(Stage stage){ mySetup.setSaveTextFileButton(stage);}
+  public void setSaveVariableButton(String newCommands, Stage stage) {mySetup.setVariableSaveButton(newCommands, stage); }
+
 
   public void setUndoAction(EventHandler<ActionEvent> undoAction) { mySetup.setUndoButton(undoAction); }
   public void setRedoAction(EventHandler<ActionEvent> redoAction) { mySetup.setRedoButton(redoAction); }

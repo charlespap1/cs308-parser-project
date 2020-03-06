@@ -144,15 +144,6 @@ public class TurtleGraphicalMover implements StaticViewElement{
   }
 
   /**
-   * Dynamically sets language for pen elements
-   * @param penUp
-   * @param penDown
-   */
-  public void setPenLabelProperty(StringProperty penUp, StringProperty penDown){
-
-  }
-
-  /**
    * Allows for binding with backend movement
    * @param forward
    * @param right
@@ -190,7 +181,6 @@ public class TurtleGraphicalMover implements StaticViewElement{
     changePenDown.setOnAction(e -> setPenUp(false));
 
     ToggleGroup radioGroup = new ToggleGroup();
-    //changePenDown.setSelected(true);
     changePenUp.setToggleGroup(radioGroup);
     changePenDown.setToggleGroup(radioGroup);
   }

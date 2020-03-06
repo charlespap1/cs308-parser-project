@@ -25,7 +25,6 @@ public class TurtleStatePopup {
 
     private HBox myHolder;
     private VBox myTurtleStates;
-    private Text myPrompt;
     private Button exit;
     private Button myGo;
 

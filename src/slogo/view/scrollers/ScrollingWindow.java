@@ -3,6 +3,8 @@ package slogo.view.scrollers;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
@@ -35,8 +37,9 @@ public abstract class ScrollingWindow implements StaticViewElement {
   protected double myHeight = SetupScreen.HEIGHT/2.0 - SCROLLING_MIDDLE_PADDING - SCROLLING_TOP_PADDING;
   protected VBox myTextHolder = new VBox(TEXT_HOLDER_SPACING);
   protected ListView<Token> myList = new ListView<>();
-  private Text myTitle = new Text();
+  protected Text myTitle = new Text();
   protected HBox myListHolder = new HBox();
+  protected HBox myTitleHolder = new HBox();
 
   public ScrollingWindow(double elementWidthFactor, double topPadding) {
     myHolder.setLayoutX(elementWidthFactor*SetupScreen.WIDTH/3 + SCROLLING_SIDE_PADDING);
@@ -77,7 +80,8 @@ public abstract class ScrollingWindow implements StaticViewElement {
   @Override
   public void setTitleProperty(List<StringProperty > sp) {
     myTitle.textProperty().bind(sp.get(FIRST_ELEMENT_IN_LIST));
-    myHolder.getChildren().add(FIRST_ELEMENT_IN_LIST, myTitle);
+    myTitleHolder.getChildren().add(FIRST_ELEMENT_IN_LIST, myTitle);
+    myHolder.getChildren().add(FIRST_ELEMENT_IN_LIST, myTitleHolder);
   }
 
   /**
@@ -95,6 +99,5 @@ public abstract class ScrollingWindow implements StaticViewElement {
    * @param t
    */
   protected abstract void onSelectedItem(Token t);
-
 
 }
