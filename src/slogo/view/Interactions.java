@@ -94,6 +94,7 @@ public class Interactions implements View {
   public void setNewWindowButton(EventHandler<ActionEvent> newWindowAction, Stage stage) { mySetup.setNewWindowButton(newWindowAction, stage); }
   public void setLoadTextFileButton(EventHandler<ActionEvent> newWindowAction, Stage stage) { mySetup.setLoadTextFileButton(newWindowAction, stage); }
   public void setTurtlesStateButton(EventHandler<ActionEvent> showTurtlesAction) { mySetup.setTurtlesStatesButton(showTurtlesAction); }
+  public void setSaveTextFileButton(Stage stage){ mySetup.setSaveTextFileButton(stage);}
 
   public void setUndoAction(EventHandler<ActionEvent> undoAction) { mySetup.setUndoButton(undoAction); }
   public void setRedoAction(EventHandler<ActionEvent> redoAction) { mySetup.setRedoButton(redoAction); }

@@ -1,5 +1,9 @@
 package slogo.view.setup;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
@@ -46,7 +50,7 @@ import java.util.Objects;
 /**
  * This class allows us to make our main class less fat
  * and sets up all the visuals
- * @author Juliet, Natalie (binding)
+ * @author Juliet, Natalie
  */
 
 public class SetupScreen {
@@ -83,6 +87,9 @@ public class SetupScreen {
   public static final String PEN_UP_BUTTON_KEY = "PenUpButton";
   public static final String PEN_DOWN_BUTTON_KEY = "PenDownButton";
   private static final String NEW_CONFIG_BUTTON_KEY = "NewConfigButton";
+  private static final String UNDO_BUTTON_KEY = "UndoButton";
+  private static final String REDO_BUTTON_KEY = "RedoButton";
+  private static final String SAVE_BUTTON_KEY = "SaveButton";
 
   private static final String LOAD_FILE_PROMPT = "LoadFilePrompt";
   private static final String SELECT_PREFERENCES_PROMPT = "SelectPreferencesPrompt";
@@ -95,6 +102,7 @@ public class SetupScreen {
   private Button myClear;
   private Button myStop;
   private Button myNewWindow;
+  private Button mySaveText;
 
   private Button loadFileButton;
 
@@ -210,6 +218,11 @@ public class SetupScreen {
     }
   }
 
+  public void setSaveTextFileButton(Stage s)
+  {
+    mySaveText.setOnAction(e -> createNewFileSaverPopup(s));
+  }
+
 
   public void setLoadTextFileButton(EventHandler<ActionEvent> loadFileAction, Stage primaryStage) {
     EventHandler<ActionEvent> e = event -> {
@@ -286,14 +299,15 @@ public class SetupScreen {
 
     loadFileButton = new Button();
     myNewWindow = new Button();
+    mySaveText = new Button();
     HBox newWindowButtons = new HBox(BOX_SPACING);
     newWindowButtons.setLayoutY(COMMON_COMMAND_BUTTON_HEIGHT_OFFSET);
-    newWindowButtons.setLayoutX(WIDTH/2 - BUTTON_HEIGHT_OFFSET*3);
-    newWindowButtons.getChildren().addAll(myNewWindow, loadFileButton);
+    newWindowButtons.setLayoutX(WIDTH/2 - BUTTON_HEIGHT_OFFSET*4);
+    newWindowButtons.getChildren().addAll(myNewWindow, loadFileButton, mySaveText);
     undoButton = new Button();
-    undoButton.setText("Undo");
+    //undoButton.setText("Undo");
     redoButton = new Button();
-    redoButton.setText("Redo");
+    //redoButton.setText("Redo");
     belowCanvasButtons.setMaxWidth(myDrawingCanvas.getWidth());
     belowCanvasButtons.setMinWidth(myDrawingCanvas.getWidth());
     belowCanvasButtons.setAlignment(Pos.CENTER);
@@ -339,6 +353,9 @@ public class SetupScreen {
     myStop.textProperty().bind(languageHelper.getStringProperty(STOP_BUTTON_KEY));
     myNewWindow.textProperty().bind(languageHelper.getStringProperty(NEW_WINDOW_BUTTON_KEY));
     loadFileButton.textProperty().bind(languageHelper.getStringProperty(NEW_CONFIG_BUTTON_KEY));
+    undoButton.textProperty().bind(languageHelper.getStringProperty(UNDO_BUTTON_KEY));
+    redoButton.textProperty().bind(languageHelper.getStringProperty(REDO_BUTTON_KEY));
+    mySaveText.textProperty().bind(languageHelper.getStringProperty(SAVE_BUTTON_KEY));
 
     myVariableView.setTitleProperty(languageHelper.getStringProperty(VARIABLE_TITLE_KEY));
     myNewCommandViewer.setTitleProperty(languageHelper.getStringProperty(NEW_COMMAND_TITLE_KEY));
@@ -358,4 +375,33 @@ public class SetupScreen {
   public String getNewWindowPreferences(){
     return myCurrentNewWindowPopup.getPreference();
   }
+
+  private void createNewFileSaverPopup(Stage s){
+    myCurrentLoadPopup = new LoadConfigPopup();
+    myCurrentLoadPopup.setGoButtonProperty(languageHelper.getStringProperty(SAVE_BUTTON_KEY));
+    myCurrentLoadPopup.getMyPopup().show(s);
+    myCurrentLoadPopup.setPopupButton(e-> saveFile(myCurrentLoadPopup.getFilePackage()));
+
+  }
+
+  private void saveFile(String newFilePackage)
+  {
+    String s = myUserInput.getUserInput();
+    System.out.println(s);
+
+    FileOutputStream out = null;
+    try {
+      out = new FileOutputStream(newFilePackage);
+      PrintWriter writer = new PrintWriter(newFilePackage, "UTF-8");
+      writer.write(s);
+      writer.close();
+      out.close();
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+
 }

@@ -109,7 +109,7 @@ public class CommonCommands {
     }
 
     setHyperlink(myRoot);
-
+    myRoot.getChildren().add(backButton);
     Scene scene = new Scene(myRoot, width, height, background);
     scene.getStylesheets().add(getClass().getClassLoader().getResource(MAIN_STYLESHEET).toExternalForm());
 

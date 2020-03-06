@@ -16,6 +16,8 @@ import slogo.model.tokens.*;
 import slogo.view.DisplayAction;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -62,8 +64,15 @@ public class Model implements ModelAPI{
     }
 
     public void executeCode(File f){
-        //TODO: convert file f into rawString, then call executeCode with rawString
-
+        try{
+            String path = f.getPath();
+            String rawString = Files.readString(Paths.get(path));
+            executeCode(rawString);
+        }
+        catch(Exception e) {
+            //TODO: create exception type
+            errorMessage.setValue("Could Not Find File");
+        }
     }
 
     public void clearHistory() { history.clearAll(new Program(turtleMaster.generateStateMap())); }
