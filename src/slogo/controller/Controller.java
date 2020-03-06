@@ -3,6 +3,8 @@ package slogo.controller;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import slogo.model.Model;
+import slogo.model.tokens.Instruction;
+import slogo.model.tokens.Token;
 import slogo.view.DisplayAction;
 import slogo.view.Interactions;
 import slogo.view.popup.SetPreferencesPopup;
@@ -52,6 +54,11 @@ public class Controller extends Application {
         myView.setUndoAction(e -> myModel.undo());
         myView.setRedoAction(e -> myModel.redo());
         myView.setLoadTextFileButton(e -> executeTextFile(myView.getFile(), myView, myModel), stage);
+        myView.setClearHistory(e -> myModel.clearHistory());
+        myView.setDirectInstructionExecutor(new DirectExecutor() {
+            public void execute(Instruction i) { myModel.executeCode(i); }
+            public void execute(String s) { myModel.executeCode(s); }
+        });
     }
 
 

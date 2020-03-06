@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import slogo.controller.DirectExecutor;
 import slogo.model.tokens.Token;
 import slogo.view.popup.TurtleStatePopup;
 
@@ -98,6 +99,7 @@ public class Interactions implements View {
   public void setRedoAction(EventHandler<ActionEvent> redoAction) { mySetup.setRedoButton(redoAction); }
 
   public void setErrorMessage(StringProperty error){ mySetup.bindErrorMessage(error); }
+  public void setClearHistory(EventHandler<ActionEvent> clearAction) { mySetup.setClearHistory(clearAction); }
 
   public StringProperty getLanguageChoice() { return myScreen.getLanguageChoice(); }
 
@@ -114,4 +116,6 @@ public class Interactions implements View {
       }
     };
   }
+
+  public void setDirectInstructionExecutor(DirectExecutor executor) { mySetup.setDirectExecutor(executor); }
 }

@@ -15,7 +15,6 @@ import java.awt.geom.Point2D;
  */
 public class Turtle {
   public static final int TURTLE_IMAGE_SIZE = 30;
-  public static final Color DEFAULT_PEN_COLOR = Color.BLACK;
   public static final double DEFAULT_ANGLE = 90;
   public static final double TURTLE_FACTOR = TURTLE_IMAGE_SIZE/2.0;
 
@@ -30,7 +29,6 @@ public class Turtle {
   private ObjectProperty<Point2D> coordinates = new SimpleObjectProperty<>();
   private DoubleProperty angle = new SimpleDoubleProperty();
   private BooleanProperty visible = new SimpleBooleanProperty();
-  private BooleanProperty active = new SimpleBooleanProperty();
   private double currX;
   private double currY;
   private int penThickness = 1;
@@ -66,13 +64,12 @@ public class Turtle {
     coordinates.bindBidirectional(turtle.pointProperty());
     currX = x.getValue();
     currY = y.getValue();
-    active.bindBidirectional(turtle.activeProperty());
-    active.addListener(e -> {
-      if (active.getValue()) myTurtleView.setOpacity(1);
+    turtle.activeProperty().addListener(e -> {
+      if (turtle.activeProperty().getValue()) myTurtleView.setOpacity(1);
       else myTurtleView.setOpacity(0.5);
     });
     returnTurtleToDefault();
-    myTurtleView.setOnMouseClicked(e -> active.setValue(!active.getValue()));
+    myTurtleView.setOnMouseClicked(e -> turtle.activeProperty().setValue(!turtle.activeProperty().getValue()));
   }
 
 
@@ -100,14 +97,6 @@ public class Turtle {
     return line;
   }
 
-  public void setLocation(double x, double y) {
-    this.x.setValue(x);
-    this.y.setValue(y);
-    coordinates.setValue(new Point2D.Double(x, y));
-  }
-
-
-
   /**
    * Allows the Main class to get the image body of the turtle to display
    * @return
@@ -124,14 +113,7 @@ public class Turtle {
     penThickness = newThickness;
   }
   public void setAngle(double newAngle) { angle.set(newAngle); }
-  public boolean isActive() { return active.get(); }
   public double getAngle() { return angle.get(); }
-  public double getXPos() {
-    return x.getValue();
-  }
-  public double getYPos() {
-    return y.getValue();
-  }
 
   private Line drawLine(boolean penUp){
     Line line = null;
