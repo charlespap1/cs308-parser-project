@@ -103,4 +103,14 @@
 }
 
 
+.inner-list-view .scroll-bar:vertical .increment-arrow,
+.inner-list-view .scroll-bar:vertical .decrement-arrow,
+.inner-list-view .scroll-bar:vertical .increment-button,
+.inner-list-view .scroll-bar:vertical .decrement-button {
+    -fx-padding: 0px;
+}
+
+.inner-list-view .scroll-bar:vertical {
+    -fx-scale-x: 0;
+}
 

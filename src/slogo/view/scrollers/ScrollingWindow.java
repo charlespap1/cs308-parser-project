@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import slogo.model.tokens.Token;
@@ -32,7 +33,7 @@ public abstract class ScrollingWindow implements StaticViewElement {
   protected VBox myTextHolder = new VBox(TEXT_HOLDER_SPACING);
   protected ListView<Token> myList = new ListView<>();
   private Text myTitle = new Text();
-  private ScrollPane myView = new ScrollPane();
+  protected HBox myView = new HBox();
 
 
   public ScrollingWindow(double elementWidthFactor, double topPadding) {
@@ -42,7 +43,7 @@ public abstract class ScrollingWindow implements StaticViewElement {
 
     myHolder.setMinHeight(myHeight);
     myHolder.setMaxHeight(myHeight);
-    myView.setContent(myTextHolder);
+    myView.getChildren().add(myTextHolder);
     myView.setMaxWidth(myWidth);
     myView.setMinWidth(myWidth);
 

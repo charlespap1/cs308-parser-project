@@ -14,6 +14,8 @@ import slogo.view.popup.TurtleStatePopup;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.util.List;
+
+import slogo.view.setup.MethodDoesNotExistException;
 import slogo.view.setup.ScreenManager;
 import slogo.view.setup.SetupScreen;
 
@@ -115,8 +117,7 @@ public class Interactions implements View {
         Object value = m.invoke(myScreen, params);
         return (Integer) value;
       } catch (Exception e) {
-        //TODO: errors
-        System.out.println("bad method");
+        mySetup.setError(new MethodDoesNotExistException());
         return 0;
       }
     };
