@@ -3,7 +3,6 @@ package slogo.model.tokens;
 import slogo.model.exceptions.InvalidArgumentException;
 import slogo.model.exceptions.InvalidCommandException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class NewCommand extends Instruction {

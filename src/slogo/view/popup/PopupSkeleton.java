@@ -1,6 +1,5 @@
 package slogo.view.popup;
 
-import java.util.Objects;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,6 +15,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Popup;
+
+import java.util.Objects;
 
 /**
  * Basic design that popups use

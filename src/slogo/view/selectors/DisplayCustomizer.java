@@ -12,9 +12,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import slogo.view.DisplayAction;
 import slogo.view.StaticViewElement;
-import slogo.view.Turtle;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 /**

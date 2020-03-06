@@ -1,10 +1,5 @@
 package slogo.view.commonCommands;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ResourceBundle;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
@@ -21,6 +16,10 @@ import javafx.stage.Stage;
 import slogo.view.LanguageHelper;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * This holds the Scene of the Common Commands page as well as gives the ability to jump
@@ -28,7 +27,6 @@ import java.io.IOException;
  * @author Juliet
  */
 public class CommonCommands {
-  // TODO: hard coded text
   public static final String COMMON_COMMAND_TITLE = "Common Commands";
   public static final String BACK_BUTTON_KEY = "CommonCommandBackButton";
   public static final String HYPERLINK_TEXT_KEY = "HyperlinkText";

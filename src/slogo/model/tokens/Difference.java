@@ -14,7 +14,8 @@ public class Difference extends Instruction {
     @Override
     public double execute() {
         List<Double> paramsAsVals = this.getParamsAsVals();
-        double val = paramsAsVals.get(0);
-        return Math.cos(Math.toRadians(val));
+        double val1 = paramsAsVals.get(0);
+        double val2 = paramsAsVals.get(1);
+        return val1 - val2;
     }
 }

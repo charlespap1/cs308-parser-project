@@ -9,10 +9,10 @@ import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
+import slogo.view.StaticViewElement;
 
 import java.util.Collection;
 import java.util.List;
-import slogo.view.StaticViewElement;
 
 /**
  * This structure allows the user to code in different language environments

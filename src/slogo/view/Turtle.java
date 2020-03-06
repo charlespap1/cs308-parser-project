@@ -1,17 +1,11 @@
 package slogo.view;
 
 import javafx.beans.property.*;
-import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 
@@ -75,7 +69,10 @@ public class Turtle {
     currX = x.getValue();
     currY = y.getValue();
     turtle.activeProperty().addListener(e -> {
-      if (turtle.activeProperty().getValue()) myTurtleView.setOpacity(1);
+      if (turtle.activeProperty().getValue()) {
+        myTurtleView.toFront();
+        myTurtleView.setOpacity(1);
+      }
       else myTurtleView.setOpacity(0.5);
     });
     returnTurtleToDefault();

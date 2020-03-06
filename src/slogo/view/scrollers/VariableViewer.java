@@ -94,11 +94,8 @@ public class VariableViewer extends ScrollingWindow {
                 myHolder.getChildren().remove(box);
             });
             if (!myHolder.getChildren().contains(box)) myHolder.getChildren().add(box);
-        } catch(Exception e)
-        {
+        } catch(Exception e) {
             throw new NoVariableToSelectException(e);
         }
-
     }
-
 }
