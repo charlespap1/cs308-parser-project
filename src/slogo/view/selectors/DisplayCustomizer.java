@@ -11,6 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import slogo.view.DisplayAction;
+import slogo.view.StaticViewElement;
 import slogo.view.Turtle;
 
 import java.lang.reflect.InvocationTargetException;
@@ -20,8 +21,9 @@ import java.util.*;
  * Within this class we consolidated all of our Color, Background, Pen and
  * Turtle face selectors. This class allows for dynamic pallets for each of
  * these view elements
+ * @author Juliet, Natalie
  */
-public class DisplayCustomizer {
+public class DisplayCustomizer implements StaticViewElement {
 
   public static final int BOX_SPACING = 5;
   public static final double COLOR_SELECTOR_HEIGHT = 17;
@@ -135,6 +137,25 @@ public class DisplayCustomizer {
   public Node getView() { return myHolder; }
 
   /**
+   * Allows for all intros to be set language dynamically
+   * @param sp
+   */
+  @Override
+  public void setTitleProperty(List<StringProperty> sp) {
+    Text backgroundLabel = new Text();
+    backgroundLabel.textProperty().bind(sp.get(0));
+    myBackgroundHolder.getChildren().add(0, backgroundLabel);
+
+    Text penLabel = new Text();
+    penLabel.textProperty().bind(sp.get(1));
+    myPenHolder.getChildren().add(0, penLabel);
+
+    Text imageLabel = new Text();
+    imageLabel.textProperty().bind(sp.get(2));
+    myCharacterHolder.getChildren().add(0, imageLabel);
+  }
+
+  /**
    * Links the buttons to changing the color or image of frontend elements
    * @param backgroundChangeAction
    * @param imageChangeAction
@@ -158,19 +179,8 @@ public class DisplayCustomizer {
    * @param pen
    * @param character
    */
-  public void setTitleProperty(StringProperty background, StringProperty pen, StringProperty character){
-    Text backgroundLabel = new Text();
-    backgroundLabel.textProperty().bind(background);
-    myBackgroundHolder.getChildren().add(0, backgroundLabel);
-
-    Text penLabel = new Text();
-    penLabel.textProperty().bind(pen);
-    myPenHolder.getChildren().add(0, penLabel);
-
-    Text imageLabel = new Text();
-    imageLabel.textProperty().bind(character);
-    myCharacterHolder.getChildren().add(0, imageLabel);
-  }
+  /*public void setTitleProperty(StringProperty background, StringProperty pen, StringProperty character){
+  }*/
 
   private void buildLists(){
     for (String key: colorKeys){

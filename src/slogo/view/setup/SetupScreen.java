@@ -4,6 +4,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
@@ -25,6 +28,7 @@ import slogo.model.tokens.Token;
 import slogo.view.DrawingCanvas;
 import slogo.view.LanguageHelper;
 import slogo.view.LineManager;
+import slogo.view.StaticViewElement;
 import slogo.view.Turtle;
 import slogo.view.TurtleGraphicalMover;
 import slogo.view.UserCommandField;
@@ -104,6 +108,7 @@ public class SetupScreen {
   private UserCommandField myUserInput = new UserCommandField(WIDTH, HEIGHT);
   private Group root = new Group();
   private List<Turtle> myTurtles = new ArrayList<>();
+  private Map<StaticViewElement, List<StringProperty>> myStaticViewElements;
   private DrawingCanvas myDrawingCanvas = new DrawingCanvas(WIDTH, HEIGHT);
   private Button myGo;
   private Button myClear;
@@ -156,8 +161,13 @@ public class SetupScreen {
     myCustomizer = new DisplayCustomizer(belowCanvasButtons.getLayoutX(), belowCanvasButtons.getLayoutY()+ BUTTON_HEIGHT_OFFSET + 10);
     setText();
 
-    root.getChildren().addAll(myDrawingCanvas.getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myNewCommandViewer.getView(), myVariableView.getView());
-    root.getChildren().addAll(myGraphicalMover.getView(), myCustomizer.getView(), myLanguageSelector.getView());
+    root.getChildren().addAll(belowInputFieldItems, belowCanvasButtons);
+
+    for(StaticViewElement element: myStaticViewElements.keySet())
+    {
+      root.getChildren().add(element.getView());
+    }
+
 
     myCurrentErrorMessage.setLayoutX(myVariableView.getView().getLayoutX());
     myCurrentErrorMessage.setLayoutY(myVariableView.getView().getLayoutY() + ERROR_MESSAGE_PADDING);
@@ -177,7 +187,7 @@ public class SetupScreen {
    */
   public void setDirectExecutor(DirectExecutor executor){
     myGraphicalMover.setCommandNameProperties(languageHelper.getStringProperty("Forward"), languageHelper.getStringProperty("Right"),
-        languageHelper.getStringProperty("Back"), languageHelper.getStringProperty("Left"));
+        languageHelper.getStringProperty("Backward"), languageHelper.getStringProperty("Left"));
     myGraphicalMover.setButtons(executor, myLineManager);
     myHistory.setDirectExecutor(executor, myLineManager);
   }
@@ -439,24 +449,20 @@ public class SetupScreen {
 
   private void setText() {
     languageHelper = new LanguageHelper(myLanguageSelector.getLanguageChoiceProperty());
-    myGo.textProperty().bind(languageHelper.getStringProperty(GO_BUTTON_KEY));
-    myClear.textProperty().bind(languageHelper.getStringProperty(CLEAR_BUTTON_KEY));
-    myStop.textProperty().bind(languageHelper.getStringProperty(STOP_BUTTON_KEY));
-    myNewWindow.textProperty().bind(languageHelper.getStringProperty(NEW_WINDOW_BUTTON_KEY));
-    loadFileButton.textProperty().bind(languageHelper.getStringProperty(NEW_CONFIG_BUTTON_KEY));
-    undoButton.textProperty().bind(languageHelper.getStringProperty(UNDO_BUTTON_KEY));
-    redoButton.textProperty().bind(languageHelper.getStringProperty(REDO_BUTTON_KEY));
-    mySaveText.textProperty().bind(languageHelper.getStringProperty(SAVE_BUTTON_KEY));
+    bindButton(myGo, GO_BUTTON_KEY);
+    bindButton(myClear, CLEAR_BUTTON_KEY);
+    bindButton(myStop, STOP_BUTTON_KEY);
+    bindButton(myNewWindow, NEW_WINDOW_BUTTON_KEY);
+    bindButton(loadFileButton, NEW_CONFIG_BUTTON_KEY);
+    bindButton(undoButton, UNDO_BUTTON_KEY);
+    bindButton(redoButton, REDO_BUTTON_KEY);
+    bindButton(mySaveText, SAVE_BUTTON_KEY);
 
-    myVariableView.setTitleProperty(languageHelper.getStringProperty(VARIABLE_TITLE_KEY));
-    myNewCommandViewer.setTitleProperty(languageHelper.getStringProperty(NEW_COMMAND_TITLE_KEY));
-    myHistory.setTitleProperty(languageHelper.getStringProperty(HISTORY_TITLE_KEY));
-
-    myCustomizer.setTitleProperty(languageHelper.getStringProperty(BACKGROUND_SELECTOR_TEXT_KEY), languageHelper.getStringProperty(PEN_SELECTOR_TEXT_KEY),languageHelper.getStringProperty(TURTLE_SELECTOR_TEXT_KEY));
-
-    myLanguageSelector.setTitleProperty(languageHelper.getStringProperty(LANGUAGE_SELECTOR_TEXT_KEY));
-    myGraphicalMover.setTitleProperty(languageHelper.getStringProperty(PEN_THICKNESS_TEXT_KEY));
-    myGraphicalMover.setPenLabelProperty(languageHelper.getStringProperty(PEN_UP_BUTTON_KEY), languageHelper.getStringProperty(PEN_DOWN_BUTTON_KEY));
+    setStaticViewElementMap();
+    for(StaticViewElement element: myStaticViewElements.keySet())
+    {
+      element.setTitleProperty(myStaticViewElements.get(element));
+    }
   }
 
   public TurtleStatePopup getTurtleStatePopup() {
@@ -470,6 +476,29 @@ public class SetupScreen {
     myCurrentLoadPopup.setPopupButton(e-> saveFile(myCurrentLoadPopup.getFilePackage()));
 
   }
+  private void bindButton(Button button, String key)
+  {
+    button.textProperty().bind(languageHelper.getStringProperty(key));
+  }
+
+  private void setStaticViewElementMap()
+  {
+    myStaticViewElements = new HashMap<>();
+    myStaticViewElements.put(myDrawingCanvas, null);
+    myStaticViewElements.put(myUserInput, null);
+    myStaticViewElements.put(myHistory, Arrays.asList(keyToSP(HISTORY_TITLE_KEY)));
+    myStaticViewElements.put(myNewCommandViewer, Arrays.asList(keyToSP(NEW_COMMAND_TITLE_KEY)));
+    myStaticViewElements.put(myVariableView, Arrays.asList(keyToSP(VARIABLE_TITLE_KEY)));
+    myStaticViewElements.put(myGraphicalMover, Arrays.asList(keyToSP(PEN_THICKNESS_TEXT_KEY), keyToSP(PEN_UP_BUTTON_KEY), keyToSP(PEN_DOWN_BUTTON_KEY)));
+    myStaticViewElements.put(myCustomizer, Arrays.asList(keyToSP(BACKGROUND_SELECTOR_TEXT_KEY), keyToSP(PEN_SELECTOR_TEXT_KEY), keyToSP(TURTLE_SELECTOR_TEXT_KEY)));
+    myStaticViewElements.put(myLanguageSelector, Arrays.asList(keyToSP(LANGUAGE_SELECTOR_TEXT_KEY)));
+  }
+
+  private StringProperty keyToSP(String key)
+  {
+    return languageHelper.getStringProperty(key);
+  }
+
 
   private void saveFile(String newFilePackage)
   {

@@ -20,6 +20,7 @@ import javafx.stage.Popup;
 /**
  * Basic design that popups use
  * Includes exit, prompt and go button
+ * @author Juliet
  */
 public class PopupSkeleton implements ViewPopup{
 

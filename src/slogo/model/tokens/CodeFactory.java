@@ -71,6 +71,34 @@ public class CodeFactory {
         vars.add(t);
     }
 
+    public String saveNewCommands () {
+        StringBuilder commandsAsString = new StringBuilder();
+        for (Token newCommand : newCommands) {
+            NewCommand command = (NewCommand) newCommand;
+            commandsAsString.append(String.format("TO %s [ ", command.getName()));
+            for (Token variable: command.getVariables()) {
+                Variable var = (Variable) variable;
+                commandsAsString.append(String.format("%s ", var.toString()));
+            }
+            commandsAsString.append("] [ ");
+            for (Token instruction: command.getInstructions()) {
+                Instruction instr = (Instruction) instruction;
+                commandsAsString.append(String.format("%s ", instr.toString()));
+            }
+            commandsAsString.append("]\n");
+        }
+        return commandsAsString.toString();
+    }
+
+    public String saveVariables() {
+        StringBuilder variablesAsString = new StringBuilder();
+        for (Token variable : vars) {
+            Variable var = (Variable) variable;
+            variablesAsString.append(String.format("MAKE %s %f\n", var.toString(), var.getValue()));
+        }
+        return variablesAsString.toString();
+    }
+
     private Token getVariable(String piece) {
         if (!variableMap.containsKey(piece)) {
             Variable variable = new Variable(piece, this::updateVariableList);

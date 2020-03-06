@@ -7,7 +7,8 @@ import java.util.ResourceBundle;
 
 /**
  * Class that helps set the preferences of the new window based
- * on the preference sheet specified 
+ * on the preference sheet specified
+ * @author Juliet, Natalie
  */
 
 public class PreferenceLoaderSelector {

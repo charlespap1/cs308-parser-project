@@ -1,5 +1,7 @@
 package slogo.view;
 
+import java.util.List;
+import javafx.beans.property.StringProperty;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -10,7 +12,7 @@ import javafx.scene.shape.Rectangle;
  * new lines are drawn according to the user input
  * @author Juliet
  */
-public class DrawingCanvas {
+public class DrawingCanvas implements StaticViewElement{
 
   public static final double CANVAS_TOP_PADDING = 50;
   public static final double CANVAS_BOTTOM_PADDING = 195;
@@ -36,6 +38,15 @@ public class DrawingCanvas {
   public Node getView()
   {
     return myView;
+  }
+
+  /**
+   * Only other static view element without a Title
+   * @param sp
+   */
+  @Override
+  public void setTitleProperty(List<StringProperty> sp) {
+
   }
 
   /**

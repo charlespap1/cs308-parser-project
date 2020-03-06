@@ -114,7 +114,7 @@ public class CommonCommands {
     {
       String [] identifiers = myResource.getString(KEYS.get(i)).split("\\.");
       CommandPanel panel = new CommandPanel(language.get(), identifiers,i*width/4, CommonCommands.TOP_PADDING);
-      panel.setTitleProperty(myLanguageHelper.getStringProperty(COMMANDS_KEY));
+      panel.setTitleProperty(Arrays.asList(myLanguageHelper.getStringProperty(COMMANDS_KEY)));
       myRoot.getChildren().add(panel.getView());
     }
 

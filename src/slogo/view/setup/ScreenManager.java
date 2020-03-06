@@ -20,6 +20,7 @@ import java.util.Objects;
  * This method was added to breakup the SetupScreen class which was enormous
  * This class deals with visual objects that interact dynamically on the frontend including
  * turtles, lines, the GraphicalMover and languages (necessary to name give labels)
+ * @author Natalie
  */
 
 public class ScreenManager {
@@ -49,7 +50,7 @@ public class ScreenManager {
     }
 
     /**
-     * Set intital preferences for the background and turtle attributes
+     * Set initial preferences for the background and turtle attributes
      * @param preferences
      */
     public void setPreferences(String preferences){
@@ -59,7 +60,7 @@ public class ScreenManager {
     }
 
     /**
-     * Get the user input to send to controller. Must be done here because we need to
+     * Get the user input to send to Controller. Must be done here because we need to
      * create a new bucket for new lines to be drawn
      * @return
      */

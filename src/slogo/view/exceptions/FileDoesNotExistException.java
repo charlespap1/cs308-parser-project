@@ -3,6 +3,7 @@ package slogo.view.exceptions;
 /**
  * Exception for when someone tries to load a file but the
  * filename they input does not exist
+ * @author Juliet
  */
 public class FileDoesNotExistException extends RuntimeException{
 

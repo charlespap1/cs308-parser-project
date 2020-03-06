@@ -1,5 +1,6 @@
 package slogo.view;
 
+import java.util.List;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -20,6 +21,12 @@ import slogo.controller.DirectExecutor;
 
 import java.util.Objects;
 
+/**
+ * This class allows the user to press buttons to move the turtle and
+ * change its pen attributes
+ * rather than always having to put in commands
+ * @author Juliet, Natalie
+ */
 public class TurtleGraphicalMover implements StaticViewElement{
   public static final int BOX_SPACING = 5;
   public static final int MAJOR_BOX_SPACING = 15;
@@ -27,6 +34,7 @@ public class TurtleGraphicalMover implements StaticViewElement{
   public static final int BUTTON_WIDTH = 20;
   public static final int DEFAULT_PEN_WIDTH = 1;
   public static final int MOVEMENT_VALUE = 30;
+  public static final int FIRST_ELEMENT_IN_LIST = 0;
 
   private StringProperty forwardString = new SimpleStringProperty();
   private StringProperty rightString = new SimpleStringProperty();
@@ -68,12 +76,21 @@ public class TurtleGraphicalMover implements StaticViewElement{
     myHolder.getChildren().addAll(myButtonHolder, myPenElements);
   }
 
+  /**
+   * Sets radio buttons
+   * @param isPenUp
+   */
   public void setPenUp(boolean isPenUp) {
     if (isPenUp){
       changePenUp.setSelected(true);
     } else changePenDown.setSelected(true);
     penUp = isPenUp;
   }
+
+  /**
+   * Getters and setters needed to adjust visual radio buttons and sliders
+   * @return
+   */
   public boolean getPenUp() { return penUp; }
   public void setPenWidth(double val) {
     penWidth = val;
@@ -81,6 +98,12 @@ public class TurtleGraphicalMover implements StaticViewElement{
   }
   public double getPenWidth() { return penWidth; }
 
+  /**
+   * Sets buttons to be linked with the line manager so we can
+   * add, delete, undo and redo lines created by graphical movement
+   * @param executor
+   * @param lineManager
+   */
   public void setButtons(DirectExecutor executor, LineManager lineManager){
     up.setOnAction(e ->{
       lineManager.newProgram();
@@ -100,17 +123,45 @@ public class TurtleGraphicalMover implements StaticViewElement{
     });
   }
 
+  /**
+   * Allows us to get a node of all of the view elements associated with
+   * a graphical mover
+   * @return
+   */
+  @Override
   public Node getView()
   {
     return myHolder;
   }
 
+  /**
+   * Dynamically sets thickness text according to language
+   * @param sp
+   */
   @Override
-  public void setTitleProperty(StringProperty sp) {
-    myThicknessText.textProperty().bind(sp);
-    myPenElements.getChildren().add(0, myThicknessText);
+  public void setTitleProperty(List<StringProperty> sp) {
+    myThicknessText.textProperty().bind(sp.get(FIRST_ELEMENT_IN_LIST));
+    myPenElements.getChildren().add(FIRST_ELEMENT_IN_LIST, myThicknessText);
+    changePenUp.textProperty().bind(sp.get(1));
+    changePenDown.textProperty().bind(sp.get(2));
   }
 
+  /**
+   * Dynamically sets language for pen elements
+   * @param penUp
+   * @param penDown
+   */
+  public void setPenLabelProperty(StringProperty penUp, StringProperty penDown){
+
+  }
+
+  /**
+   * Allows for binding with backend movement
+   * @param forward
+   * @param right
+   * @param back
+   * @param left
+   */
   public void setCommandNameProperties(StringProperty forward, StringProperty right, StringProperty back, StringProperty left){
     forwardString.bind(forward);
     rightString.bind(right);
@@ -133,10 +184,6 @@ public class TurtleGraphicalMover implements StaticViewElement{
     myPenElements.getChildren().addAll(increaseThickness, buttonHolder);
   }
 
-  public void setPenLabelProperty(StringProperty penUp, StringProperty penDown){
-    changePenUp.textProperty().bind(penUp);
-    changePenDown.textProperty().bind(penDown);
-  }
 
   private void setUpToggleViewer() {
     changePenUp = new RadioButton();

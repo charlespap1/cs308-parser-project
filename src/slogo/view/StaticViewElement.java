@@ -1,8 +1,14 @@
 package slogo.view;
 
+import java.util.List;
 import javafx.beans.property.StringProperty;
 import javafx.scene.Node;
 
+
+/**
+ * Interface to define the basic needs of every element on the screen
+ * @author Juliet
+ */
 public interface StaticViewElement {
 
   /**
@@ -16,5 +22,5 @@ public interface StaticViewElement {
    * and change with the chosen language
    * @param sp
    */
-  void setTitleProperty(StringProperty sp);
+  void setTitleProperty(List<StringProperty> sp);
 }

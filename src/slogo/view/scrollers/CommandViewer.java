@@ -6,6 +6,7 @@ import slogo.view.SetInputAction;
 
 /**
  * Class which allows users to see the commands they have created
+ * @author Natalie
  */
 public class CommandViewer extends ScrollingWindow {
     SetInputAction setter;

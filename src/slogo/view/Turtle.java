@@ -82,6 +82,7 @@ public class Turtle {
     myTurtleView.setOnMouseClicked(e -> turtle.activeProperty().setValue(!turtle.activeProperty().getValue()));
   }
 
+
   public VBox buildPopup(){
     VBox stateBox = new VBox();
     Text xtext = new Text();
@@ -135,7 +136,8 @@ public class Turtle {
   public Node getView () { return myTurtleView; }
 
   /**
-   * Changes image of turtle
+   * Changes image of turtle, angle and allows for getting the angle.
+   * All needed for frontend movement to link with backend
    * @param image
    */
   public void changeImage(Image image) { myTurtleView.setImage(image); }

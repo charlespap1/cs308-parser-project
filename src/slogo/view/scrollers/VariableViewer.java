@@ -19,6 +19,7 @@ import java.util.Objects;
 /**
  * Class which allows users to view their previously defined variables and click
  * to change them
+ * @author Natalie
  */
 public class VariableViewer extends ScrollingWindow {
     public static final String INNER_LIST_STYLE = "inner-list-view";
@@ -39,7 +40,7 @@ public class VariableViewer extends ScrollingWindow {
         image.setFitHeight(TEXT_HEIGHT);
         button.setGraphic(image);
         buildHBox();
-        myView.getChildren().add(valuesListView);
+        myListHolder.getChildren().add(valuesListView);
     }
 
     private void buildHBox(){
