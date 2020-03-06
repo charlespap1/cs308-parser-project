@@ -79,6 +79,8 @@ public class SetupScreen {
   public static final int LIST_VIEW_COLUMN = 2;
   public static final int ERROR_MESSAGE_PADDING = 320;
   public static final double HALFWAY_DOWN = HEIGHT/2.0;
+  private static final double SAVE_VARS_PADDING_X =  60;
+  private static final double SAVE_VARS_PADDING_Y =  320;
 
   public static final String VARIABLE_TITLE_KEY = "VariableTitleText";
   public static final String HISTORY_TITLE_KEY = "HistoryTitleText";
@@ -115,6 +117,7 @@ public class SetupScreen {
   private Button myStop;
   private Button myNewWindow;
   private Button mySaveText;
+  private Button mySaveVarsAndCommands;
 
   private Button loadFileButton;
 
@@ -128,11 +131,6 @@ public class SetupScreen {
   private ScrollingWindow myNewCommandViewer = new CommandViewer(LIST_VIEW_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING, this::setInputText);
   private ScrollingWindow myVariableView = new VariableViewer(LIST_VIEW_COLUMN, HALFWAY_DOWN);
   private LineManager myLineManager = new LineManager(root);
-  //~~~~~~~~~~~~~ vvv for testing and troubleshooting vvv ~~~~~~~~~~~~~~~~
-  private Button myTestButton;
-  private Button myTurtlesStatesButton;
-  private TurtleStatePopup myTurtleStatePopup;
-  //~~~~~~~~~~~~~ ^^^ for testing and troubleshooting ^^^ ~~~~~~~~~~~~~~~~
 
 
   private LanguageSelector myLanguageSelector;
@@ -265,8 +263,9 @@ public class SetupScreen {
    */
   public void setSaveTextFileButton(Stage s)
   {
-    mySaveText.setOnAction(e -> createNewFileSaverPopup(s));
+    mySaveText.setOnAction(e -> createNewFileSaverPopup(s, myUserInput.getUserInput()));
   }
+
 
   /**
    * Allows us to create a popup with the current stage in controller. Also gives
@@ -373,6 +372,12 @@ public class SetupScreen {
     return myCurrentNewWindowPopup.getPreference();
   }
 
+  public void setVariableSaveButton(String newCommands, Stage stage)
+  {
+    mySaveVarsAndCommands.setOnAction(e -> createNewFileSaverPopup(stage, newCommands));
+  }
+
+
   private void setupBox(Pane box, double x, double y, double width){
     box.setLayoutX(x);
     box.setLayoutY(y);
@@ -397,23 +402,12 @@ public class SetupScreen {
     myStop = new Button();
     belowCanvasButtons.getChildren().add(myStop);
 
+    mySaveVarsAndCommands = new Button();
+    mySaveVarsAndCommands.setText("Save Variables and Commands");
+    mySaveVarsAndCommands.setLayoutX(myVariableView.getView().getLayoutX() + SAVE_VARS_PADDING_X);
+    mySaveVarsAndCommands.setLayoutY(myVariableView.getView().getLayoutY() + SAVE_VARS_PADDING_Y);
+
     myStop.setOnAction(e -> moveTurtlesToCenter());
-
-    //~~~~~~~~~~~~~ vvv for testing and troubleshooting vvv ~~~~~~~~~~~~~~~~
-    myTestButton = new Button();
-    myTestButton.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
-    myTestButton.setText("Test");
-    myTestButton.setOnAction(e -> {
-//      myTurtlePopUpWindow.addTurtle(myTurtles.get(0));
-//      myTurtlePopUpWindow.printTurtles();
-    });
-    //belowCanvasButtons.getChildren().add(myTestButton);
-
-    myTurtlesStatesButton = new Button();
-    myTurtlesStatesButton.setMinWidth(myDrawingCanvas.getWidth()/2 - BOX_SPACING);
-    myTurtlesStatesButton.setText("States");
-    //belowCanvasButtons.getChildren().add(myTurtlesStatesButton);
-    //~~~~~~~~~~~~~ ^^^ for testing and troubleshooting ^^^ ~~~~~~~~~~~~~~~~
 
     loadFileButton = new Button();
     myNewWindow = new Button();
@@ -429,14 +423,9 @@ public class SetupScreen {
     belowCanvasButtons.setAlignment(Pos.CENTER);
     belowCanvasButtons.getChildren().addAll(undoButton, redoButton);
 
-    root.getChildren().add(newWindowButtons);
+    root.getChildren().addAll(newWindowButtons, mySaveVarsAndCommands);
   }
 
-  //~~~~~~~~~~~~~ vvv for testing and troubleshooting vvv ~~~~~~~~~~~~~~~~
-  public void setTurtlesStatesButton (EventHandler<ActionEvent> showTurtlesAction) {
-    myTurtlesStatesButton.setOnAction(showTurtlesAction);
-  };
-  //~~~~~~~~~~~~~ ^^^ for testing and troubleshooting ^^^ ~~~~~~~~~~~~~~~~
 
 
   private void setSelectors() {
@@ -461,17 +450,14 @@ public class SetupScreen {
     }
   }
 
-  public TurtleStatePopup getTurtleStatePopup() {
-    return myTurtleStatePopup;
-  }
-
-  private void createNewFileSaverPopup(Stage s){
+  private void createNewFileSaverPopup(Stage s, String stringToSave){
     myCurrentLoadPopup = new LoadConfigPopup();
+    myCurrentLoadPopup.setPromptProperty(languageHelper.getStringProperty(LOAD_FILE_PROMPT));
     myCurrentLoadPopup.setGoButtonProperty(languageHelper.getStringProperty(SAVE_BUTTON_KEY));
     myCurrentLoadPopup.getMyPopup().show(s);
-    myCurrentLoadPopup.setPopupButton(e-> saveFile(myCurrentLoadPopup.getFilePackage()));
-
+    myCurrentLoadPopup.setPopupButton(e-> saveFile(myCurrentLoadPopup.getFilePackage(), stringToSave));
   }
+
   private void bindButton(Button button, String key)
   {
     button.textProperty().bind(languageHelper.getStringProperty(key));
@@ -496,15 +482,14 @@ public class SetupScreen {
   }
 
 
-  private void saveFile(String newFilePackage)
+  private void saveFile(String newFilePackage, String stringToSave)
   {
-    String s = myUserInput.getUserInput();
     FileOutputStream out = null;
 
     try {
         out = new FileOutputStream(newFilePackage);
         PrintWriter writer = new PrintWriter(newFilePackage, FILE_CASE_PREFERENCE);
-        writer.write(s);
+        writer.write(stringToSave);
         writer.close();
         out.close();
     } catch (FileNotFoundException e) {

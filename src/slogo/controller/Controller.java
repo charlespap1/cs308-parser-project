@@ -47,7 +47,6 @@ public class Controller extends Application {
         myView.setupHistory(myModel.getHistoryList(), myModel.getUndoDisabled(), myModel.getRedoDisabled());
         myView.setErrorMessage(myModel.getErrorMessage());
         myView.setNewWindowButton(e -> makeNewWindow(myView.getNewWindowPreferences()), stage);
-        myView.setTurtlesStateButton(e -> showActiveTurtles(myView, stage));
         setupCommands(myView, myModel);
         myModel.setAddTurtleFunction(myView::addTurtle);
         myView.setPreferences(preferences);
@@ -60,6 +59,7 @@ public class Controller extends Application {
             public void execute(String s) { myModel.executeCode(s); }
         });
         myView.setSaveTextFileButton(stage);
+        myView.setSaveVariableButton("WHATEVER YOU WANT TO SAVE", stage);
     }
 
 
