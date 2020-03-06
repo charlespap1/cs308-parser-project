@@ -30,7 +30,9 @@ public class UserCommandField {
    */
   public String getUserInput()
   {
-    return myTextField.getText();
+    String instructions = myTextField.getText();
+    myTextField.clear();
+    return instructions;
   }
 
   /**
