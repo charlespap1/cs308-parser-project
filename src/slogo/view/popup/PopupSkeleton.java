@@ -95,7 +95,6 @@ public class PopupSkeleton implements ViewPopup{
   }
 
   public void setPopupButton(EventHandler<ActionEvent> makeNewWindow) {
-
     myGo.addEventHandler(ActionEvent.ACTION, makeNewWindow);
     myGo.addEventHandler(ActionEvent.ACTION, e -> myPopup.hide());
   }

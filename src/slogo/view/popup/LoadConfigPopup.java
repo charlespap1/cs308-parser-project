@@ -19,6 +19,12 @@ public class LoadConfigPopup extends PopupSkeleton {
     myHolder.getChildren().add(2, myInput);
   }
 
+  public String getFilePackage()
+  {
+    return String.format(PACKAGE, myInput.getText());
+  }
+
+
 
   public File getFile() throws FileDoesNotExistException
   {

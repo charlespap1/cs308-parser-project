@@ -10,6 +10,7 @@ import slogo.model.tokens.Variable;
 public class VariableViewer extends ScrollingWindow {
     private static final String BUTTON_TEXT = "set";
     private static final int HBOX_SPACING = 10;
+    private static final int TEXT_HEIGHT = 20;
     private HBox box =  new HBox(HBOX_SPACING);
     private Button button = new Button(BUTTON_TEXT);
     private Label label = new Label();
@@ -23,7 +24,7 @@ public class VariableViewer extends ScrollingWindow {
     private void buildHBox(){
         // TODO: make less ugly :)
         text.setMaxWidth(myWidth/2);
-        text.setMaxHeight(20);
+        text.setMaxHeight(TEXT_HEIGHT);
         box.getChildren().addAll(label, text, button);
     }
 

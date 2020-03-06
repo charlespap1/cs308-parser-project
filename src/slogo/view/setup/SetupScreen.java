@@ -1,5 +1,9 @@
 package slogo.view.setup;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
@@ -16,6 +20,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
+import slogo.controller.DirectExecutor;
 import slogo.model.tokens.Token;
 import slogo.view.DrawingCanvas;
 import slogo.view.LanguageHelper;
@@ -45,7 +50,7 @@ import java.util.Objects;
 /**
  * This class allows us to make our main class less fat
  * and sets up all the visuals
- * @author Juliet, Natalie (binding)
+ * @author Juliet, Natalie
  */
 
 public class SetupScreen {
@@ -62,7 +67,6 @@ public class SetupScreen {
   public static final int COMMAND_COLUMN = 1;
   public static final int LIST_VIEW_COLUMN = 2;
   public static final int ERROR_MESSAGE_PADDING = 320;
-  public static final int MOVEMENT_VALUE = 10;
   public static final double HALFWAY_DOWN = HEIGHT/2.0;
 
   public static final String VARIABLE_TITLE_KEY = "VariableTitleText";
@@ -83,6 +87,9 @@ public class SetupScreen {
   public static final String PEN_UP_BUTTON_KEY = "PenUpButton";
   public static final String PEN_DOWN_BUTTON_KEY = "PenDownButton";
   private static final String NEW_CONFIG_BUTTON_KEY = "NewConfigButton";
+  private static final String UNDO_BUTTON_KEY = "UndoButton";
+  private static final String REDO_BUTTON_KEY = "RedoButton";
+  private static final String SAVE_BUTTON_KEY = "SaveButton";
 
   private static final String LOAD_FILE_PROMPT = "LoadFilePrompt";
   private static final String SELECT_PREFERENCES_PROMPT = "SelectPreferencesPrompt";
@@ -95,6 +102,7 @@ public class SetupScreen {
   private Button myClear;
   private Button myStop;
   private Button myNewWindow;
+  private Button mySaveText;
 
   private Button loadFileButton;
 
@@ -104,7 +112,7 @@ public class SetupScreen {
   private Button undoButton;
   private Button redoButton;
 
-  private ScrollingWindow myHistory = new HistoryViewer(COMMAND_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING);
+  private HistoryViewer myHistory = new HistoryViewer(COMMAND_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING);
   private ScrollingWindow myNewCommandViewer = new CommandViewer(LIST_VIEW_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING, this::setInputText);
   private ScrollingWindow myVariableView = new VariableViewer(LIST_VIEW_COLUMN, HALFWAY_DOWN);
   private LineManager myLineManager = new LineManager(root);
@@ -139,7 +147,6 @@ public class SetupScreen {
 
     myGraphicalMover = new TurtleGraphicalMover(myUserInput.getView().getLayoutX(), myUserInput.getView().getLayoutY() + GRAPHICAL_VIEWER_HEIGHT_OFFSET);
     myCustomizer = new DisplayCustomizer(belowCanvasButtons.getLayoutX(), belowCanvasButtons.getLayoutY()+ BUTTON_HEIGHT_OFFSET + 10);
-    setupGraphicalMover();
     setText();
 
     root.getChildren().addAll(myDrawingCanvas.getView(), myUserInput.getView(), belowInputFieldItems, belowCanvasButtons, myHistory.getView(), myNewCommandViewer.getView(), myVariableView.getView());
@@ -156,11 +163,11 @@ public class SetupScreen {
     return scene;
   }
 
-  private void setupGraphicalMover(){
-    myGraphicalMover.setUpButton(e->moveTurtleUp(), myLineManager);
-    myGraphicalMover.setDownButton(e->moveTurtleDown(), myLineManager);
-    myGraphicalMover.setLeftButton(e->moveTurtleLeft());
-    myGraphicalMover.setRightButton(e->moveTurtleRight());
+  public void setDirectExecutor(DirectExecutor executor){
+    myGraphicalMover.setCommandNameProperties(languageHelper.getStringProperty("Forward"), languageHelper.getStringProperty("Right"),
+            languageHelper.getStringProperty("Back"), languageHelper.getStringProperty("Left"));
+    myGraphicalMover.setButtons(executor, myLineManager);
+    myHistory.setDirectExecutor(executor, myLineManager);
   }
 
 
@@ -211,6 +218,11 @@ public class SetupScreen {
     }
   }
 
+  public void setSaveTextFileButton(Stage s)
+  {
+    mySaveText.setOnAction(e -> createNewFileSaverPopup(s));
+  }
+
 
   public void setLoadTextFileButton(EventHandler<ActionEvent> loadFileAction, Stage primaryStage) {
     EventHandler<ActionEvent> e = event -> {
@@ -231,6 +243,13 @@ public class SetupScreen {
     undoButton.disableProperty().bind(undoDisabled);
     redoButton.disableProperty().bind(redoDisabled);
   }
+  public void setClearHistory(EventHandler<ActionEvent> clearAction) {
+    myClear.setOnAction(e -> {
+      myLineManager.clearAllLines();
+      moveTurtlesToCenter();
+      clearAction.handle(e);
+    });
+  }
 
   public ScreenManager getScreenManager(){
     return new ScreenManager(root, myUserInput, myTurtles, myDrawingCanvas, myLanguageSelector, myLineManager, myCustomizer, myGraphicalMover);
@@ -242,24 +261,25 @@ public class SetupScreen {
     box.setMinWidth(width);
   }
 
+  private void moveTurtlesToCenter(){
+    boolean tempPen = myGraphicalMover.getPenUp();
+    myGraphicalMover.setPenUp(true);
+    for(Turtle t : myTurtles) {
+      t.returnTurtleToDefault();
+    }
+    myGraphicalMover.setPenUp(tempPen);
+  }
+
   private void setButtons() {
     myGo = new Button();
     myGo.setMinWidth(myUserInput.getWidth());
     belowInputFieldItems.getChildren().add(myGo);
     myClear = new Button();
     belowCanvasButtons.getChildren().add(myClear);
-    myClear.setOnAction(e -> myLineManager.clearAllLines());
     myStop = new Button();
     belowCanvasButtons.getChildren().add(myStop);
 
-    myStop.setOnAction(e -> {
-      boolean tempPen = myGraphicalMover.getPenUp();
-      myGraphicalMover.setPenUp(true);
-      for(Turtle t : myTurtles) {
-        t.returnTurtleToDefault();
-      }
-      myGraphicalMover.setPenUp(tempPen);
-    });
+    myStop.setOnAction(e -> moveTurtlesToCenter());
 
     //~~~~~~~~~~~~~ vvv for testing and troubleshooting vvv ~~~~~~~~~~~~~~~~
     myTestButton = new Button();
@@ -279,14 +299,15 @@ public class SetupScreen {
 
     loadFileButton = new Button();
     myNewWindow = new Button();
+    mySaveText = new Button();
     HBox newWindowButtons = new HBox(BOX_SPACING);
     newWindowButtons.setLayoutY(COMMON_COMMAND_BUTTON_HEIGHT_OFFSET);
-    newWindowButtons.setLayoutX(WIDTH/2 - BUTTON_HEIGHT_OFFSET*3);
-    newWindowButtons.getChildren().addAll(myNewWindow, loadFileButton);
+    newWindowButtons.setLayoutX(WIDTH/2 - BUTTON_HEIGHT_OFFSET*4);
+    newWindowButtons.getChildren().addAll(myNewWindow, loadFileButton, mySaveText);
     undoButton = new Button();
-    undoButton.setText("Undo");
+    //undoButton.setText("Undo");
     redoButton = new Button();
-    redoButton.setText("Redo");
+    //redoButton.setText("Redo");
     belowCanvasButtons.setMaxWidth(myDrawingCanvas.getWidth());
     belowCanvasButtons.setMinWidth(myDrawingCanvas.getWidth());
     belowCanvasButtons.setAlignment(Pos.CENTER);
@@ -296,13 +317,23 @@ public class SetupScreen {
   }
 
   public void setUndoButton (EventHandler<ActionEvent> undoAction) {
-    undoButton.addEventHandler(ActionEvent.ACTION, undoAction);
-    undoButton.addEventHandler(ActionEvent.ACTION, e -> myLineManager.undo());
+    undoButton.setOnAction(event -> {
+      boolean tempPen = myGraphicalMover.getPenUp();
+      myGraphicalMover.setPenUp(true);
+      myLineManager.undo();
+      undoAction.handle(event);
+      myGraphicalMover.setPenUp(tempPen);
+    });
   }
 
   public void setRedoButton (EventHandler<ActionEvent> redoAction) {
-    redoButton.setOnAction(redoAction);
-    redoButton.addEventHandler(ActionEvent.ACTION, e -> myLineManager.redo());
+    redoButton.setOnAction(event -> {
+      boolean tempPen = myGraphicalMover.getPenUp();
+      myGraphicalMover.setPenUp(true);
+      myLineManager.redo();
+      redoAction.handle(event);
+      myGraphicalMover.setPenUp(tempPen);
+    });
   }
   //~~~~~~~~~~~~~ vvv for testing and troubleshooting vvv ~~~~~~~~~~~~~~~~
   public void setTurtlesStatesButton (EventHandler<ActionEvent> showTurtlesAction) {
@@ -322,6 +353,9 @@ public class SetupScreen {
     myStop.textProperty().bind(languageHelper.getStringProperty(STOP_BUTTON_KEY));
     myNewWindow.textProperty().bind(languageHelper.getStringProperty(NEW_WINDOW_BUTTON_KEY));
     loadFileButton.textProperty().bind(languageHelper.getStringProperty(NEW_CONFIG_BUTTON_KEY));
+    undoButton.textProperty().bind(languageHelper.getStringProperty(UNDO_BUTTON_KEY));
+    redoButton.textProperty().bind(languageHelper.getStringProperty(REDO_BUTTON_KEY));
+    mySaveText.textProperty().bind(languageHelper.getStringProperty(SAVE_BUTTON_KEY));
 
     myVariableView.setTitleProperty(languageHelper.getStringProperty(VARIABLE_TITLE_KEY));
     myNewCommandViewer.setTitleProperty(languageHelper.getStringProperty(NEW_COMMAND_TITLE_KEY));
@@ -338,39 +372,36 @@ public class SetupScreen {
     return myTurtleStatePopup;
   }
 
-  private void moveTurtleUp() {
-    for (Turtle t: myTurtles){
-      if (t.isActive()) {
-        double x = t.getXPos() - MOVEMENT_VALUE * Math.cos(Math.toRadians(t.getAngle()));
-        double y = t.getYPos() - MOVEMENT_VALUE * Math.sin(Math.toRadians(t.getAngle()));
-        t.setLocation(x, y);
-      }
-    }
-  }
-
-  private void moveTurtleDown() {
-    for (Turtle t: myTurtles){
-      if (t.isActive()) {
-        double x = t.getXPos() + MOVEMENT_VALUE * Math.cos(Math.toRadians(t.getAngle()));
-        double y = t.getYPos() + MOVEMENT_VALUE * Math.sin(Math.toRadians(t.getAngle()));
-        t.setLocation(x, y);
-      }
-    }
-  }
-
-  private void moveTurtleLeft() {
-    for (Turtle t: myTurtles){
-      if (t.isActive()) t.setAngle(t.getAngle()-MOVEMENT_VALUE);
-    }
-  }
-
-  private void moveTurtleRight() {
-    for (Turtle t : myTurtles) {
-      if (t.isActive()) t.setAngle(t.getAngle() + MOVEMENT_VALUE);
-    }
-  }
-
   public String getNewWindowPreferences(){
     return myCurrentNewWindowPopup.getPreference();
   }
+
+  private void createNewFileSaverPopup(Stage s){
+    myCurrentLoadPopup = new LoadConfigPopup();
+    myCurrentLoadPopup.setGoButtonProperty(languageHelper.getStringProperty(SAVE_BUTTON_KEY));
+    myCurrentLoadPopup.getMyPopup().show(s);
+    myCurrentLoadPopup.setPopupButton(e-> saveFile(myCurrentLoadPopup.getFilePackage()));
+
+  }
+
+  private void saveFile(String newFilePackage)
+  {
+    String s = myUserInput.getUserInput();
+    System.out.println(s);
+
+    FileOutputStream out = null;
+    try {
+      out = new FileOutputStream(newFilePackage);
+      PrintWriter writer = new PrintWriter(newFilePackage, "UTF-8");
+      writer.write(s);
+      writer.close();
+      out.close();
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+
 }
