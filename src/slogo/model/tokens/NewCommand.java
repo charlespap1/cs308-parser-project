@@ -42,4 +42,7 @@ public class NewCommand extends Instruction {
         }
         return returnValue;
     }
+
+    @Override
+    public String toString(){ return myName; }
 }
