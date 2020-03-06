@@ -20,6 +20,9 @@ import slogo.model.tokens.Token;
 import slogo.view.commonCommands.CommonCommands;
 import slogo.view.popup.FileDoesNotExistException;
 import slogo.view.popup.LoadConfigPopup;
+
+import slogo.view.popup.SetPreferencesPopup;
+
 import slogo.view.popup.TurtleStatePopup;
 import slogo.view.scrollers.CommandViewer;
 import slogo.view.scrollers.HistoryViewer;
@@ -73,7 +76,9 @@ public class SetupScreen {
   public static final String PEN_UP_BUTTON_KEY = "PenUpButton";
   public static final String PEN_DOWN_BUTTON_KEY = "PenDownButton";
   private static final String NEW_CONFIG_BUTTON_KEY = "NewConfigButton";
-  private static final String RGB_COFFIN = "%s,%s,%s";
+
+  private static final String LOAD_FILE_PROMPT = "LoadFilePrompt";
+  private static final String SELECT_PREFERENCES_PROMPT = "SelectPreferencesPrompt";
 
   private UserCommandField myUserInput = new UserCommandField(WIDTH, HEIGHT);
   private Group root = new Group();
@@ -83,8 +88,13 @@ public class SetupScreen {
   private Button myClear;
   private Button myStop;
   private Button myNewWindow;
+
   private Button loadFileButton;
   private LoadConfigPopup myCurrentPopup;
+
+  private Button myNewConfig;
+  private LoadConfigPopup myCurrentLoadPopup;
+  private SetPreferencesPopup myCurrentNewWindowPopup;
 
   private Button undoButton;
   private Button redoButton;
@@ -170,10 +180,20 @@ public class SetupScreen {
 
   public void setGoButton(EventHandler<ActionEvent> goAction) { myGo.setOnAction(goAction); }
 
-  public void setNewWindowButton(EventHandler<ActionEvent> newWindowAction) {
-    myNewWindow.setOnAction(newWindowAction);
+  public void setNewWindowButton(EventHandler<ActionEvent> newWindowAction, Stage stage) {
+
+    EventHandler<ActionEvent> e = event -> {
+      myCurrentNewWindowPopup = new SetPreferencesPopup();
+      myCurrentNewWindowPopup.setPromptProperty(languageHelper.getStringProperty(SELECT_PREFERENCES_PROMPT));
+      myCurrentNewWindowPopup.setGoButtonProperty(languageHelper.getStringProperty(GO_BUTTON_KEY));
+      myCurrentNewWindowPopup.getMyPopup().show(stage);
+      myCurrentNewWindowPopup.setPopupButton(newWindowAction);
+    };
+
+    myNewWindow.setOnAction(e);
 
   }
+
 
   public File getFile() {
     myLineManager.newProgram();
@@ -187,9 +207,11 @@ public class SetupScreen {
 
   public void setLoadTextFileButton(EventHandler<ActionEvent> loadFileAction, Stage primaryStage) {
     EventHandler<ActionEvent> e = event -> {
-        myCurrentPopup = new LoadConfigPopup();
-        myCurrentPopup.getMyPopup().show(primaryStage);
-        myCurrentPopup.setPopupButton(loadFileAction);
+      myCurrentLoadPopup = new LoadConfigPopup();
+      myCurrentLoadPopup.setPromptProperty(languageHelper.getStringProperty(LOAD_FILE_PROMPT));
+      myCurrentLoadPopup.setGoButtonProperty(languageHelper.getStringProperty(GO_BUTTON_KEY));
+      myCurrentLoadPopup.getMyPopup().show(primaryStage);
+      myCurrentLoadPopup.setPopupButton(loadFileAction);
     };
     loadFileButton.addEventHandler(ActionEvent.ACTION, e);
   }
@@ -336,8 +358,12 @@ public class SetupScreen {
   }
 
   private void moveTurtleRight() {
-    for (Turtle t: myTurtles){
-      if (t.isActive()) t.setAngle(t.getAngle()-MOVEMENT_VALUE);
+    for (Turtle t : myTurtles) {
+      if (t.isActive()) t.setAngle(t.getAngle() - MOVEMENT_VALUE);
     }
+  }
+
+  public String getNewWindowPreferences(){
+    return myCurrentNewWindowPopup.getPreference();
   }
 }
