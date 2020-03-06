@@ -1,5 +1,6 @@
 package slogo.view.scrollers;
 
+import java.util.List;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -24,6 +25,7 @@ public abstract class ScrollingWindow implements StaticViewElement {
   public static final double SCROLLING_MIDDLE_PADDING = 10;
   public static final double VBOX_SPACING = 10;
   public static final double TEXT_HOLDER_SPACING =5;
+  public static final int FIRST_ELEMENT_IN_LIST = 0;
 
   protected VBox myHolder = new VBox(VBOX_SPACING);
 
@@ -63,9 +65,14 @@ public abstract class ScrollingWindow implements StaticViewElement {
     return myHolder;
   }
 
-  public void setTitleProperty(StringProperty  sp) {
-    myTitle.textProperty().bind(sp);
-    myHolder.getChildren().add(0, myTitle);
+  /**
+   * Sets the Title of the window according to language
+   * @param sp
+   */
+  @Override
+  public void setTitleProperty(List<StringProperty > sp) {
+    myTitle.textProperty().bind(sp.get(FIRST_ELEMENT_IN_LIST));
+    myHolder.getChildren().add(FIRST_ELEMENT_IN_LIST, myTitle);
   }
 
   /**

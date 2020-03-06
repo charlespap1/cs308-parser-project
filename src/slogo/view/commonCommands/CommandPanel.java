@@ -24,6 +24,7 @@ public class CommandPanel implements StaticViewElement {
   public static final String RESOURCES = "resources";
   public static final String RESOURCE_PACKAGE = RESOURCES + ".commands.";
   public static final int VBOX_SPACING = 10;
+  public static final int FIRST_ELEMENT_IN_LIST = 0;
 
   private ResourceBundle myResources;
   private VBox myHolder;
@@ -55,10 +56,10 @@ public class CommandPanel implements StaticViewElement {
    * Allows us to set the title text based on the current language
    * @param sp
    */
-  public void setTitleProperty(StringProperty sp)
+  public void setTitleProperty(List<StringProperty> sp)
   {
-    myTitle.textProperty().bind(sp);
-    myHolder.getChildren().add(0, myTitle);
+    myTitle.textProperty().bind(sp.get(FIRST_ELEMENT_IN_LIST));
+    myHolder.getChildren().add(FIRST_ELEMENT_IN_LIST, myTitle);
   }
 
   private void setHolderLayout(double x, double y) {

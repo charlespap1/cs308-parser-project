@@ -1,5 +1,7 @@
 package slogo.view;
 
+import java.util.List;
+import javafx.beans.property.StringProperty;
 import javafx.scene.Node;
 import javafx.scene.control.TextArea;
 
@@ -7,7 +9,7 @@ import javafx.scene.control.TextArea;
  * This class allows us to specify the attributes of the user input box
  * @author Juliet
  */
-public class UserCommandField {
+public class UserCommandField implements StaticViewElement{
 
   public static final double FIELD_SIDE_PADDING = DrawingCanvas.CANVAS_SIDE_PADDING;
   public static final double FIELD_BOTTOM_PADDING = DrawingCanvas.CANVAS_BOTTOM_PADDING;
@@ -39,10 +41,21 @@ public class UserCommandField {
    * Allows us to add the text input box to the main root
    * @return
    */
+  @Override
   public Node getView()
   {
     return myTextField;
   }
+
+  /**
+   * User Command field doesn't have associated text
+   * @param sp
+   */
+  @Override
+  public void setTitleProperty(List<StringProperty> sp) {
+
+  }
+
 
   /**
    * Allow us to place the go button below them

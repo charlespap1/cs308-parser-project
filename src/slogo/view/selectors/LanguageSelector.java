@@ -12,6 +12,7 @@ import javafx.scene.text.Text;
 
 import java.util.Collection;
 import java.util.List;
+import slogo.view.StaticViewElement;
 
 /**
  * This structure allows the user to code in different language environments
@@ -19,10 +20,11 @@ import java.util.List;
  * @author Natalie
  */
 
-public class LanguageSelector {
+public class LanguageSelector implements StaticViewElement {
     public static final Collection<String> LANGUAGES = List.of("Chinese", "English", "French", "German", "Italian", "Portuguese", "Russian", "Spanish", "Urdu");
     public static final ObservableList<String> LANGUAGE_LIST = FXCollections.observableArrayList(LANGUAGES);
     public static final String DEFAULT_LANGUAGE = "English";
+    public static final int FIRST_ELEMENT_IN_LIST = 0;
 
     private Text myTitle = new Text();
     private HBox box;
@@ -40,6 +42,7 @@ public class LanguageSelector {
      * Allows for adding the selector to the root
      * @return
      */
+    @Override
     public Node getView(){ return box; }
 
     /**
@@ -51,9 +54,10 @@ public class LanguageSelector {
     /**
      * The language prompt itself has to be able to dynamically change with the given language
      */
-    public void setTitleProperty(StringProperty  sp){
-        myTitle.textProperty().bind(sp);
-        box.getChildren().add(0, myTitle);
+    @Override
+    public void setTitleProperty(List<StringProperty>  sp){
+        myTitle.textProperty().bind(sp.get(FIRST_ELEMENT_IN_LIST));
+        box.getChildren().add(FIRST_ELEMENT_IN_LIST, myTitle);
     }
 
     private void makeSelector(){

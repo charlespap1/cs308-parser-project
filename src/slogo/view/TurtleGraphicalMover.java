@@ -1,5 +1,6 @@
 package slogo.view;
 
+import java.util.List;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -33,6 +34,7 @@ public class TurtleGraphicalMover implements StaticViewElement{
   public static final int BUTTON_WIDTH = 20;
   public static final int DEFAULT_PEN_WIDTH = 1;
   public static final int MOVEMENT_VALUE = 30;
+  public static final int FIRST_ELEMENT_IN_LIST = 0;
 
   private StringProperty forwardString = new SimpleStringProperty();
   private StringProperty rightString = new SimpleStringProperty();
@@ -137,9 +139,11 @@ public class TurtleGraphicalMover implements StaticViewElement{
    * @param sp
    */
   @Override
-  public void setTitleProperty(StringProperty sp) {
-    myThicknessText.textProperty().bind(sp);
-    myPenElements.getChildren().add(0, myThicknessText);
+  public void setTitleProperty(List<StringProperty> sp) {
+    myThicknessText.textProperty().bind(sp.get(FIRST_ELEMENT_IN_LIST));
+    myPenElements.getChildren().add(FIRST_ELEMENT_IN_LIST, myThicknessText);
+    changePenUp.textProperty().bind(sp.get(1));
+    changePenDown.textProperty().bind(sp.get(2));
   }
 
   /**
@@ -148,8 +152,7 @@ public class TurtleGraphicalMover implements StaticViewElement{
    * @param penDown
    */
   public void setPenLabelProperty(StringProperty penUp, StringProperty penDown){
-    changePenUp.textProperty().bind(penUp);
-    changePenDown.textProperty().bind(penDown);
+
   }
 
   /**
