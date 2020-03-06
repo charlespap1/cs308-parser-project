@@ -66,6 +66,8 @@ public class Model implements ModelAPI{
 
     }
 
+    public void clearHistory() { history.clearAll(new Program(turtleMaster.generateStateMap())); }
+
     public void executeCode(Instruction instruction){
         errorMessage.set("");
         clearStacks();
