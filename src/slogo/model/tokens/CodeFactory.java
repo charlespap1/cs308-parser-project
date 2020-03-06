@@ -94,7 +94,7 @@ public class CodeFactory {
         StringBuilder variablesAsString = new StringBuilder();
         for (Token variable : vars) {
             Variable var = (Variable) variable;
-            variablesAsString.append(String.format("MAKE %s %d\n", var.toString(), var.getValue()));
+            variablesAsString.append(String.format("MAKE %s %f\n", var.toString(), var.getValue()));
         }
         return variablesAsString.toString();
     }
@@ -104,7 +104,6 @@ public class CodeFactory {
             Variable variable = new Variable(piece, this::updateVariableList);
             variableMap.put(piece, variable);
             vars.add(variable);
-            System.out.println(saveVariables());
         }
         return variableMap.get(piece);
     }
