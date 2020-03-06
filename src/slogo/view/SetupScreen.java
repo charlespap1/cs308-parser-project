@@ -22,6 +22,7 @@ import slogo.model.tokens.Token;
 import slogo.view.commonCommands.CommonCommands;
 import slogo.view.popup.FileDoesNotExistException;
 import slogo.view.popup.LoadConfigPopup;
+import slogo.view.popup.PopupSkeleton;
 import slogo.view.popup.SetPreferencesPopup;
 import slogo.view.popup.ViewPopup;
 import slogo.view.popup.TurtleStatePopup;
@@ -75,6 +76,9 @@ public class SetupScreen {
   public static final String PEN_UP_BUTTON_KEY = "PenUpButton";
   public static final String PEN_DOWN_BUTTON_KEY = "PenDownButton";
   private static final String NEW_CONFIG_BUTTON_KEY = "NewConfigButton";
+
+  private static final String LOAD_FILE_PROMPT = "LoadFilePrompt";
+  private static final String SELECT_PREFERENCES_PROMPT = "SelectPreferencesPrompt";
 
   private UserCommandField myUserInput = new UserCommandField(WIDTH, HEIGHT);
   private Group root = new Group();
@@ -174,6 +178,8 @@ public class SetupScreen {
 
     EventHandler<ActionEvent> e = event -> {
       myCurrentNewWindowPopup = new SetPreferencesPopup();
+      myCurrentNewWindowPopup.setPromptProperty(languageHelper.getStringProperty(SELECT_PREFERENCES_PROMPT));
+      myCurrentNewWindowPopup.setGoButtonProperty(languageHelper.getStringProperty(GO_BUTTON_KEY));
       myCurrentNewWindowPopup.getMyPopup().show(stage);
       myCurrentNewWindowPopup.setPopupButton(newWindowAction);
     };
@@ -200,6 +206,8 @@ public class SetupScreen {
 
     EventHandler<ActionEvent> e = event -> {
       myCurrentLoadPopup = new LoadConfigPopup();
+      myCurrentLoadPopup.setPromptProperty(languageHelper.getStringProperty(LOAD_FILE_PROMPT));
+      myCurrentLoadPopup.setGoButtonProperty(languageHelper.getStringProperty(GO_BUTTON_KEY));
       myCurrentLoadPopup.getMyPopup().show(primaryStage);
       myCurrentLoadPopup.setPopupButton(newConfigAction);
     };
