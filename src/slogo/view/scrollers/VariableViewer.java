@@ -1,11 +1,11 @@
 package slogo.view.scrollers;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -21,6 +21,7 @@ import slogo.view.exceptions.NoVariableToSelectException;
  * @author Natalie
  */
 public class VariableViewer extends ScrollingWindow {
+    public static final String INNER_LIST_STYLE = "inner-list-view";
     public static final String GO_BUTTON = "go.png";
     private static final int HBOX_SPACING = 10;
     private static final int TEXT_HEIGHT = 20;
@@ -30,6 +31,8 @@ public class VariableViewer extends ScrollingWindow {
     private Button button = new Button();
     private Label label = new Label();
     private TextArea text = new TextArea();
+    private ObservableList<Double> myValues = FXCollections.observableArrayList();
+    private ListView<Double> valuesListView = new ListView<>(myValues);
 
     public VariableViewer(double elementWidthFactor, double topPadding) {
         super(elementWidthFactor, topPadding);
@@ -38,6 +41,7 @@ public class VariableViewer extends ScrollingWindow {
         image.setFitHeight(TEXT_HEIGHT);
         button.setGraphic(image);
         buildHBox();
+        myListHolder.getChildren().add(valuesListView);
     }
 
     private void buildHBox(){
@@ -46,6 +50,28 @@ public class VariableViewer extends ScrollingWindow {
 
         box.setAlignment(Pos.CENTER);
         box.getChildren().addAll(label, text, button);
+    }
+
+    @Override
+    public void bindList(ObservableList<Token> list) {
+        super.bindList(list);
+        list.addListener((ListChangeListener<Token>) c -> {
+            myValues.clear();
+            for (Token t:list){
+                myValues.add(t.execute());
+            }
+        });
+        Node n1 = valuesListView.lookup(".scroll-bar");
+        if (n1 instanceof ScrollBar) {
+            final ScrollBar bar1 = (ScrollBar) n1;
+            bar1.setVisibleAmount(0.0);
+            Node n2 = myList.lookup(".scroll-bar");
+            if (n2 instanceof ScrollBar) {
+                final ScrollBar bar2 = (ScrollBar) n2;
+                bar1.valueProperty().bindBidirectional(bar2.valueProperty());
+            }
+        }
+        myList.getStyleClass().add(INNER_LIST_STYLE);
     }
 
 

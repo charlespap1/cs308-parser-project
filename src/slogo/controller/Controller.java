@@ -47,7 +47,7 @@ public class Controller extends Application {
         myView.setupHistory(myModel.getHistoryList(), myModel.getUndoDisabled(), myModel.getRedoDisabled());
         myView.setErrorMessage(myModel.getErrorMessage());
         myView.setNewWindowButton(e -> makeNewWindow(myView.getNewWindowPreferences()), stage);
-        setupCommands(myView, myModel);
+        setupDisplayCommands(myView, myModel);
         myModel.setAddTurtleFunction(myView::addTurtle);
         myView.setPreferences(preferences);
         myView.setUndoAction(e -> myModel.undo());
@@ -80,7 +80,7 @@ public class Controller extends Application {
         model.executeCode(input);
     }
 
-    private void setupCommands(Interactions view, Model model) {
+    private void setupDisplayCommands(Interactions view, Model model) {
         ResourceBundle rb = ResourceBundle.getBundle(RESOURCES_PATH);
         for (String key : rb.keySet()) {
             String methodName = rb.getString(key);

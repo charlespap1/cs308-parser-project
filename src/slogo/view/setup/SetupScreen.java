@@ -427,6 +427,10 @@ public class SetupScreen {
   }
 
 
+  public void setError(Exception e){
+    myCurrentErrorMessage.textProperty().set(e.getMessage());
+  }
+
 
   private void setSelectors() {
     myLanguageSelector = new LanguageSelector(DrawingCanvas.CANVAS_SIDE_PADDING, DrawingCanvas.CANVAS_TOP_PADDING/4);
