@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import slogo.model.tokens.Token;
@@ -29,24 +30,25 @@ public abstract class ScrollingWindow implements StaticViewElement {
 
   protected VBox myHolder = new VBox(VBOX_SPACING);
 
-  protected double myWidth = SetupScreen.WIDTH/3.0 - 2*SCROLLING_SIDE_PADDING;
+  protected double myWidth = SetupScreen.WIDTH/3.0 - SCROLLING_SIDE_PADDING;
   protected double myHeight = SetupScreen.HEIGHT/2.0 - SCROLLING_MIDDLE_PADDING - SCROLLING_TOP_PADDING;
   protected VBox myTextHolder = new VBox(TEXT_HOLDER_SPACING);
   protected ListView<Token> myList = new ListView<>();
   private Text myTitle = new Text();
-
+  private HBox myListHolder = new HBox();
 
   public ScrollingWindow(double elementWidthFactor, double topPadding) {
     myHolder.setLayoutX(elementWidthFactor*SetupScreen.WIDTH/3 + SCROLLING_SIDE_PADDING);
     myHolder.setLayoutY(topPadding);
-    myHolder.setFillWidth(true);
+    myListHolder.setFillHeight(true);
 
     myHolder.setMinHeight(myHeight);
     myHolder.setMaxHeight(myHeight);
-    myTextHolder.setMaxWidth(myWidth);
-    myTextHolder.setMinWidth(myWidth);
+    myListHolder.setMaxWidth(myWidth);
+    myListHolder.setMinWidth(myWidth);
 
-    myHolder.getChildren().add(myTextHolder);
+    myListHolder.getChildren().add(myTextHolder);
+    myHolder.getChildren().add(myListHolder);
 
     myList.setPrefSize(myWidth-2*VBOX_SPACING, myHeight);
     myTextHolder.getChildren().addAll(myList);
