@@ -63,9 +63,6 @@ public class CodeFactory {
     private void addNewCommand(Token token){
         NewCommand command = (NewCommand) token;
         newCommandMap.put(command.getName(), command);
-        System.out.println(command.getName());
-        System.out.println(command.getVariables());
-        System.out.println(command.getInstructions());
         newCommands.add(command);
     }
 
@@ -74,27 +71,32 @@ public class CodeFactory {
         vars.add(t);
     }
 
-    public String saveCommands () {
-        StringBuilder commands = new StringBuilder();
+    public String saveNewCommands () {
+        StringBuilder commandsAsString = new StringBuilder();
         for (Token newCommand : newCommands) {
             NewCommand command = (NewCommand) newCommand;
-            commands.append("TO %s [ ".format(command.getName()));
+            commandsAsString.append(String.format("TO %s [ ", command.getName()));
             for (Token variable: command.getVariables()) {
                 Variable var = (Variable) variable;
-                //var.setPrintOnlyName(true);
-                commands.append("%s ".format(var.toString()));
+                commandsAsString.append(String.format("%s ", var.toString()));
             }
-            commands.append("] [ ");
+            commandsAsString.append("] [ ");
             for (Token instruction: command.getInstructions()) {
                 Instruction instr = (Instruction) instruction;
-                commands.append("%s ".format(instr.toString()));
+                commandsAsString.append(String.format("%s ", instr.toString()));
             }
-            commands.append("]");
-            for (Token variable: command.getVariables()) {
-                //((Variable) variable).setPrintOnlyName(false);
-            }
+            commandsAsString.append("]\n");
         }
-        return commands.toString();
+        return commandsAsString.toString();
+    }
+
+    public String saveVariables() {
+        StringBuilder variablesAsString = new StringBuilder();
+        for (Token variable : vars) {
+            Variable var = (Variable) variable;
+            variablesAsString.append(String.format("MAKE %s %d\n", var.toString(), var.getValue()));
+        }
+        return variablesAsString.toString();
     }
 
     private Token getVariable(String piece) {
@@ -102,6 +104,7 @@ public class CodeFactory {
             Variable variable = new Variable(piece, this::updateVariableList);
             variableMap.put(piece, variable);
             vars.add(variable);
+            System.out.println(saveVariables());
         }
         return variableMap.get(piece);
     }

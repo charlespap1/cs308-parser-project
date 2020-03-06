@@ -22,6 +22,10 @@ public class Variable implements Token {
         return name;
     }
 
+    public double getValue () {
+        return value;
+    }
+
     public double execute(){
         return value;
     }
