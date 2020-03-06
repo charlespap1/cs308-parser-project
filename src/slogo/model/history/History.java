@@ -5,7 +5,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import slogo.model.tokens.Token;
-import slogo.model.tokens.instructions.Instruction;
+import slogo.model.tokens.Instruction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +50,11 @@ public class History {
     public void addCommand(Instruction instruction){
         programHistory.get(programPointer).addNewCommand(instruction);
         myHistory.add(instruction);
+    }
+
+    public void clearCurrentProgram(){
+        Program currProgram = programHistory.get(programPointer);
+        currProgram.clear();
     }
 
     public ObservableList<Token> getHistoryList() { return myHistory; }

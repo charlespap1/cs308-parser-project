@@ -1,5 +1,6 @@
 package slogo.view;
 
+import java.io.File;
 import java.util.List;
 
 import javafx.beans.property.BooleanProperty;
@@ -25,21 +26,18 @@ public class Interactions implements View {
 
   private ScreenManager myScreen;
   private SetupScreen mySetup;
-  private String myPreferences;
 
   public Interactions(Stage primaryStage, String preferences) {
     mySetup = new SetupScreen();
     Scene myScene = mySetup.setupGame();
     mySetup.addCommonCommands(primaryStage, myScene);
-    myPreferences = preferences;
     myTurtleStatePopup = mySetup.getTurtleStatePopup();
     myScreen = mySetup.getScreenManager();
+    myScreen.setPreferences(preferences);
 
     primaryStage.setScene(myScene);
     primaryStage.setTitle(TITLE);
     primaryStage.show();
-
-    setPreferences();
   }
 
   /**
@@ -50,6 +48,10 @@ public class Interactions implements View {
    */
   public String getInstruction() throws NullPointerException {
     return myScreen.getUserInput();
+  }
+
+  public File getFile(){
+    return mySetup.getFile();
   }
 
   /**
@@ -81,11 +83,9 @@ public class Interactions implements View {
    */
   public void setGoButton(EventHandler<ActionEvent> goAction){ mySetup.setGoButton(goAction); }
   public void setNewWindowButton(EventHandler<ActionEvent> newWindowAction) { mySetup.setNewWindowButton(newWindowAction); }
-  public void setNewConfigButton(EventHandler<ActionEvent> newWindowAction) { mySetup.setNewConfigButton(newWindowAction); }
+  public void setNewConfigButton(EventHandler<ActionEvent> newWindowAction, Stage stage) { mySetup.setNewConfigPopupButton(newWindowAction, stage); }
   public void setTurtlesStateButton(EventHandler<ActionEvent> showTurtlesAction) { mySetup.setTurtlesStatesButton(showTurtlesAction); }
-  public void setPopupButton(EventHandler<ActionEvent> showPopup) {
-    mySetup.setNewConfigButton(showPopup);
-  }
+
   public void setUndoAction(EventHandler<ActionEvent> undoAction) { mySetup.setUndoButton(undoAction); }
   public void setRedoAction(EventHandler<ActionEvent> redoAction) { mySetup.setRedoButton(redoAction); }
 
@@ -95,11 +95,9 @@ public class Interactions implements View {
 
   public DisplayAction getAction(String methodName) {
     return params -> {
-      Method m = SetupScreen.class.getDeclaredMethod(methodName, List.class);
+      Method m = ScreenManager.class.getDeclaredMethod(methodName, List.class);
       Object value = m.invoke(myScreen, params);
       return (Integer) value;
     };
   }
-
-  private void setPreferences() { mySetup.setPreferences(myPreferences); }
 }

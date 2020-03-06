@@ -30,6 +30,7 @@ public class Controller extends Application {
 
     /**
      * Allows us to set up the initial stage and animation
+     *
      * @param primaryStage
      */
     @Override
@@ -39,23 +40,6 @@ public class Controller extends Application {
 
     private void makeNewWindow(String preference) {
         makeWindow(new Stage(), preference);
-    }
-
-    private void showPopUp(Stage currentStage, Model myModel){
-        //TODO: put front end back in front end
-        LoadConfigPopup popup = new LoadConfigPopup();
-        popup.getMyPopup().show(currentStage);
-        EventHandler<ActionEvent> e = event -> {
-            try{
-                File commandFile = popup.getFile();
-                executeTextFile(commandFile, myModel);
-            }catch(FileDoesNotExistException err)
-            {
-                myModel.setErrorMessage(err.getMessage());
-            }
-            popup.getMyPopup().hide();
-        };
-        popup.setPopupButton(e);
     }
 
     private void makeWindow(Stage stage, String preferences){
@@ -69,10 +53,11 @@ public class Controller extends Application {
         myView.setTurtlesStateButton(e -> showActiveTurtles(myView, stage));
         setupCommands(myView, myModel);
         myModel.setAddTurtleFunction(myView::addTurtle);
-        myView.setPopupButton(e -> showPopUp(stage, myModel));
         myView.setUndoAction(e -> myModel.undo());
         myView.setRedoAction(e -> myModel.redo());
+        myView.setNewConfigButton(e -> executeTextFile(myView.getFile(), myModel), stage);
     }
+
 
 
     private void showActiveTurtles(Interactions myView, Stage currentStage) {
@@ -121,7 +106,6 @@ public class Controller extends Application {
             myReader.close();
         } catch (FileNotFoundException e) {
             System.out.println("An error occurred.");
-            e.printStackTrace();
         }
         model.executeCode(f);
     }

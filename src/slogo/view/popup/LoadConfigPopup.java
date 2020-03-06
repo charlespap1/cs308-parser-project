@@ -19,7 +19,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Popup;
 
-public class LoadConfigPopup {
+public class LoadConfigPopup implements ViewPopup{
 
   public static final int HOLDER_SPACING = 10;
   public static final int WINDOW_WIDTH = 325;
@@ -95,7 +95,8 @@ public class LoadConfigPopup {
 
   public void setPopupButton(EventHandler<ActionEvent> e)
   {
-    myLoad.setOnAction(e);
+    myLoad.addEventHandler(ActionEvent.ACTION, e);
+    myLoad.addEventHandler(ActionEvent.ACTION, h -> myPopup.hide());
   }
 
   public File getFile() throws FileDoesNotExistException
@@ -107,7 +108,7 @@ public class LoadConfigPopup {
       return f;
 
     } catch (Exception e) {
-      throw new FileDoesNotExistException(e);
+        throw new FileDoesNotExistException(e);
     }
   }
 
