@@ -1,8 +1,5 @@
 package slogo.view.popup;
 
-import java.io.File;
-import java.util.Objects;
-import java.util.Scanner;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -18,6 +15,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Popup;
+
+import java.io.File;
+import java.util.Objects;
+import java.util.Scanner;
 
 public class LoadConfigPopup implements ViewPopup{
 

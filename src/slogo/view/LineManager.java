@@ -1,6 +1,5 @@
 package slogo.view;
 
-import javafx.beans.property.BooleanProperty;
 import javafx.scene.Group;
 import javafx.scene.shape.Line;
 

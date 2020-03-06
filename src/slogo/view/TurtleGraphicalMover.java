@@ -1,6 +1,5 @@
 package slogo.view;
 
-import java.util.Objects;
 import javafx.beans.property.StringProperty;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -13,6 +12,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+
+import java.util.Objects;
 
 public class TurtleGraphicalMover implements StaticViewElement{
 
@@ -170,28 +171,7 @@ public class TurtleGraphicalMover implements StaticViewElement{
   }
 
 
-  private void moveTurtleUp()
-  {
-//    double y = myTurtle.getYPos() - MOVEMENT_VALUE;
-//    setTurtle(myTurtle.getXPos(), y);
-  }
-  private void moveTurtleDown()
-  {
-//    double y = myTurtle.getYPos() + MOVEMENT_VALUE;
-//    setTurtle(myTurtle.getXPos(), y);
-  }
 
-  private void moveTurtleLeft()
-  {
-//    double x = myTurtle.getXPos() - MOVEMENT_VALUE;
-//    setTurtle(x, myTurtle.getYPos());
-  }
-
-  private void moveTurtleRight()
-  {
-//    double x = myTurtle.getXPos() + MOVEMENT_VALUE;
-//    setTurtle(x, myTurtle.getYPos());
-  }
 
   private void setTurtle(double x, double y)
   {

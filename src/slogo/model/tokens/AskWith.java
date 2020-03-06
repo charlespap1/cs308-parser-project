@@ -3,7 +3,6 @@ package slogo.model.tokens;
 import slogo.model.exceptions.InvalidArgumentException;
 import slogo.model.exceptions.InvalidLoopConditionException;
 
-
 import java.util.ArrayList;
 import java.util.List;
 

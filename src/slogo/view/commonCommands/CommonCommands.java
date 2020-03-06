@@ -1,6 +1,5 @@
 package slogo.view.commonCommands;
 
-import java.io.IOException;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
@@ -15,6 +14,8 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import slogo.view.LanguageHelper;
+
+import java.io.IOException;
 
 /**
  * This holds the Scene of the Common Commands page as well as gives the ability to jump

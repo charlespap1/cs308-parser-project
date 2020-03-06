@@ -1,9 +1,9 @@
 package slogo.model.parse;
 
+import slogo.model.exceptions.LanguageFileNotFoundException;
+
 import java.util.*;
 import java.util.regex.Pattern;
-
-import slogo.model.exceptions.LanguageFileNotFoundException;
 
 public class RegexHandler {
     public static final String RESOURCES_PACKAGE = "resources.commands.";

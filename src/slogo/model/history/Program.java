@@ -1,7 +1,7 @@
 package slogo.model.history;
 
-import slogo.model.tokens.Token;
 import slogo.model.tokens.Instruction;
+import slogo.model.tokens.Token;
 
 import java.util.ArrayList;
 import java.util.List;

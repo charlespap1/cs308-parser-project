@@ -1,6 +1,5 @@
 package slogo.view.popup;
 
-import java.util.Objects;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,6 +17,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Popup;
+
+import java.util.Objects;
 
 public class SetPreferencesPopup implements ViewPopup{
 

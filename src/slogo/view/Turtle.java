@@ -8,7 +8,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
 import java.awt.geom.Point2D;
-import java.util.List;
 
 /**
  * This class holds all of the attributes of our GUI turtle
@@ -136,6 +135,7 @@ public class Turtle {
     penThickness = newThickness;
   }
 
+  public boolean isActive() { return active.get(); }
   public boolean getPenUp()
   {
     return this.penUp.get();

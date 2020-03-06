@@ -1,8 +1,5 @@
 package slogo.view;
 
-import java.io.File;
-import java.util.List;
-
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
@@ -10,10 +7,12 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import slogo.view.popup.TurtleStatePopup;
 import slogo.model.tokens.Token;
+import slogo.view.popup.TurtleStatePopup;
 
+import java.io.File;
 import java.lang.reflect.Method;
+import java.util.List;
 
 
 /**
@@ -27,13 +26,12 @@ public class Interactions implements View {
   private ScreenManager myScreen;
   private SetupScreen mySetup;
 
-  public Interactions(Stage primaryStage, String preferences) {
+  public Interactions(Stage primaryStage) {
     mySetup = new SetupScreen();
     Scene myScene = mySetup.setupGame();
     mySetup.addCommonCommands(primaryStage, myScene);
     myTurtleStatePopup = mySetup.getTurtleStatePopup();
     myScreen = mySetup.getScreenManager();
-    myScreen.setPreferences(preferences);
 
     primaryStage.setScene(myScene);
     primaryStage.setTitle(TITLE);
@@ -52,6 +50,10 @@ public class Interactions implements View {
 
   public File getFile(){
     return mySetup.getFile();
+  }
+
+  public void setPreferences(String preferences){
+    myScreen.setPreferences(preferences);
   }
 
   /**

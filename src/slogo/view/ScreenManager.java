@@ -38,6 +38,9 @@ public class ScreenManager {
 
     public void setPreferences(String preferences){
         PreferenceLoaderSelector.setPreferences(preferences, myDisplayCustomizer);
+        myTurtles.get(0).setPenUp(myDisplayCustomizer.getPenUp());
+        myTurtles.get(0).changeImage(myDisplayCustomizer.getImage(myDisplayCustomizer.getImageIndex()));
+        myDrawingCanvas.changeBackground(myDisplayCustomizer.getColor(myDisplayCustomizer.getBackgroundIndex()));
     }
 
     public void addNewTurtle(slogo.model.Turtle turtle) {
@@ -56,6 +59,7 @@ public class ScreenManager {
 
     public int setBackground(List<Double> params) {
         int index = params.get(0).intValue();
+        myDisplayCustomizer.setBackground(index);
         Color color = myDisplayCustomizer.getColor(index);
         myDrawingCanvas.changeBackground(color);
         return index;
@@ -97,9 +101,7 @@ public class ScreenManager {
     public int getPenColor(List<Double> params) { return myDisplayCustomizer.getPenIndex(); }
     public int getShape(List<Double> params) { return myDisplayCustomizer.getImageIndex();  }
 
-    //TODO
     public int clearScreen(List<Double> params) {
-        //myHistory.clearHistory();
         for (Turtle t : myTurtles) t.returnTurtleToDefault();
         myLineManager.clearAllLines();
         return 0;
@@ -118,5 +120,30 @@ public class ScreenManager {
             myLineManager.addLine(newLine);
             turtle.getView().toFront();
         }
+    }
+
+    private void moveTurtleUp() {
+        for (Turtle t: myTurtles){
+            if (t.isActive())
+        }
+//    double y = myTurtle.getYPos() - MOVEMENT_VALUE;
+//    setTurtle(myTurtle.getXPos(), y);
+    }
+    private void moveTurtleDown()
+    {
+//    double y = myTurtle.getYPos() + MOVEMENT_VALUE;
+//    setTurtle(myTurtle.getXPos(), y);
+    }
+
+    private void moveTurtleLeft()
+    {
+//    double x = myTurtle.getXPos() - MOVEMENT_VALUE;
+//    setTurtle(x, myTurtle.getYPos());
+    }
+
+    private void moveTurtleRight()
+    {
+//    double x = myTurtle.getXPos() + MOVEMENT_VALUE;
+//    setTurtle(x, myTurtle.getYPos());
     }
 }

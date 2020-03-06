@@ -1,8 +1,8 @@
 package slogo.view;
 
-import java.util.ResourceBundle;
-
 import slogo.view.selectors.DisplayCustomizer;
+
+import java.util.ResourceBundle;
 
 public class PreferenceLoaderSelector {
     public static final String FILE_PATH = "resources.preferences.";

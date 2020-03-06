@@ -1,7 +1,5 @@
 package slogo.view;
 
-import java.io.File;
-
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
@@ -22,7 +20,6 @@ import slogo.model.tokens.Token;
 import slogo.view.commonCommands.CommonCommands;
 import slogo.view.popup.FileDoesNotExistException;
 import slogo.view.popup.LoadConfigPopup;
-import slogo.view.popup.ViewPopup;
 import slogo.view.popup.TurtleStatePopup;
 import slogo.view.scrollers.CommandViewer;
 import slogo.view.scrollers.HistoryViewer;
@@ -31,6 +28,7 @@ import slogo.view.scrollers.VariableViewer;
 import slogo.view.selectors.DisplayCustomizer;
 import slogo.view.selectors.LanguageSelector;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
