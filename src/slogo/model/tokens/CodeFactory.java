@@ -63,12 +63,26 @@ public class CodeFactory {
     private void addNewCommand(Token token){
         NewCommand command = (NewCommand) token;
         newCommandMap.put(command.getName(), command);
+        System.out.println(command.getName());
+        System.out.println(command.getVariables());
+        System.out.println(command.getInstructions());
         newCommands.add(command);
     }
 
     public void updateVariableList(Token t){
         vars.remove(t);
         vars.add(t);
+    }
+
+    public void saveCommands () {
+        StringBuilder commands = new StringBuilder();
+        for (Token newCommand : newCommands) {
+            NewCommand command = (NewCommand) newCommand;
+            commands.append("TO %s [".format(command.getName()));
+            for (Token var: command.getVariables()) {
+                //commands.append("[ %s ] ".format(var));
+            }
+        }
     }
 
     private Token getVariable(String piece) {
