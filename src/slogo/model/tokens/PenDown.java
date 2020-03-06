@@ -1,12 +1,7 @@
 package slogo.model.tokens;
 
-public class PenDown extends Instruction {
-
+public class PenDown extends DisplayCommand {
     private static final int numArgs = 0;
-    private TurtleAction myAction = t -> {
-        t.setPenUp(false);
-        return 1;
-    };
 
     public PenDown(String name){
         super(numArgs);
@@ -14,12 +9,7 @@ public class PenDown extends Instruction {
     }
 
     @Override
-    public double execute() {
-        return myAccessor.turtleCommandToMaster(myAction);
-    }
-
-    @Override
-    public String toString(){
-        return instrName;
+    public double execute () {
+        return myAction.execute(null);
     }
 }

@@ -29,7 +29,6 @@ public class Turtle {
   private DoubleProperty y = new SimpleDoubleProperty();
   private ObjectProperty<Point2D> coordinates = new SimpleObjectProperty<>();
   private DoubleProperty angle = new SimpleDoubleProperty();
-  private BooleanProperty penUp = new SimpleBooleanProperty();
   private BooleanProperty visible = new SimpleBooleanProperty();
   private BooleanProperty active = new SimpleBooleanProperty();
   private double currX;
@@ -63,7 +62,6 @@ public class Turtle {
     x.bindBidirectional(turtle.turtleXProperty());
     y.bindBidirectional(turtle.turtleYProperty());
     angle.bindBidirectional(turtle.turtleAngleProperty());
-    penUp.bindBidirectional(turtle.penUpProperty());
     visible.bind(turtle.visibleProperty());
     coordinates.bindBidirectional(turtle.pointProperty());
     currX = x.getValue();
@@ -95,10 +93,10 @@ public class Turtle {
    * Draws line as long as turtle is in bounds
    * @return
    */
-  public Line drawLineAndBound(){
+  public Line drawLineAndBound(boolean penUp){
     Line line = null;
     if (outOfBounds()) fixBounding();
-    else line = drawLine();
+    else line = drawLine(penUp);
     return line;
   }
 
@@ -121,17 +119,12 @@ public class Turtle {
    * @param image
    */
   public void changeImage(Image image) { myTurtleView.setImage(image); }
-  public void setPenUp(boolean isPenUp) { this.penUp.set(isPenUp); }
   public void setThickness(int newThickness)
   {
     penThickness = newThickness;
   }
   public void setAngle(double newAngle) { angle.set(newAngle); }
   public boolean isActive() { return active.get(); }
-  public boolean getPenUp()
-  {
-    return penUp.get();
-  }
   public double getAngle() { return angle.get(); }
   public double getXPos() {
     return x.getValue();
@@ -140,9 +133,9 @@ public class Turtle {
     return y.getValue();
   }
 
-  private Line drawLine(){
+  private Line drawLine(boolean penUp){
     Line line = null;
-    if (!penUp.getValue()) {
+    if (!penUp) {
       line = new Line(currX + centerX, currY + centerY, x.getValue() + centerX, y.getValue() + centerY);
       line.setStrokeWidth(penThickness);
     }

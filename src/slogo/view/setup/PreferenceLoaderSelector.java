@@ -11,9 +11,10 @@ public class PreferenceLoaderSelector {
   public static final boolean DEFAULT_PEN_UP = false;
   public static final int DEFAULT_PEN_COLOR = 0;
   public static final int DEFAULT_BACKGROUND_COLOR = 7;
+  public static final double DEFAULT_PEN_WIDTH = 1.0;
 
 
-  public static void setPreferences(String preferenceFile, DisplayCustomizer myCustomizer){
+  public static void setPreferences(String preferenceFile, DisplayCustomizer myCustomizer, TurtleGraphicalMover myMover){
       ResourceBundle myPreferences;
       try {
           myPreferences = ResourceBundle.getBundle(FILE_PATH + preferenceFile);
@@ -39,7 +40,12 @@ public class PreferenceLoaderSelector {
       boolean penUp;
       try{ penUp = Boolean.parseBoolean(myPreferences.getString("PenUp"));
       } catch(Exception e) { penUp = DEFAULT_PEN_UP; }
-      myCustomizer.setPenUp(penUp);
+      myMover.setPenUp(penUp);
+
+      double penWidth;
+      try { penWidth = Integer.parseInt(myPreferences.getString("PenWidth"));
+      } catch (Exception e){ penWidth = DEFAULT_PEN_WIDTH; }
+      myMover.setPenWidth(penWidth);
   }
 }
 
