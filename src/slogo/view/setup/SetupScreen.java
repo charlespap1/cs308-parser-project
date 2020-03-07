@@ -60,9 +60,9 @@ public class SetupScreen {
     private static final double COMMON_COMMAND_BUTTON_WIDTH_OFFSET = 225;
     private static final int COMMAND_COLUMN = 1;
     private static final int LIST_VIEW_COLUMN = 2;
-    private static final int ERROR_MESSAGE_PADDING = 320;
+    private static final int ERROR_MESSAGE_PADDING = 300;
     private static final double HALFWAY_DOWN = HEIGHT / 2.0;
-    private static final double SAVE_VARS_PADDING_Y = 320;
+    private static final double SAVE_VARS_PADDING_Y = 322;
 
     private static final String VARIABLE_TITLE_KEY = "VariableTitleText";
     private static final String HISTORY_TITLE_KEY = "HistoryTitleText";
@@ -358,8 +358,33 @@ public class SetupScreen {
         return new ScreenManager(root, myUserInput, myTurtles, myDrawingCanvas, myLanguageSelector, myLineManager, myCustomizer, myGraphicalMover);
     }
 
+    /**
+     * Allows us to access backend variables to save to a file
+     * @param saveNewCommandsAndVarsAction
+     */
     public void setVarsAndCommandsSaveButton(EventHandler<ActionEvent> saveNewCommandsAndVarsAction) {
         mySaveVarsAndCommands.setOnAction(saveNewCommandsAndVarsAction);
+    }
+
+    /**
+     * These two methods create popups to performs either loading or saving
+     * @param s
+     * @param stringToSave
+     */
+    public void createNewFileSaverPopup(Stage s, String stringToSave) {
+        myCurrentLoadPopup = new LoadConfigPopup();
+        myCurrentLoadPopup.setPromptProperty(languageHelper.getStringProperty(LOAD_FILE_PROMPT));
+        myCurrentLoadPopup.setGoButtonProperty(languageHelper.getStringProperty(SAVE_BUTTON_KEY));
+        myCurrentLoadPopup.getMyPopup().show(s);
+        myCurrentLoadPopup.setPopupButton(e -> saveFile(myCurrentLoadPopup.getFilePackage(), stringToSave));
+    }
+
+    public void createNewFileLoaderPopup(Stage s, EventHandler<ActionEvent> loadFileAction) {
+        myCurrentLoadPopup = new LoadConfigPopup();
+        myCurrentLoadPopup.setPromptProperty(languageHelper.getStringProperty(LOAD_FILE_PROMPT));
+        myCurrentLoadPopup.setGoButtonProperty(languageHelper.getStringProperty(GO_BUTTON_KEY));
+        myCurrentLoadPopup.getMyPopup().show(s);
+        myCurrentLoadPopup.setPopupButton(loadFileAction);
     }
 
     private void setupBox(Pane box, double x, double y, double width) {
@@ -417,22 +442,6 @@ public class SetupScreen {
         for (StaticViewElement element : myStaticViewElements.keySet()) {
             element.setTitleProperty(myStaticViewElements.get(element));
         }
-    }
-
-    public void createNewFileSaverPopup(Stage s, String stringToSave) {
-        myCurrentLoadPopup = new LoadConfigPopup();
-        myCurrentLoadPopup.setPromptProperty(languageHelper.getStringProperty(LOAD_FILE_PROMPT));
-        myCurrentLoadPopup.setGoButtonProperty(languageHelper.getStringProperty(SAVE_BUTTON_KEY));
-        myCurrentLoadPopup.getMyPopup().show(s);
-        myCurrentLoadPopup.setPopupButton(e -> saveFile(myCurrentLoadPopup.getFilePackage(), stringToSave));
-    }
-
-    public void createNewFileLoaderPopup(Stage s, EventHandler<ActionEvent> loadFileAction) {
-        myCurrentLoadPopup = new LoadConfigPopup();
-        myCurrentLoadPopup.setPromptProperty(languageHelper.getStringProperty(LOAD_FILE_PROMPT));
-        myCurrentLoadPopup.setGoButtonProperty(languageHelper.getStringProperty(GO_BUTTON_KEY));
-        myCurrentLoadPopup.getMyPopup().show(s);
-        myCurrentLoadPopup.setPopupButton(loadFileAction);
     }
 
 
