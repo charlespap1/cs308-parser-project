@@ -32,7 +32,7 @@ public abstract class ScrollingWindow implements StaticViewElement {
 
     protected VBox myHolder = new VBox(VBOX_SPACING);
 
-    protected double myWidth = SetupScreen.WIDTH / 3.0 - SCROLLING_SIDE_PADDING;
+    protected double myWidth = SetupScreen.WIDTH / 3.0 - SCROLLING_SIDE_PADDING*2;
     protected double myHeight = SetupScreen.HEIGHT / 2.0 - SCROLLING_MIDDLE_PADDING - SCROLLING_TOP_PADDING;
     protected VBox myTextHolder = new VBox(TEXT_HOLDER_SPACING);
     protected ListView<Token> myList = new ListView<>();
