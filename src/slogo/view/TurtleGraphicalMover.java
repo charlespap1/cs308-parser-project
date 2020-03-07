@@ -26,19 +26,18 @@ import java.util.Objects;
  * @author Juliet, Natalie
  */
 public class TurtleGraphicalMover implements StaticViewElement {
-    public static final int BOX_SPACING = 5;
-    public static final int MAJOR_BOX_SPACING = 15;
-    public static final String ARROW_IMAGE_FILE = "arrow.png";
-    public static final int BUTTON_WIDTH = 20;
-    public static final int DEFAULT_PEN_WIDTH = 1;
-    public static final int MOVEMENT_VALUE = 30;
-    public static final int FIRST_ELEMENT_IN_LIST = 0;
+    private static final int BOX_SPACING = 5;
+    private static final int MAJOR_BOX_SPACING = 15;
+    private static final String ARROW_IMAGE_FILE = "arrow.png";
+    private static final int BUTTON_WIDTH = 20;
+    private static final int DEFAULT_PEN_WIDTH = 1;
+    private static final int MOVEMENT_VALUE = 30;
+    private static final int FIRST_ELEMENT_IN_LIST = 0;
 
     private StringProperty forwardString = new SimpleStringProperty();
     private StringProperty rightString = new SimpleStringProperty();
     private StringProperty backString = new SimpleStringProperty();
     private StringProperty leftString = new SimpleStringProperty();
-
 
     private VBox myButtonHolder;
     private HBox myMiddleButtons;

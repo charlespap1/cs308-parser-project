@@ -20,7 +20,7 @@ import java.util.List;
  */
 
 public class ScreenManager {
-    public static final int INITIAL_TURTLE_INDEX = 0;
+    private static final int INITIAL_TURTLE_INDEX = 0;
 
     private Group myRoot;
     private UserCommandField myUserInput;

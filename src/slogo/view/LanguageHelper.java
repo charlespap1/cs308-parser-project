@@ -13,8 +13,8 @@ import java.util.ResourceBundle;
  * @author Juliet
  */
 public class LanguageHelper {
-    private ResourceBundle myResources;
     private static final String BASE_RESOURCES_PATH = "resources.labels.";
+    private ResourceBundle myResources;
     private HashMap<String, StringProperty> labelMap = new HashMap<>();
 
     public LanguageHelper(StringProperty language) {

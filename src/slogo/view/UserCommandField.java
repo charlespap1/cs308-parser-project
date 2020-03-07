@@ -13,8 +13,8 @@ import java.util.List;
  */
 public class UserCommandField implements StaticViewElement {
 
-    public static final double FIELD_SIDE_PADDING = DrawingCanvas.CANVAS_SIDE_PADDING;
-    public static final double FIELD_BOTTOM_PADDING = DrawingCanvas.CANVAS_BOTTOM_PADDING;
+    private static final double FIELD_SIDE_PADDING = DrawingCanvas.CANVAS_SIDE_PADDING;
+    private static final double FIELD_BOTTOM_PADDING = DrawingCanvas.CANVAS_BOTTOM_PADDING;
 
     private TextArea myTextField;
 

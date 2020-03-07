@@ -17,10 +17,10 @@ import java.awt.geom.Point2D;
  * @author Juliet, Natalie
  */
 public class Turtle {
-    public static final int TURTLE_IMAGE_SIZE = 30;
-    public static final double DEFAULT_ANGLE = 90;
-    public static final double TURTLE_FACTOR = TURTLE_IMAGE_SIZE / 2.0;
-    public static final String STATE_POPUP_STYLE = "state-popup";
+    private static final int TURTLE_IMAGE_SIZE = 30;
+    private static final double DEFAULT_ANGLE = 90;
+    private static final double TURTLE_FACTOR = TURTLE_IMAGE_SIZE / 2.0;
+    private static final String STATE_POPUP_STYLE = "state-popup";
 
     private ImageView myTurtleView;
     private double centerX;
@@ -54,9 +54,9 @@ public class Turtle {
     }
 
     /**
-     * Allows turtle's properties to be binded
+     * Allows turtle's properties to be bound
      * to the backend turtle so the turtle will update as soon
-     * as an instruciton is parsed
+     * as an instruction is parsed
      *
      * @param turtle
      */
@@ -166,7 +166,6 @@ public class Turtle {
         return x.getValue() > canvasWidth / 2 || x.getValue() < -canvasWidth / 2 + TURTLE_IMAGE_SIZE ||
                 y.getValue() > canvasHeight / 2 || y.getValue() < -canvasHeight / 2 + TURTLE_IMAGE_SIZE;
     }
-
 
     private void fixBounding() {
         double xDistanceOutOfBounds = 0;
