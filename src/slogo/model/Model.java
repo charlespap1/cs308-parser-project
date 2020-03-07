@@ -137,7 +137,9 @@ public class Model implements ModelAPI{
             String[] inputPieces = rawString.split(WHITESPACE);
             for (String piece: inputPieces) {
                 if (piece.trim().length() > 0) {
+                    //System.out.println(commands);
                     addToAppropriateStack(piece);
+                    //System.out.println(commands);
                 }
             }
         }
@@ -145,19 +147,32 @@ public class Model implements ModelAPI{
     }
 
     private void addToAppropriateStack(String piece) throws InvalidCommandException, InvalidNumberArgumentsException {
-        try {
-            Token currItem = createFromString.getSymbolAsObj(piece);
-            if (currItem instanceof NewCommandName && (commands.isEmpty() || !(commands.peek() instanceof MakeUserInstruction))) {
+        Token currItem = createFromString.getSymbolAsObj(piece);
+        if (currItem instanceof NewCommandName) {
+            checkIsEmpty();
+            checkNotMakeUserInstruction();
+            addArgumentToStack(currItem);
+        } else if (currItem instanceof Instruction) {
+            Instruction currInstr = (Instruction) currItem;
+            ((Instruction) currItem).setAccessor(accessor);
+            addInstructionToStack(currInstr);
+        } else {
+            addArgumentToStack(currItem);
+        }
+    }
+
+    private void checkIsEmpty() {
+        if(commands.isEmpty()) {
+            throw new InvalidCommandException();
+        }
+    }
+
+    private void checkNotMakeUserInstruction() {
+        if(!commands.isEmpty()){
+            if(!(commands.peek() instanceof MakeUserInstruction)){
                 throw new InvalidCommandException();
-            } else if (currItem instanceof Instruction) {
-                Instruction currInstr = (Instruction) currItem;
-                ((Instruction) currItem).setAccessor(accessor);
-                addInstructionToStack(currInstr);
-            } else {
-                addArgumentToStack(currItem);
             }
         }
-        catch (Exception e) { errorMessage.set(e.getMessage()); }
     }
 
     private void addArgumentToStack(Token currItem) {
