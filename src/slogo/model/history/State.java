@@ -2,6 +2,9 @@ package slogo.model.history;
 
 import slogo.model.Turtle;
 
+/**
+ * Stores a state for an individual turtle.
+ */
 public class State {
     private double id;
     private double xPos;
@@ -35,7 +38,11 @@ public class State {
         return angle;
     }
 
-    public boolean getIsActive() { return isActive; }
+    public boolean getIsActive() {
+        return isActive;
+    }
 
-    public boolean getIsVisible() { return isVisible; }
+    public boolean getIsVisible() {
+        return isVisible;
+    }
 }

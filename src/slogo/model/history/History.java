@@ -11,6 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Tracks program history for an instance of Model. Handles undo, redo, clear history, and adds a new program with each
+ * new input to the back end.
+ */
 public class History {
 
     private List<Program> programHistory = new ArrayList<>();
@@ -21,7 +25,7 @@ public class History {
 
     public void addNewProgram(Program p) {
         int lastProgramIndex = programHistory.size() - 1;
-        while (programPointer<lastProgramIndex){
+        while (programPointer < lastProgramIndex) {
             programHistory.remove(lastProgramIndex);
             lastProgramIndex--;
         }
@@ -47,12 +51,12 @@ public class History {
         return currProgram.getInitialTurtleStates();
     }
 
-    public void addCommand(Instruction instruction){
+    public void addCommand(Instruction instruction) {
         programHistory.get(programPointer).addNewCommand(instruction);
         myHistory.add(instruction);
     }
 
-    public void clearCurrentProgram(){
+    public void clearCurrentProgram() {
         Program currProgram = programHistory.get(programPointer);
         currProgram.clear();
     }
@@ -64,12 +68,20 @@ public class History {
         addNewProgram(p);
     }
 
-    public ObservableList<Token> getHistoryList() { return myHistory; }
-    public BooleanProperty getUndoDisabled() { return undoDisabled; }
-    public BooleanProperty getRedoDisabled() { return redoDisabled; }
+    public ObservableList<Token> getHistoryList() {
+        return myHistory;
+    }
 
-    private void setUndoRedo(){
-        undoDisabled.setValue(programPointer<=0);
-        redoDisabled.setValue(programPointer>=programHistory.size() - 1);
+    public BooleanProperty getUndoDisabled() {
+        return undoDisabled;
+    }
+
+    public BooleanProperty getRedoDisabled() {
+        return redoDisabled;
+    }
+
+    private void setUndoRedo() {
+        undoDisabled.setValue(programPointer <= 0);
+        redoDisabled.setValue(programPointer >= programHistory.size() - 1);
     }
 }

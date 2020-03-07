@@ -11,23 +11,23 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import slogo.model.tokens.Token;
 import slogo.model.tokens.Variable;
+import slogo.view.exceptions.NoVariableToSelectException;
 
 import java.util.Objects;
-import slogo.view.exceptions.NoVariableToSelectException;
 
 /**
  * Class which allows users to view their previously defined variables and click
  * to change them
+ *
  * @author Natalie
  */
 public class VariableViewer extends ScrollingWindow {
-    public static final String INNER_LIST_STYLE = "inner-list-view";
-    public static final String GO_BUTTON = "go.png";
+    private static final String INNER_LIST_STYLE = "inner-list-view";
+    private static final String GO_BUTTON = "go.png";
     private static final int HBOX_SPACING = 10;
     private static final int TEXT_HEIGHT = 20;
-    private static final int SAVE_BUTTON_PADDING = 100;
 
-    private HBox box =  new HBox(HBOX_SPACING);
+    private HBox box = new HBox(HBOX_SPACING);
     private Button button = new Button();
     private Label label = new Label();
     private TextArea text = new TextArea();
@@ -44,8 +44,8 @@ public class VariableViewer extends ScrollingWindow {
         myListHolder.getChildren().add(valuesListView);
     }
 
-    private void buildHBox(){
-        text.setMaxWidth(myWidth/2);
+    private void buildHBox() {
+        text.setMaxWidth(myWidth / 2);
         text.setMaxHeight(TEXT_HEIGHT);
 
         box.setAlignment(Pos.CENTER);
@@ -57,7 +57,7 @@ public class VariableViewer extends ScrollingWindow {
         super.bindList(list);
         list.addListener((ListChangeListener<Token>) c -> {
             myValues.clear();
-            for (Token t:list){
+            for (Token t : list) {
                 myValues.add(t.execute());
             }
         });
@@ -77,24 +77,25 @@ public class VariableViewer extends ScrollingWindow {
 
     /**
      * Allows for clicking on variable to change it
+     *
      * @param t
      */
     @Override
-    protected void onSelectedItem(Token t){
-        try{
+    protected void onSelectedItem(Token t) {
+        try {
             label.setText(t.toString() + " " + t.execute());
             text.setText("");
             button.setOnAction(e -> {
-                try{
+                try {
                     double newVal = Double.parseDouble(text.getText());
                     ((Variable) t).setVariable(newVal);
-                } catch (Exception ex){
+                } catch (Exception ex) {
                     ((Variable) t).setVariable(t.execute());
                 }
                 myHolder.getChildren().remove(box);
             });
             if (!myHolder.getChildren().contains(box)) myHolder.getChildren().add(box);
-        } catch(Exception e) {
+        } catch (Exception e) {
             throw new NoVariableToSelectException(e);
         }
     }

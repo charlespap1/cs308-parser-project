@@ -1,16 +1,14 @@
-package slogo.view.setup;
+package slogo.view.exceptions;
 
 public class MethodDoesNotExistException extends RuntimeException {
     private static final String errorMessage = "ERROR: Invalid Display Command.";
 
-    public MethodDoesNotExistException()
-    {
+    public MethodDoesNotExistException() {
         super();
     }
 
     @Override
-    public String getMessage()
-    {
+    public String getMessage() {
         return errorMessage;
     }
 

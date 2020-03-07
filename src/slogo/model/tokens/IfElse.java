@@ -9,16 +9,16 @@ public class IfElse extends Instruction {
 
     private static final int numArgs = 3;
 
-    public IfElse(String name){
+    public IfElse(String name) {
         super(numArgs);
         this.instrName = name;
     }
 
-    private double runCommandsInList (Token list) {
+    private double runCommandsInList(Token list) {
         if (!(list instanceof ListSyntax)) throw new InvalidArgumentException();
         List<Token> commands = ((ListSyntax) list).getContents();
         double returnValue = 0;
-        for (Token command: commands) {
+        for (Token command : commands) {
             if (!(command instanceof Instruction)) throw new InvalidLoopConditionException();
             returnValue = command.execute();
         }

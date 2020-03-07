@@ -9,13 +9,13 @@ public class For extends Instruction {
 
     private static final int numArgs = 2;
 
-    public For(String name){
+    public For(String name) {
         super(numArgs);
         this.instrName = name;
     }
 
     @Override
-    public double execute () {
+    public double execute() {
         Token list1 = parameters.get(0);
         if (!(list1 instanceof ListSyntax)) throw new InvalidArgumentException();
 

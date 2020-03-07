@@ -14,7 +14,8 @@ public class Sine extends Instruction {
     @Override
     public double execute() {
         List<Double> paramsAsVals = this.getParamsAsVals();
-        double val = paramsAsVals.get(0);;
+        double val = paramsAsVals.get(0);
+        ;
         return Math.sin(Math.toRadians(val));
     }
 }

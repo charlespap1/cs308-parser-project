@@ -15,9 +15,11 @@ public class AskWith extends Instruction {
     private TurtleAction myAction = t -> {
         double returnValue = Integer.MIN_VALUE;
         double val = myCondition.execute();
-        if ( val == 1){
+        if (val == 1) {
             for (Token command : commands) {
-                if (!(command instanceof Instruction)) { throw new InvalidLoopConditionException(); }
+                if (!(command instanceof Instruction)) {
+                    throw new InvalidLoopConditionException();
+                }
                 returnValue = command.execute();
             }
         }
@@ -25,7 +27,7 @@ public class AskWith extends Instruction {
         return returnValue;
     };
 
-    public AskWith(String name){
+    public AskWith(String name) {
         super(numArgs);
         instrName = name;
     }
@@ -38,7 +40,9 @@ public class AskWith extends Instruction {
 
         List<Token> condition = ((ListSyntax) list1).getContents();
         Token conditionToken = condition.get(0);
-        if (!(conditionToken instanceof Instruction)) { throw new InvalidLoopConditionException(); }
+        if (!(conditionToken instanceof Instruction)) {
+            throw new InvalidLoopConditionException();
+        }
         myCondition = (Instruction) conditionToken;
         commands = ((ListSyntax) list2).getContents();
 
