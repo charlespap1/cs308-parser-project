@@ -41,8 +41,6 @@ public interface View {
 
     void setSaveTextFileButton(Stage stage);
 
-    void setSaveVariableButton(String newCommands, Stage stage);
-
     void setUndoAction(EventHandler<ActionEvent> undoAction);
 
     void setRedoAction(EventHandler<ActionEvent> redoAction);

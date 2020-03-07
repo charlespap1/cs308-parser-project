@@ -101,6 +101,10 @@ public class Model implements ModelAPI{
         return createFromString.getNewCommandList();
     }
 
+    public String getNewVarsAndCommandsAsString() {
+        return createFromString.saveNewCommands() + createFromString.saveVariables();
+    }
+
     public BooleanProperty getUndoDisabled() {
         return history.getUndoDisabled();
     }

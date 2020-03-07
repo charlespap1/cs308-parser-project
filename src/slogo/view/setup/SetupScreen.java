@@ -358,8 +358,8 @@ public class SetupScreen {
         return new ScreenManager(root, myUserInput, myTurtles, myDrawingCanvas, myLanguageSelector, myLineManager, myCustomizer, myGraphicalMover);
     }
 
-    public void setVariableSaveButton(String newCommands, Stage stage) {
-        mySaveVarsAndCommands.setOnAction(e -> createNewFileSaverPopup(stage, newCommands));
+    public void setVarsAndCommandsSaveButton(EventHandler<ActionEvent> saveNewCommandsAndVarsAction) {
+        mySaveVarsAndCommands.setOnAction(saveNewCommandsAndVarsAction);
     }
 
     private void setupBox(Pane box, double x, double y, double width) {
@@ -419,7 +419,7 @@ public class SetupScreen {
         }
     }
 
-    private void createNewFileSaverPopup(Stage s, String stringToSave) {
+    public void createNewFileSaverPopup(Stage s, String stringToSave) {
         myCurrentLoadPopup = new LoadConfigPopup();
         myCurrentLoadPopup.setPromptProperty(languageHelper.getStringProperty(LOAD_FILE_PROMPT));
         myCurrentLoadPopup.setGoButtonProperty(languageHelper.getStringProperty(SAVE_BUTTON_KEY));
@@ -427,7 +427,7 @@ public class SetupScreen {
         myCurrentLoadPopup.setPopupButton(e -> saveFile(myCurrentLoadPopup.getFilePackage(), stringToSave));
     }
 
-    private void createNewFileLoaderPopup(Stage s, EventHandler<ActionEvent> loadFileAction) {
+    public void createNewFileLoaderPopup(Stage s, EventHandler<ActionEvent> loadFileAction) {
         myCurrentLoadPopup = new LoadConfigPopup();
         myCurrentLoadPopup.setPromptProperty(languageHelper.getStringProperty(LOAD_FILE_PROMPT));
         myCurrentLoadPopup.setGoButtonProperty(languageHelper.getStringProperty(GO_BUTTON_KEY));

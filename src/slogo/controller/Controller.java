@@ -64,16 +64,9 @@ public class Controller extends Application {
             }
         });
         myView.setSaveTextFileButton(stage);
-        //TODO: get saver working
-        myView.setSaveVariableButton("WHATEVER YOU WANT TO SAVE", stage);
-        myView.setLoadVarsAndCommandsButton(e -> loadVarsAndCommands(myView.getFile()), stage);
+        myView.setSaveVarsAndCommandsButton(e -> myView.pushVarsAndCommandsToFile(myModel.getNewVarsAndCommandsAsString(), stage));
+        myView.setLoadVarsAndCommandsButton(e -> executeTextFile(myView.getFile(), myView, myModel), stage);
     }
-
-    private void loadVarsAndCommands(File f) {
-        //TODO: get loader working
-        System.out.println("LOAD YOUR VARIABLES AND COMMANDS THAT ARE HELD IN f");
-    }
-
 
     /**
      * Method which can be called by any instance of a Visual object

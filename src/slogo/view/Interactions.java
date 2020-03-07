@@ -135,8 +135,12 @@ public class Interactions implements View {
         mySetup.setSaveTextFileButton(stage);
     }
 
-    public void setSaveVariableButton(String newCommands, Stage stage) {
-        mySetup.setVariableSaveButton(newCommands, stage);
+    public void setSaveVarsAndCommandsButton(EventHandler<ActionEvent> saveNewCommandsAndVarsAction) {
+        mySetup.setVarsAndCommandsSaveButton(saveNewCommandsAndVarsAction);
+    }
+
+    public void pushVarsAndCommandsToFile(String s, Stage stage) {
+        mySetup.createNewFileSaverPopup(stage, s);
     }
 
     public void setUndoAction(EventHandler<ActionEvent> undoAction) {
