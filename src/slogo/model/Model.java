@@ -23,9 +23,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
-public class Model implements ModelAPI {
-    private static final String WHITESPACE = "\\s+";
-    private static final String SYNTAX = "Syntax";
+public class Model implements ModelAPI{
+    public static final String WHITESPACE = "\\s+";
+    public static final String SYNTAX = "Syntax";
+    public static final String LINE_BREAK = "\\R+";
 
     private Stack<Token> commands = new Stack<>();
     private CodeFactory createFromString;
@@ -159,17 +160,24 @@ public class Model implements ModelAPI {
 
     private void parseInstructions(String rawString) {
         try {
-            String[] inputPieces = rawString.split(WHITESPACE);
-            for (String piece : inputPieces) {
-                if (piece.trim().length() > 0) {
-                    //System.out.println(commands);
-                    addToAppropriateStack(piece);
-                    //System.out.println(commands);
+            String[] lines = rawString.split(LINE_BREAK);
+            for(String line : lines) {
+                if (isNotComment(line)) {
+                    String[] inputPieces = line.split(WHITESPACE);
+                    for (String piece : inputPieces) {
+                        if (piece.trim().length() > 0) {
+                            addToAppropriateStack(piece);
+                        }
+                    }
                 }
             }
         } catch (Exception e) {
             errorMessage.set(e.getMessage());
         }
+    }
+
+    private boolean isNotComment(String line) {
+        return !(line.length() > 0 && line.substring(0,1).equals("#"));
     }
 
     private void addToAppropriateStack(String piece) throws InvalidCommandException, InvalidNumberArgumentsException {
