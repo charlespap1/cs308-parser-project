@@ -47,94 +47,79 @@ import java.util.*;
  */
 
 public class SetupScreen {
-    public static final String MAIN_STYLESHEET = "main.css";
-    public static final String FILE_CASE_PREFERENCE = "UTF-8";
+    private static final String MAIN_STYLESHEET = "main.css";
+    private static final String FILE_CASE_PREFERENCE = "UTF-8";
 
-    public static final double BOX_SPACING = 10;
     public static final int WIDTH = 1000;
     public static final int HEIGHT = 720;
-    public static final Paint BACKGROUND = Color.AZURE;
-    public static final double BUTTON_HEIGHT_OFFSET = 40;
-    public static final double GRAPHICAL_VIEWER_HEIGHT_OFFSET = 255;
-    public static final double COMMON_COMMAND_BUTTON_HEIGHT_OFFSET = 15;
-    public static final double COMMON_COMMAND_BUTTON_WIDTH_OFFSET = 225;
-    public static final int COMMAND_COLUMN = 1;
-    public static final int LIST_VIEW_COLUMN = 2;
-    public static final int ERROR_MESSAGE_PADDING = 320;
-    public static final double HALFWAY_DOWN = HEIGHT / 2.0;
-    private static final double SAVE_VARS_PADDING_X = 60;
+    private static final double BOX_SPACING = 10;
+    private static final Paint BACKGROUND = Color.AZURE;
+    private static final double BUTTON_HEIGHT_OFFSET = 40;
+    private static final double GRAPHICAL_VIEWER_HEIGHT_OFFSET = 255;
+    private static final double COMMON_COMMAND_BUTTON_HEIGHT_OFFSET = 15;
+    private static final double COMMON_COMMAND_BUTTON_WIDTH_OFFSET = 225;
+    private static final int COMMAND_COLUMN = 1;
+    private static final int LIST_VIEW_COLUMN = 2;
+    private static final int ERROR_MESSAGE_PADDING = 320;
+    private static final double HALFWAY_DOWN = HEIGHT / 2.0;
     private static final double SAVE_VARS_PADDING_Y = 320;
 
-    public static final String VARIABLE_TITLE_KEY = "VariableTitleText";
-    public static final String HISTORY_TITLE_KEY = "HistoryTitleText";
-    public static final String NEW_COMMAND_TITLE_KEY = "NewCommandTitleText";
-
+    private static final String VARIABLE_TITLE_KEY = "VariableTitleText";
+    private static final String HISTORY_TITLE_KEY = "HistoryTitleText";
+    private static final String NEW_COMMAND_TITLE_KEY = "NewCommandTitleText";
     private static final String BACKGROUND_SELECTOR_TEXT_KEY = "BackgroundSelectorText";
     private static final String LANGUAGE_SELECTOR_TEXT_KEY = "LanguageSelectorText";
     private static final String PEN_SELECTOR_TEXT_KEY = "PenSelectorText";
     private static final String PEN_THICKNESS_TEXT_KEY = "PenThicknessText";
     private static final String TURTLE_SELECTOR_TEXT_KEY = "TurtleSelectorText";
-
-    public static final String COMMON_COMMAND_BUTTON_KEY = "CommonCommandButton";
-    public static final String GO_BUTTON_KEY = "GoButton";
-    public static final String CLEAR_BUTTON_KEY = "ClearButton";
-    public static final String STOP_BUTTON_KEY = "StopButton";
-    public static final String NEW_WINDOW_BUTTON_KEY = "NewWindowButton";
-    public static final String PEN_UP_BUTTON_KEY = "PenUpButton";
-    public static final String PEN_DOWN_BUTTON_KEY = "PenDownButton";
+    private static final String COMMON_COMMAND_BUTTON_KEY = "CommonCommandButton";
+    private static final String GO_BUTTON_KEY = "GoButton";
+    private static final String CLEAR_BUTTON_KEY = "ClearButton";
+    private static final String STOP_BUTTON_KEY = "StopButton";
+    private static final String NEW_WINDOW_BUTTON_KEY = "NewWindowButton";
+    private static final String PEN_UP_BUTTON_KEY = "PenUpButton";
+    private static final String PEN_DOWN_BUTTON_KEY = "PenDownButton";
     private static final String NEW_CONFIG_BUTTON_KEY = "NewConfigButton";
     private static final String UNDO_BUTTON_KEY = "UndoButton";
     private static final String REDO_BUTTON_KEY = "RedoButton";
     private static final String SAVE_BUTTON_KEY = "SaveButton";
     private static final String SAVE_VARS_BUTTON_KEY = "SaveVarsButton";
     private static final String LOAD_VARS_BUTTON_KEY = "LoadVarsButton";
-
     private static final String FORWARD_KEY = "Forward";
     private static final String BACKWARD_KEY = "Backward";
     private static final String RIGHT_KEY = "Right";
     private static final String LEFT_KEY = "Left";
-
     private static final String LOAD_FILE_PROMPT = "LoadFilePrompt";
     private static final String SELECT_PREFERENCES_PROMPT = "SelectPreferencesPrompt";
 
-    private UserCommandField myUserInput = new UserCommandField(WIDTH, HEIGHT);
     private Group root = new Group();
-    private List<Turtle> myTurtles = new ArrayList<>();
-    private Map<StaticViewElement, List<StringProperty>> myStaticViewElements;
+    private UserCommandField myUserInput = new UserCommandField(WIDTH, HEIGHT);
     private DrawingCanvas myDrawingCanvas = new DrawingCanvas(WIDTH, HEIGHT);
-    private Button myGo;
-    private Button myClear;
-    private Button myStop;
-    private Button myNewWindow;
-    private Button mySaveText;
-
-    private Button mySaveVarsAndCommands;
-    private Button loadVarsAndCommands;
-
-    private Button loadFileButton;
-
     private LoadConfigPopup myCurrentLoadPopup;
     private SetPreferencesPopup myCurrentNewWindowPopup;
-
-    private Button undoButton;
-    private Button redoButton;
-
     private HistoryViewer myHistory = new HistoryViewer(COMMAND_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING);
     private ScrollingWindow myNewCommandViewer = new CommandViewer(LIST_VIEW_COLUMN, DrawingCanvas.CANVAS_TOP_PADDING, this::setInputText);
     private ScrollingWindow myVariableView = new VariableViewer(LIST_VIEW_COLUMN, HALFWAY_DOWN);
     private LineManager myLineManager = new LineManager(root);
-
-
+    private LanguageHelper languageHelper;
+    private TurtleGraphicalMover myGraphicalMover;
     private LanguageSelector myLanguageSelector;
-
+    private DisplayCustomizer myCustomizer;
+    private List<Turtle> myTurtles = new ArrayList<>();
+    private Map<StaticViewElement, List<StringProperty>> myStaticViewElements;
     private Label myCurrentErrorMessage = new Label();
     private VBox belowInputFieldItems = new VBox(BOX_SPACING);
     private HBox belowCanvasButtons = new HBox(BOX_SPACING);
-
-    private DisplayCustomizer myCustomizer;
-
-    private LanguageHelper languageHelper;
-    private TurtleGraphicalMover myGraphicalMover;
+    private Button myGo = new Button();
+    private Button myClear = new Button();
+    private Button myStop = new Button();
+    private Button myNewWindow = new Button();
+    private Button mySaveText = new Button();
+    private Button mySaveVarsAndCommands = new Button();
+    private Button loadVarsAndCommands = new Button();
+    private Button loadFileButton = new Button();
+    private Button undoButton = new Button();
+    private Button redoButton = new Button();
 
     /**
      * Sets up all of the visual elements so that
@@ -147,26 +132,16 @@ public class SetupScreen {
         setupBox(belowCanvasButtons, DrawingCanvas.CANVAS_SIDE_PADDING, DrawingCanvas.CANVAS_TOP_PADDING + myDrawingCanvas.getHeight() + BOX_SPACING, myDrawingCanvas.getWidth());
         setButtons();
         setSelectors();
-
         myGraphicalMover = new TurtleGraphicalMover(myUserInput.getView().getLayoutX(), myUserInput.getView().getLayoutY() + GRAPHICAL_VIEWER_HEIGHT_OFFSET);
         myCustomizer = new DisplayCustomizer(belowCanvasButtons.getLayoutX(), belowCanvasButtons.getLayoutY() + BUTTON_HEIGHT_OFFSET + 10);
         setText();
-
         root.getChildren().addAll(belowInputFieldItems, belowCanvasButtons);
-
-        for (StaticViewElement element : myStaticViewElements.keySet()) {
-            root.getChildren().add(element.getView());
-        }
-
-
+        for (StaticViewElement element : myStaticViewElements.keySet()) { root.getChildren().add(element.getView()); }
         myCurrentErrorMessage.setLayoutX(myVariableView.getView().getLayoutX());
         myCurrentErrorMessage.setLayoutY(myVariableView.getView().getLayoutY() + ERROR_MESSAGE_PADDING);
-
         root.getChildren().add(myCurrentErrorMessage);
-
         Scene scene = new Scene(root, WIDTH, HEIGHT, BACKGROUND);
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getClassLoader().getResource(MAIN_STYLESHEET)).toExternalForm());
-
         return scene;
     }
 
@@ -182,7 +157,6 @@ public class SetupScreen {
         myGraphicalMover.setButtons(executor, myLineManager);
         myHistory.setDirectExecutor(executor, myLineManager);
     }
-
 
     /**
      * Allows us to add a jumper to a common command page
@@ -200,13 +174,19 @@ public class SetupScreen {
     }
 
     /**
-     * Binds the error message to the backend so both ends can throw exceptions
+     * Allows controller to get the file which is loaded in the popup
+     * in order to pass to backend
      *
-     * @param message
+     * @return
      */
-    public void bindErrorMessage(StringProperty message) {
-        myCurrentErrorMessage.textProperty().bindBidirectional(message);
-        myCurrentErrorMessage.setTextFill(Color.RED);
+    public File getFile() {
+        myLineManager.newProgram();
+        try {
+            return myCurrentLoadPopup.getFile();
+        } catch (FileDoesNotExistException err) {
+            myCurrentErrorMessage.textProperty().setValue(err.getMessage());
+            return null;
+        }
     }
 
     /**
@@ -227,7 +207,6 @@ public class SetupScreen {
      * @param stage
      */
     public void setNewWindowButton(EventHandler<ActionEvent> newWindowAction, Stage stage) {
-
         EventHandler<ActionEvent> e = event -> {
             myCurrentNewWindowPopup = new SetPreferencesPopup();
             myCurrentNewWindowPopup.setPromptProperty(languageHelper.getStringProperty(SELECT_PREFERENCES_PROMPT));
@@ -235,25 +214,7 @@ public class SetupScreen {
             myCurrentNewWindowPopup.getMyPopup().show(stage);
             myCurrentNewWindowPopup.setPopupButton(newWindowAction);
         };
-
         myNewWindow.setOnAction(e);
-
-    }
-
-    /**
-     * Allows controller to get the file which is loaded in the popup
-     * in order to pass to backend
-     *
-     * @return
-     */
-    public File getFile() {
-        myLineManager.newProgram();
-        try {
-            return myCurrentLoadPopup.getFile();
-        } catch (FileDoesNotExistException err) {
-            myCurrentErrorMessage.textProperty().setValue(err.getMessage());
-            return null;
-        }
     }
 
     /**
@@ -264,7 +225,6 @@ public class SetupScreen {
     public void setSaveTextFileButton(Stage s) {
         mySaveText.setOnAction(e -> createNewFileSaverPopup(s, myUserInput.getUserInput()));
     }
-
 
     /**
      * Allows us to create a popup with the current stage in controller. Also gives
@@ -334,16 +294,6 @@ public class SetupScreen {
     }
 
     /**
-     * Creates a new screen manger to set up and link our visual elements
-     * that interact with eachother in the frontend
-     *
-     * @return
-     */
-    public ScreenManager getScreenManager() {
-        return new ScreenManager(root, myUserInput, myTurtles, myDrawingCanvas, myLanguageSelector, myLineManager, myCustomizer, myGraphicalMover);
-    }
-
-    /**
      * Sets up undo button to delete lines and move the turtle back
      *
      * @param undoAction
@@ -384,10 +334,33 @@ public class SetupScreen {
         return myCurrentNewWindowPopup.getPreference();
     }
 
+    /**
+     * Binds the error message to the backend so both ends can throw exceptions
+     *
+     * @param message
+     */
+    public void bindErrorMessage(StringProperty message) {
+        myCurrentErrorMessage.textProperty().bindBidirectional(message);
+        myCurrentErrorMessage.setTextFill(Color.RED);
+    }
+
+    public void setError(Exception e) {
+        myCurrentErrorMessage.textProperty().set(e.getMessage());
+    }
+
+    /**
+     * Creates a new screen manger to set up and link our visual elements
+     * that interact with each other in the frontend
+     *
+     * @return
+     */
+    public ScreenManager getScreenManager() {
+        return new ScreenManager(root, myUserInput, myTurtles, myDrawingCanvas, myLanguageSelector, myLineManager, myCustomizer, myGraphicalMover);
+    }
+
     public void setVariableSaveButton(String newCommands, Stage stage) {
         mySaveVarsAndCommands.setOnAction(e -> createNewFileSaverPopup(stage, newCommands));
     }
-
 
     private void setupBox(Pane box, double x, double y, double width) {
         box.setLayoutX(x);
@@ -405,49 +378,24 @@ public class SetupScreen {
     }
 
     private void setButtons() {
-        myGo = new Button();
         myGo.setMinWidth(myUserInput.getWidth());
+        myStop.setOnAction(e -> moveTurtlesToCenter());
+        belowCanvasButtons.setMaxWidth(myDrawingCanvas.getWidth());
+        belowCanvasButtons.setMinWidth(myDrawingCanvas.getWidth());
+        belowCanvasButtons.setAlignment(Pos.CENTER);
+        belowCanvasButtons.getChildren().addAll(myClear, myStop, undoButton, redoButton);
         belowInputFieldItems.getChildren().add(myGo);
-        myClear = new Button();
-        belowCanvasButtons.getChildren().add(myClear);
-        myStop = new Button();
-        belowCanvasButtons.getChildren().add(myStop);
-
-
+        HBox newWindowButtons = new HBox(BOX_SPACING);
+        newWindowButtons.setLayoutY(COMMON_COMMAND_BUTTON_HEIGHT_OFFSET);
+        newWindowButtons.setLayoutX(WIDTH / 2.0 - BUTTON_HEIGHT_OFFSET * 4);
+        newWindowButtons.getChildren().addAll(myNewWindow, loadFileButton, mySaveText);
         HBox variableCommandButtons = new HBox(BOX_SPACING);
-
-        mySaveVarsAndCommands = new Button();
-        loadVarsAndCommands = new Button();
         variableCommandButtons.setLayoutX(myVariableView.getView().getLayoutX());
         variableCommandButtons.setLayoutY(myVariableView.getView().getLayoutY() + SAVE_VARS_PADDING_Y);
         variableCommandButtons.setAlignment(Pos.CENTER);
         variableCommandButtons.getChildren().addAll(mySaveVarsAndCommands, loadVarsAndCommands);
-
-
-        myStop.setOnAction(e -> moveTurtlesToCenter());
-
-        loadFileButton = new Button();
-        myNewWindow = new Button();
-        mySaveText = new Button();
-        HBox newWindowButtons = new HBox(BOX_SPACING);
-        newWindowButtons.setLayoutY(COMMON_COMMAND_BUTTON_HEIGHT_OFFSET);
-        newWindowButtons.setLayoutX(WIDTH / 2 - BUTTON_HEIGHT_OFFSET * 4);
-        newWindowButtons.getChildren().addAll(myNewWindow, loadFileButton, mySaveText);
-        undoButton = new Button();
-        redoButton = new Button();
-        belowCanvasButtons.setMaxWidth(myDrawingCanvas.getWidth());
-        belowCanvasButtons.setMinWidth(myDrawingCanvas.getWidth());
-        belowCanvasButtons.setAlignment(Pos.CENTER);
-        belowCanvasButtons.getChildren().addAll(undoButton, redoButton);
-
         root.getChildren().addAll(newWindowButtons, variableCommandButtons);
     }
-
-
-    public void setError(Exception e) {
-        myCurrentErrorMessage.textProperty().set(e.getMessage());
-    }
-
 
     private void setSelectors() {
         myLanguageSelector = new LanguageSelector(DrawingCanvas.CANVAS_SIDE_PADDING, DrawingCanvas.CANVAS_TOP_PADDING / 4);
@@ -465,7 +413,6 @@ public class SetupScreen {
         bindButton(mySaveText, SAVE_BUTTON_KEY);
         bindButton(mySaveVarsAndCommands, SAVE_VARS_BUTTON_KEY);
         bindButton(loadVarsAndCommands, LOAD_VARS_BUTTON_KEY);
-
         setStaticViewElementMap();
         for (StaticViewElement element : myStaticViewElements.keySet()) {
             element.setTitleProperty(myStaticViewElements.get(element));
@@ -509,10 +456,8 @@ public class SetupScreen {
         return languageHelper.getStringProperty(key);
     }
 
-
     private void saveFile(String newFilePackage, String stringToSave) {
-        FileOutputStream out = null;
-
+        FileOutputStream out;
         try {
             out = new FileOutputStream(newFilePackage);
             PrintWriter writer = new PrintWriter(newFilePackage, FILE_CASE_PREFERENCE);
@@ -527,5 +472,4 @@ public class SetupScreen {
             myCurrentErrorMessage.textProperty().setValue(error.getMessage());
         }
     }
-
 }
