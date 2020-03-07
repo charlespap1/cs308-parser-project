@@ -10,5 +10,7 @@ public class YCoordinate extends Instruction {
     }
 
     @Override
-    public double execute(){ return myAccessor.turtleQueryToMaster(myAction); }
+    public double execute() {
+        return myAccessor.turtleQueryToMaster(myAction);
+    }
 }

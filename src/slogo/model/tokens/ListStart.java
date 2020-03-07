@@ -4,7 +4,7 @@ public class ListStart extends Instruction {
 
     private static final int numArgs = -1;
 
-    public ListStart(String name){
+    public ListStart(String name) {
         super(numArgs);
     }
 
@@ -14,5 +14,7 @@ public class ListStart extends Instruction {
     }
 
     @Override
-    public String toString() { return " [ "; }
+    public String toString() {
+        return " [ ";
+    }
 }

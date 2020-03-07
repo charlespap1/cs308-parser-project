@@ -14,12 +14,14 @@ public class Backward extends Instruction {
         return valueForExec;
     };
 
-    public Backward(String name){
+    public Backward(String name) {
         super(numArgs);
         instrName = name;
     }
 
     @Override
-    public double execute(){ return myAccessor.turtleCommandToMaster(myAction); }
+    public double execute() {
+        return myAccessor.turtleCommandToMaster(myAction);
+    }
 
 }

@@ -13,16 +13,18 @@ public class Ask extends Instruction {
 
     private TurtleAction myAction = t -> {
         double returnValue = 0;
-        if (activeTurtles.contains(t.getId())){
+        if (activeTurtles.contains(t.getId())) {
             for (Token command : commands) {
-                if (!(command instanceof Instruction)) { throw new InvalidLoopConditionException(); }
+                if (!(command instanceof Instruction)) {
+                    throw new InvalidLoopConditionException();
+                }
                 returnValue = command.execute();
             }
         }
         return returnValue;
     };
 
-    public Ask(String name){
+    public Ask(String name) {
         super(numArgs);
         instrName = name;
     }
@@ -35,7 +37,9 @@ public class Ask extends Instruction {
         activeTurtles = getParamsAsVals(turtles);
 
         Token list2 = parameters.get(1);
-        if (!(list2 instanceof ListSyntax)) { throw new InvalidArgumentException(); }
+        if (!(list2 instanceof ListSyntax)) {
+            throw new InvalidArgumentException();
+        }
         commands = ((ListSyntax) list2).getContents();
 
         return myAccessor.multiTurtleCommandToMaster(myAction, activeTurtles);

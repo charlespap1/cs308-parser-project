@@ -5,21 +5,24 @@ import slogo.model.exceptions.LanguageFileNotFoundException;
 import java.util.*;
 import java.util.regex.Pattern;
 
+/**
+ * Class to get appropriate token key from an input string.
+ */
 public class RegexHandler {
-    public static final String RESOURCES_PACKAGE = "resources.commands.";
-    public static final String DEFAULT_FILE = "English";
-    public static final String ERROR = "NO MATCH";
+    private static final String RESOURCES_PACKAGE = "resources.commands.";
+    private static final String DEFAULT_FILE = "English";
+    private static final String ERROR = "NO MATCH";
 
     private List<Map.Entry<String, Pattern>> mySymbols = new ArrayList<>();
 
     /**
      * Adds the given resource file to this language's recognized types
      */
-    public void addPatterns(String filename) throws LanguageFileNotFoundException{
-        try{
+    public void addPatterns(String filename) throws LanguageFileNotFoundException {
+        try {
             ResourceBundle resources = ResourceBundle.getBundle(RESOURCES_PACKAGE + filename);
             loopThroughKeys(resources);
-        } catch(Exception e) {
+        } catch (Exception e) {
             ResourceBundle resources = ResourceBundle.getBundle(RESOURCES_PACKAGE + DEFAULT_FILE);
             loopThroughKeys(resources);
             throw new LanguageFileNotFoundException(e);
@@ -45,5 +48,7 @@ public class RegexHandler {
         }
     }
 
-    private boolean match(String text, Pattern regex) { return regex.matcher(text).matches(); }
+    private boolean match(String text, Pattern regex) {
+        return regex.matcher(text).matches();
+    }
 }

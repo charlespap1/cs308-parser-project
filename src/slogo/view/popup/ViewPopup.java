@@ -7,16 +7,15 @@ import javafx.stage.Popup;
 
 /**
  * Interface to define what popups can do
+ *
  * @author Juliet
  */
 public interface ViewPopup {
+    void setPopupButton(EventHandler<ActionEvent> e);
 
-  void setPopupButton(EventHandler<ActionEvent> e);
+    Popup getMyPopup();
 
-  Popup getMyPopup();
+    void setGoButtonProperty(StringProperty sp);
 
-  void setGoButtonProperty(StringProperty sp);
-
-  void setPromptProperty(StringProperty sp);
-
+    void setPromptProperty(StringProperty sp);
 }

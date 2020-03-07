@@ -14,12 +14,14 @@ import java.util.Scanner;
 
 /**
  * Main method where the GUI comes together
+ *
  * @author natalie
  */
 public class Controller extends Application {
-    public static final String RESOURCES_PATH = "resources.commands.Methods";
-    public static final String DEFAULT_PREFERENCES = "DefaultPreferences";
-    public static void main (String[] args) {
+    private static final String RESOURCES_PATH = "resources.commands.Methods";
+    private static final String DEFAULT_PREFERENCES = "DefaultPreferences";
+
+    public static void main(String[] args) {
         launch(args);
     }
 
@@ -37,7 +39,7 @@ public class Controller extends Application {
         makeWindow(new Stage(), preference);
     }
 
-    private void makeWindow(Stage stage, String preferences){
+    private void makeWindow(Stage stage, String preferences) {
         Interactions myView = new Interactions(stage);
         Model myModel = new Model(myView.getLanguageChoice());
         myView.setGoButton(e -> getInstruction(myView, myModel));
@@ -53,35 +55,36 @@ public class Controller extends Application {
         myView.setLoadTextFileButton(e -> executeTextFile(myView.getFile(), myView, myModel), stage);
         myView.setClearHistory(e -> myModel.clearHistory());
         myView.setDirectInstructionExecutor(new DirectExecutor() {
-            public void execute(Instruction i) { myModel.executeCode(i); }
-            public void execute(String s) { myModel.executeCode(s); }
+            public void execute(Instruction i) {
+                myModel.executeCode(i);
+            }
+
+            public void execute(String s) {
+                myModel.executeCode(s);
+            }
         });
         myView.setSaveTextFileButton(stage);
+        //TODO: get saver working
         myView.setSaveVariableButton("WHATEVER YOU WANT TO SAVE", stage);
         myView.setLoadVarsAndCommandsButton(e -> loadVarsAndCommands(myView.getFile()), stage);
     }
 
-    private void loadVarsAndCommands(File f)
-    {
+    private void loadVarsAndCommands(File f) {
+        //TODO: get loader working
         System.out.println("LOAD YOUR VARIABLES AND COMMANDS THAT ARE HELD IN f");
-    }
-
-
-
-    private void showActiveTurtles(Interactions myView, Stage currentStage) {
-        myView.myTurtleStatePopup.show(currentStage);
     }
 
 
     /**
      * Method which can be called by any instance of a Visual object
      * and allows the caller to get the user input from the command input field
+     *
      * @return
      * @throws NullPointerException
      */
     private void getInstruction(Interactions view, Model model) throws NullPointerException {
         String input = view.getInstruction();
-        if (input.length()>0) model.executeCode(input);
+        if (input.length() > 0) model.executeCode(input);
     }
 
     private void setupDisplayCommands(Interactions view, Model model) {
@@ -94,7 +97,7 @@ public class Controller extends Application {
     }
 
     private void executeTextFile(File f, Interactions view, Model model) throws NullPointerException {
-        // print to see if working
+        //TODO: ?? what is this
         try {
             Scanner myReader = new Scanner(f);
             while (myReader.hasNextLine()) {

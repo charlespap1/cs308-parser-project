@@ -16,7 +16,6 @@ import slogo.model.tokens.*;
 import slogo.view.DisplayAction;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -24,9 +23,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
-public class Model implements ModelAPI{
-    public static final String WHITESPACE = "\\s+";
-    public static final String SYNTAX = "Syntax";
+public class Model implements ModelAPI {
+    private static final String WHITESPACE = "\\s+";
+    private static final String SYNTAX = "Syntax";
 
     private Stack<Token> commands = new Stack<>();
     private CodeFactory createFromString;
@@ -37,11 +36,19 @@ public class Model implements ModelAPI{
     private History history = new History();
     private TurtleMasterAccessor accessor = new TurtleMasterAccessor() {
         @Override
-        public double turtleCommandToMaster(TurtleAction action) { return turtleMaster.executeTurtleCommand(action); }
+        public double turtleCommandToMaster(TurtleAction action) {
+            return turtleMaster.executeTurtleCommand(action);
+        }
+
         @Override
-        public double turtleQueryToMaster(TurtleAction action) { return turtleMaster.executeTurtleQuery(action); }
+        public double turtleQueryToMaster(TurtleAction action) {
+            return turtleMaster.executeTurtleQuery(action);
+        }
+
         @Override
-        public double multiTurtleCommandToMaster(TurtleAction action, List<Double> turtles) { return turtleMaster.executeMultiTurtleCommand(action, turtles); }
+        public double multiTurtleCommandToMaster(TurtleAction action, List<Double> turtles) {
+            return turtleMaster.executeMultiTurtleCommand(action, turtles);
+        }
     };
 
     public Model(StringProperty language) {
@@ -55,33 +62,81 @@ public class Model implements ModelAPI{
         history.clearCurrentProgram();
         parseInstructions(rawString);
         history.addNewProgram(new Program(turtleMaster.generateStateMap()));
-        if(!commands.isEmpty() || !arguments.isEmpty()){
+        if (!commands.isEmpty() || !arguments.isEmpty()) {
             InvalidNumberArgumentsException e = new InvalidNumberArgumentsException();
             errorMessage.setValue(e.getMessage());
         }
         clearStacks();
     }
 
-    public void executeCode(File f){
-        try{
+    public void executeCode(File f) {
+        try {
             String path = f.getPath();
             String rawString = Files.readString(Paths.get(path));
             executeCode(rawString);
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             errorMessage.setValue("Could Not Find File");
         }
     }
 
-    public void clearHistory() { history.clearAll(new Program(turtleMaster.generateStateMap())); }
-
-    public void executeCode(Instruction instruction){
+    public void executeCode(Instruction instruction) {
         errorMessage.set("");
         clearStacks();
         history.clearCurrentProgram();
         instruction.execute();
         history.addCommand(instruction);
         history.addNewProgram(new Program(turtleMaster.generateStateMap()));
+    }
+
+    public ObservableList<Token> getVariableList() {
+        return createFromString.getVariableList();
+    }
+
+    public ObservableList<Token> getHistoryList() {
+        return history.getHistoryList();
+    }
+
+    public ObservableList<Token> getNewCommandsList() {
+        return createFromString.getNewCommandList();
+    }
+
+    public BooleanProperty getUndoDisabled() {
+        return history.getUndoDisabled();
+    }
+
+    public BooleanProperty getRedoDisabled() {
+        return history.getRedoDisabled();
+    }
+
+    public StringProperty getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String error) {
+        errorMessage.setValue(error);
+    }
+
+    public void setAction(String key, DisplayAction action) {
+        createFromString.addAction(key, action);
+    }
+
+    private void setupLanguage(StringProperty language) {
+        try {
+            createFromString = new CodeFactory(language.getValue());
+            language.addListener((o, oldVal, newVal) -> createFromString.setLanguage(newVal));
+        } catch (LanguageFileNotFoundException e) {
+            errorMessage.set(e.getMessage());
+        }
+
+    }
+
+    public void setAddTurtleFunction(AddNewTurtleFunction function) {
+        turtleMaster.setAddTurtleFunction(function);
+        history.addNewProgram(new Program(turtleMaster.generateStateMap()));
+    }
+
+    public void clearHistory() {
+        history.clearAll(new Program(turtleMaster.generateStateMap()));
     }
 
     public void undo() {
@@ -102,46 +157,17 @@ public class Model implements ModelAPI{
         }
     }
 
-    public ObservableList<Token> getVariableList(){ return createFromString.getVariableList(); }
-
-    public ObservableList<Token> getHistoryList(){ return history.getHistoryList(); }
-    public ObservableList<Token> getNewCommandsList(){ return createFromString.getNewCommandList(); }
-    public BooleanProperty getUndoDisabled() { return history.getUndoDisabled(); }
-    public BooleanProperty getRedoDisabled() { return history.getRedoDisabled(); }
-    public StringProperty getErrorMessage(){ return errorMessage; }
-
-    private void setupLanguage(StringProperty language) {
-        try {
-            createFromString = new CodeFactory(language.getValue());
-            language.addListener((o, oldVal, newVal) ->  createFromString.setLanguage(newVal));
-        }
-        catch(LanguageFileNotFoundException e) {
-            errorMessage.set(e.getMessage());
-        }
-
-    }
-
-    public void setAction(String key, DisplayAction action){
-        createFromString.addAction(key, action);
-    }
-
-    public void setAddTurtleFunction(AddNewTurtleFunction function){
-        turtleMaster.setAddTurtleFunction(function);
-        history.addNewProgram(new Program(turtleMaster.generateStateMap()));
-    }
-
-    public void setErrorMessage(String error) { errorMessage.setValue(error); }
-
-    private void parseInstructions(String rawString){
+    private void parseInstructions(String rawString) {
         try {
             String[] inputPieces = rawString.split(WHITESPACE);
-            for (String piece: inputPieces) {
+            for (String piece : inputPieces) {
                 if (piece.trim().length() > 0) {
                     addToAppropriateStack(piece);
                 }
             }
+        } catch (Exception e) {
+            errorMessage.set(e.getMessage());
         }
-        catch (Exception e) { errorMessage.set(e.getMessage()); }
     }
 
     private void addToAppropriateStack(String piece) throws InvalidCommandException, InvalidNumberArgumentsException {
@@ -156,8 +182,9 @@ public class Model implements ModelAPI{
             } else {
                 addArgumentToStack(currItem);
             }
+        } catch (Exception e) {
+            errorMessage.set(e.getMessage());
         }
-        catch (Exception e) { errorMessage.set(e.getMessage()); }
     }
 
     private void addArgumentToStack(Token currItem) {
@@ -219,7 +246,7 @@ public class Model implements ModelAPI{
 
     private List<Token> grabParameters(Stack<Token> args) {
         List<Token> params = new ArrayList<>();
-        while (!args.isEmpty()) params.add(0,args.pop());
+        while (!args.isEmpty()) params.add(0, args.pop());
         return params;
     }
 

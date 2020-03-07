@@ -3,7 +3,7 @@ package slogo.model.tokens;
 public class NewCommandName implements Token {
     private String myName;
 
-    public NewCommandName(String name){
+    public NewCommandName(String name) {
         myName = name;
     }
 
@@ -13,5 +13,7 @@ public class NewCommandName implements Token {
     }
 
     @Override
-    public String toString() { return myName; }
+    public String toString() {
+        return myName;
+    }
 }

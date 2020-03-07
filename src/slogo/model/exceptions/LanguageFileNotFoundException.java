@@ -1,18 +1,16 @@
 package slogo.model.exceptions;
 
-public class LanguageFileNotFoundException extends RuntimeException{
+public class LanguageFileNotFoundException extends RuntimeException {
 
-  private static final String errorMessage = "ERROR: Language File Not Found";
+    private static final String errorMessage = "ERROR: Language File Not Found";
 
-  public LanguageFileNotFoundException(Exception e)
-  {
-    super(e);
-  }
+    public LanguageFileNotFoundException(Exception e) {
+        super(e);
+    }
 
-  @Override
-  public String getMessage()
-  {
-    return errorMessage;
-  }
+    @Override
+    public String getMessage() {
+        return errorMessage;
+    }
 
 }

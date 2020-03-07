@@ -8,20 +8,23 @@ import java.util.List;
 
 /**
  * Interface to define the basic needs of every element on the screen
+ *
  * @author Juliet
  */
 public interface StaticViewElement {
 
-  /**
-   * Allows the setup to get the node of the element to add it to the root
-   * @return
-   */
-  Node getView();
+    /**
+     * Allows the setup to get the node of the element to add it to the root
+     *
+     * @return
+     */
+    Node getView();
 
-  /**
-   * Allows for the language of the text on element to by dynamically binded
-   * and change with the chosen language
-   * @param sp
-   */
-  void setTitleProperty(List<StringProperty> sp);
+    /**
+     * Allows for the language of the text on element to by dynamically binded
+     * and change with the chosen language
+     *
+     * @param sp
+     */
+    void setTitleProperty(List<StringProperty> sp);
 }

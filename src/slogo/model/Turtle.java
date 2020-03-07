@@ -4,6 +4,9 @@ import javafx.beans.property.*;
 
 import java.awt.geom.Point2D;
 
+/**
+ * Class to handle back end information needed for each turtle.
+ */
 public class Turtle {
 
     private static final int DEFAULT_X = 0;
@@ -30,12 +33,29 @@ public class Turtle {
         setActive(true);
     }
 
-    public DoubleProperty turtleXProperty(){ return turtleX; }
-    public DoubleProperty turtleYProperty(){ return turtleY; }
-    public DoubleProperty turtleAngleProperty(){ return turtleAngle; }
-    public BooleanProperty visibleProperty(){ return visible; }
-    public ObjectProperty<Point2D> pointProperty() { return coordinates; }
-    public BooleanProperty activeProperty() { return active; }
+    public DoubleProperty turtleXProperty() {
+        return turtleX;
+    }
+
+    public DoubleProperty turtleYProperty() {
+        return turtleY;
+    }
+
+    public DoubleProperty turtleAngleProperty() {
+        return turtleAngle;
+    }
+
+    public BooleanProperty visibleProperty() {
+        return visible;
+    }
+
+    public ObjectProperty<Point2D> pointProperty() {
+        return coordinates;
+    }
+
+    public BooleanProperty activeProperty() {
+        return active;
+    }
 
     public void setLocation(double x, double y) {
         turtleX.setValue(x);
@@ -43,18 +63,39 @@ public class Turtle {
         coordinates.setValue(new Point2D.Double(x, y));
     }
 
-    public void setVisible(boolean isVisible) { visible.set(isVisible); }
-    public void setAngle(double angle) { turtleAngle.setValue(angle); }
-    public void setActive(boolean isActive) { active.setValue(isActive);}
+    public void setVisible(boolean isVisible) {
+        visible.set(isVisible);
+    }
+
+    public void setAngle(double angle) {
+        turtleAngle.setValue(angle);
+    }
+
+    public void setActive(boolean isActive) {
+        active.setValue(isActive);
+    }
 
     public double getXPos() {
         return turtleX.getValue();
     }
+
     public double getYPos() {
         return turtleY.getValue();
     }
-    public double getAngle() { return turtleAngle.getValue(); }
-    public boolean isVisible() { return visible.getValue(); }
-    public boolean isActive() { return active.getValue();}
-    public double getId() { return id; }
+
+    public double getAngle() {
+        return turtleAngle.getValue();
+    }
+
+    public boolean isVisible() {
+        return visible.getValue();
+    }
+
+    public boolean isActive() {
+        return active.getValue();
+    }
+
+    public double getId() {
+        return id;
+    }
 }
