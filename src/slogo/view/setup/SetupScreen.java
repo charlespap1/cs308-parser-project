@@ -272,7 +272,11 @@ public class SetupScreen {
    */
   public void setSaveTextFileButton(Stage s)
   {
-    mySaveText.setOnAction(e -> createNewFileSaverPopup(s, myUserInput.getUserInput()));
+    String str = myUserInput.getUserInput();
+    System.out.println(str);
+    mySaveText.setOnAction(e -> createNewFileSaverPopup(s));
+    myCurrentLoadPopup.setPopupButton(e -> saveFile(myCurrentLoadPopup.getFilePackage(), myUserInput.getUserInput()));
+
   }
 
 
@@ -469,12 +473,11 @@ public class SetupScreen {
     }
   }
 
-  private void createNewFileSaverPopup(Stage s, String stringToSave){
+  private void createNewFileSaverPopup(Stage s){
     myCurrentLoadPopup = new LoadConfigPopup();
     myCurrentLoadPopup.setPromptProperty(languageHelper.getStringProperty(LOAD_FILE_PROMPT));
     myCurrentLoadPopup.setGoButtonProperty(languageHelper.getStringProperty(SAVE_BUTTON_KEY));
     myCurrentLoadPopup.getMyPopup().show(s);
-    myCurrentLoadPopup.setPopupButton(e-> saveFile(myCurrentLoadPopup.getFilePackage(), stringToSave));
   }
 
   private void createNewFileLoaderPopup(Stage s, EventHandler<ActionEvent> loadFileAction)

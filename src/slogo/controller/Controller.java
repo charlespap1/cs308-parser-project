@@ -57,7 +57,7 @@ public class Controller extends Application {
             public void execute(String s) { myModel.executeCode(s); }
         });
         myView.setSaveTextFileButton(stage);
-        myView.setSaveVariableButton("WHATEVER YOU WANT TO SAVE", stage);
+        myView.setSaveVariableButton("Whatever you want to save", stage);
         myView.setLoadVarsAndCommandsButton(e -> loadVarsAndCommands(myView.getFile()), stage);
     }
 

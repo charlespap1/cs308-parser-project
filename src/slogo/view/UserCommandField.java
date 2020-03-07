@@ -33,7 +33,7 @@ public class UserCommandField implements StaticViewElement{
   public String getUserInput()
   {
     String instructions = myTextField.getText();
-    myTextField.clear();
+    //myTextField.clear();
     return instructions;
   }
 
@@ -48,7 +48,7 @@ public class UserCommandField implements StaticViewElement{
   }
 
   /**
-   * User Command field doesn't have associated text
+   * User Command field doesn't have associated title
    * @param sp
    */
   @Override
