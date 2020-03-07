@@ -8,17 +8,19 @@ public class ShowTurtle extends Instruction {
         return 1;
     };
 
-    public ShowTurtle(String name){
+    public ShowTurtle(String name) {
         super(numArgs);
         instrName = name;
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return instrName;
     }
 
     @Override
-    public double execute(){ return myAccessor.turtleCommandToMaster(myAction); }
+    public double execute() {
+        return myAccessor.turtleCommandToMaster(myAction);
+    }
 
 }

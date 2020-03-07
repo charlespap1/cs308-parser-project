@@ -16,7 +16,8 @@ public class SetPalette extends DisplayCommand {
     @Override
     public double execute() throws InvalidArgumentException {
         List<Double> paramsAsVals = getParamsAsVals();
-        for (int i = 1; i < paramsAsVals.size(); i++) if (!(rgbValueIsValid(paramsAsVals.get(i)))) throw new InvalidArgumentException();
+        for (int i = 1; i < paramsAsVals.size(); i++)
+            if (!(rgbValueIsValid(paramsAsVals.get(i)))) throw new InvalidArgumentException();
 
         try {
             myAction.execute(paramsAsVals);
@@ -26,7 +27,7 @@ public class SetPalette extends DisplayCommand {
         return paramsAsVals.get(0);
     }
 
-    private boolean rgbValueIsValid (double value) {
+    private boolean rgbValueIsValid(double value) {
         return value >= 0 && value < RGB_MAX_VALUE;
     }
 }

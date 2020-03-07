@@ -11,13 +11,17 @@ import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Class to create Tokens from input string fragments and track new commands and variables that
+ * have been create.
+ */
 public class CodeFactory {
 
     private static final String VARIABLE_TYPE = "Variable";
     private static final String NEW_COMMAND_TYPE = "Command";
     private static final String TO_TYPE = "MakeUserInstruction";
 
-    public static String PACKAGE_NAME = "slogo.model.tokens.";
+    private static String PACKAGE_NAME = "slogo.model.tokens.";
 
     private RegexHandler keyGrabber;
     private Map<String, NewCommand> newCommandMap = new HashMap<>();
@@ -30,13 +34,8 @@ public class CodeFactory {
         setLanguage(language);
     }
 
-    public void setLanguage(String language){
-        keyGrabber = new RegexHandler();
-        keyGrabber.addPatterns(language);
-        keyGrabber.addPatterns("Syntax");
-    }
 
-    public Token getSymbolAsObj(String piece) throws SyntaxException{
+    public Token getSymbolAsObj(String piece) throws SyntaxException {
         String objectType = keyGrabber.getSymbol(piece);
         if (objectType.equals(VARIABLE_TYPE)) return getVariable(piece);
         if (objectType.equals(NEW_COMMAND_TYPE)) return getNewCommand(piece);
@@ -54,34 +53,35 @@ public class CodeFactory {
         return token;
     }
 
-    public ObservableList<Token> getVariableList(){ return vars; }
-
-    public ObservableList<Token> getNewCommandList(){ return newCommands; }
-
-    public void addAction(String key, DisplayAction action) { setActionMap.put(key, action); }
-
-    private void addNewCommand(Token token){
-        NewCommand command = (NewCommand) token;
-        newCommandMap.put(command.getName(), command);
-        newCommands.add(command);
+    public ObservableList<Token> getVariableList() {
+        return vars;
     }
 
-    public void updateVariableList(Token t){
-        vars.remove(t);
-        vars.add(t);
+    public ObservableList<Token> getNewCommandList() {
+        return newCommands;
     }
 
-    public String saveNewCommands () {
+    public void addAction(String key, DisplayAction action) {
+        setActionMap.put(key, action);
+    }
+
+    public void setLanguage(String language) {
+        keyGrabber = new RegexHandler();
+        keyGrabber.addPatterns(language);
+        keyGrabber.addPatterns("Syntax");
+    }
+
+    public String saveNewCommands() {
         StringBuilder commandsAsString = new StringBuilder();
         for (Token newCommand : newCommands) {
             NewCommand command = (NewCommand) newCommand;
             commandsAsString.append(String.format("TO %s [ ", command.getName()));
-            for (Token variable: command.getVariables()) {
+            for (Token variable : command.getVariables()) {
                 Variable var = (Variable) variable;
                 commandsAsString.append(String.format("%s ", var.toString()));
             }
             commandsAsString.append("] [ ");
-            for (Token instruction: command.getInstructions()) {
+            for (Token instruction : command.getInstructions()) {
                 Instruction instr = (Instruction) instruction;
                 commandsAsString.append(String.format("%s ", instr.toString()));
             }
@@ -99,6 +99,11 @@ public class CodeFactory {
         return variablesAsString.toString();
     }
 
+    public void updateVariableList(Token t) {
+        vars.remove(t);
+        vars.add(t);
+    }
+
     private Token getVariable(String piece) {
         if (!variableMap.containsKey(piece)) {
             Variable variable = new Variable(piece, this::updateVariableList);
@@ -111,5 +116,11 @@ public class CodeFactory {
     private Token getNewCommand(String piece) {
         if (newCommandMap.containsKey(piece)) return newCommandMap.get(piece);
         return new NewCommandName(piece);
+    }
+
+    private void addNewCommand(Token token) {
+        NewCommand command = (NewCommand) token;
+        newCommandMap.put(command.getName(), command);
+        newCommands.add(command);
     }
 }

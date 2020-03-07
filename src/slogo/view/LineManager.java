@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * Class to manage all of the line action
+ *
  * @author Natalie
  */
 public class LineManager {
@@ -16,16 +17,16 @@ public class LineManager {
     private List<List<Line>> myLines = new ArrayList<>();
     private int programPointer = -1;
 
-    public LineManager(Group root){
+    public LineManager(Group root) {
         myRoot = root;
     }
 
     /**
      * Creates new bucket of lines to keep track of. Needed for clear, redo and undo
      */
-    public void newProgram(){
+    public void newProgram() {
         int lastListIndex = myLines.size() - 1;
-        while (programPointer<lastListIndex){
+        while (programPointer < lastListIndex) {
             myLines.remove(lastListIndex);
             lastListIndex--;
         }
@@ -35,10 +36,11 @@ public class LineManager {
 
     /**
      * Adds a line to the bucket
+     *
      * @param line
      */
-    public void addLine(Line line){
-        myLines.get(myLines.size()-1).add(line);
+    public void addLine(Line line) {
+        myLines.get(myLines.size() - 1).add(line);
         myRoot.getChildren().add(line);
     }
 
@@ -46,7 +48,7 @@ public class LineManager {
      * Removes the most recent line from the bucket
      */
     public void undo() {
-        if (programPointer>=0){
+        if (programPointer >= 0) {
             List<Line> mostRecentLines = myLines.get(programPointer--);
             myRoot.getChildren().removeAll(mostRecentLines);
         }
@@ -56,7 +58,7 @@ public class LineManager {
      * Puts the most recent line that was taken off back on the root
      */
     public void redo() {
-        if (programPointer<myLines.size()-1){
+        if (programPointer < myLines.size() - 1) {
             List<Line> mostRecentLines = myLines.get(++programPointer);
             myRoot.getChildren().addAll(mostRecentLines);
         }
@@ -65,8 +67,8 @@ public class LineManager {
     /**
      * Clears the whole bucket of lines
      */
-    public void clearAllLines(){
-        for (List<Line> program:myLines){
+    public void clearAllLines() {
+        for (List<Line> program : myLines) {
             myRoot.getChildren().removeAll(program);
         }
         myLines = new ArrayList<>();

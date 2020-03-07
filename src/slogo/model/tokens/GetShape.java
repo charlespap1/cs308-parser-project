@@ -9,7 +9,7 @@ public class GetShape extends DisplayCommand {
     }
 
     @Override
-    public double execute () {
+    public double execute() {
         return myAction.execute(null);
     }
 }

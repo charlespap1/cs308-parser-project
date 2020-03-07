@@ -4,7 +4,7 @@ public class Constant implements Token {
 
     private double val;
 
-    public Constant(String value){
+    public Constant(String value) {
         val = Double.parseDouble(value);
     }
 
@@ -13,5 +13,7 @@ public class Constant implements Token {
     }
 
     @Override
-    public String toString() { return String.valueOf(val); }
+    public String toString() {
+        return String.valueOf(val);
+    }
 }

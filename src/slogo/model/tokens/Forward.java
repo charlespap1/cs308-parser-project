@@ -15,11 +15,13 @@ public class Forward extends Instruction {
         return returnValue;
     };
 
-    public Forward(String name){
+    public Forward(String name) {
         super(numArgs);
         instrName = name;
     }
 
     @Override
-    public double execute(){ return myAccessor.turtleCommandToMaster(myAction); }
+    public double execute() {
+        return myAccessor.turtleCommandToMaster(myAction);
+    }
 }

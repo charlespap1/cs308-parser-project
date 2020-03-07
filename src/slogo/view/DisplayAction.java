@@ -1,4 +1,5 @@
 package slogo.view;
+
 import java.util.List;
 
 /**

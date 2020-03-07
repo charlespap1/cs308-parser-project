@@ -9,121 +9,169 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import slogo.controller.DirectExecutor;
 import slogo.model.tokens.Token;
-import slogo.view.popup.TurtleStatePopup;
+import slogo.view.exceptions.MethodDoesNotExistException;
+import slogo.view.setup.ScreenManager;
+import slogo.view.setup.SetupScreen;
 
 import java.io.File;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import slogo.view.setup.MethodDoesNotExistException;
-import slogo.view.setup.ScreenManager;
-import slogo.view.setup.SetupScreen;
-
 
 /**
  * This class holds all of the interactions between the UI objects
+ *
  * @author Juliet, Natalie
  */
 public class Interactions implements View {
-  public static final String TITLE = "SLogo";
-  public TurtleStatePopup myTurtleStatePopup;
+    private static final String TITLE = "SLogo";
+    private ScreenManager myScreen;
+    private SetupScreen mySetup;
 
-  private ScreenManager myScreen;
-  private SetupScreen mySetup;
+    public Interactions(Stage primaryStage) {
+        mySetup = new SetupScreen();
+        Scene myScene = mySetup.setupGame();
+        mySetup.addCommonCommands(primaryStage, myScene);
+        myScreen = mySetup.getScreenManager();
 
-  public Interactions(Stage primaryStage) {
-    mySetup = new SetupScreen();
-    Scene myScene = mySetup.setupGame();
-    mySetup.addCommonCommands(primaryStage, myScene);
-    myScreen = mySetup.getScreenManager();
+        primaryStage.setScene(myScene);
+        primaryStage.setTitle(TITLE);
+        primaryStage.show();
+    }
 
-    primaryStage.setScene(myScene);
-    primaryStage.setTitle(TITLE);
-    primaryStage.show();
-  }
+    /**
+     * Method which can be called by any instance of a Visual object
+     * and allows the caller to get the user input from the command input field
+     *
+     * @return
+     * @throws NullPointerException
+     */
+    public String getInstruction() throws NullPointerException {
+        return myScreen.getUserInput();
+    }
 
-  /**
-   * Method which can be called by any instance of a Visual object
-   * and allows the caller to get the user input from the command input field
-   * @return
-   * @throws NullPointerException
-   */
-  public String getInstruction() throws NullPointerException {
-    return myScreen.getUserInput();
-  }
+    /**
+     * Used to get the
+     *
+     * @return
+     */
+    public File getFile() {
+        return mySetup.getFile();
+    }
 
-  /**
-   * Used to get the
-   * @return
-   */
-  public File getFile(){
-    return mySetup.getFile();
-  }
+    /**
+     * Sets the frontend turtle whenever the location is changed
+     * in the backend
+     *
+     * @param turtle
+     */
+    public void addTurtle(slogo.model.Turtle turtle) {
+        myScreen.addNewTurtle(turtle);
+    }
 
+    /**
+     * Returns front end methods for Display Commands.
+     *
+     * @param methodName
+     * @return
+     */
+    public DisplayAction getAction(String methodName) {
+        return params -> {
+            try {
+                Method m = ScreenManager.class.getDeclaredMethod(methodName, List.class);
+                Object value = m.invoke(myScreen, params);
+                return (Integer) value;
+            } catch (Exception e) {
+                mySetup.setError(new MethodDoesNotExistException());
+                return 0;
+            }
+        };
+    }
 
-  public void setPreferences(String preferences) {
-    myScreen.setPreferences(preferences);
-  }
+    /**
+     * Gives the ListViewers their updated list values (binding)
+     *
+     * @param variableList
+     * @param newCommandList
+     */
+    public void setViewLists(ObservableList<Token> variableList, ObservableList<Token> newCommandList) {
+        mySetup.setVariableList(variableList);
+        mySetup.setNewCommandList(newCommandList);
+    }
 
-  public String getNewWindowPreferences(){
-    return mySetup.getNewWindowPreferences();
-  }
+    /**
+     * Links front and back end history and disabling of undo/redo buttons
+     *
+     * @param historyList
+     * @param undoDisabled
+     * @param redoDisabled
+     */
+    public void setupHistory(ObservableList<Token> historyList, BooleanProperty undoDisabled, BooleanProperty redoDisabled) {
+        mySetup.setupHistory(historyList, undoDisabled, redoDisabled);
+    }
 
-  /**
-   * Sets the frontend turtle whenever the location is changed
-   * in the backend
-   * @param turtle
-   */
-  public void addTurtle(slogo.model.Turtle turtle){
-    myScreen.addNewTurtle(turtle);
-  }
+    /**
+     * Sets the go button to be bound to action in the backend
+     *
+     * @param goAction
+     */
+    public void setGoButton(EventHandler<ActionEvent> goAction) {
+        mySetup.setGoButton(goAction);
+    }
 
-  /**
-   * Gives the ListViewers their updated list values (binding)
-   * @param variableList
-   * @param newCommandList
-   */
-  public void setViewLists(ObservableList<Token> variableList, ObservableList<Token> newCommandList){
-    mySetup.setVariableList(variableList);
-    mySetup.setNewCommandList(newCommandList);
-  }
+    public void setNewWindowButton(EventHandler<ActionEvent> newWindowAction, Stage stage) {
+        mySetup.setNewWindowButton(newWindowAction, stage);
+    }
 
-  public void setupHistory(ObservableList<Token> historyList, BooleanProperty undoDisabled, BooleanProperty redoDisabled){
-    mySetup.setupHistory(historyList, undoDisabled, redoDisabled);
-  }
+    public void setLoadTextFileButton(EventHandler<ActionEvent> newWindowAction, Stage stage) {
+        mySetup.setLoadTextFileButton(newWindowAction, stage);
+    }
 
-  /**
-   * Sets the go button to be bound to action in the backend
-   * @param goAction
-   */
-  public void setGoButton(EventHandler<ActionEvent> goAction){ mySetup.setGoButton(goAction); }
-  public void setNewWindowButton(EventHandler<ActionEvent> newWindowAction, Stage stage) { mySetup.setNewWindowButton(newWindowAction, stage); }
-  public void setLoadTextFileButton(EventHandler<ActionEvent> newWindowAction, Stage stage) { mySetup.setLoadTextFileButton(newWindowAction, stage); }
-  public void setLoadVarsAndCommandsButton(EventHandler<ActionEvent> newWindowAction, Stage stage){mySetup.setLoadVarsAndCommands(newWindowAction, stage);}
-  public void setSaveTextFileButton(Stage stage){ mySetup.setSaveTextFileButton(stage);}
-  public void setSaveVariableButton(String newCommands, Stage stage) {mySetup.setVariableSaveButton(newCommands, stage); }
+    public void setLoadVarsAndCommandsButton(EventHandler<ActionEvent> newWindowAction, Stage stage) {
+        mySetup.setLoadVarsAndCommands(newWindowAction, stage);
+    }
 
+    public void setSaveTextFileButton(Stage stage) {
+        mySetup.setSaveTextFileButton(stage);
+    }
 
-  public void setUndoAction(EventHandler<ActionEvent> undoAction) { mySetup.setUndoButton(undoAction); }
-  public void setRedoAction(EventHandler<ActionEvent> redoAction) { mySetup.setRedoButton(redoAction); }
+    public void setSaveVarsAndCommandsButton(EventHandler<ActionEvent> saveNewCommandsAndVarsAction) {
+        mySetup.setVarsAndCommandsSaveButton(saveNewCommandsAndVarsAction);
+    }
 
-  public void setErrorMessage(StringProperty error){ mySetup.bindErrorMessage(error); }
-  public void setClearHistory(EventHandler<ActionEvent> clearAction) { mySetup.setClearHistory(clearAction); }
+    public void pushVarsAndCommandsToFile(String s, Stage stage) {
+        mySetup.createNewFileSaverPopup(stage, s);
+    }
 
-  public StringProperty getLanguageChoice() { return myScreen.getLanguageChoice(); }
+    public void setUndoAction(EventHandler<ActionEvent> undoAction) {
+        mySetup.setUndoButton(undoAction);
+    }
 
-  public DisplayAction getAction(String methodName) {
-    return params -> {
-      try {
-        Method m = ScreenManager.class.getDeclaredMethod(methodName, List.class);
-        Object value = m.invoke(myScreen, params);
-        return (Integer) value;
-      } catch (Exception e) {
-        mySetup.setError(new MethodDoesNotExistException());
-        return 0;
-      }
-    };
-  }
+    public void setRedoAction(EventHandler<ActionEvent> redoAction) {
+        mySetup.setRedoButton(redoAction);
+    }
 
-  public void setDirectInstructionExecutor(DirectExecutor executor) { mySetup.setDirectExecutor(executor); }
+    public void setErrorMessage(StringProperty error) {
+        mySetup.bindErrorMessage(error);
+    }
+
+    public void setClearHistory(EventHandler<ActionEvent> clearAction) {
+        mySetup.setClearHistory(clearAction);
+    }
+
+    public void setPreferences(String preferences) {
+        myScreen.setPreferences(preferences);
+    }
+
+    public void setDirectInstructionExecutor(DirectExecutor executor) {
+        mySetup.setDirectExecutor(executor);
+    }
+
+    public String getNewWindowPreferences() {
+        return mySetup.getNewWindowPreferences();
+    }
+
+    public StringProperty getLanguageChoice() {
+        return myScreen.getLanguageChoice();
+    }
 }

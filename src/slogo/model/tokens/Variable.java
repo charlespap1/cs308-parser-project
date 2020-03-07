@@ -6,36 +6,31 @@ public class Variable implements Token {
     private double value;
     private String name;
     private AddToListFunction function;
-    //private boolean printOnlyName = false;
 
-    public Variable(String name, AddToListFunction fn){
+    public Variable(String name, AddToListFunction fn) {
         this.name = name;
         function = fn;
     }
 
-    public void setVariable(double var){
+    public void setVariable(double var) {
         value = var;
         function.addToList(this);
     }
 
-    public String getName () {
+    public String getName() {
         return name;
     }
 
-    public double getValue () {
+    public double getValue() {
         return value;
     }
 
-    public double execute(){
+    public double execute() {
         return value;
     }
-
-//    public void setPrintOnlyName (boolean printOnlyName) {
-//        this.printOnlyName = printOnlyName;
-//    }
 
     @Override
-    public String toString(){
+    public String toString() {
         return name;
     }
 }

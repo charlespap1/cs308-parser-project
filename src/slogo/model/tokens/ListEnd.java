@@ -1,7 +1,7 @@
 package slogo.model.tokens;
 
 public class ListEnd implements Token {
-    public ListEnd(String name){
+    public ListEnd(String name) {
         super();
     }
 
@@ -11,5 +11,7 @@ public class ListEnd implements Token {
     }
 
     @Override
-    public String toString() { return " ] "; }
+    public String toString() {
+        return " ] ";
+    }
 }

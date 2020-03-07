@@ -13,11 +13,13 @@ public class Left extends Instruction {
         return valueForExec;
     };
 
-    public Left(String name){
+    public Left(String name) {
         super(numArgs);
         instrName = name;
     }
 
     @Override
-    public double execute() { return myAccessor.turtleCommandToMaster(myAction); }
+    public double execute() {
+        return myAccessor.turtleCommandToMaster(myAction);
+    }
 }

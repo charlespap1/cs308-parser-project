@@ -7,11 +7,11 @@ public class Turtles extends Instruction {
     private static final int numArgs = 0;
     private int numTurtles;
     private TurtleAction myAction = t -> {
-        numTurtles ++;
+        numTurtles++;
         return numTurtles;
     };
 
-    public Turtles(String name){
+    public Turtles(String name) {
         super(numArgs);
         instrName = name;
     }

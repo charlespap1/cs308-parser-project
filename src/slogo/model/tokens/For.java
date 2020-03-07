@@ -9,17 +9,15 @@ public class For extends Instruction {
 
     private static final int numArgs = 2;
 
-    public For(String name){
+    public For(String name) {
         super(numArgs);
         this.instrName = name;
     }
 
     @Override
-    public double execute () {
+    public double execute() {
         Token list1 = parameters.get(0);
-        Token list2 = parameters.get(1);
-        if (!(list1 instanceof ListSyntax) || !(list2 instanceof ListSyntax)) throw new InvalidArgumentException();
-        double returnValue = 0;
+        if (!(list1 instanceof ListSyntax)) throw new InvalidArgumentException();
 
         List<Token> loopParameters = ((ListSyntax) list1).getContents();
         Token variable = loopParameters.get(0);
@@ -29,15 +27,6 @@ public class For extends Instruction {
         double end = checkTokenNotListAndGetVal(loopParameters.get(2));
         double increment = checkTokenNotListAndGetVal(loopParameters.get(3));
 
-        List<Token> commands = ((ListSyntax) list2).getContents();
-        for (double i = start; i <= end; i += increment) {
-            ((Variable) variable).setVariable(i);
-            for (Token command: commands) {
-                if (!(command instanceof Instruction)) throw new InvalidLoopConditionException();
-                returnValue = command.execute();
-            }
-        }
-        return returnValue;
+        return runLoop(start, end, increment, variable);
     }
-
 }

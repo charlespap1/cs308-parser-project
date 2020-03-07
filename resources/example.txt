@@ -1,0 +1,4 @@
+TO foo [ :z ] [ fd :z ]
+MAKE :x 50.000000
+MAKE :y 25.000000
+MAKE :z 0.000000

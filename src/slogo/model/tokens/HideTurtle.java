@@ -9,16 +9,18 @@ public class HideTurtle extends Instruction {
         return 0;
     };
 
-    public HideTurtle(String name){
+    public HideTurtle(String name) {
         super(numArgs);
         instrName = name;
     }
 
     @Override
-    public double execute() { return myAccessor.turtleCommandToMaster(myAction); }
+    public double execute() {
+        return myAccessor.turtleCommandToMaster(myAction);
+    }
 
     @Override
-    public String toString(){
+    public String toString() {
         return instrName;
     }
 }

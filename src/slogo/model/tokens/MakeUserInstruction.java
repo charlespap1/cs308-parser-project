@@ -11,14 +11,14 @@ public class MakeUserInstruction extends Instruction {
     private NewCommand myCommand;
     private AddToListFunction myFunction;
 
-    public MakeUserInstruction(String name, AddToListFunction function){
+    public MakeUserInstruction(String name, AddToListFunction function) {
         super(numArgs);
         instrName = name;
         myFunction = function;
     }
 
     @Override
-    public double execute () {
+    public double execute() {
         String name = parameters.get(0).toString();
         Token list1 = parameters.get(1);
         Token list2 = parameters.get(2);
@@ -28,12 +28,11 @@ public class MakeUserInstruction extends Instruction {
         for (Token variable : variables) if (!(variable instanceof Variable)) throw new InvalidLoopConditionException();
 
         List<Token> instructions = ((ListSyntax) list2).getContents();
-        for (Token instruction : instructions) if (!(instruction instanceof Instruction)) throw new InvalidLoopConditionException();
+        for (Token instruction : instructions)
+            if (!(instruction instanceof Instruction)) throw new InvalidLoopConditionException();
 
         myCommand = new NewCommand(name, variables, instructions);
         myFunction.addToList(myCommand);
         return myCommand == null ? 0 : 1;
     }
-
-    public String toString(String name){ return instrName + ": " + name; }
 }
