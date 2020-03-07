@@ -194,12 +194,10 @@ public class Model implements ModelAPI {
     }
 
     private void checkNotMakeUserInstruction() {
-        if(!commands.isEmpty()){
-            if(!(commands.peek() instanceof MakeUserInstruction)){
+        if(!commands.isEmpty()) {
+            if (!(commands.peek() instanceof MakeUserInstruction)) {
                 throw new InvalidCommandException();
             }
-        } catch (Exception e) {
-            errorMessage.set(e.getMessage());
         }
     }
 
