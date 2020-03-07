@@ -50,9 +50,9 @@ public class SetupScreen {
     private static final String MAIN_STYLESHEET = "main.css";
     private static final String FILE_CASE_PREFERENCE = "UTF-8";
 
+    public static final int WIDTH = 1000;
+    public static final int HEIGHT = 720;
     private static final double BOX_SPACING = 10;
-    private static final int WIDTH = 1000;
-    private static final int HEIGHT = 720;
     private static final Paint BACKGROUND = Color.AZURE;
     private static final double BUTTON_HEIGHT_OFFSET = 40;
     private static final double GRAPHICAL_VIEWER_HEIGHT_OFFSET = 255;
