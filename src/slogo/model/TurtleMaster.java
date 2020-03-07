@@ -8,6 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Manages all instances of Turtle in a given instance of Model.
+ */
 public class TurtleMaster {
 
     private AddNewTurtleFunction addTurtleFunction;
@@ -22,13 +25,13 @@ public class TurtleMaster {
         currentActiveTurtle = turtleMap.get(firstTurtleId);
     }
 
-    public double executeTurtleCommand(TurtleAction action){
+    public double executeTurtleCommand(TurtleAction action) {
         double executionValue = 0;
-        if (inLoop){
+        if (inLoop) {
             executionValue = action.actOnTurtle(currentActiveTurtle);
         } else {
             inLoop = true;
-            for (Turtle t: turtleMap.values()) {
+            for (Turtle t : turtleMap.values()) {
                 if (t.isActive()) {
                     currentActiveTurtle = t;
                     executionValue = action.actOnTurtle(t);
@@ -43,18 +46,19 @@ public class TurtleMaster {
         for (Double id : turtles) if (!turtleMap.containsKey(id)) addTurtle(id);
         double executionValue = -1;
         inLoop = true;
-        for (Turtle t: turtleMap.values()) {
+        for (Turtle t : turtleMap.values()) {
             Turtle previousActiveTurtle = currentActiveTurtle;
             currentActiveTurtle = t;
             double currentExecutionValue = action.actOnTurtle(t);
-            if (currentExecutionValue != Integer.MIN_VALUE || turtles.contains(t.getId())) executionValue = currentExecutionValue;
+            if (currentExecutionValue != Integer.MIN_VALUE || turtles.contains(t.getId()))
+                executionValue = currentExecutionValue;
             if (!t.isActive()) currentActiveTurtle = previousActiveTurtle;
         }
         inLoop = false;
         return executionValue;
     }
 
-    public double executeTurtleQuery(TurtleAction action){
+    public double executeTurtleQuery(TurtleAction action) {
         return action.actOnTurtle(currentActiveTurtle);
     }
 
@@ -86,7 +90,7 @@ public class TurtleMaster {
         turtle.setActive(state.getIsActive());
     }
 
-    private void addTurtle(double id){
+    private void addTurtle(double id) {
         Turtle newTurtle = new Turtle(id);
         turtleMap.put(id, newTurtle);
         addTurtleFunction.addTurtle(newTurtle);

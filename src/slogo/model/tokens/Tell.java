@@ -13,12 +13,11 @@ public class Tell extends Instruction {
         if (activeTurtles.contains(t.getId())) {
             t.setActive(true);
             t.setVisible(true);
-        }
-        else t.setActive(false);
+        } else t.setActive(false);
         return t.getId();
     };
 
-    public Tell(String name){
+    public Tell(String name) {
         super(numArgs);
         instrName = name;
     }

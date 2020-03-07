@@ -1,18 +1,16 @@
 package slogo.model.exceptions;
 
-public class SyntaxException extends RuntimeException{
+public class SyntaxException extends RuntimeException {
 
-  private static final String errorMessage = "ERROR: Syntax, check your spacing!";
+    private static final String errorMessage = "ERROR: Syntax, check your spacing!";
 
-  public SyntaxException(Exception e)
-  {
-    super(e);
-  }
+    public SyntaxException(Exception e) {
+        super(e);
+    }
 
-  @Override
-  public String getMessage()
-  {
-    return errorMessage;
-  }
+    @Override
+    public String getMessage() {
+        return errorMessage;
+    }
 
 }
