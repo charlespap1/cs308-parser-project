@@ -52,7 +52,7 @@ public class Controller extends Application {
         myView.setPreferences(preferences);
         myView.setUndoAction(e -> myModel.undo());
         myView.setRedoAction(e -> myModel.redo());
-        myView.setLoadTextFileButton(e -> executeTextFile(myView.getFile(), myView, myModel), stage);
+        myView.setLoadTextFileButton(e -> myModel.executeCode(myView.getFile()), stage);
         myView.setClearHistory(e -> myModel.clearHistory());
         myView.setDirectInstructionExecutor(new DirectExecutor() {
             public void execute(Instruction i) {
@@ -65,7 +65,7 @@ public class Controller extends Application {
         });
         myView.setSaveTextFileButton(stage);
         myView.setSaveVarsAndCommandsButton(e -> myView.pushVarsAndCommandsToFile(myModel.getNewVarsAndCommandsAsString(), stage));
-        myView.setLoadVarsAndCommandsButton(e -> executeTextFile(myView.getFile(), myView, myModel), stage);
+        myView.setLoadVarsAndCommandsButton(e -> myModel.executeCode(myView.getFile()), stage);
     }
 
     /**
@@ -87,20 +87,5 @@ public class Controller extends Application {
             DisplayAction action = view.getAction(methodName);
             model.setAction(key, action);
         }
-    }
-
-    private void executeTextFile(File f, Interactions view, Model model) throws NullPointerException {
-        //TODO: ?? what is this
-        try {
-            Scanner myReader = new Scanner(f);
-            while (myReader.hasNextLine()) {
-                String data = myReader.nextLine();
-                System.out.println(data);
-            }
-            myReader.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-        }
-        model.executeCode(f);
     }
 }
