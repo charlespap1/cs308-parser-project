@@ -48,13 +48,13 @@ public class UserCommandField implements StaticViewElement {
         return myTextField;
     }
 
-    /**
-     * User Command field doesn't have associated text
-     *
-     * @param sp
-     */
-    @Override
-    public void setTitleProperty(List<StringProperty> sp) {
+
+  /**
+   * User Command field doesn't have associated title
+   * @param sp
+   */
+  @Override
+  public void setTitleProperty(List<StringProperty> sp) {
 
     }
 
