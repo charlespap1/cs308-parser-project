@@ -5,10 +5,18 @@ import slogo.model.exceptions.InvalidLoopConditionException;
 
 import java.util.List;
 
+/**
+ * IfElse Instruction class.
+ * @author Charles, Natalie, Michael
+ */
 public class IfElse extends Instruction {
 
     private static final int numArgs = 3;
 
+    /**
+     * Constructs new IfElse.
+     * @param name String name of command, used by toString
+     */
     public IfElse(String name) {
         super(numArgs);
         this.instrName = name;
@@ -25,6 +33,11 @@ public class IfElse extends Instruction {
         return returnValue;
     }
 
+    /**
+     * Executes instruction functionality. Executes commands in list 1 (parameter 1) if condition in
+     * parameter 0 is not false (0), otherwise executes commands in list 2 (parameter 2).
+     * @return value of last command executed on last turtle
+     */
     @Override
     public double execute() {
         Token expr = this.parameters.get(0);

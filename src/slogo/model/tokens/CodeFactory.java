@@ -14,6 +14,7 @@ import java.util.Map;
 /**
  * Class to create Tokens from input string fragments and track new commands and variables that
  * have been create.
+ * @author Charles, Michael, Natalie
  */
 public class CodeFactory {
 
@@ -30,11 +31,22 @@ public class CodeFactory {
     private ObservableList<Token> newCommands = FXCollections.observableArrayList();
     private Map<String, DisplayAction> setActionMap = new HashMap<>();
 
+    /**
+     * Constructs new CodeFactory.
+     * @param language initial language to use for token recognition
+     * @throws LanguageFileNotFoundException if language file does not exist
+     */
     public CodeFactory(String language) throws LanguageFileNotFoundException {
         setLanguage(language);
     }
 
 
+    /**
+     * Uses RegexHandler to get token type of String, then creates new Token instance of appropriate type.
+     * @param piece input String
+     * @return new Token
+     * @throws SyntaxException if String is improper syntax
+     */
     public Token getSymbolAsObj(String piece) throws SyntaxException {
         String objectType = keyGrabber.getSymbol(piece);
         if (objectType.equals(VARIABLE_TYPE)) return getVariable(piece);
@@ -53,24 +65,46 @@ public class CodeFactory {
         return token;
     }
 
+    /**
+     * Gets observable list of variables that have been created to pass to front end.
+     * @return variable list
+     */
     public ObservableList<Token> getVariableList() {
         return vars;
     }
 
+    /**
+     * Gets observable list of new commands that have been created to pass to front end.
+     * @return new command list
+     */
     public ObservableList<Token> getNewCommandList() {
         return newCommands;
     }
 
+    /**
+     * Adds DisplayAction to map.
+     * @param key command key corresponding to action
+     * @param action DisplayAction from the front end corresponding to String key
+     */
     public void addAction(String key, DisplayAction action) {
         setActionMap.put(key, action);
     }
 
+    /**
+     * Changes the language of the RegexHandler when user selects different language.
+     * @param language new language to use
+     */
     public void setLanguage(String language) {
         keyGrabber = new RegexHandler();
         keyGrabber.addPatterns(language);
         keyGrabber.addPatterns("Syntax");
     }
 
+    /**
+     * Function to save the current contents of the new commands list in a format that allows them to be read
+     * back in as a file.
+     * @return String representation of entire new commands list
+     */
     public String saveNewCommands() {
         StringBuilder commandsAsString = new StringBuilder();
         for (Token newCommand : newCommands) {
@@ -90,6 +124,11 @@ public class CodeFactory {
         return commandsAsString.toString();
     }
 
+    /**
+     * Function to save the current contents of the variables list in a format that allows them to be read back in
+     * as a file.
+     * @return String representation of entire variables list
+     */
     public String saveVariables() {
         StringBuilder variablesAsString = new StringBuilder();
         for (Token variable : vars) {
@@ -99,6 +138,11 @@ public class CodeFactory {
         return variablesAsString.toString();
     }
 
+    /**
+     * Used by Variable Tokens when their value changes so that variables list displayed  in the front end
+     * reflects changes.
+     * @param t Variable being changed
+     */
     public void updateVariableList(Token t) {
         vars.remove(t);
         vars.add(t);

@@ -4,15 +4,27 @@ import slogo.model.exceptions.DivideByZeroException;
 
 import java.util.List;
 
+/**
+ * Quotient Instruction class.
+ * @author Charles, Natalie, Michael
+ */
 public class Quotient extends Instruction {
 
     private static final int numArgs = 2;
 
+    /**
+     * Constructs new Quotient.
+     * @param name String name of command, used by toString
+     */
     public Quotient(String name) {
         super(numArgs);
         instrName = name;
     }
 
+    /**
+     * Executes instruction functionality.
+     * @return parameter 0 divided by parameter 1
+     */
     @Override
     public double execute() {
         List<Double> paramsAsVals = this.getParamsAsVals();
