@@ -2,6 +2,10 @@ package slogo.model.tokens;
 
 import java.util.List;
 
+/**
+ * SetHeading Instruction class.
+ * @author Charles, Natalie, Michael
+ */
 public class SetHeading extends Instruction {
     private static final int ANGLE_OFFSET = 90;
 
@@ -14,15 +18,19 @@ public class SetHeading extends Instruction {
         return returnValue;
     };
 
+    /**
+     * Constructs new SetHeading.
+     * @param name String name of command, used by toString
+     */
     public SetHeading(String name) {
         super(numArgs);
         instrName = name;
     }
 
-    public String toString(double heading) {
-        return instrName + " " + heading;
-    }
-
+    /**
+     * Executes instruction functionality. Sets angle of all active turtles to given angle.
+     * @return amount last turtle rotates to reach given angle
+     */
     @Override
     public double execute() {
         return myAccessor.turtleCommandToMaster(myAction);

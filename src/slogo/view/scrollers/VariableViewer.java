@@ -11,7 +11,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import slogo.model.tokens.Token;
 import slogo.model.tokens.Variable;
-import slogo.view.exceptions.NoVariableToSelectException;
 
 import java.util.Objects;
 
@@ -82,21 +81,18 @@ public class VariableViewer extends ScrollingWindow {
      */
     @Override
     protected void onSelectedItem(Token t) {
-        try {
-            label.setText(t.toString() + " " + t.execute());
-            text.setText("");
-            button.setOnAction(e -> {
-                try {
-                    double newVal = Double.parseDouble(text.getText());
-                    ((Variable) t).setVariable(newVal);
-                } catch (Exception ex) {
-                    ((Variable) t).setVariable(t.execute());
-                }
-                myHolder.getChildren().remove(box);
-            });
-            if (!myHolder.getChildren().contains(box)) myHolder.getChildren().add(box);
-        } catch (Exception e) {
-            throw new NoVariableToSelectException(e);
-        }
+        if (t==null) return;
+        label.setText(t.toString() + " " + t.execute());
+        text.setText("");
+        button.setOnAction(e -> {
+            try {
+                double newVal = Double.parseDouble(text.getText());
+                ((Variable) t).setVariable(newVal);
+            } catch (Exception ex) {
+                ((Variable) t).setVariable(t.execute());
+            }
+            myHolder.getChildren().remove(box);
+        });
+        if (!myHolder.getChildren().contains(box)) myHolder.getChildren().add(box);
     }
 }

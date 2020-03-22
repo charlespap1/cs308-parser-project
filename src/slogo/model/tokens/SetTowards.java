@@ -2,6 +2,10 @@ package slogo.model.tokens;
 
 import java.util.List;
 
+/**
+ * SetTowards Instruction class.
+ * @author Charles, Natalie, Michael
+ */
 public class SetTowards extends Instruction {
     private static final int ANGLE_OFFSET = 90;
     private static final int numArgs = 2;
@@ -16,15 +20,19 @@ public class SetTowards extends Instruction {
         return returnValue;
     };
 
+    /**
+     * Constructs new SetTowards.
+     * @param name String name of command, used by toString
+     */
     public SetTowards(String name) {
         super(numArgs);
         instrName = name;
     }
 
-    public String toString(double x, double y) {
-        return instrName + " " + x + " " + y;
-    }
-
+    /**
+     * Executes instruction functionality. Rotates all active turtles to face given (x, y) coordinate.
+     * @return amount last turtle rotates
+     */
     @Override
     public double execute() {
         return myAccessor.turtleCommandToMaster(myAction);

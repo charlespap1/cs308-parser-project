@@ -6,6 +6,10 @@ import slogo.model.exceptions.InvalidLoopConditionException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * AskWith Instruction class.
+ * @author Charles, Natalie, Michael
+ */
 public class AskWith extends Instruction {
 
     private static final int numArgs = 2;
@@ -27,11 +31,21 @@ public class AskWith extends Instruction {
         return returnValue;
     };
 
+    /**
+     * Constructs new AskWith.
+     * @param name String name of command, used by toString
+     */
     public AskWith(String name) {
         super(numArgs);
         instrName = name;
     }
 
+    /**
+     * Executes instruction functionality. First parameter is list with one condition to check for each turtle, execute
+     * commands in list in second parameter if condition is true. Returns result of executing last command on
+     * last turtle executed on.
+     * @return last return value from last turtle executed on
+     */
     @Override
     public double execute() {
         Token list1 = parameters.get(0);

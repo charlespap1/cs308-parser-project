@@ -13,9 +13,10 @@ import java.util.ResourceBundle;
 import java.util.Scanner;
 
 /**
- * Main method where the GUI comes together
+ * Main method where the GUI comes together. Builds initial stage/window of program and any additional windows
+ * created, including connecting necessary elements of front and back end.
  *
- * @author natalie
+ * @author Natalie
  */
 public class Controller extends Application {
     private static final String RESOURCES_PATH = "resources.commands.Methods";
@@ -26,7 +27,7 @@ public class Controller extends Application {
     }
 
     /**
-     * Allows us to set up the initial stage and animation
+     * Allows us to set up the initial stage and animation.
      *
      * @param primaryStage
      */
@@ -58,7 +59,6 @@ public class Controller extends Application {
             public void execute(Instruction i) {
                 myModel.executeCode(i);
             }
-
             public void execute(String s) {
                 myModel.executeCode(s);
             }
