@@ -225,5 +225,4 @@ public class DisplayCustomizer implements StaticViewElement {
         return Color.rgb(r, g, b);
     }
 
-
 }

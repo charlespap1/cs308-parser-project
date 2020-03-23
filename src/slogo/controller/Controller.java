@@ -58,7 +58,6 @@ public class Controller extends Application {
             public void execute(Instruction i) {
                 myModel.executeCode(i);
             }
-
             public void execute(String s) {
                 myModel.executeCode(s);
             }

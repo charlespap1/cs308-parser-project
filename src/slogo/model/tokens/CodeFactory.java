@@ -43,7 +43,9 @@ public class CodeFactory {
         Token token;
         try {
             Class c = Class.forName(PACKAGE_NAME + objectType);
+            System.out.println(c);
             Constructor objConstruct = c.getDeclaredConstructor(String.class);
+            System.out.println(objConstruct);
             objConstruct.setAccessible(true);
             token = (Token) objConstruct.newInstance(piece);
             if (token instanceof DisplayCommand) ((DisplayCommand) token).setMyAction(setActionMap.get(objectType));
