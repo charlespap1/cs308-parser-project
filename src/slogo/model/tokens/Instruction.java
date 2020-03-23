@@ -8,6 +8,13 @@ import slogo.model.exceptions.InvalidLoopConditionException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Abstract Class implementing Token interface extended by all executable commands. Contains functionality to
+ * set parameters, set access to the TurtleMaster object, execute and convert parameters to values, and
+ * run a loop.
+ *
+ * @author Charles, Natalie, Michael
+ */
 public abstract class Instruction implements Token {
 
     protected List<Token> parameters = new ArrayList<>();
@@ -15,22 +22,54 @@ public abstract class Instruction implements Token {
     private int NUM_ARGS;
     protected TurtleMasterAccessor myAccessor;
 
+    /**
+     * Constructs new Instruction, sets the number of arguments to given numArgs.
+     * @param numArgs number of arguments this instruction takes to be executed
+     */
     public Instruction(int numArgs) {
         NUM_ARGS = numArgs;
     }
 
+    /**
+     * Executes action of a given Instruction.
+     * @return value of execution
+     */
     public abstract double execute();
 
+    /**
+     * Gets number of arguments this Instruction needs to execute properly.
+     * @return number of arguments (parameters)
+     */
     public int numRequiredArgs() {
         return NUM_ARGS;
     }
 
+    /**
+     * Gives Instruction access to interface that allows interaction with TurtleMaster, used for commands
+     * that are executed on all turtles, queries for a single turtle, and multi-turtle commands (Ask, Tell, etc.)
+     * @param accessor interface granting access to methods in TurtleMaster
+     */
     public void setAccessor(TurtleMasterAccessor accessor) {
         myAccessor = accessor;
     }
 
+    /**
+     * Sets Instruction parameters/arguments.
+     * @param params instruction parameters
+     */
     public void setParameters(List<Token> params) {
         parameters = params;
+    }
+
+    /**
+     * Gets String representation of Instruction including name and parameters.
+     * @return String representation
+     */
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder(instrName);
+        for (Token param : parameters) sb.append(" ").append(param.toString());
+        return sb.toString();
     }
 
     protected List<Double> getParamsAsVals() {
@@ -49,12 +88,6 @@ public abstract class Instruction implements Token {
         if (currToken instanceof ListSyntax)
             throw new CommandCannotDoListException();
         return currToken.execute();
-    }
-
-    public String toString() {
-        StringBuilder sb = new StringBuilder(instrName);
-        for (Token param : parameters) sb.append(" ").append(param.toString());
-        return sb.toString();
     }
 
     protected double runLoop(double start, double end, double increment, Token variable) {

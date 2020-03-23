@@ -1,5 +1,9 @@
 package slogo.model.tokens;
 
+/**
+ * ShowTurtle Instruction class.
+ * @author Charles, Natalie, Michael
+ */
 public class ShowTurtle extends Instruction {
 
     private static final int numArgs = 0;
@@ -8,16 +12,19 @@ public class ShowTurtle extends Instruction {
         return 1;
     };
 
+    /**
+     * Constructs new ShowTurtle.
+     * @param name String name of command, used by toString
+     */
     public ShowTurtle(String name) {
         super(numArgs);
         instrName = name;
     }
 
-    @Override
-    public String toString() {
-        return instrName;
-    }
-
+    /**
+     * Executes instruction functionality. Sets all active turtles to visible.
+     * @return 1
+     */
     @Override
     public double execute() {
         return myAccessor.turtleCommandToMaster(myAction);

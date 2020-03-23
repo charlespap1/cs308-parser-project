@@ -97,8 +97,9 @@ public class DisplayCustomizer implements StaticViewElement {
     }
 
     public Image getImage(int index) {
-        imageIndex = index;
-        return new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(turtleFaces.get(index))));
+        if (index>turtleFaces.size()-1 || index<0) imageIndex = DEFAULT_TURTLE_FACE;
+        else imageIndex = index;
+        return new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(turtleFaces.get(imageIndex))));
     }
 
     /**
@@ -107,11 +108,13 @@ public class DisplayCustomizer implements StaticViewElement {
      * @param index
      */
     public void setPenColor(int index) {
-        penColorIndex = index;
+        if (index>colors.size()-1 || index<0) penColorIndex = DEFAULT_PEN_COLOR;
+        else penColorIndex = index;
     }
 
     public void setBackground(int index) {
-        backgroundColorIndex = index;
+        if (index>colors.size()-1 || index<0) backgroundColorIndex = DEFAULT_BACKGROUND_COLOR;
+        else backgroundColorIndex = index;
     }
 
     /**
@@ -124,6 +127,7 @@ public class DisplayCustomizer implements StaticViewElement {
      * @param b
      */
     public void setPalette(int index, String r, String g, String b) {
+        if (index>colors.size()-1 || index<0) return;
         String color = r + "," + g + "," + b;
         colors.remove(index);
         colors.add(index, color);

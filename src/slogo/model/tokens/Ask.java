@@ -5,6 +5,10 @@ import slogo.model.exceptions.InvalidLoopConditionException;
 
 import java.util.List;
 
+/**
+ * Ask Instruction class.
+ * @author Charles, Natalie, Michael
+ */
 public class Ask extends Instruction {
 
     private static final int numArgs = 2;
@@ -24,11 +28,20 @@ public class Ask extends Instruction {
         return returnValue;
     };
 
+    /**
+     * Constructs new Ask.
+     * @param name String name of command, used by toString
+     */
     public Ask(String name) {
         super(numArgs);
         instrName = name;
     }
 
+    /**
+     * Executes instruction functionality. First parameter is list of Turtle IDs to act on, second parameter is
+     * list of commands to execute on these Turtles. Returns result of executing last command on last turtle executed on.
+     * @return last return value from last turtle executed on
+     */
     @Override
     public double execute() {
         Token list1 = parameters.get(0);
