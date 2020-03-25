@@ -4,6 +4,8 @@
 
 ### Backend
 
+Note: I chose to make changes that made the inner workings of the backend all work through the use of Tokens. This allowed for easy use of different object types in shared cases where any input might be a viable option. It also made parsing significantly easier, seeing as it made it easier to tell which stack objects should be added to and how they should be handled when executing instructions.
+
 The backend APIs have changed in several ways since beginning this project.
 The biggest change is that now we have a Token API in order to account
 for functionality that encompasses all tokens, including Variables, Constants,
