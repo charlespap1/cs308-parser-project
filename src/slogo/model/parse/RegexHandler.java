@@ -16,7 +16,9 @@ public class RegexHandler {
     private List<Map.Entry<String, Pattern>> mySymbols = new ArrayList<>();
 
     /**
-     * Adds the given resource file to this language's recognized types
+     * Adds given resource file to language's recognized types
+     * @param filename String name of file that is used to generate patterns
+     * @throws LanguageFileNotFoundException exception if could not find the file or parse it to generate patterns
      */
     public void addPatterns(String filename) throws LanguageFileNotFoundException {
         try {
@@ -30,7 +32,9 @@ public class RegexHandler {
     }
 
     /**
-     * Returns language's type associated with the given text if one exists
+     *
+     * @param text Text to be checked of type string
+     * @return language's type associated with the given text if one exists
      */
     public String getSymbol(String text) {
         for (Map.Entry<String, Pattern> e : mySymbols) {

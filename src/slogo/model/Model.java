@@ -23,6 +23,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
+/**
+ * Model for this project that implements the backend functionality and ModelAPI, handles all processing of code and creation of instructions to be executed.
+ */
 public class Model implements ModelAPI{
     public static final String WHITESPACE = "\\s+";
     public static final String SYNTAX = "Syntax";
@@ -52,11 +55,19 @@ public class Model implements ModelAPI{
         }
     };
 
+    /**
+     * Constructor to create backend model object.
+     * @param language specifies what language the model handles upon creation.
+     */
     public Model(StringProperty language) {
         typeCheck.addPatterns(SYNTAX);
         setupLanguage(language);
     }
 
+    /**
+     * Handles calling necessary methods for parsing and execution of code chunk provided
+     * @param rawString String of code chunk to be executed
+     */
     public void executeCode(String rawString) {
         errorMessage.set("");
         clearStacks();
@@ -70,6 +81,10 @@ public class Model implements ModelAPI{
         clearStacks();
     }
 
+    /**
+     * Handles calling necessary methods for parsing and execution of code chunk provided
+     * @param f File object of code to be parsed and run
+     */
     public void executeCode(File f) {
         try {
             String path = f.getPath();
@@ -80,6 +95,10 @@ public class Model implements ModelAPI{
         }
     }
 
+    /**
+     * Handles calling necessary methods for parsing and execution of code chunk provided
+     * @param instruction Instruction object that represents an instruction to be executed by backend
+     */
     public void executeCode(Instruction instruction) {
         errorMessage.set("");
         clearStacks();
