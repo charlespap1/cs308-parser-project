@@ -1,0 +1,10 @@
+make :turt 0
+make :ang 0
+repeat 36 [
+    tell [ :turt ]
+    penup
+    rt :ang
+    fd * id 5
+    make :turt + :turt 1
+    make :ang + :ang 20
+]
